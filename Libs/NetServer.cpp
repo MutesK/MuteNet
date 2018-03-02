@@ -504,17 +504,18 @@ UINT CNetServer::SendWork()
 
 		while (SendThreadQueue.Dequeue(&SessionID))
 		{
-			//if (!SessionAcquireLock(SessionID))
-			//	continue;
-
 			pSession = FindSession(SessionID);
 
 			if (pSession == nullptr)
 				continue;
 
+			if (!SessionAcquireLock(SessionID))
+				continue;
+
+
 			SendPost(pSession);
 
-			///SessionAcquireFree(pSession);
+			SessionAcquireFree(pSession);
 		}
 	}
 
