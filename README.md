@@ -5,8 +5,102 @@
 ```
 해당 라이브러리의 저작권은 본인에게 있습니다.
 
-C/C++을 통해 개발되었으며, RapidJson과 MySQL C Connector을 사용하였습니다.
+C/C++을 통해 개발되었으며, RapidJson과 MySQL C API 사용하였습니다.
+
+주로 LanServer, NetServer, MMOServer로 네트워크 송수신을 합니다.
 ```
+
+## LanServer
+
+```
+클라이언트 유저와 서버간의 통신 모듈이 아닌 내부 네트워크의 서버와 서버간의 통신을 목적으로 함.
+```
+
+1. 대규모의 접속을 처리하지않아도 된다.
+2. 최대한 간단한 프로토콜을 사용하고, 보안은 신경쓰지 않는다.
+3. 간단한 사용법을 가지도록 한다.
+4. 서버간의 통신이지만, 클라이언트 서버 모델
+5. 유저간 통신 모듈을 사용하며, 유저처럼 서버를 연결하여 유저와 똑같이 처리하는 것도 가능
+6. 서버와의 통신은 유저통신과 별도로 분리시키는 것이 관리면, 반응면에서 좋다.
+
++ 서버간의 통신은 최대한 빠르고, 안전하게 유저수에 영향 받지않고 영향을 주지않는 것이 좋다.
++ 서버간의 통신은 별도의 랜카드를 사용하여 일반 유저접속 IP와는 다르게 가는것이 일반적
++ 유저간 통신 모듈은 덩치가 크며 프로토콜도 무거우므로, 서버간 통신은 프로토콜도 개별적
+
+```cpp
+	 bool Start(...) 오픈 IP / 포트 / 워커스레드 수 / 나글옵션 / 최대접속자 수
+	 void Stop(...)
+	 bool Disconnect(ClientID)  / SESSION_ID
+	 SendPacket(ClientID, Packet *)   / SESSION_ID
+
+	virtual void OnClientJoin(Client 정보 / ClientID / 기타등등) = 0;   < Accept 후 접속처리 완료 후 호출.
+	virtual void OnClientLeave(ClientID) = 0;   	            < Disconnect 후 호출
+	virtual bool OnConnectionRequest(ClientIP,Port) = 0;        < accept 직후 
+			return false; 시 클라이언트 거부.
+			return true; 시 접속 허용	
+
+	virtual void OnRecv(ClientID, CPacket *) = 0;              < 패킷 수신 완료 후
+	virtual void OnSend(ClientID, int sendsize) = 0;           < 패킷 송신 완료 후
+
+	virtual void OnWorkerThreadBegin() = 0;                    < 워커스레드 GQCS 바로 하단에서 호출
+	virtual void OnWorkerThreadEnd() = 0;                      < 워커스레드 1루프 종료 후
+
+	virtual void OnError(int errorcode, wchar *) = 0;
+
+```
+
+
+## NetServer
+
+```
+LanServer 와 다른점이란 단지 패킷 송수신 암호화 복호화이며, 일반유저와 접속시키는 클래스.
+```
+
+
+## LanServer와 NetServer의 내부 동기화 해결
+- 각 플레이어를 담은 공간은 배열을 사용함.
+- 세션에 대한 동기화를 IO Count을 통해 누군가가 사용중이라면 릴리즈 될수 없게 만듬.
+
+## MMOServer
+
+```
+본 구조에는 클라이언트의 처리 및 컨텐츠 처리를 위한 스레드가 Auth, Game 2개로 나누어져 있다.
+
+CMMOServer 클래스는 MMO 게임서버에 특화된 네트워크 클래스로 내부에 게임 컨텐츠 처리를 위한 스레드와, 공정한 패킷 처리 기능을 담고 있다.
+다만 기본적으로 CPU 사용률이 높으며, 멀티코어 환경에 효율적이지 않다.
+
+네트워크 처리 부는 CNetSession에 들어가며, 이를 상속받은 CPlayer에는 각 세션에 대한 게임상의 플레이어 컨텐츠가 들어간다.
+
+CNetSession = 네트워크 모듈 부
+CPlayer = 게임서버 컨텐츠 부
+
+각 새션은 모드상태 플래그를 가지고있으며, 상속자 처리 가상함수를 통해 콜백하고 있다.
+```
+
+1. 세션의 모드상태
+	1. MODE_NONE
+	2. MODE_AUTH
+	3. MODE_AUTH_TO_GAME
+	4. MODE_GAME
+	5. MODE_LOGOUT_IN_AUTH
+	6. MODE_LOGOUT_IN_GAME
+	7. MODE_WAIT_LOGOUT
+2. 상속자 처리용 핸들러
+```cpp
+	virtual	bool		OnAuth_SessionJoin(void) = 0;
+	virtual	bool		OnAuth_SessionLeave(bool bToGame = false) = 0;
+	virtual	bool		OnAuth_Packet(CPacketBuffer *pPacket) = 0;
+	virtual	void		OnAuth_Timeout(void) = 0;
+
+	virtual	bool		OnGame_SessionJoin(void) = 0;
+	virtual	bool		OnGame_SessionLeave(void) = 0;
+	virtual	bool		OnGame_Packet(CPacketBuffer *pPacket) = 0;
+	virtual	void		OnGame_Timeout(void) = 0;
+
+	virtual bool		OnGame_SessionRelease(void) = 0;
+	virtual void		OnError(int ErrorCode, WCHAR *szStr) = 0;
+```
+
 
 ## Dump System
 
