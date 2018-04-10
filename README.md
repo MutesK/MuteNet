@@ -10,6 +10,18 @@ C/C++을 통해 개발되었으며, RapidJson과 MySQL C API 사용하였습니�
 주로 LanServer, NetServer, MMOServer로 네트워크 송수신을 합니다.
 ```
 
+## Lock Free 알고리즘
+
+> 명시적인 동기화 객체를 사용하지 않고 Thread-Safe한 자료구조를 말합니다.
+> 쓰레드간 동기화를 위해 Atomic 연산을 조합해서 구현합니다.
+
+### Lock Free를 사용한 이유
+
+> 락프리 기본 알고리즘은 Busy Waiting이고, Lock이 가능한 조건이 될때까지 Sleep하지 않으며 Context Switching을 거의 하지않게 됩니다.
+> Spin Lock과 비슷하지만, 최악의 경우에는 자원소유를 한뒤 해당 스레드가 문맥교환에 들어가버리는 경우, maxtime이 늘어나게 됩니다.
+> Lock Free와 Spin Lock을 비교할때, Avg Time에 대해서는 락프리 Avg >= Spin Avg이고, MaxTime인 경우 락프리 Avg <= Spin Avg이게 됩니다.
+> 즉 락프리 알고리즘은 Data Race가 많은 곳에서 사용하면 효율적입니다. 하지만 Overall Performance 상은 Spin Lock이 좋습니다.
+
 ## LanServer
 
 ```
