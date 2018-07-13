@@ -27,6 +27,9 @@
     <ClInclude Include="Thread.h">
       <Filter>Thread</Filter>
     </ClInclude>
+    <ClInclude Include="Task.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -36,6 +39,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Thread.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Task.cpp">
       <Filter>Thread</Filter>
     </ClCompile>
   </ItemGroup>
