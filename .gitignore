@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+Base Develop/Base Develop.VC.VC.opendb
+*.db
+*.log
+*.idb
+*.pdb
+*.tlog
+*.ipch
+*.ilk
+Base Develop/.vs/Base Develop/v14/.suo
