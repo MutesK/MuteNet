@@ -14,18 +14,36 @@
 */
 
 using dolamda = std::function<void()>;
+using completeNotifyDolamda = std::function<void()>;
 
 class Task
 {
 public:
-	Task();
+	Task(dolamda _dolamda, const char* callerfunction,
+		const char* callerfilename, const size_t& callerfileline);
+
+	Task(dolamda _dolamda, completeNotifyDolamda completelambda,
+		const char* callerfunction, const char* callerfilename,
+		const size_t& callerfileline);
+
+	Task() = delete;
 	~Task();
 
-	GET_SET_ATTRIBUTE(dolamda&, work);
+	//void SetLambda();
+	//void SetCompleteLambda();
 
-	void Work();
+	bool IsEmptyCompeteLambda();
+
+	void Do();
+	void CompleteDo();
 private:
-	dolamda  _work;
+	dolamda  _lambda;
+	completeNotifyDolamda  _completelambda;
 
+	bool		_isCheckedCompleteLambda;
+
+	std::string _callerfunction;
+	std::string _callerfile;
+	size_t _callerfileline;
 };
 
