@@ -45,6 +45,9 @@
     <ClInclude Include="MemoryPool.h">
       <Filter>DataSturcture</Filter>
     </ClInclude>
+    <ClInclude Include="TaskManager.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -60,6 +63,9 @@
       <Filter>Thread</Filter>
     </ClCompile>
     <ClCompile Include="TaskAgent.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskManager.cpp">
       <Filter>Thread</Filter>
     </ClCompile>
   </ItemGroup>

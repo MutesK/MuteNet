@@ -34,7 +34,7 @@ public:
 	void SetCompleteLambda(dolamda _dolamda, completeNotifyDolamda completelambda,
 		const char* callerfunction, const char* callerfilename,
 		const size_t& callerfileline);
-	bool IsEmptyCompeteLambda();
+	bool IsEmptyCompleteLambda();
 
 	void Do();
 	void CompleteDo();

@@ -154,6 +154,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskAgent.h" />
+    <ClInclude Include="TaskManager.h" />
     <ClInclude Include="Thread.h" />
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +167,7 @@
     </ClCompile>
     <ClCompile Include="Task.cpp" />
     <ClCompile Include="TaskAgent.cpp" />
+    <ClCompile Include="TaskManager.cpp" />
     <ClCompile Include="Thread.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

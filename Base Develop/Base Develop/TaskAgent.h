@@ -8,9 +8,9 @@ public:
 
 
 	void AddTask(Task t);
-	Task DequeCompletedTask();
+	Task DequeCompletedTask() = delete;
 
-	void CheckHang();
+	void CheckHang(bool& OUT hang);
 	void Flush();
 
 	// void SetMessageDispatcher();
@@ -21,8 +21,10 @@ protected:
 private:
 	size_t				 _timeoutSec;
 
+	size_t				_currenthangcheck;
+	size_t				_prevhangcheck;
+
 	CLockFreeQueue<Task> _requestQueue;
 	CLockFreeQueue<Task> _resultQueue;
-
 };
 
