@@ -26,14 +26,12 @@ public:
 		const char* callerfunction, const char* callerfilename,
 		const size_t& callerfileline);
 
-	Task();
+	Task() = delete;
 	~Task();
 
-	void SetLambda(dolamda _dolamda, const char* callerfunction,
-		const char* callerfilename, const size_t& callerfileline);
-	void SetCompleteLambda(dolamda _dolamda, completeNotifyDolamda completelambda,
-		const char* callerfunction, const char* callerfilename,
-		const size_t& callerfileline);
+	//void SetLambda();
+	//void SetCompleteLambda();
+
 	bool IsEmptyCompeteLambda();
 
 	void Do();
