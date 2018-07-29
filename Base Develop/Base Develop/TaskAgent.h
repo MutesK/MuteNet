@@ -1,5 +1,9 @@
 #pragma once
 
+#include "Thread.h"
+#include "ThreadSafeQueue.h"
+
+class Task;
 class TaskAgent : public Thread
 {
 public:
@@ -8,7 +12,7 @@ public:
 
 
 	void AddTask(Task t);
-	Task DequeCompletedTask() = delete;
+	Task DequeCompletedTask();
 
 	void CheckHang(bool& OUT hang);
 	void Flush();
@@ -24,7 +28,7 @@ private:
 	size_t				_currenthangcheck;
 	size_t				_prevhangcheck;
 
-	CLockFreeQueue<Task> _requestQueue;
-	CLockFreeQueue<Task> _resultQueue;
+	ThreadSafeQueue<Task> _resultQueue;
+	ThreadSafeQueue<Task> _requestQueue;
 };
 

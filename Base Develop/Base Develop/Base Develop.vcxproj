@@ -156,6 +156,7 @@
     <ClInclude Include="TaskAgent.h" />
     <ClInclude Include="TaskManager.h" />
     <ClInclude Include="Thread.h" />
+    <ClInclude Include="ThreadSafeQueue.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base Develop.cpp" />

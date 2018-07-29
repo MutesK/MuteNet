@@ -19,6 +19,9 @@
     <Filter Include="DataSturcture">
       <UniqueIdentifier>{e11ce971-1503-40c1-92fc-1ab032dad37d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{fa35b7cb-0e31-4534-88f2-73c64ffb4eae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -33,9 +36,6 @@
     <ClInclude Include="Task.h">
       <Filter>Thread</Filter>
     </ClInclude>
-    <ClInclude Include="TaskAgent.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="CLockFreeQueue.h">
       <Filter>DataSturcture</Filter>
     </ClInclude>
@@ -47,6 +47,12 @@
     </ClInclude>
     <ClInclude Include="TaskManager.h">
       <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskAgent.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadSafeQueue.h">
+      <Filter>Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

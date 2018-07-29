@@ -1,8 +1,7 @@
 #include "stdafx.h"
 #include "Task.h"
-#include "Thread.h"
 #include "TaskAgent.h"
-#include "CLockFreeQueue.h"
+
 
 TaskAgent::TaskAgent()
 	:_timeoutSec(0), _currenthangcheck(0), _prevhangcheck(0)
@@ -16,14 +15,14 @@ TaskAgent::~TaskAgent()
 
 void TaskAgent::AddTask(Task t)
 {
-	_requestQueue.Enqueue(&t);
+	_requestQueue.Enqueue(t);
 }
 
 Task TaskAgent::DequeCompletedTask()
 {
 	Task t;
 
-	_resultQueue.Dequeue(&t);
+	_resultQueue.Dequeue(t);
 
 	return t;
 }
@@ -50,7 +49,7 @@ void TaskAgent::DoWork()
 
 	while (this->isThreadRunning())
 	{
-		while (_requestQueue.Dequeue(&task))
+		while (_requestQueue.Dequeue(task))
 		{
 			++_currenthangcheck;
 
