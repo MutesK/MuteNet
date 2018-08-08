@@ -1,4 +1,5 @@
 #include "MemoryStream.h"
+#include "OutputMemoryStream.h"
 #include "InputMemoryStream.h"
 
 
@@ -8,6 +9,11 @@ InputMemoryStream::InputMemoryStream(std::shared_ptr<char>& buffer, uint32_t inB
 {
 }
 
+InputMemoryStream::InputMemoryStream(OutputMemoryStream& outputStream)
+	:_capacity(outputStream.GetLength()), _head(0), _buffer(outputStream.GetBufferPtr())
+{
+
+}
 
 InputMemoryStream::~InputMemoryStream()
 {

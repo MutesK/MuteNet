@@ -2,10 +2,13 @@
 /*
 	이미 담긴 데이터를 Byte에 맞게 가져옴
 */
+class OutputMemoryStream;
 class InputMemoryStream : public MemoryStream
 {
 public:
 	InputMemoryStream(std::shared_ptr<char>& buffer, uint32_t inByteCount);
+	InputMemoryStream(OutputMemoryStream& outputStream);
+
 	~InputMemoryStream();
 
 	std::shared_ptr<char>&  GetBufferPtr();
@@ -28,7 +31,6 @@ public:
 		Read(&pOutData, sizeof(pOutData));
 		return *this;
 	}
-
 	virtual void Serialize(void *ioData, uint32_t Bytecount) override;
 	virtual bool IsInput() const override;
 private:

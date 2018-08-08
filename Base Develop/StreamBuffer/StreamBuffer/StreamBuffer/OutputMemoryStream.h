@@ -33,6 +33,7 @@ public:
 		return *this;
 	}
 
+
 	virtual void Serialize(void *ioData, uint32_t Bytecount) override;
 	virtual bool IsInput() const override;
 private:

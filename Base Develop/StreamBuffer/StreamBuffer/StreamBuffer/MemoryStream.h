@@ -1,9 +1,12 @@
 #pragma once
 
+
 #include <iostream>
 #include <algorithm>
 #include <memory>
-
+/*
+	Output 스트림 버퍼와, Input 스트림 버퍼를 업캐스팅하여 사용함.
+*/
 class MemoryStream
 {
 public:

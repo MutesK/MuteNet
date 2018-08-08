@@ -24,7 +24,7 @@ int main()
 			SendStream << i;
 		}
 
-		InputMemoryStream RecvStream(SendStream.GetBufferPtr(), SendStream.GetLength());
+		InputMemoryStream RecvStream(SendStream);
 
 		for (int i = 1; i < 12500; i++)
 		{

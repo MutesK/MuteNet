@@ -39,3 +39,5 @@ Base Develop/Base Develop.VC.VC.opendb
 *.ipch
 *.ilk
 Base Develop/.vs/Base Develop/v14/.suo
+*.opendb
+Base Develop/StreamBuffer/StreamBuffer/.vs/StreamBuffer/v14/.suo
