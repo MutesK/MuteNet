@@ -19,6 +19,9 @@
     <Filter Include="DataSturcture">
       <UniqueIdentifier>{e11ce971-1503-40c1-92fc-1ab032dad37d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{fa35b7cb-0e31-4534-88f2-73c64ffb4eae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -27,6 +30,15 @@
     <ClInclude Include="targetver.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+<<<<<<< HEAD
+=======
+    <ClInclude Include="Thread.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Task.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+>>>>>>> 0d419a24dc84e66035c257b7fdf0f25396484262
     <ClInclude Include="CLockFreeQueue.h">
       <Filter>DataSturcture</Filter>
     </ClInclude>
@@ -36,6 +48,15 @@
     <ClInclude Include="MemoryPool.h">
       <Filter>DataSturcture</Filter>
     </ClInclude>
+    <ClInclude Include="TaskManager.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskAgent.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadSafeQueue.h">
+      <Filter>Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -44,5 +65,20 @@
     <ClCompile Include="Base Develop.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+<<<<<<< HEAD
+=======
+    <ClCompile Include="Thread.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Task.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskAgent.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskManager.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+>>>>>>> 0d419a24dc84e66035c257b7fdf0f25396484262
   </ItemGroup>
 </Project>

@@ -152,6 +152,14 @@
     <ClInclude Include="MemoryPoolTLS.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+<<<<<<< HEAD
+=======
+    <ClInclude Include="Task.h" />
+    <ClInclude Include="TaskAgent.h" />
+    <ClInclude Include="TaskManager.h" />
+    <ClInclude Include="Thread.h" />
+    <ClInclude Include="ThreadSafeQueue.h" />
+>>>>>>> 0d419a24dc84e66035c257b7fdf0f25396484262
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Base Develop.cpp" />
@@ -161,6 +169,13 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+<<<<<<< HEAD
+=======
+    <ClCompile Include="Task.cpp" />
+    <ClCompile Include="TaskAgent.cpp" />
+    <ClCompile Include="TaskManager.cpp" />
+    <ClCompile Include="Thread.cpp" />
+>>>>>>> 0d419a24dc84e66035c257b7fdf0f25396484262
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
