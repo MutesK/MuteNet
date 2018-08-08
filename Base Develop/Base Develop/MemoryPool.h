@@ -15,6 +15,7 @@ Lock-Free 도입
 
 #define VALIDCODE (DWORD)(0x77777777)
 
+#ifdef EXPERIENCE_DEVELOP
 template <class T>
 class CLinkedList
 {
@@ -204,6 +205,11 @@ private:
 	Node tail;
 
 };
+#else
+#endif
+
+
+
 
 template <class DATA>
 class CMemoryPool
@@ -223,7 +229,6 @@ private:
 		st_BLOCK_NODE *_TopNode;
 		__int64		   UniqueCount;
 	};
-
 #pragma pack(pop)
 public:
 	//////////////////////////////////
@@ -266,19 +271,21 @@ public:
 
 private:
 	// 생성시 할당량
-	LONG m_iBlockSize;
+	//LONG m_iBlockSize;
+	std::atomic<int32_t>  m_iBlockSize;
 
 	bool m_bUseConstruct;
 	bool m_Fixed;
 
-	LONG m_iAllocCount;
-	LONG64 m_iUnique;
+	//LONG m_iAllocCount;
+	std::atomic<int32_t>  m_iAllocCount;
+	std::atomic<uint64_t> m_iUnique;
+	//LONG64 m_iUnique;
 
-	//st_BLOCK_NODE *pTop;
 	st_Pop *pPop;
 	st_BLOCK_NODE *pTail;
 
-	CLinkedList<st_BLOCK_NODE *> List;
+	std::list<st_BLOCK_NODE *> List;
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -289,7 +296,6 @@ template <class DATA>
 CMemoryPool<DATA>::CMemoryPool(int blockSize, bool bConst)
 	: m_bUseConstruct(bConst)
 {
-	//InitializeCriticalSection(&m_CrticalSection);
 
 	m_iAllocCount = 0;
 	m_iBlockSize = 0;
@@ -312,7 +318,7 @@ CMemoryPool<DATA>::CMemoryPool(int blockSize, bool bConst)
 	List.push_back(pNewNode);
 
 	// _aligned_malloc은 실제 물리메모리까지 순차적으로 할당시키고 싶을 때 사용한다.
-	pPop = (st_Pop *)_aligned_malloc(128, 16);
+	pPop = static_cast<st_Pop *>(std::aligned_alloc(128, 16));
 	pPop->_TopNode = pNewNode;
 	pPop->UniqueCount = 0;
 	pOldNode = pNewNode;
@@ -339,19 +345,16 @@ CMemoryPool<DATA>::CMemoryPool(int blockSize, bool bConst)
 template <class DATA>
 CMemoryPool<DATA>::~CMemoryPool()
 {
-	//DeleteCriticalSection(&m_CrticalSection);
-
 	auto iter = List.begin();
 
 	for (; iter != List.end();)
 	{
 		st_BLOCK_NODE *pNode = (*iter);
 		List.erase(iter);
-		free(pNode);
+		std::free(pNode);
 	}
 
-	_aligned_free(pPop);
-
+	std::free(pPop);
 }
 // 삽입은 ABA문제에 거의 문제가 안생긴다.
 // 
@@ -361,7 +364,7 @@ DATA* CMemoryPool<DATA>::Alloc(void)
 	st_Pop OldPop;
 	st_BLOCK_NODE *pNewNode = nullptr;
 	DATA *ret = nullptr;
-	LONG64 Unique = InterlockedIncrement64(&m_iUnique) % MAXLONG64;
+	uint32_t Unique = ++m_iUnique % MAXLONG64;
 
 	InterlockedIncrement(&m_iAllocCount);
 
@@ -388,7 +391,7 @@ RETRY:
 			{
 				OldPop._TopNode->pNextBlock = pNewNode;
 
-				InterlockedAdd(&m_iBlockSize, 1);
+				m_iBlockSize++;
 				break;
 			}
 
@@ -429,7 +432,8 @@ RETRY:
 		if (InterlockedCompareExchange128((LONG64 *)pPop, (LONG64)Unique, (LONG64)pNewNode, (LONG64 *)&OldPop))
 		{
 			ret = &OldPop._TopNode->Data;
-			InterlockedExchange(&OldPop._TopNode->Alloc, 1);
+			// InterlockedExchange(&OldPop._TopNode->Alloc, 1);
+			atomic_exchange(OldPop._TopNode->Alloc, 1);
 			break;
 		}
 		Sleep(0);

@@ -1,34 +1,4 @@
-<<<<<<< HEAD
-//#include "stdafx.h"
-//#include "Task.h"
-//#include "TaskAgent.h"
-////#include "Thread.h
-//#include "CLockFreeQueue.h"
-//
-//TaskAgent::TaskAgent()
-//{
-//}
-//
-//
-//TaskAgent::~TaskAgent()
-//{
-//}
-//
-//void TaskAgent::DoWork()
-//{
-//	Task task;
-//
-//	while (1)
-//	{
-//		
-//	}
-//}
-//
-//void TaskAgent::EmitWakeupSignal()
-//{
-//	
-//}
-=======
+
 #include "stdafx.h"
 #include "Task.h"
 #include "TaskAgent.h"
@@ -101,4 +71,3 @@ void TaskAgent::EmitWakeupSignal()
 {
 	
 }
->>>>>>> 0d419a24dc84e66035c257b7fdf0f25396484262
