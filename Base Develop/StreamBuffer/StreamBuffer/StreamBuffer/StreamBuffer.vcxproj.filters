@@ -7,41 +7,32 @@
     </Filter>
     <Filter Include="헤더 파일">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="리소스 파일">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Thread">
-      <UniqueIdentifier>{388688f2-8811-4381-ae0c-1f789e4c4c69}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="DataSturcture">
-      <UniqueIdentifier>{e11ce971-1503-40c1-92fc-1ab032dad37d}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
+    <ClInclude Include="InputMemoryStream.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="targetver.h">
+    <ClInclude Include="OutputMemoryStream.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CLockFreeQueue.h">
-      <Filter>DataSturcture</Filter>
-    </ClInclude>
-    <ClInclude Include="MemoryPoolTLS.h">
-      <Filter>DataSturcture</Filter>
-    </ClInclude>
-    <ClInclude Include="MemoryPool.h">
-      <Filter>DataSturcture</Filter>
+    <ClInclude Include="MemoryStream.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
+    <ClCompile Include="OutputMemoryStream.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Base Develop.cpp">
+    <ClCompile Include="InputMemoryStream.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
