@@ -17,9 +17,6 @@
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MemoryPool.h">
-      <Filter>ETC</Filter>
-    </ClInclude>
     <ClInclude Include="MemoryPoolTLS.h">
       <Filter>ETC</Filter>
     </ClInclude>
@@ -40,6 +37,9 @@
     </ClInclude>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="ObjectPool.h">
+      <Filter>ETC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ETC">

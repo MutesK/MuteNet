@@ -147,7 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="MemoryPool.h" />
+    <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="MemoryPoolTLS.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
