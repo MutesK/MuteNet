@@ -5,498 +5,160 @@
 
 ///////////////////
 #include <vector>
+#include <atomic>
+#include <algorithm>
+#include <set>
+#include <stack>
+
 using namespace std;
 /*
-Object Pool (FreeList형식) 의 Memory Pool
+	Object Pool (FreeList형식)
 
-움직이는 알고리즘 자체는 Stack과 비슷함.
-Lock-Free 도입
+	움직이는 알고리즘 자체는 Stack과 비슷함.
+	Lock Free 알고리즘의 효율성이 비관적 동시성 제어 기법에 비해 성능 향상을 유도하기 어렵다.
+	심지어 Lock Free 알고리즘과 Fast Spin Lock 알고리즘 성능 평가에서 Spin Lock을 이기기 약간 어려움.
+
+	또한 Lock Free 알고리즘은 버그가 나오면 잡기 힘들다.
 */
 
-#define VALIDCODE (DWORD)(0x77777777)
+#define VALIDCODE (0x77777777)
 
-#ifdef EXPERIENCE_DEVELOP
-template <class T>
-class CLinkedList
-{
-public:
-	struct Node
-	{
-		T _Data;
-		Node *prev;
-		Node *next;
-	};
-
-	class iterator
-	{
-	private:
-		Node * pos;
-
-	public:
-		iterator(Node *_node = nullptr)
-		{
-			pos = _node;
-		}
-
-		iterator& operator++(int)
-		{
-			pos = pos->next;
-			return *this;
-		}
-
-		iterator& operator--()
-		{
-			pos = pos->prev;
-			return *this;
-		}
-
-		bool operator!=(iterator& iter)
-		{
-			if (this->pos != iter.pos)
-				return true;
-			return false;
-		}
-
-		bool operator==(iterator& iter)
-		{
-			if (this->pos == iter.pos)
-				return true;
-			return false;
-		}
-
-		T& operator*()
-		{
-			if (pos != nullptr)
-			{
-				return pos->_Data;
-			}
-		}
-	};
-
-	CLinkedList()
-	{
-		_size = 0;
-
-		head.next = nullptr;
-		head.next = &tail;
-		tail.next = nullptr;
-		tail.prev = &head;
-	}
-
-public:
-	iterator begin()
-	{
-		iterator iter(head.next);
-		return iter;
-	}
-
-	iterator end()
-	{
-		iterator iter(&tail);
-		return iter;
-	}
-
-	/*
-	- 이터레이터의 그 노드를 지움.
-	- 그리고 지운 노드의 다음 노드를 카리키는 이터레이터 리턴
-	아직 이 함수는 디버그를 하지 못함.
-	*/
-	iterator& erase(iterator &iter)
-	{
-		Delete(*iter);
-		iter++;
-		return iter;
-	}
-
-
-	void push_back(T Data)
-	{
-		Node *newNode = new Node;
-		newNode->_Data = Data;
-
-		newNode->prev = tail.prev;
-		newNode->next = &tail;
-
-		newNode->prev->next = newNode;
-		tail.prev = newNode;
-
-		_size++;
-	}
-
-	void push_front(T Data)
-	{
-		Node *newNode = (Node *)malloc(sizeof(Node));
-		newNode->_Data = Data;
-
-		newNode->prev = &head;
-		newNode->next = head.next;
-
-		newNode->next->prev = newNode;
-		Head.prev = newNode;
-
-		_size++;
-	}
-
-	T& GetLastData()
-	{
-		return tail.prev->_Data;
-	}
-
-	T pop_back()
-	{
-		T ret = tail.prev->_Data;
-		Delete(tail.prev);
-		return ret;
-	}
-	T pop_front()
-	{
-		T ret = head.next->_Data;
-		Delete(head->next);
-		return ret;
-	}
-
-	int size()
-	{
-		return _size;
-	}
-	void clear()
-	{
-		Node *pStart = head.next;
-
-		while (pStart != &tail)
-		{
-			Node *delNode = pStart;
-
-			pStart->prev->next = pStart->next;
-			pStart->next->prev = pStart->prev;
-
-			_size--;
-
-			pStart = pStart->next;
-			delete delNode;
-		}
-	}
-
-	void Delete(T Data)
-	{
-		Node *pStart = head.next;
-
-		while (pStart->next != nullptr) // pStart != &Tail
-		{
-			if (pStart->_Data == Data)
-			{
-				Node *delNode = pStart;
-
-				pStart->prev->next = pStart->next;
-				pStart->next->prev = pStart->prev;
-				_size--;
-				delete delNode;
-				return;
-			}
-			else
-				pStart = pStart->next;
-
-		}
-	}
-
-private:
-	int _size;
-	Node head;
-	Node tail;
-
-};
-#else
-#endif
-
-
-
-
-template <class DATA>
-class CMemoryPool
+template <class NodeType>
+class CObjectPool
 {
 private:
-#pragma pack(push, 1)
-	struct st_BLOCK_NODE
+	struct BLOCKNODE
 	{
-		DWORD ValidCode;
-		DATA Data;
-		LONG  Alloc;
-		st_BLOCK_NODE *pNextBlock;
-	};
+		NodeType Data;
+		uint64_t ValidCode;
+		uint32_t allocindex;
 
-	struct st_Pop
-	{
-		st_BLOCK_NODE *_TopNode;
-		__int64		   UniqueCount;
+		BLOCKNODE(uint32_t allocindex)
+		{
+			ValidCode = VALIDCODE;
+			this->allocindex = allocindex;
+		}
+
+		~BLOCKNODE()
+		{
+			cout << "Bug Detected Shared Pointer Reference Count is Zero\n";
+			*((int *)0) = 1;
+		}
 	};
-#pragma pack(pop)
 public:
-	//////////////////////////////////
-	// 생성자
-	// int - 블럭 갯수
-	// bool - 블록 생성자 호출여부(기본값 = FALSE)
-	//////////////////////////////////
-	CMemoryPool(int blockSize = 1, bool bConst = false);
-	virtual ~CMemoryPool();
+	CObjectPool(int blockSize = 10000, int maxBlockSize = 10000, bool flagcallctor = false);
+	virtual ~CObjectPool();
 
+	NodeType* Alloc(void);
+	bool Free(NodeType* Data);
 
-	//////////////////////////////////
-	// 블록 하나를 할당해주는 함수 -> new 선언해줘야 한다면 한다.
-	// 리턴 : 특정 블록의 공간 포인터 리턴
-	//////////////////////////////////
-	DATA* Alloc(void);
-
-	//////////////////////////////////
-	// 사용중인 블록을 반환하는 함수
-	// 파라미터 : 사용중인 데이터 주소값-> 소멸자 호출해야 된다면 하고 안한다면 그냥 반환
-	// 리턴 : 성공여부
-	//////////////////////////////////
-	bool Free(DATA *pData); // 그렇다면 외부에서 이 함수를 통해 반환하고, 나중에 이 주소값을 사용하려고 한다면? -> 주의
-
-
-							//////////////////////////////////
-							// 총 확보된 블록의 갯수 리턴
-							//////////////////////////////////
 	int GetBlockCount(void);
-
-
-
-	//////////////////////////////////////////////////////////////////////////
-	// 현재 사용중인 블럭 개수를 얻는다.
-	//
-	// 파라미터: 사용중인 블럭 개수.
-	//////////////////////////////////////////////////////////////////////////
 	int GetAllocCount(void);
-
-
 private:
-	// 생성시 할당량
-	//LONG m_iBlockSize;
-	std::atomic<int32_t>  m_iBlockSize;
+	bool _isUsector;
 
-	bool m_bUseConstruct;
-	bool m_Fixed;
+	std::atomic<uint32_t>  _allocCount;
+	std::atomic<uint32_t>  _maxBlockSize;
+	std::atomic<uint32_t>  _blockSize;
 
-	//LONG m_iAllocCount;
-	std::atomic<int32_t>  m_iAllocCount;
-	std::atomic<uint64_t> m_iUnique;
-	//LONG64 m_iUnique;
-
-	st_Pop *pPop;
-	st_BLOCK_NODE *pTail;
-
-	std::list<st_BLOCK_NODE *> List;
+	std::map<uint32_t, BLOCKNODE *> _freelist;
+	std::stack<uint32_t>				 _freestack;  // 안쓰는 인덱스 모아놓은 자료구조 
 };
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-template <class DATA>
-CMemoryPool<DATA>::CMemoryPool(int blockSize, bool bConst)
-	: m_bUseConstruct(bConst)
+template <class NodeType>
+CObjectPool<NodeType>::CObjectPool(int blockSize, int maxBlockSize, bool flagcallctor)
 {
+	_freelist.clear();
 
-	m_iAllocCount = 0;
-	m_iBlockSize = 0;
-	st_BLOCK_NODE *pNewNode = nullptr;
-	st_BLOCK_NODE *pOldNode = nullptr;
-
-	if (blockSize > 1)
-		m_Fixed = true;
-	else
+	for (uint32_t i = 0; i < blockSize; i++)
 	{
-		blockSize = 1;
-		m_Fixed = false;
+		_freelist[i] = static_cast<BLOCKNODE *>(malloc(sizeof(BLOCKNODE)));
+		_freelist[i]->allocindex = i;
+		_freelist[i]->ValidCode = VALIDCODE;
+		_freestack.push(i);
 	}
 
-	pNewNode = (st_BLOCK_NODE *)malloc(sizeof(st_BLOCK_NODE));
-	memset(pNewNode, 0, sizeof(st_BLOCK_NODE));
-	pNewNode->ValidCode = VALIDCODE;
-	pNewNode->Alloc = false;
-	memset(&pNewNode->Data, 0, sizeof(DATA));
-	List.push_back(pNewNode);
-
-	// _aligned_malloc은 실제 물리메모리까지 순차적으로 할당시키고 싶을 때 사용한다.
-	pPop = static_cast<st_Pop *>(std::aligned_alloc(128, 16));
-	pPop->_TopNode = pNewNode;
-	pPop->UniqueCount = 0;
-	pOldNode = pNewNode;
-
-
-	for (int i = 1; i <= blockSize; i++)
-	{
-		pNewNode = (st_BLOCK_NODE *)malloc(sizeof(st_BLOCK_NODE));
-		pOldNode->pNextBlock = pNewNode;
-		pNewNode->pNextBlock = nullptr;
-		pNewNode->ValidCode = VALIDCODE;
-		memset(&pNewNode->Data, 0, sizeof(DATA));
-		pNewNode->Alloc = false;
-
-		List.push_back(pNewNode);
-
-		pOldNode = pNewNode;
-		m_iBlockSize++;
-	}
-
-	pTail = pNewNode;
+	_isUsector = flagcallctor;
+	_maxBlockSize = maxBlockSize;
+	_blockSize = blockSize;
 }
-
-template <class DATA>
-CMemoryPool<DATA>::~CMemoryPool()
+template <class NodeType>
+CObjectPool<NodeType>::~CObjectPool()
 {
-	auto iter = List.begin();
-
-	for (; iter != List.end();)
+	for (auto iter = _freelist.begin(); iter != _freelist.end(); ++iter)
 	{
-		st_BLOCK_NODE *pNode = (*iter);
-		List.erase(iter);
-		std::free(pNode);
+		std::free(iter->second);
 	}
 
-	std::free(pPop);
+	_freelist.clear();
 }
-// 삽입은 ABA문제에 거의 문제가 안생긴다.
-// 
-template <class DATA>
-DATA* CMemoryPool<DATA>::Alloc(void)
+template <class NodeType>
+NodeType* CObjectPool<NodeType>::Alloc(void)
 {
-	st_Pop OldPop;
-	st_BLOCK_NODE *pNewNode = nullptr;
-	DATA *ret = nullptr;
-	uint32_t Unique = ++m_iUnique % MAXLONG64;
-
-	InterlockedIncrement(&m_iAllocCount);
-
-RETRY:
-	if (pPop->_TopNode->pNextBlock == nullptr)
+	if (_allocCount >= _blockSize)
 	{
-		if (m_Fixed)
+		// 새로 DATA을 만들어야됨.
+		if (_maxBlockSize <= _blockSize)
 			return nullptr;
 
-		st_BLOCK_NODE *pNewNode = (st_BLOCK_NODE *)malloc(sizeof(st_BLOCK_NODE));
-		pNewNode->ValidCode = VALIDCODE;
-		pNewNode->pNextBlock = nullptr;
-		pNewNode->Alloc = false;
-		memset(&pNewNode->Data, 0, sizeof(DATA));
-		List.push_back(pNewNode);
+		int makedblocksize = 2 * _blockSize;
 
-
-		while (1)
+		for (uint32_t i = _blockSize; i < makedblocksize; i++)
 		{
-			OldPop._TopNode = pPop->_TopNode;
-			OldPop.UniqueCount = pPop->UniqueCount;
-
-			if (OldPop._TopNode == pPop->_TopNode)
-			{
-				OldPop._TopNode->pNextBlock = pNewNode;
-
-				m_iBlockSize++;
-				break;
-			}
-
-			if (pPop->_TopNode->pNextBlock != nullptr)
-				break;
-
-			Sleep(100);
+			_freelist[i] = static_cast<BLOCKNODE *>(malloc(sizeof(BLOCKNODE)));
+			_freelist[i]->allocindex = i;
+			_freelist[i]->ValidCode = VALIDCODE;
+			_freestack.push(i);
 		}
 	}
 
-	while (1)
+	int allocindex = static_cast<int>(_freestack.top());
+	_freestack.pop();
+
+	NodeType* ret = &_freelist[allocindex]->Data;
+	++_allocCount;
+
+	if (_isUsector)
 	{
-		OldPop = { 0 };
-
-		// 자료구조를 변경한다.
-		OldPop._TopNode = pPop->_TopNode;
-		OldPop.UniqueCount = pPop->UniqueCount;
-
-		/////////////////////////////////////////////////////////////////////
-		// 노드생성
-		// AllocCount와 블록카운트 값 비교
-		// 
-		/////////////////////////////////////////////////////////////////////
-		if (OldPop._TopNode->ValidCode != VALIDCODE)
-			continue;
-
-		if (OldPop._TopNode->pNextBlock == nullptr)
-			goto RETRY;
-
-		pNewNode = OldPop._TopNode->pNextBlock;
-
-		if (OldPop._TopNode->Alloc)
-		{
-			Sleep(0);
-			continue;
-		}
-
-		if (InterlockedCompareExchange128((LONG64 *)pPop, (LONG64)Unique, (LONG64)pNewNode, (LONG64 *)&OldPop))
-		{
-			ret = &OldPop._TopNode->Data;
-			// InterlockedExchange(&OldPop._TopNode->Alloc, 1);
-			atomic_exchange(OldPop._TopNode->Alloc, 1);
-			break;
-		}
-		Sleep(0);
-
+		new (ret) NodeType();
 	}
-	/////////////////////////////////////////////////////////////////////////////////////////////
 
 	return ret;
 }
-// DATA pData와 st_BLOCK_NODE pTop으로 처리해야된다.
-// 1. pData가 not null일때
-// 2. pTop의 next을 pData로
-// 3. pData의 next를 pTop의 next로
-// 4. 치환
-template <class DATA>
-bool CMemoryPool<DATA>::Free(DATA *pData)
+template <class NodeType>
+bool CObjectPool<NodeType>::Free(NodeType* Data)
 {
-	st_BLOCK_NODE *pDel = (st_BLOCK_NODE *)((DWORD *)pData - 1);
-
-	if (InterlockedAdd(&m_iAllocCount, -1) < 0)
-	{
-		InterlockedAdd(&m_iAllocCount, 1);
-		return false;
-	}
-	if (pDel->ValidCode != VALIDCODE)
+	if (_allocCount <= 0)
 		return false;
 
-	// 이 구간은 스레드별 한번만 수행할수 있게 처리해야 된다.
+	// Danger Code
+	BLOCKNODE* pBlockNode = reinterpret_cast<BLOCKNODE *>(Data);
 
-	st_Pop OldPop;
-	LONG64 Unique = InterlockedIncrement64(&m_iUnique) % MAXLONG64;
-	while (1)
+	if (pBlockNode->ValidCode != VALIDCODE)
+		return false;
+
+	uint32_t allocindex = pBlockNode->allocindex;
+	_freestack.push(allocindex);
+	--_allocCount;
+
+	if (_isUsector)
 	{
-		OldPop = { 0 };
-
-		OldPop._TopNode = pPop->_TopNode;
-		OldPop.UniqueCount = pPop->UniqueCount;
-
-		if (OldPop._TopNode != pDel->pNextBlock && OldPop._TopNode != pDel)
-			pDel->pNextBlock = OldPop._TopNode;
-
-		if (InterlockedCompareExchange128((LONG64 *)pPop, (LONG64)Unique, (LONG64)pDel, (LONG64 *)&OldPop))
-			break;
-
-		Sleep(0);
+		Data->~NodeType();
 	}
-
-	InterlockedExchange(&pDel->Alloc, 0);
-
-
-
 
 	return true;
 }
 
-template <class DATA>
-int CMemoryPool<DATA>::GetBlockCount(void)
+template <class NodeType>
+int CObjectPool<NodeType>::GetBlockCount(void)
 {
-	return m_iBlockSize;
+	return _blockSize;
 }
 
-template <class DATA>
-int CMemoryPool<DATA>::GetAllocCount(void)
+template <class NodeType>
+int CObjectPool<NodeType>::GetAllocCount(void)
 {
-	return m_iAllocCount;
+	return _allocCount;
 }
