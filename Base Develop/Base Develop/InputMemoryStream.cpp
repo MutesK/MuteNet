@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "MemoryStream.h"
 #include "OutputMemoryStream.h"
 #include "InputMemoryStream.h"

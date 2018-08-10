@@ -19,6 +19,12 @@ using namespace std;
 	심지어 Lock Free 알고리즘과 Fast Spin Lock 알고리즘 성능 평가에서 Spin Lock을 이기기 약간 어려움.
 
 	또한 Lock Free 알고리즘은 버그가 나오면 잡기 힘들다.
+	잘 쓰지 못할꺼면 안쓰는게 나음.
+
+	std::shared_mutex 와 OwnChecking 기능을 합한 SafeMutex을 만들면 도입예정.
+
+	사용시 주의사항
+	* MEMORYPOOL_CALL_CTOR 플래그를 사용중이라면, 기본 생성자는 무조건 존재해야된다.
 */
 
 #define VALIDCODE (0x77777777)
@@ -61,7 +67,7 @@ private:
 	std::atomic<uint32_t>  _maxBlockSize;
 	std::atomic<uint32_t>  _blockSize;
 
-	std::map<uint32_t, BLOCKNODE *> _freelist;
+	std::map<uint32_t, BLOCKNODE *>		 _freelist;
 	std::stack<uint32_t>				 _freestack;  // 안쓰는 인덱스 모아놓은 자료구조 
 };
 
@@ -70,9 +76,14 @@ private:
 template <class NodeType>
 CObjectPool<NodeType>::CObjectPool(int blockSize, int maxBlockSize, bool flagcallctor)
 {
+	_allocCount = 0;
+	_maxBlockSize = 0;
+	_blockSize = 0;
 	_freelist.clear();
 
-	for (uint32_t i = 0; i < blockSize; i++)
+	_isUsector = false;
+
+	for (int i = 0; i < blockSize; i++)
 	{
 		_freelist[i] = static_cast<BLOCKNODE *>(malloc(sizeof(BLOCKNODE)));
 		_freelist[i]->allocindex = i;
@@ -97,7 +108,7 @@ CObjectPool<NodeType>::~CObjectPool()
 template <class NodeType>
 NodeType* CObjectPool<NodeType>::Alloc(void)
 {
-	if (_allocCount >= _blockSize)
+  	if (_allocCount >= _blockSize)
 	{
 		// 새로 DATA을 만들어야됨.
 		if (_maxBlockSize <= _blockSize)
@@ -105,7 +116,7 @@ NodeType* CObjectPool<NodeType>::Alloc(void)
 
 		int makedblocksize = 2 * _blockSize;
 
-		for (uint32_t i = _blockSize; i < makedblocksize; i++)
+		for (int i = _blockSize; i < makedblocksize; i++)
 		{
 			_freelist[i] = static_cast<BLOCKNODE *>(malloc(sizeof(BLOCKNODE)));
 			_freelist[i]->allocindex = i;
@@ -120,10 +131,13 @@ NodeType* CObjectPool<NodeType>::Alloc(void)
 	NodeType* ret = &_freelist[allocindex]->Data;
 	++_allocCount;
 
+
+#ifdef MEMORYPOOL_CALL_CTOR
 	if (_isUsector)
 	{
 		new (ret) NodeType();
 	}
+#endif
 
 	return ret;
 }
@@ -143,10 +157,12 @@ bool CObjectPool<NodeType>::Free(NodeType* Data)
 	_freestack.push(allocindex);
 	--_allocCount;
 
+#ifdef MEMORYPOOL_CALL_CTOR
 	if (_isUsector)
 	{
 		Data->~NodeType();
 	}
+#endif
 
 	return true;
 }

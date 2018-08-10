@@ -2,33 +2,36 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Base Develop.cpp" />
-    <ClCompile Include="Task.cpp">
-      <Filter>ETC</Filter>
-    </ClCompile>
-    <ClCompile Include="TaskAgent.cpp">
-      <Filter>ETC</Filter>
-    </ClCompile>
-    <ClCompile Include="TaskManager.cpp">
-      <Filter>ETC</Filter>
-    </ClCompile>
     <ClCompile Include="Thread.cpp">
       <Filter>ETC</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="InputMemoryStream.cpp">
+      <Filter>StreamBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="OutputMemoryStream.cpp">
+      <Filter>StreamBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskManager.cpp">
+      <Filter>Task</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskAgent.cpp">
+      <Filter>Task</Filter>
+    </ClCompile>
+    <ClCompile Include="Task.cpp">
+      <Filter>Task</Filter>
+    </ClCompile>
+    <ClCompile Include="SocketAddress.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="SocketAddressFactory.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="UDPSocket.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MemoryPoolTLS.h">
-      <Filter>ETC</Filter>
-    </ClInclude>
-    <ClInclude Include="Task.h">
-      <Filter>ETC</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskAgent.h">
-      <Filter>ETC</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskManager.h">
-      <Filter>ETC</Filter>
-    </ClInclude>
     <ClInclude Include="Thread.h">
       <Filter>ETC</Filter>
     </ClInclude>
@@ -37,13 +40,55 @@
     </ClInclude>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="InputMemoryStream.h">
+      <Filter>StreamBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryStream.h">
+      <Filter>StreamBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="OutputMemoryStream.h">
+      <Filter>StreamBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectPoolTLS.h">
+      <Filter>ObjectPool</Filter>
+    </ClInclude>
     <ClInclude Include="ObjectPool.h">
-      <Filter>ETC</Filter>
+      <Filter>ObjectPool</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskManager.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskAgent.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="Task.h">
+      <Filter>Task</Filter>
+    </ClInclude>
+    <ClInclude Include="SocketAddress.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="SocketAddressFactory.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="UDPSocket.h">
+      <Filter>Network</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ETC">
       <UniqueIdentifier>{46f2979c-cc48-4d99-8eec-1333b510957c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StreamBuffer">
+      <UniqueIdentifier>{5e51f260-3be0-43de-9fe1-28669b6976d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ObjectPool">
+      <UniqueIdentifier>{53173c1f-dd53-4202-93da-c40e661ad7ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Task">
+      <UniqueIdentifier>{59f47b9e-e888-4d84-93bb-3c2d1c642199}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{0ef56086-076c-43b6-a8cf-7029c7a3edc2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

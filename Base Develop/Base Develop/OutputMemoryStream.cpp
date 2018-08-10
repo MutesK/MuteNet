@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "MemoryStream.h"
 #include "OutputMemoryStream.h"
 
@@ -41,7 +42,7 @@ void OutputMemoryStream::Write(const void* inData, size_t inByteCount)
 	uint32_t resultHead = _head + static_cast<uint32_t> (inByteCount);
 
 	if (resultHead > _capacity)
-		ReallocBuffer(std::max(_capacity * 2, resultHead));
+		ReallocBuffer(max(_capacity * 2, resultHead));
 
 	std::memcpy(_buffer.get() + _head, inData, inByteCount);
 	_head += inByteCount;
