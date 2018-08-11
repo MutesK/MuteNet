@@ -1,14 +1,5 @@
 #pragma once
 
-#include <Windows.h>
-#include <new>
-
-///////////////////
-#include <vector>
-#include <atomic>
-#include <algorithm>
-#include <set>
-#include <stack>
 
 using namespace std;
 /*
@@ -69,6 +60,8 @@ private:
 
 	std::map<uint32_t, BLOCKNODE *>		 _freelist;
 	std::stack<uint32_t>				 _freestack;  // 안쓰는 인덱스 모아놓은 자료구조 
+
+	std::mutex				     _lock;
 };
 
 
@@ -108,6 +101,7 @@ CObjectPool<NodeType>::~CObjectPool()
 template <class NodeType>
 NodeType* CObjectPool<NodeType>::Alloc(void)
 {
+	std::lock_guard<std::mutex> guard(_lock);
   	if (_allocCount >= _blockSize)
 	{
 		// 새로 DATA을 만들어야됨.
@@ -144,6 +138,8 @@ NodeType* CObjectPool<NodeType>::Alloc(void)
 template <class NodeType>
 bool CObjectPool<NodeType>::Free(NodeType* Data)
 {
+	std::lock_guard<std::mutex> guard(_lock);
+
 	if (_allocCount <= 0)
 		return false;
 

@@ -10,9 +10,6 @@ ObjectPool을 스레드별로, 할당하게 하면서도, 해제는 어떤 스�
 ChunkDATA을 배열로 ChunkBlock이 가지고있고,
 ObjectPool은 ChunkBlock 템플릿 인스턴스화 한다. 
 
-해제하는 순간이 ObjectPool과 ChunkDATA에 대한 Lock 처리가 되어야 된다.
-
-
 사용시 주의사항
 * MEMORYPOOL_CALL_CTOR 플래그를 사용중이라면, 기본 생성자는 무조건 존재해야된다. Placement New을 통해 수동 생성자 호출을 클래스에서 알아서 해주기 때문.
 
@@ -155,7 +152,9 @@ public:
 		if (pBlock == nullptr)
 		{
 			pBlock = ObjectPool->Alloc();
+#ifndef MEMORYPOOL_CALL_CTOR
 			new (pBlock) CChunkBlock();
+#endif
 			pBlock->Init(ObjectPool, BlockSize, b_Constructor);
 			TlsSetValue(TLSIndex, pBlock);
 		}
@@ -171,8 +170,7 @@ public:
 	}
 	bool Free(DATA *pData)
 	{
-		CChunkBlock::st_ChunkDATA *pBlock = (CChunkBlock::st_ChunkDATA *)((__int64 *)pData);
-
+		CChunkBlock::st_ChunkDATA *pBlock = static_cast<CChunkBlock::st_ChunkDATA *>(static_cast<__int64 *>(pData));
 
 		if (pBlock->pThisChunk->Free(pData, pBlock))
 			--m_lAllocCount;
