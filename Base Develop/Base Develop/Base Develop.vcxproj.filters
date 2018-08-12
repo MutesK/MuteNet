@@ -41,9 +41,6 @@
     <ClInclude Include="Thread.h">
       <Filter>ETC</Filter>
     </ClInclude>
-    <ClInclude Include="ThreadSafeQueue.h">
-      <Filter>ETC</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="InputMemoryStream.h">

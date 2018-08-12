@@ -7,6 +7,7 @@
 TaskAgent::TaskAgent()
 	:_timeoutSec(0), _currenthangcheck(0), _prevhangcheck(0)
 {
+	_threadstoprequest = false;
 }
 
 
@@ -16,14 +17,14 @@ TaskAgent::~TaskAgent()
 
 void TaskAgent::AddTask(Task t)
 {
-	_requestQueue.Enqueue(t);
+	_requestQueue.push(t);
 }
 
 Task TaskAgent::DequeCompletedTask()
 {
 	Task t;
 
-	_resultQueue.Dequeue(t);
+	while(!_resultQueue.try_pop(t))
 
 	return t;
 }
@@ -40,17 +41,17 @@ void TaskAgent::CheckHang(bool& OUT hang)
 
 void TaskAgent::Flush()
 {
-	_requestQueue.ClearQueue();
-	_resultQueue.ClearQueue();
+	_requestQueue.clear();
+	_resultQueue.clear();
 }
 
 void TaskAgent::DoWork()
 {
 	Task task;
 
-	while (this->isThreadRunning())
+	while (!_threadstoprequest)
 	{
-		while (_requestQueue.Dequeue(task))
+		while (_requestQueue.try_pop(task))
 		{
 			++_currenthangcheck;
 
@@ -69,5 +70,5 @@ void TaskAgent::DoWork()
 
 void TaskAgent::EmitWakeupSignal()
 {
-	
+	_threadstoprequest = true;
 }

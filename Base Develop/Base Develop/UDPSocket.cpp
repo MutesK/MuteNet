@@ -16,12 +16,12 @@ int UDPSocket::Bind(const SocketAddress& IN address)
 {
 	_err = bind(_sock, &address.get_addr(), address.GetSize());
 
-	if (_error == 0)
+	if (_err == 0)
 		return NO_ERROR;
 
 	// Report Error
-	_error = WSAGetLastError();
-	return _error;
+	_err = WSAGetLastError();
+	return _err;
 }
 
 int UDPSocket::SendTo(const void* inData, size_t lensize, const SocketAddress& IN into)

@@ -12,6 +12,7 @@ class SocketAddress;
 class UDPSocket
 {
 public:
+	UDPSocket(SOCKET inSocket);
 	~UDPSocket();
 
 	// No Socket I/O Model Function
@@ -24,10 +25,8 @@ public:
 	GET_SET_ATTRIBUTE(SOCKET, sock);
 	GET_CONST_ATTRIBUTE(int, err);
 
+private:
 	friend class SocketUtil;
-private:
-	UDPSocket(SOCKET inSocket);
-private:
 	SOCKET _sock;
 	int	   _err;
 };

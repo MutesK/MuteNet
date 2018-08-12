@@ -41,10 +41,14 @@ void ConsolePrinter::DoWork()
 	{
 		while (!_outputQueue.empty())
 		{
-			if (!_outputQueue.try_pop(outputStr))
-				continue;
+			if (_outputQueue.try_pop(outputStr))
+			{
+				std::cout << outputStr;
 
-			std::cout << outputStr;
+				this_thread::sleep_for(0s);
+			}
+
+			this_thread::sleep_for(1s);
 		}
 	}
 }

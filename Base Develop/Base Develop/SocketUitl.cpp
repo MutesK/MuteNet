@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SocketAddress.h"
 #include "UDPSocket.h"
+#include "TCPSocket.h"
 #include "SocketUtil.h"
 using namespace std;
 

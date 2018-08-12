@@ -4,6 +4,7 @@ class SocketAddress;
 class TCPSocket
 {
 public:
+	TCPSocket(SOCKET s);
 	~TCPSocket();
 
 // TCP 기본 함수
@@ -18,10 +19,8 @@ public:
 	GET_SET_ATTRIBUTE(SOCKET, sock);
 	GET_CONST_ATTRIBUTE(int, err);
 
+private:
 	friend class SocketUtil;
-private:
-	TCPSocket(SOCKET s);
-private:
 	SOCKET	_sock;
 	int	   _err;
 };

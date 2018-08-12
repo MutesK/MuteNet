@@ -163,7 +163,6 @@
     <ClInclude Include="TaskManager.h" />
     <ClInclude Include="TCPSocket.h" />
     <ClInclude Include="Thread.h" />
-    <ClInclude Include="ThreadSafeQueue.h" />
     <ClInclude Include="UDPSocket.h" />
   </ItemGroup>
   <ItemGroup>

@@ -36,7 +36,7 @@ int TCPSocket::Bind(const SocketAddress& IN Address)
 	return _err;
 }
 
-int TCPSocket::Listen(int backlog = 32)
+int TCPSocket::Listen(int backlog)
 {
 	int err = listen(_sock, backlog);
 	if (err >= 0)
