@@ -36,7 +36,7 @@ void TaskManager::CreateAgent()
 {
 	// 64개의 에이전트 생성
 
-	for (int i = 0; i < 64; i++)
+	for (int i = 0; i < 20; i++)
 	{
 		CreateAgent(i + 1);
 	}

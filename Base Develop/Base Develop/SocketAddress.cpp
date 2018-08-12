@@ -11,6 +11,7 @@ SocketAddress::SocketAddress(uint32_t inAddress, uint16_t inPort)
 
 SocketAddress::~SocketAddress()
 {
+	std::cout << "SocketAddress ÇØÁ¦µÊ !\n";
 }
 
 SocketAddress::SocketAddress(const sockaddr& IN sockaddr)

@@ -41,8 +41,8 @@ private:
 		}
 		~CChunkBlock()
 		{
-			int *p = nullptr;
-			*p = 0;
+			//int *p = nullptr;
+			//*p = 0;
 		}
 		void Init(const std::shared_ptr<CObjectPool<CChunkBlock>>& ObjectPool, int BlockSize = 2000, bool mConstructor = false)
 		{
@@ -75,11 +75,6 @@ private:
 			pArrayChunk[m_lAllocCount].Alloced = true;
 			DATA *ret = &pArrayChunk[m_lAllocCount].Data;
 
-#ifdef MEMORYPOOL_CALL_CTOR
-			if (Constructor)
-				new (ret) DATA();
-#endif
-
 			m_lAllocCount++;
 
 			return ret;
@@ -100,11 +95,6 @@ private:
 				pBlock->ObjectPool->Free(pBlock->pThisChunk);
 				m_lInit = INIT_CHECK;
 			}
-
-#ifdef MEMORYPOOL_CALL_CTOR
-			if (Constructor)
-				pData->~DATA();
-#endif
 
 			return true;
 		}
@@ -128,7 +118,7 @@ public:
 	{
 		m_lAllocCount = 0;
 
-		ObjectPool = make_shared<CObjectPool<CChunkBlock>>(ChunkSize, ChunkSize * 2, false);
+		ObjectPool = make_shared<CObjectPool<CChunkBlock>>(ChunkSize, ChunkSize * 2, true);
 
 		TLSIndex = TlsAlloc();
 		if (TLSIndex == TLS_OUT_OF_INDEXES)
@@ -150,16 +140,13 @@ public:
 		if (pBlock == nullptr)
 		{
 			pBlock = ObjectPool->Alloc();
-#ifndef MEMORYPOOL_CALL_CTOR
-			new (pBlock) CChunkBlock();
-#endif
 			pBlock->Init(ObjectPool, BlockSize, b_Constructor);
 			TlsSetValue(TLSIndex, pBlock);
 		}
 
 		DATA* pRet = pBlock->Alloc();
+		new (pRet) DATA();
 		++m_lAllocCount;
-
 
 		if (pBlock->m_lAllocCount == BlockSize || pBlock->m_lReferenceCount == 0)
 			TlsSetValue(TLSIndex, nullptr);
@@ -172,6 +159,8 @@ public:
 
 		if (pBlock->pThisChunk->Free(pData, pBlock))
 			--m_lAllocCount;
+
+		pData->~DATA();
 
 		return true;
 	}

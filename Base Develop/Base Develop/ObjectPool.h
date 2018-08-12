@@ -3,19 +3,15 @@
 
 using namespace std;
 /*
-	Object Pool (FreeList형식)
-
-	움직이는 알고리즘 자체는 Stack과 비슷함.
-	Lock Free 알고리즘의 효율성이 비관적 동시성 제어 기법에 비해 성능 향상을 유도하기 어렵다.
-	심지어 Lock Free 알고리즘과 Fast Spin Lock 알고리즘 성능 평가에서 Spin Lock을 이기기 약간 어려움.
-
-	또한 Lock Free 알고리즘은 버그가 나오면 잡기 힘들다.
-	잘 쓰지 못할꺼면 안쓰는게 나음.
-
-	std::shared_mutex 와 OwnChecking 기능을 합한 SafeMutex을 만들면 도입예정.
-
-	사용시 주의사항
-	* MEMORYPOOL_CALL_CTOR 플래그를 사용중이라면, 기본 생성자는 무조건 존재해야된다.
+Object Pool (FreeList형식)
+움직이는 알고리즘 자체는 Stack과 비슷함.
+Lock Free 알고리즘의 효율성이 비관적 동시성 제어 기법에 비해 성능 향상을 유도하기 어렵다.
+심지어 Lock Free 알고리즘과 Fast Spin Lock 알고리즘 성능 평가에서 Spin Lock을 이기기 약간 어려움.
+또한 Lock Free 알고리즘은 버그가 나오면 잡기 힘들다.
+잘 쓰지 못할꺼면 안쓰는게 나음.
+std::shared_mutex 와 OwnChecking 기능을 합한 SafeMutex을 만들면 도입예정.
+사용시 주의사항
+* MEMORYPOOL_CALL_CTOR 플래그를 사용중이라면, 기본 생성자는 무조건 존재해야된다.
 */
 
 #define VALIDCODE (0x77777777)
@@ -102,14 +98,14 @@ template <class NodeType>
 NodeType* CObjectPool<NodeType>::Alloc(void)
 {
 	std::lock_guard<std::mutex> guard(_lock);
-  	if (_allocCount >= _blockSize)
+	if (_allocCount >= _blockSize)
 	{
 		// 새로 DATA을 만들어야됨.
 		if (_maxBlockSize <= _blockSize)
 			return nullptr;
 
 		int makedblocksize = 2 * _blockSize;
-
+		
 		for (int i = _blockSize; i < makedblocksize; i++)
 		{
 			_freelist[i] = static_cast<BLOCKNODE *>(malloc(sizeof(BLOCKNODE)));
@@ -117,6 +113,7 @@ NodeType* CObjectPool<NodeType>::Alloc(void)
 			_freelist[i]->ValidCode = VALIDCODE;
 			_freestack.push(i);
 		}
+		_blockSize = makedblocksize;
 	}
 
 	int allocindex = static_cast<int>(_freestack.top());
