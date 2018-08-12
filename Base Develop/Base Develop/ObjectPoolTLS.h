@@ -25,7 +25,6 @@ private:
 	class CChunkBlock
 	{
 	public:
-#pragma pack(push, 1)
 		struct st_ChunkDATA
 		{
 			DATA	Data;
@@ -34,7 +33,6 @@ private:
 			CObjectPool<CChunkBlock>* ObjectPool;
 			bool    Alloced;
 		};
-#pragma pack(pop)
 	public:
 		CChunkBlock()
 		{
@@ -170,26 +168,26 @@ public:
 	}
 	bool Free(DATA *pData)
 	{
-		CChunkBlock::st_ChunkDATA *pBlock = static_cast<CChunkBlock::st_ChunkDATA *>(static_cast<__int64 *>(pData));
+		CChunkBlock::st_ChunkDATA *pBlock = reinterpret_cast<CChunkBlock::st_ChunkDATA *>(reinterpret_cast<__int64 *>(pData));
 
 		if (pBlock->pThisChunk->Free(pData, pBlock))
 			--m_lAllocCount;
 
 		return true;
 	}
-	long GetChunkSize()
+	uint32_t GetChunkSize()
 	{
-		return pMemoryPool->GetAllocCount();
+		return ObjectPool->GetAllocCount();
 	}
-	long GetAllocCount()
+	uint32_t GetAllocCount()
 	{
-		return  max(m_lAllocCount, 0);
+		return  m_lAllocCount;
 	}
 private:
 	std::shared_ptr<CObjectPool<CChunkBlock>> ObjectPool;
 
 	uint32_t TLSIndex;
-	uint32_t m_lAllocCount;
+	static atomic<uint32_t> m_lAllocCount;
 	atomic<uint32_t>	BlockSize;
 	atomic<uint32_t>	ChunkSize;
 

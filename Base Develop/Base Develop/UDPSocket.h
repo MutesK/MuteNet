@@ -12,7 +12,6 @@ class SocketAddress;
 class UDPSocket
 {
 public:
-	explicit UDPSocket(SOCKET inSocket);
 	~UDPSocket();
 
 	// No Socket I/O Model Function
@@ -21,8 +20,15 @@ public:
 	int ReceiveFrom(void *inBuffer, int lensize, SocketAddress&  OUT From);
 
 	int GetLastError();
+
+	GET_SET_ATTRIBUTE(SOCKET, sock);
+	GET_CONST_ATTRIBUTE(int, err);
+
+	friend class SocketUtil;
 private:
-	SOCKET _socket;
-	int	   _error;
+	UDPSocket(SOCKET inSocket);
+private:
+	SOCKET _sock;
+	int	   _err;
 };
 

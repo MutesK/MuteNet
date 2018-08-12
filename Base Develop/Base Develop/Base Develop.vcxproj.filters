@@ -24,10 +24,16 @@
     <ClCompile Include="SocketAddress.cpp">
       <Filter>Network</Filter>
     </ClCompile>
-    <ClCompile Include="SocketAddressFactory.cpp">
+    <ClCompile Include="UDPSocket.cpp">
       <Filter>Network</Filter>
     </ClCompile>
-    <ClCompile Include="UDPSocket.cpp">
+    <ClCompile Include="SocketUitl.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsolePrinter.cpp">
+      <Filter>ConsolePrinter</Filter>
+    </ClCompile>
+    <ClCompile Include="TCPSocket.cpp">
       <Filter>Network</Filter>
     </ClCompile>
   </ItemGroup>
@@ -67,10 +73,19 @@
     <ClInclude Include="SocketAddress.h">
       <Filter>Network</Filter>
     </ClInclude>
-    <ClInclude Include="SocketAddressFactory.h">
+    <ClInclude Include="UDPSocket.h">
       <Filter>Network</Filter>
     </ClInclude>
-    <ClInclude Include="UDPSocket.h">
+    <ClInclude Include="ObjectPoolTLS.hpp">
+      <Filter>ObjectPool</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsolePrinter.h">
+      <Filter>ConsolePrinter</Filter>
+    </ClInclude>
+    <ClInclude Include="SocketUtil.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="TCPSocket.h">
       <Filter>Network</Filter>
     </ClInclude>
   </ItemGroup>
@@ -89,6 +104,9 @@
     </Filter>
     <Filter Include="Network">
       <UniqueIdentifier>{0ef56086-076c-43b6-a8cf-7029c7a3edc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ConsolePrinter">
+      <UniqueIdentifier>{f931133f-9562-4e32-bdb1-0192906541c6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
