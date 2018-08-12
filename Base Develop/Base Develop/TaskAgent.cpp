@@ -1,13 +1,18 @@
 
 #include "stdafx.h"
+#include <thread>
+#include "Event.h"
 #include "Task.h"
 #include "TaskAgent.h"
 
 
-TaskAgent::TaskAgent()
+TaskAgent::TaskAgent(const std::string& agentName)
 	:_timeoutSec(0), _currenthangcheck(0), _prevhangcheck(0)
 {
 	_threadstoprequest = false;
+
+	SetThreadName(agentName);
+	Start();
 }
 
 
@@ -24,7 +29,7 @@ Task TaskAgent::DequeCompletedTask()
 {
 	Task t;
 
-	while(!_resultQueue.try_pop(t))
+	while (!_resultQueue.try_pop(t));
 
 	return t;
 }
@@ -51,6 +56,8 @@ void TaskAgent::DoWork()
 
 	while (!_threadstoprequest)
 	{
+		_event.WaitSignal();
+
 		while (_requestQueue.try_pop(task))
 		{
 			++_currenthangcheck;
@@ -71,4 +78,6 @@ void TaskAgent::DoWork()
 void TaskAgent::EmitWakeupSignal()
 {
 	_threadstoprequest = true;
+
+	_event.SetEvent();
 }

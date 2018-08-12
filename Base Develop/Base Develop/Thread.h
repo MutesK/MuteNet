@@ -9,7 +9,7 @@
 	스레드 스택 크기 결정되어 실행된다.
 	4. 스레드 이름 설정
 */
-
+#include "Event.h"
 
 class Thread
 {
@@ -31,8 +31,9 @@ public:
 	
 	bool isThreadRunning();
 
+	void SetEvent();
 
-	void SetThreadID(size_t threadID);
+	void SetThreadID(uint32_t threadID);
 protected:
 	virtual void DoWork();
 	virtual void EmitWakeupSignal() = 0; // 상속받은 클래스가 종료루틴을 처리하게 한다.
@@ -44,8 +45,9 @@ private:
 	DWORD  _hthreadId;
 	std::string	_threadname;
 	Priority _priority;
-	size_t	_stackSize;
-
+	uint32_t _stackSize;
+protected:
+	Event   _event;
 	bool	_isthreadwork;
 };
 
@@ -54,7 +56,12 @@ inline void Thread::SetThreadName(const std::string& threadName)
 	_threadname = threadName;
 }
 
-inline void Thread::SetThreadID(size_t threadID)
+inline void Thread::SetThreadID(uint32_t threadID)
 {
 	_hthreadId = threadID;
+}
+
+inline void Thread::SetEvent()
+{
+	_event.SetEvent();
 }

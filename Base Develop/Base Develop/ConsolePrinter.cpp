@@ -39,16 +39,15 @@ void ConsolePrinter::DoWork()
 
 	while (!_threadstoprequst)
 	{
+		_event.WaitSignal();
+
 		while (!_outputQueue.empty())
 		{
 			if (_outputQueue.try_pop(outputStr))
 			{
 				std::cout << outputStr;
 
-				this_thread::sleep_for(0s);
 			}
-
-			this_thread::sleep_for(1s);
 		}
 	}
 }
@@ -56,4 +55,14 @@ void ConsolePrinter::DoWork()
 void ConsolePrinter::EmitWakeupSignal()
 {
 	_threadstoprequst = true;
+
+	_event.SetEvent();
+}
+
+
+void ConsolePrinter::Log(char *function, size_t line, const std::string fmt, ...)
+{
+	//	stringstream strstream;
+	//	strstream << function << "(" << line << ") : ";
+
 }

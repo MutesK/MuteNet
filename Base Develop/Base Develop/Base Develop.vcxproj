@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ConsolePrinter.h" />
+    <ClInclude Include="Event.h" />
     <ClInclude Include="InputMemoryStream.h" />
     <ClInclude Include="MemoryStream.h" />
     <ClInclude Include="ObjectPool.h" />
@@ -168,6 +169,7 @@
   <ItemGroup>
     <ClCompile Include="Base Develop.cpp" />
     <ClCompile Include="ConsolePrinter.cpp" />
+    <ClCompile Include="Event.cpp" />
     <ClCompile Include="InputMemoryStream.cpp" />
     <ClCompile Include="OutputMemoryStream.cpp" />
     <ClCompile Include="SocketAddress.cpp" />

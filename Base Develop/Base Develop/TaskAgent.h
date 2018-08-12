@@ -6,9 +6,8 @@ class Task;
 class TaskAgent : public Thread
 {
 public:
-	TaskAgent();
+	TaskAgent(const std::string& agentName);
 	~TaskAgent();
-
 
 	void AddTask(Task t);
 	Task DequeCompletedTask();
