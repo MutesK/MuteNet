@@ -15,7 +15,7 @@ public:
 	explicit UDPSocket(SOCKET inSocket);
 	~UDPSocket();
 
-	// No Socket I/O Model Function
+	// No Socket I/O Model Function -> It purpose Test For UDP Socket
 	int Bind(const SocketAddress& IN address);
 	int SendTo(const void* inData, size_t lensize, const SocketAddress& IN into);
 	int ReceiveFrom(void *inBuffer, int lensize, SocketAddress&  OUT From);
