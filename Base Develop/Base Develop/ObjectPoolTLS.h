@@ -10,9 +10,6 @@ ObjectPool을 스레드별로, 할당하게 하면서도, 해제는 어떤 스�
 ChunkDATA을 배열로 ChunkBlock이 가지고있고,
 ObjectPool은 ChunkBlock 템플릿 인스턴스화 한다. 
 
-해제하는 순간이 ObjectPool과 ChunkDATA에 대한 Lock 처리가 되어야 된다.
-
-
 사용시 주의사항
 * MEMORYPOOL_CALL_CTOR 플래그를 사용중이라면, 기본 생성자는 무조건 존재해야된다. Placement New을 통해 수동 생성자 호출을 클래스에서 알아서 해주기 때문.
 
@@ -28,7 +25,6 @@ private:
 	class CChunkBlock
 	{
 	public:
-#pragma pack(push, 1)
 		struct st_ChunkDATA
 		{
 			DATA	Data;
@@ -37,7 +33,6 @@ private:
 			CObjectPool<CChunkBlock>* ObjectPool;
 			bool    Alloced;
 		};
-#pragma pack(pop)
 	public:
 		CChunkBlock()
 		{
@@ -46,8 +41,8 @@ private:
 		}
 		~CChunkBlock()
 		{
-			int *p = nullptr;
-			*p = 0;
+			//int *p = nullptr;
+			//*p = 0;
 		}
 		void Init(const std::shared_ptr<CObjectPool<CChunkBlock>>& ObjectPool, int BlockSize = 2000, bool mConstructor = false)
 		{
@@ -80,11 +75,6 @@ private:
 			pArrayChunk[m_lAllocCount].Alloced = true;
 			DATA *ret = &pArrayChunk[m_lAllocCount].Data;
 
-#ifdef MEMORYPOOL_CALL_CTOR
-			if (Constructor)
-				new (ret) DATA();
-#endif
-
 			m_lAllocCount++;
 
 			return ret;
@@ -105,11 +95,6 @@ private:
 				pBlock->ObjectPool->Free(pBlock->pThisChunk);
 				m_lInit = INIT_CHECK;
 			}
-
-#ifdef MEMORYPOOL_CALL_CTOR
-			if (Constructor)
-				pData->~DATA();
-#endif
 
 			return true;
 		}
@@ -133,7 +118,7 @@ public:
 	{
 		m_lAllocCount = 0;
 
-		ObjectPool = make_shared<CObjectPool<CChunkBlock>>(ChunkSize, ChunkSize * 2, false);
+		ObjectPool = make_shared<CObjectPool<CChunkBlock>>(ChunkSize, ChunkSize * 2, true);
 
 		TLSIndex = TlsAlloc();
 		if (TLSIndex == TLS_OUT_OF_INDEXES)
@@ -155,14 +140,13 @@ public:
 		if (pBlock == nullptr)
 		{
 			pBlock = ObjectPool->Alloc();
-			new (pBlock) CChunkBlock();
 			pBlock->Init(ObjectPool, BlockSize, b_Constructor);
 			TlsSetValue(TLSIndex, pBlock);
 		}
 
 		DATA* pRet = pBlock->Alloc();
+		new (pRet) DATA();
 		++m_lAllocCount;
-
 
 		if (pBlock->m_lAllocCount == BlockSize || pBlock->m_lReferenceCount == 0)
 			TlsSetValue(TLSIndex, nullptr);
@@ -171,27 +155,28 @@ public:
 	}
 	bool Free(DATA *pData)
 	{
-		CChunkBlock::st_ChunkDATA *pBlock = (CChunkBlock::st_ChunkDATA *)((__int64 *)pData);
-
+		CChunkBlock::st_ChunkDATA *pBlock = reinterpret_cast<CChunkBlock::st_ChunkDATA *>(reinterpret_cast<__int64 *>(pData));
 
 		if (pBlock->pThisChunk->Free(pData, pBlock))
 			--m_lAllocCount;
 
+		pData->~DATA();
+
 		return true;
 	}
-	long GetChunkSize()
+	uint32_t GetChunkSize()
 	{
-		return pMemoryPool->GetAllocCount();
+		return ObjectPool->GetAllocCount();
 	}
-	long GetAllocCount()
+	uint32_t GetAllocCount()
 	{
-		return  max(m_lAllocCount, 0);
+		return  m_lAllocCount;
 	}
 private:
 	std::shared_ptr<CObjectPool<CChunkBlock>> ObjectPool;
 
 	uint32_t TLSIndex;
-	uint32_t m_lAllocCount;
+	static atomic<uint32_t> m_lAllocCount;
 	atomic<uint32_t>	BlockSize;
 	atomic<uint32_t>	ChunkSize;
 

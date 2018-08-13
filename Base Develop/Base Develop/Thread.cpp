@@ -36,6 +36,9 @@ void Thread::Start()
 	}
 
 	_hthreadId = GetThreadId(_hthreadhandle);
+	_event.SetEventName(_threadname + "event");
+	_event.SetResetFlag(false);
+	_event.CreateEvent();
 
 	// Resume Thread
 	ResumeThread(_hthreadhandle);
@@ -91,6 +94,7 @@ UINT WINAPI Thread::ThreadProc(LPVOID arg)
 	// 스레드 이름 설정
 	pThread->SetThreadName(pThread->_threadname.c_str());
 	// 이벤트 시그널 준다. -> 아직 이벤트 객처없음.
+	pThread->SetEvent();
 	pThread->DoWork();
 	return 0;
 }

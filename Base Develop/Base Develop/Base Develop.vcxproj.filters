@@ -3,7 +3,7 @@
   <ItemGroup>
     <ClCompile Include="Base Develop.cpp" />
     <ClCompile Include="Thread.cpp">
-      <Filter>ETC</Filter>
+      <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="InputMemoryStream.cpp">
@@ -24,19 +24,25 @@
     <ClCompile Include="SocketAddress.cpp">
       <Filter>Network</Filter>
     </ClCompile>
-    <ClCompile Include="SocketAddressFactory.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
     <ClCompile Include="UDPSocket.cpp">
       <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="SocketUitl.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsolePrinter.cpp">
+      <Filter>ConsolePrinter</Filter>
+    </ClCompile>
+    <ClCompile Include="TCPSocket.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Event.cpp">
+      <Filter>Base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Thread.h">
-      <Filter>ETC</Filter>
-    </ClInclude>
-    <ClInclude Include="ThreadSafeQueue.h">
-      <Filter>ETC</Filter>
+      <Filter>Base</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -67,17 +73,26 @@
     <ClInclude Include="SocketAddress.h">
       <Filter>Network</Filter>
     </ClInclude>
-    <ClInclude Include="SocketAddressFactory.h">
-      <Filter>Network</Filter>
-    </ClInclude>
     <ClInclude Include="UDPSocket.h">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="ObjectPoolTLS.hpp">
+      <Filter>ObjectPool</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsolePrinter.h">
+      <Filter>ConsolePrinter</Filter>
+    </ClInclude>
+    <ClInclude Include="SocketUtil.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="TCPSocket.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="ETC">
-      <UniqueIdentifier>{46f2979c-cc48-4d99-8eec-1333b510957c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="StreamBuffer">
       <UniqueIdentifier>{5e51f260-3be0-43de-9fe1-28669b6976d9}</UniqueIdentifier>
     </Filter>
@@ -89,6 +104,12 @@
     </Filter>
     <Filter Include="Network">
       <UniqueIdentifier>{0ef56086-076c-43b6-a8cf-7029c7a3edc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ConsolePrinter">
+      <UniqueIdentifier>{f931133f-9562-4e32-bdb1-0192906541c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base">
+      <UniqueIdentifier>{46f2979c-cc48-4d99-8eec-1333b510957c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

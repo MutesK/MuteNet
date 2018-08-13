@@ -1,10 +1,11 @@
 #include "stdafx.h"
-#include "SocketAddressFactory.h"
 #include "SocketAddress.h"
-
+#include "UDPSocket.h"
+#include "TCPSocket.h"
+#include "SocketUtil.h"
 using namespace std;
 
-std::shared_ptr<SocketAddress> SocketAddressFactory::CreateIPv4FromString(const std::string& IN str)
+std::shared_ptr<SocketAddress> SocketUtil::CreateIPv4FromString(const std::string& IN str)
 {
 	auto pos = str.find_last_of(':');
 
@@ -50,4 +51,24 @@ std::shared_ptr<SocketAddress> SocketAddressFactory::CreateIPv4FromString(const 
 
 	return ret;
 
+}
+
+std::shared_ptr<UDPSocket> SocketUtil::CreateUDPSocket(SocketAddressFamily IN Family)
+{
+	SOCKET s = socket(Family, SOCK_DGRAM, IPPROTO_UDP);
+	if (s != INVALID_SOCKET)
+		return make_shared<UDPSocket>(s);
+
+	// Report
+	return nullptr;
+}
+
+std::shared_ptr<TCPSocket> SocketUtil::CreateTCPSocket(SocketAddressFamily IN Family)
+{
+	SOCKET s = socket(Family, SOCK_STREAM, IPPROTO_TCP);
+	if (s != INVALID_SOCKET)
+		return make_shared<TCPSocket>(s);
+
+	// Report
+	return nullptr;
 }
