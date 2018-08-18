@@ -45,3 +45,7 @@ Base Develop/StreamBuffer/StreamBuffer/.vs/StreamBuffer/v14/.suo
 *.opendb
 *.TMP
 *.enc
+*.opendb
+*.db
+Base Develop/.vs/Base Develop/v15/.suo
+*.db
