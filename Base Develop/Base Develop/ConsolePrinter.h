@@ -36,7 +36,7 @@ public:
 	static ConsolePrinter* Instance();
 	
 
-	void Log(char *function, size_t line, const std::string fmt, ...);
+	void Log(char *function, size_t line, const char* szStringFormat, ...);
 protected:
 	virtual void DoWork() override;
 	virtual void EmitWakeupSignal() override;
@@ -44,8 +44,8 @@ private:
 	Concurrency::concurrent_queue<std::string>	_outputQueue;
 	bool										_threadstoprequst;
 
-	std::atomic<uint64_t>						_logcount;
-
 	static std::once_flag						_once_call;
 	static std::unique_ptr<ConsolePrinter>		_instance;
+
+	std::atomic<uint64_t>						_logcount;
 };

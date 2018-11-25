@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Thread.h"
 #include "ConsolePrinter.h"
+#include <strsafe.h>
 
 using namespace std;
 std::unique_ptr<ConsolePrinter> ConsolePrinter::_instance;
@@ -45,8 +46,8 @@ void ConsolePrinter::DoWork()
 		{
 			if (_outputQueue.try_pop(outputStr))
 			{
+				// Console Print & File Print
 				std::cout << outputStr;
-
 			}
 		}
 	}
@@ -60,9 +61,26 @@ void ConsolePrinter::EmitWakeupSignal()
 }
 
 
-void ConsolePrinter::Log(char *function, size_t line, const std::string fmt, ...)
+void ConsolePrinter::Log(char *function, size_t line, const char* szStringFormat, ...)
 {
-	//	stringstream strstream;
-	//	strstream << function << "(" << line << ") : ";
+	char szLogMessage[LOG_MSGLEN_MAX];
 
+	_logcount++;
+
+	va_list va;
+	va_start(va, szLogMessage);
+
+	HRESULT hResult = StringCchPrintf(szLogMessage, LOG_MSGLEN_MAX, szStringFormat, va);
+	va_end(va);
+
+	if (FAILED(hResult))
+	{
+		// Exception;
+		return;
+	}
+
+	std::string logString = szLogMessage;
+	_outputQueue.push(logString);
+
+	_event.SetEvent();
 }
