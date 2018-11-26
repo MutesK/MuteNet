@@ -12,8 +12,7 @@ public:
 	size_t GetSize() const;
 	~SocketAddress();
 
-	GET_CONST_ATTRIBUTE(const sockaddr, addr);
-	GET_SET_ATTRIBUTE(sockaddr, addr);
+	GET_SET_ATTRIBUTE(sockaddr&, addr);
 private:
 	sockaddr_in* GetSockAddrIn();
 private:

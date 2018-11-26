@@ -42,7 +42,7 @@ protected:
 	virtual void EmitWakeupSignal() override;
 private:
 	Concurrency::concurrent_queue<std::string>	_outputQueue;
-	bool										_threadstoprequst;
+	bool										_threadstoprequest;
 
 	static std::once_flag						_once_call;
 	static std::unique_ptr<ConsolePrinter>		_instance;

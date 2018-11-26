@@ -11,7 +11,7 @@ ConsolePrinter::ConsolePrinter()
 {
 	_logcount = 0;
 
-	_threadstoprequst = false;
+	_threadstoprequest = false;
 	std::string str = "ConsolePrinter";
 	SetThreadName(str);
 
@@ -38,7 +38,7 @@ void ConsolePrinter::DoWork()
 {
 	std::string outputStr;
 
-	while (!_threadstoprequst)
+	while (!_threadstoprequest)
 	{
 		_event.WaitSignal();
 
@@ -55,7 +55,7 @@ void ConsolePrinter::DoWork()
 
 void ConsolePrinter::EmitWakeupSignal()
 {
-	_threadstoprequst = true;
+	_threadstoprequest = true;
 
 	_event.SetEvent();
 }
