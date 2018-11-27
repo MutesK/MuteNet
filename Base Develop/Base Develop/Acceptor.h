@@ -3,6 +3,9 @@
 #include "Thread.h"
 #include <functional>
 
+/*
+	
+*/
 class CSession;
 class Acceptor : public Thread
 {

@@ -147,7 +147,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Acceptor.h" />
     <ClInclude Include="ConsolePrinter.h" />
+    <ClInclude Include="CSession.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="InputMemoryStream.h" />
     <ClInclude Include="MemoryStream.h" />
@@ -167,8 +169,10 @@
     <ClInclude Include="UDPSocket.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Acceptor.cpp" />
     <ClCompile Include="Base Develop.cpp" />
     <ClCompile Include="ConsolePrinter.cpp" />
+    <ClCompile Include="CSession.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="InputMemoryStream.cpp" />
     <ClCompile Include="OutputMemoryStream.cpp" />

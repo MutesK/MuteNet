@@ -39,6 +39,12 @@
     <ClCompile Include="Event.cpp">
       <Filter>Base</Filter>
     </ClCompile>
+    <ClCompile Include="Acceptor.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="CSession.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Thread.h">
@@ -90,6 +96,12 @@
     </ClInclude>
     <ClInclude Include="Event.h">
       <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Acceptor.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="CSession.h">
+      <Filter>Network</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

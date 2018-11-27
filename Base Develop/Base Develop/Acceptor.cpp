@@ -42,3 +42,9 @@ void Acceptor::DoWork()
 		OnAccept(Session);
 	}
 }
+
+void Acceptor::EmitWakeupSignal()
+{
+	_threadstoprequest = !_threadstoprequest;
+
+}
