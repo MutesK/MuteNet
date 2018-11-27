@@ -6,9 +6,11 @@
 #include "UDPSocket.h"
 #include "CSession.h"
 
-Acceptor::Acceptor(const std::string& IpAddress)
+Acceptor::Acceptor(const std::string& IpAddress, OnAccept AcceptFunction)
 {
 	_ipAddress = IpAddress;
+
+	_onAcceptor = std::bind(AcceptFunction);
 }
 
 
@@ -39,7 +41,7 @@ void Acceptor::DoWork()
 				reinterpret_cast<const char *>(opt), sizeof(int));
 		}
 
-		OnAccept(Session);
+		_onAcceptor(Session);
 	}
 }
 
