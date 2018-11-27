@@ -24,9 +24,8 @@ void IOCPServer::OnAccept(std::shared_ptr<CSession>& Session)
 	if (Socket == INVALID_SOCKET)
 		return;
 
-	CreateIoCompletionPort(reinterpret_cast<HANDLE>(Socket), _iocpHandle, 
-		reinterpret_cast<ULONG *>(Session.get),)
+	CreateIoCompletionPort(reinterpret_cast<HANDLE>(Socket), _iocpHandle,
+		reinterpret_cast<ULONG>(Session.get()), 0);
 
-	
 
 }

@@ -80,3 +80,26 @@ int TCPSocket::Recv(void *inBuffer, int Len)
 	_err = WSAGetLastError();
 	return _err;
 }
+
+int TCPSocket::Recv(OutputMemoryStream& stream, IOCallback& recvIO)
+{
+	WSABUF buf[2];
+	int bufcount = 1;
+	DWORD recvSize = 0;
+
+	buf[0].buf = stream.GetBufferPtr().get();
+	buf[0].len = stream.GetLength();
+
+	DWORD size = 0;
+	DWORD flag = 0;
+
+	recvIO.get_referenceCount()++;
+
+	int ret = WSARecv(_sock, buf, bufcount, &recvSize, &flag, reinterpret_cast<OVERLAPPED *>(&recvIO),
+		nullptr);
+
+	if (ret == SOCKET_ERROR)
+		_err = ret;
+
+	return recvSize;
+}

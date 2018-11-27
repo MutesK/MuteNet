@@ -30,6 +30,7 @@ private:
 	std::shared_ptr<TCPSocket> _tcpSocket;
 	std::shared_ptr<SocketAddress> _address;
 
+	// Stream은 Thread-safe Queue에 넣는다.
 	InputMemoryStream _inBuffer;
 	OutputMemoryStream _outBuffer;
 };

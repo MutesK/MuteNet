@@ -1,14 +1,16 @@
 #pragma once
-class IOCallback
+
+#include <atomic>
+
+class IOCallback : OVERLAPPED
 {
 public:
 	IOCallback();
 	~IOCallback();
 
-	GET_SET_ATTRIBUTE(OVERLAPPED&, InputOverlapped);
-	GET_SET_ATTRIBUTE(OVERLAPPED&, OutputOverlapped);
+	GET_SET_ATTRIBUTE(std::atomic<size_t>&, referenceCount);
+
 private:
-	OVERLAPPED  _InputOverlapped;
-	OVERLAPPED  _OutputOverlapped;
+	std::atomic<size_t>	_referenceCount;
 };
 

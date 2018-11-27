@@ -3,6 +3,7 @@
 #include <thread>
 #include "ObjectPoolTLS.hpp"
 
+class CSession;
 class IOCPServer
 {
 public:

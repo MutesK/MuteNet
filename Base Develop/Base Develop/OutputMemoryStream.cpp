@@ -6,7 +6,7 @@
 OutputMemoryStream::OutputMemoryStream()
 	:_buffer(nullptr), _head(0), _capacity(0)
 {
-	ReallocBuffer(50000);
+	ReallocBuffer(_MaxPacketSize);
 }
 
 

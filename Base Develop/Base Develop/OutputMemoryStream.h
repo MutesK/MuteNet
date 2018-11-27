@@ -42,5 +42,7 @@ private:
 	std::shared_ptr<char> _buffer;
 	uint32_t _head;
 	uint32_t _capacity; 
+
+	const uint32_t _MaxPacketSize = 1470;
 };
 

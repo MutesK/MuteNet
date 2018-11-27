@@ -1,5 +1,8 @@
 #pragma once
 
+#include "IOCallback.h"
+#include "OutputMemoryStream.h"
+
 class SocketAddress;
 class TCPSocket
 {
@@ -16,12 +19,18 @@ public:
 	int Send(const void* inData, int Len);
 	int Recv(void *inBuffer, int Len);
 
+	// IOCP function
+	int Recv(OutputMemoryStream& stream, IOCallback& recvIO);
+
 	GET_SET_ATTRIBUTE(SOCKET, sock);
 	GET_CONST_ATTRIBUTE(int, err);
 
 private:
 	friend class SocketUtil;
-	SOCKET	_sock;
+
+	SOCKET		_sock;
+	IOCallback  _callback;
+
 	int	   _err;
 };
 

@@ -152,6 +152,8 @@
     <ClInclude Include="CSession.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="InputMemoryStream.h" />
+    <ClInclude Include="IOCallback.h" />
+    <ClInclude Include="IOCPServer.h" />
     <ClInclude Include="MemoryStream.h" />
     <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="ObjectPoolTLS.h" />
@@ -175,6 +177,8 @@
     <ClCompile Include="CSession.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="InputMemoryStream.cpp" />
+    <ClCompile Include="IOCallback.cpp" />
+    <ClCompile Include="IOCPServer.cpp" />
     <ClCompile Include="OutputMemoryStream.cpp" />
     <ClCompile Include="SocketAddress.cpp" />
     <ClCompile Include="SocketUitl.cpp" />

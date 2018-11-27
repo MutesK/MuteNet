@@ -4,6 +4,7 @@
 
 IOCallback::IOCallback()
 {
+	_referenceCount = 0;
 }
 
 
