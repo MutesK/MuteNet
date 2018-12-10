@@ -151,14 +151,11 @@
     <ClInclude Include="ConsolePrinter.h" />
     <ClInclude Include="CSession.h" />
     <ClInclude Include="Event.h" />
-    <ClInclude Include="InputMemoryStream.h" />
     <ClInclude Include="IOCallback.h" />
     <ClInclude Include="IOCPServer.h" />
-    <ClInclude Include="MemoryStream.h" />
     <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="ObjectPoolTLS.h" />
     <ClInclude Include="ObjectPoolTLS.hpp" />
-    <ClInclude Include="OutputMemoryStream.h" />
     <ClInclude Include="SocketAddress.h" />
     <ClInclude Include="SocketUtil.h" />
     <ClInclude Include="stdafx.h" />
@@ -176,10 +173,8 @@
     <ClCompile Include="ConsolePrinter.cpp" />
     <ClCompile Include="CSession.cpp" />
     <ClCompile Include="Event.cpp" />
-    <ClCompile Include="InputMemoryStream.cpp" />
     <ClCompile Include="IOCallback.cpp" />
     <ClCompile Include="IOCPServer.cpp" />
-    <ClCompile Include="OutputMemoryStream.cpp" />
     <ClCompile Include="SocketAddress.cpp" />
     <ClCompile Include="SocketUitl.cpp" />
     <ClCompile Include="stdafx.cpp">
