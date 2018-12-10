@@ -45,6 +45,12 @@
     <ClCompile Include="CSession.cpp">
       <Filter>Network</Filter>
     </ClCompile>
+    <ClCompile Include="IOCallback.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="IOCPServer.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Thread.h">
@@ -101,6 +107,12 @@
       <Filter>Network</Filter>
     </ClInclude>
     <ClInclude Include="CSession.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="IOCallback.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="IOCPServer.h">
       <Filter>Network</Filter>
     </ClInclude>
   </ItemGroup>
