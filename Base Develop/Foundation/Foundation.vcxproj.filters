@@ -13,78 +13,111 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{ec86bd49-b411-41c6-b7f1-5ae5576e0328}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\ObjectPool">
+      <UniqueIdentifier>{d99c61a5-2af0-45e6-a1b4-bcdec88da178}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Thread">
+      <UniqueIdentifier>{2122fdf3-07cd-49a3-b3c9-7936418c06c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Event">
+      <UniqueIdentifier>{72beca7b-b3ae-46c3-b74e-81dbd5b37840}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\MiniDump">
+      <UniqueIdentifier>{8ff36bfc-4a24-43da-921f-351bba9c95e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\DateTime">
+      <UniqueIdentifier>{ed080d61-6cdd-4380-b8b6-b7330ae41752}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\TaskManager">
+      <UniqueIdentifier>{58e06975-e7a5-4174-899e-e444e2112931}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Singleton">
+      <UniqueIdentifier>{3bb79fbe-b0cd-42ee-b604-11b4acd5b6d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Logger">
+      <UniqueIdentifier>{205dcb7e-132d-4170-b7c5-8d661f2aa5af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Exception">
+      <UniqueIdentifier>{a566322b-02e6-490c-9224-6abead256a8f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MiniDump.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="ConsolePrinter.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="DateTime.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Event.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Singleton.hpp">
-      <Filter>헤더 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Task.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="TaskAgent.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="TaskManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Thread.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="foundation_test.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Thread.cpp">
+      <Filter>Core\Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Event.cpp">
+      <Filter>Core\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniDump.cpp">
+      <Filter>Core\MiniDump</Filter>
+    </ClCompile>
+    <ClCompile Include="DateTime.cpp">
+      <Filter>Core\DateTime</Filter>
+    </ClCompile>
+    <ClCompile Include="Task.cpp">
+      <Filter>Core\TaskManager</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskAgent.cpp">
+      <Filter>Core\TaskManager</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskManager.cpp">
+      <Filter>Core\TaskManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Singleton.hpp">
+      <Filter>Core\Singleton</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsolePrinter.cpp">
+      <Filter>Core\Logger</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MiniDump.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="ConsolePrinter.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="DateTime.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Event.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="foundation.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="ObjectPool.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Core\ObjectPool</Filter>
     </ClInclude>
     <ClInclude Include="ObjectPoolTLS.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Core\ObjectPool</Filter>
     </ClInclude>
     <ClInclude Include="ObjectPoolTLS.hpp">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Singleton.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Task.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskAgent.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskManager.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Core\ObjectPool</Filter>
     </ClInclude>
     <ClInclude Include="Thread.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Core\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Core\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniDump.h">
+      <Filter>Core\MiniDump</Filter>
+    </ClInclude>
+    <ClInclude Include="DateTime.h">
+      <Filter>Core\DateTime</Filter>
+    </ClInclude>
+    <ClInclude Include="Task.h">
+      <Filter>Core\TaskManager</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskAgent.h">
+      <Filter>Core\TaskManager</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskManager.h">
+      <Filter>Core\TaskManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Core\Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsolePrinter.h">
+      <Filter>Core\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="Exception.h">
+      <Filter>Core\Exception</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

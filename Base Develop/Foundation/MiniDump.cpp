@@ -15,6 +15,8 @@ MiniDump::~MiniDump()
 LONG WINAPI MiniDump::exceptionFilter(ExceptionPoint exceptionInfo)
 {
 	std::cout << "Creating Dump Files\n";
+	std::cin.get();
+
 	_CrtMemDumpAllObjectsSince(nullptr);
 
 	HMODULE dumpDll = LoadLibrary("DBGHELP.DLL");
@@ -24,7 +26,9 @@ LONG WINAPI MiniDump::exceptionFilter(ExceptionPoint exceptionInfo)
 		Sleep(1000);
 		return 0;
 	}
+	
 
+	// 나중에 Server Name 추가할것.
 	std::string dumpPatch;
 	dumpPatch += Singleton<DateTime>::GetInstance()->nowTime(DATETIME_FORMAT);
 	dumpPatch += ".dmp";
@@ -45,7 +49,7 @@ LONG WINAPI MiniDump::exceptionFilter(ExceptionPoint exceptionInfo)
 	info.ClientPointers = false;
 
 	
-	WRITEDUMP dumpFunc = (WRITEDUMP)GetProcAddress(dumpDll, "MinidumpWriteDump");
+	WRITEDUMP dumpFunc = (WRITEDUMP)GetProcAddress(dumpDll, "MiniDumpWriteDump");
 	if (dumpFunc(GetCurrentProcess(), GetCurrentProcessId(), hFile, MiniDumpNormal,
 		&info, nullptr, nullptr) == false)
 	{

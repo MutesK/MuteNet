@@ -130,6 +130,7 @@
     <ClInclude Include="ConsolePrinter.h" />
     <ClInclude Include="DateTime.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="Exception.h" />
     <ClInclude Include="foundation.h" />
     <ClInclude Include="MiniDump.h" />
     <ClInclude Include="ObjectPool.h" />
