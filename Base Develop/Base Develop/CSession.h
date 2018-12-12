@@ -23,15 +23,10 @@ public:
 	GET_SET_ATTRIBUTE(std::shared_ptr<TCPSocket>, tcpSocket);
 	GET_SET_ATTRIBUTE(std::shared_ptr<SocketAddress>, address);
 
-	GET_SET_ATTRIBUTE(InputMemoryStream&, inBuffer);
-	GET_SET_ATTRIBUTE(OutputMemoryStream&, outBuffer);
 
 private:
 	std::shared_ptr<TCPSocket> _tcpSocket;
 	std::shared_ptr<SocketAddress> _address;
 
-	// Stream은 Thread-safe Queue에 넣는다.
-	InputMemoryStream _inBuffer;
-	OutputMemoryStream _outBuffer;
 };
 
