@@ -115,11 +115,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ConsolePrinter.cpp" />
+    <ClCompile Include="ConsolePrinter.hpp" />
     <ClCompile Include="DateTime.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="foundation_test.cpp" />
-    <ClCompile Include="MiniDump.cpp" />
+    <ClCompile Include="MiniDump.hpp" />
     <ClCompile Include="Singleton.hpp" />
     <ClCompile Include="Task.cpp" />
     <ClCompile Include="TaskAgent.cpp" />
@@ -132,6 +132,7 @@
     <ClInclude Include="Event.h" />
     <ClInclude Include="Exception.h" />
     <ClInclude Include="foundation.h" />
+    <ClInclude Include="foundation.hpp" />
     <ClInclude Include="MiniDump.h" />
     <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="ObjectPoolTLS.h" />

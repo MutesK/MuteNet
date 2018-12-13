@@ -1,9 +1,6 @@
 #include "foundation.h"
-#include "Singleton.hpp"
-#include "MiniDump.h"
-#include "Exception.h"
+#include "foundation.hpp"
 
-static MiniDump dump;
 int main()
 {
 	try

@@ -54,3 +54,6 @@ Base Develop/.vs/Base Develop/v15/Browse.VC.db
 Base Develop/.vs/Base Develop/v15/.suo
 *.dmp
 *.db-shm
+*.db
+*.db-shm
+*.db-wal

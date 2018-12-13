@@ -54,9 +54,6 @@
     <ClCompile Include="Event.cpp">
       <Filter>Core\Event</Filter>
     </ClCompile>
-    <ClCompile Include="MiniDump.cpp">
-      <Filter>Core\MiniDump</Filter>
-    </ClCompile>
     <ClCompile Include="DateTime.cpp">
       <Filter>Core\DateTime</Filter>
     </ClCompile>
@@ -72,7 +69,10 @@
     <ClCompile Include="Singleton.hpp">
       <Filter>Core\Singleton</Filter>
     </ClCompile>
-    <ClCompile Include="ConsolePrinter.cpp">
+    <ClCompile Include="MiniDump.hpp">
+      <Filter>Core\MiniDump</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsolePrinter.hpp">
       <Filter>Core\Logger</Filter>
     </ClCompile>
   </ItemGroup>
@@ -118,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="Exception.h">
       <Filter>Core\Exception</Filter>
+    </ClInclude>
+    <ClInclude Include="foundation.hpp">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
