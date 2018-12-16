@@ -49,23 +49,8 @@
     <ClInclude Include="IOCPServer.h" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="StreamBuffer">
-      <UniqueIdentifier>{5e51f260-3be0-43de-9fe1-28669b6976d9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ObjectPool">
-      <UniqueIdentifier>{53173c1f-dd53-4202-93da-c40e661ad7ff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Task">
-      <UniqueIdentifier>{59f47b9e-e888-4d84-93bb-3c2d1c642199}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Network">
       <UniqueIdentifier>{0ef56086-076c-43b6-a8cf-7029c7a3edc2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ConsolePrinter">
-      <UniqueIdentifier>{f931133f-9562-4e32-bdb1-0192906541c6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Base">
-      <UniqueIdentifier>{46f2979c-cc48-4d99-8eec-1333b510957c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

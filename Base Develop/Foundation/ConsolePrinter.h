@@ -13,7 +13,7 @@
 
 #include "TaskManager.h"
 
-enum Log_Level
+enum class Log_Level
 {
 	LOG_DEBUG = 0,
 	LOG_WARNING,
@@ -21,25 +21,27 @@ enum Log_Level
 	LOG_SYSTEM,
 };
 
-enum
-{
-	LOG_MSGLEN_MAX = 10000
-};
 
-class ConsolePrinter : public Thread
+#include "Singleton.hpp"
+
+class ConsolePrinter : public Singleton<ConsolePrinter>, Thread
 {
 public:
 	ConsolePrinter();
 	~ConsolePrinter();
 
-	static ConsolePrinter* Instance();
-	
-
 	void Log(char *function, size_t line, const char* szStringFormat, ...);
+
+	GET_SET_ATTRIBUTE(size_t, logLevel);
 protected:
 	virtual void DoWork() override;
 	virtual void EmitWakeupSignal() override;
 private:
+	enum
+	{
+		LOG_MSGLEN_MAX = 10000
+	};
+
 	Concurrency::concurrent_queue<std::string>	_outputQueue;
 	bool										_threadstoprequest;
 
@@ -47,4 +49,5 @@ private:
 	static std::unique_ptr<ConsolePrinter>		_instance;
 
 	std::atomic<uint64_t>						_logcount;
+	std::atomic<size_t>							_logLevel;
 };
