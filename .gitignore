@@ -32,7 +32,6 @@
 *.app
 
 # Visual Studio Auto Making File
-Base Develop\*.opendb
 *.db
 *.log
 *.idb
@@ -40,9 +39,9 @@ Base Develop\*.opendb
 *.tlog
 *.ipch
 *.ilk
-Base Develop\.vs\**\*
 *.opendb
 *.TMP
 *.enc
 *.db
 *.dmp
+Base Develop/.vs/
