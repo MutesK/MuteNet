@@ -45,6 +45,3 @@
 *.db
 *.dmp
 Base Develop/.vs/
-Base Develop/Debug/
-Base Develop/Release/
-Base Develop/x64/
