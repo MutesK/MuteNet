@@ -30,7 +30,9 @@
 *.exe
 *.out
 *.app
-Base Develop/Base Develop.VC.VC.opendb
+
+# Visual Studio Auto Making File
+Base Develop\*.opendb
 *.db
 *.log
 *.idb
@@ -38,19 +40,9 @@ Base Develop/Base Develop.VC.VC.opendb
 *.tlog
 *.ipch
 *.ilk
-Base Develop/.vs/Base Develop/v14/.suo
-*.opendb
-Base Develop/StreamBuffer/StreamBuffer/.vs/StreamBuffer/v14/.suo
-Base Develop/StreamBuffer/StreamBuffer/.vs/StreamBuffer/v14/.suo
+Base Develop\.vs\**\*
 *.opendb
 *.TMP
 *.enc
-*.opendb
 *.db
-Base Develop/.vs/Base Develop/v15/.suo
-*.db
-Base Develop/.vs/Base Develop/v15/.suo
-Base Develop/.vs/Base Develop/v15/Browse.VC.db
-Base Develop/.vs/Base Develop/v15/.suo
 *.dmp
-*.db-shm
