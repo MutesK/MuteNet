@@ -2,25 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Base Develop.cpp" />
-    <ClCompile Include="Thread.cpp">
-      <Filter>Base</Filter>
-    </ClCompile>
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="InputMemoryStream.cpp">
-      <Filter>StreamBuffer</Filter>
-    </ClCompile>
-    <ClCompile Include="OutputMemoryStream.cpp">
-      <Filter>StreamBuffer</Filter>
-    </ClCompile>
-    <ClCompile Include="TaskManager.cpp">
-      <Filter>Task</Filter>
-    </ClCompile>
-    <ClCompile Include="TaskAgent.cpp">
-      <Filter>Task</Filter>
-    </ClCompile>
-    <ClCompile Include="Task.cpp">
-      <Filter>Task</Filter>
-    </ClCompile>
     <ClCompile Include="SocketAddress.cpp">
       <Filter>Network</Filter>
     </ClCompile>
@@ -30,14 +12,8 @@
     <ClCompile Include="SocketUitl.cpp">
       <Filter>Network</Filter>
     </ClCompile>
-    <ClCompile Include="ConsolePrinter.cpp">
-      <Filter>ConsolePrinter</Filter>
-    </ClCompile>
     <ClCompile Include="TCPSocket.cpp">
       <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="Event.cpp">
-      <Filter>Base</Filter>
     </ClCompile>
     <ClCompile Include="Acceptor.cpp">
       <Filter>Network</Filter>
@@ -45,48 +21,17 @@
     <ClCompile Include="CSession.cpp">
       <Filter>Network</Filter>
     </ClCompile>
+    <ClCompile Include="IOCallback.cpp" />
+    <ClCompile Include="IOCPServer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Thread.h">
-      <Filter>Base</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="InputMemoryStream.h">
-      <Filter>StreamBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="MemoryStream.h">
-      <Filter>StreamBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="OutputMemoryStream.h">
-      <Filter>StreamBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectPoolTLS.h">
-      <Filter>ObjectPool</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectPool.h">
-      <Filter>ObjectPool</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskManager.h">
-      <Filter>Task</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskAgent.h">
-      <Filter>Task</Filter>
-    </ClInclude>
-    <ClInclude Include="Task.h">
-      <Filter>Task</Filter>
-    </ClInclude>
     <ClInclude Include="SocketAddress.h">
       <Filter>Network</Filter>
     </ClInclude>
     <ClInclude Include="UDPSocket.h">
       <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectPoolTLS.hpp">
-      <Filter>ObjectPool</Filter>
-    </ClInclude>
-    <ClInclude Include="ConsolePrinter.h">
-      <Filter>ConsolePrinter</Filter>
     </ClInclude>
     <ClInclude Include="SocketUtil.h">
       <Filter>Network</Filter>
@@ -94,15 +39,14 @@
     <ClInclude Include="TCPSocket.h">
       <Filter>Network</Filter>
     </ClInclude>
-    <ClInclude Include="Event.h">
-      <Filter>Base</Filter>
-    </ClInclude>
     <ClInclude Include="Acceptor.h">
       <Filter>Network</Filter>
     </ClInclude>
     <ClInclude Include="CSession.h">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="IOCallback.h" />
+    <ClInclude Include="IOCPServer.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="StreamBuffer">
