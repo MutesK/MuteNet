@@ -16,6 +16,8 @@ typedef BOOL(WINAPI *WRITEDUMP)(
 class MiniDump : public Singleton<MiniDump>
 {
 public:
+	MiniDump();
+	~MiniDump();
 	static LONG WINAPI exceptionFilter(ExceptionPoint exceptionInfo);
 	static void Crash();
 };

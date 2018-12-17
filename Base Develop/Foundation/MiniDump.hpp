@@ -1,5 +1,6 @@
 
 #include "MiniDump.h"
+#include "DateTime.h"
 
 MiniDump::MiniDump()
 {

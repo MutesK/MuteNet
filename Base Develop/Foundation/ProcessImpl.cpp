@@ -40,7 +40,7 @@ int ProcessHandleImpl::Wait() const
 
 ProcessImpl::PID ProcessImpl::id()
 {
-	::GetCurrentProcessId();
+	return ::GetCurrentProcessId();
 }
 
 void ProcessImpl::times(long& OUT userTime, long& OUT kernelTime)
@@ -196,5 +196,5 @@ std::shared_ptr<ProcessHandleImpl> ProcessImpl::Launch(const std::string& comman
 		startupInfo.dwFlags |= STARTF_USESTDHANDLES;
 	}
 
-	// 
+	return nullptr;
 }

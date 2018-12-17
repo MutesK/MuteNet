@@ -20,8 +20,10 @@ public:
 	static std::string osName();
 	static std::string osDisplayName();
 	static std::string osVersion();
+	// 차후작업
 	static std::string osArchitecture();
 	static std::string computerName();
+	// 차후작업
 	static void ipAddress(IPAddress& OUT ipAddress);
 };
 
