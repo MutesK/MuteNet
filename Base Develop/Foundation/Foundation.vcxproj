@@ -142,7 +142,6 @@
     <ClInclude Include="MiniDump.h" />
     <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="ObjectPoolTLS.h" />
-    <ClInclude Include="ObjectPoolTLS.hpp" />
     <ClInclude Include="Path.h" />
     <ClInclude Include="PathImpl.h" />
     <ClInclude Include="Pipe.h" />

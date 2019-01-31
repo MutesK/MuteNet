@@ -104,15 +104,6 @@
     <ClInclude Include="foundation.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="ObjectPool.h">
-      <Filter>ObjectPool</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectPoolTLS.h">
-      <Filter>ObjectPool</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjectPoolTLS.hpp">
-      <Filter>ObjectPool</Filter>
-    </ClInclude>
     <ClInclude Include="Thread.h">
       <Filter>Thread</Filter>
     </ClInclude>
@@ -160,6 +151,12 @@
     </ClInclude>
     <ClInclude Include="ProcessImpl.h">
       <Filter>Processes</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectPool.h">
+      <Filter>ObjectPool</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectPoolTLS.h">
+      <Filter>ObjectPool</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

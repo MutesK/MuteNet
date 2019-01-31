@@ -1,174 +1,244 @@
 #pragma once
 
-#include "foundation.h"
-
+#include <Windows.h>
+#include <new>
+#include <vector>
+#include <list>
 using namespace std;
-/*
-Object Pool (FreeList형식)
-움직이는 알고리즘 자체는 Stack과 비슷함.
-Lock Free 알고리즘의 효율성이 비관적 동시성 제어 기법에 비해 성능 향상을 유도하기 어렵다.
-심지어 Lock Free 알고리즘과 Fast Spin Lock 알고리즘 성능 평가에서 Spin Lock을 이기기 약간 어려움.
-또한 Lock Free 알고리즘은 버그가 나오면 잡기 힘들다.
-잘 쓰지 못할꺼면 안쓰는게 나음.
-std::shared_mutex 와 OwnChecking 기능을 합한 SafeMutex을 만들면 도입예정.
-사용시 주의사항
-* MEMORYPOOL_CALL_CTOR 플래그를 사용중이라면, 기본 생성자는 무조건 존재해야된다.
-*/
 
-#define VALIDCODE (0x77777777)
-
-template <class NodeType>
+template <class DATA>
 class CObjectPool
 {
 private:
-	struct BLOCKNODE
+	struct st_BLOCK_NODE
 	{
-		NodeType Data;
-		uint64_t ValidCode;
-		uint32_t allocindex;
+		DATA Data;
+		st_BLOCK_NODE *pNextBlock;
+	};
 
-		BLOCKNODE(uint32_t allocindex)
-		{
-			ValidCode = VALIDCODE;
-			this->allocindex = allocindex;
-		}
-
-		~BLOCKNODE()
-		{
-			cout << "Bug Detected Shared Pointer Reference Count is Zero\n";
-			*((int *)0) = 1;
-		}
+	struct st_Pop
+	{
+		st_BLOCK_NODE *_TopNode;
+		__int64		   UniqueCount;
 	};
 public:
-	CObjectPool(int blockSize = 10000, int maxBlockSize = 10000, bool flagcallctor = false);
+	//////////////////////////////////
+	// 생성자
+	// int - 블럭 갯수
+	// bool - 블록 생성자 호출여부(기본값 = FALSE)
+	//////////////////////////////////
+	CObjectPool(int blockSize = 50000, bool bConst = false);
 	virtual ~CObjectPool();
 
-	NodeType* Alloc(void);
-	bool Free(NodeType* Data);
 
+	//////////////////////////////////
+	// 블록 하나를 할당해주는 함수 -> new 선언해줘야 한다면 한다.
+	// 리턴 : 특정 블록의 공간 포인터 리턴
+	//////////////////////////////////
+	DATA* Alloc(void);
+
+	//////////////////////////////////
+	// 사용중인 블록을 반환하는 함수
+	// 파라미터 : 사용중인 데이터 주소값-> 소멸자 호출해야 된다면 하고 안한다면 그냥 반환
+	// 리턴 : 성공여부
+	//////////////////////////////////
+	bool Free(DATA *pData); // 그렇다면 외부에서 이 함수를 통해 반환하고, 나중에 이 주소값을 사용하려고 한다면? -> 주의
+
+
+	//////////////////////////////////
+	// 총 확보된 블록의 갯수 리턴
+	//////////////////////////////////
 	int GetBlockCount(void);
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 현재 사용중인 블럭 개수를 얻는다.
+	//
+	// 파라미터: 사용중인 블럭 개수.
+	//////////////////////////////////////////////////////////////////////////
 	int GetAllocCount(void);
+
+
 private:
-	bool _isUsector;
+	void MakeNewNode();
+private:
+	// 생성시 할당량
+	LONG m_iBlockSize;
 
-	std::atomic<uint32_t>  _allocCount;
-	std::atomic<uint32_t>  _maxBlockSize;
-	std::atomic<uint32_t>  _blockSize;
+	bool m_bUseConstruct;
 
-	std::map<uint32_t, BLOCKNODE *>		 _freelist;
-	std::stack<uint32_t>				 _freestack;  // 안쓰는 인덱스 모아놓은 자료구조 
+	LONG m_iAllocCount;
+	LONG64 m_iUnique;
 
-	std::mutex				     _lock;
+	st_Pop *pPop;
+	st_BLOCK_NODE *pTail;
+
+	std::list<st_BLOCK_NODE *> List;
 };
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
-template <class NodeType>
-CObjectPool<NodeType>::CObjectPool(int blockSize, int maxBlockSize, bool flagcallctor)
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+template <class DATA>
+CObjectPool<DATA>::CObjectPool(int blockSize, bool bConst)
+	: m_bUseConstruct(bConst)
 {
-	_allocCount = 0;
-	_maxBlockSize = 0;
-	_blockSize = 0;
-	_freelist.clear();
+	m_iAllocCount = 0;
+	m_iBlockSize = 0;
+	st_BLOCK_NODE *pNewNode = nullptr;
+	st_BLOCK_NODE *pOldNode = nullptr;
 
-	_isUsector = false;
+	pNewNode = (st_BLOCK_NODE *)malloc(sizeof(st_BLOCK_NODE));
+	memset(pNewNode, 0, sizeof(st_BLOCK_NODE));
+	memset(&pNewNode->Data, 0, sizeof(DATA));
+	List.push_back(pNewNode);
 
-	for (int i = 0; i < blockSize; i++)
+	pPop = (st_Pop *)_aligned_malloc(128, 16);
+	pPop->_TopNode = pNewNode;
+	pPop->UniqueCount = 0;
+	pOldNode = pNewNode;
+
+
+	for (int i = 1; i <= blockSize; i++)
 	{
-		_freelist[i] = static_cast<BLOCKNODE *>(malloc(sizeof(BLOCKNODE)));
-		_freelist[i]->allocindex = i;
-		_freelist[i]->ValidCode = VALIDCODE;
-		_freestack.push(i);
+		pNewNode = (st_BLOCK_NODE *)malloc(sizeof(st_BLOCK_NODE));
+		pOldNode->pNextBlock = pNewNode;
+		pNewNode->pNextBlock = nullptr;
+		memset(&pNewNode->Data, 0, sizeof(DATA));
+
+		List.push_back(pNewNode);
+
+		pOldNode = pNewNode;
+		m_iBlockSize++;
 	}
 
-	_isUsector = flagcallctor;
-	_maxBlockSize = maxBlockSize;
-	_blockSize = blockSize;
+	pTail = pNewNode;
 }
-template <class NodeType>
-CObjectPool<NodeType>::~CObjectPool()
+
+template <class DATA>
+CObjectPool<DATA>::~CObjectPool()
 {
-	for (auto iter = _freelist.begin(); iter != _freelist.end(); ++iter)
+	auto iter = List.begin();
+
+	for (; iter != List.end();)
 	{
-		std::free(iter->second);
+		st_BLOCK_NODE *pNode = (*iter);
+		List.erase(iter);
+		free(pNode);
 	}
 
-	_freelist.clear();
-}
-template <class NodeType>
-NodeType* CObjectPool<NodeType>::Alloc(void)
-{
-	std::lock_guard<std::mutex> guard(_lock);
-	if (_allocCount >= _blockSize)
-	{
-		// 새로 DATA을 만들어야됨.
-		if (_maxBlockSize <= _blockSize)
-			return nullptr;
+	_aligned_free(pPop);
 
-		int makedblocksize = 2 * _blockSize;
-		
-		for (int i = _blockSize; i < makedblocksize; i++)
+}
+
+template <class DATA>
+DATA* CObjectPool<DATA>::Alloc(void)
+{
+	st_Pop OldPop;
+	st_BLOCK_NODE *pNewNode = nullptr;
+	DATA *ret = nullptr;
+	size_t UniqueCount = InterlockedIncrement64(&m_iUnique) % MAXLONG64;
+
+	if (pPop->_TopNode->pNextBlock == nullptr)
+	{
+
+		for(int i=0; i<10000; i++)
+			MakeNewNode();
+	}
+
+	while (1)
+	{
+		OldPop = { 0 };
+
+		// 자료구조를 변경한다.
+		OldPop._TopNode = pPop->_TopNode;
+		OldPop.UniqueCount = pPop->UniqueCount;
+
+		pNewNode = OldPop._TopNode->pNextBlock;
+
+		if (InterlockedCompareExchange128((LONG64 *)pPop, (size_t)UniqueCount, (size_t)pNewNode, (LONG64 *)&OldPop))
 		{
-			_freelist[i] = static_cast<BLOCKNODE *>(malloc(sizeof(BLOCKNODE)));
-			_freelist[i]->allocindex = i;
-			_freelist[i]->ValidCode = VALIDCODE;
-			_freestack.push(i);
+			ret = &OldPop._TopNode->Data;
+			break;
 		}
-		_blockSize = makedblocksize;
+
 	}
-
-	int allocindex = static_cast<int>(_freestack.top());
-	_freestack.pop();
-
-	NodeType* ret = &_freelist[allocindex]->Data;
-	++_allocCount;
-
-
-#ifdef MEMORYPOOL_CALL_CTOR
-	if (_isUsector)
-	{
-		new (ret) NodeType();
-	}
-#endif
+	InterlockedIncrement(&m_iAllocCount);
 
 	return ret;
 }
-template <class NodeType>
-bool CObjectPool<NodeType>::Free(NodeType* Data)
+
+template <class DATA>
+bool CObjectPool<DATA>::Free(DATA *pData)
 {
-	std::lock_guard<std::mutex> guard(_lock);
+	st_BLOCK_NODE *pDel = (st_BLOCK_NODE *)(pData);
 
-	if (_allocCount <= 0)
-		return false;
-
-	// Danger Code
-	BLOCKNODE* pBlockNode = reinterpret_cast<BLOCKNODE *>(Data);
-
-	if (pBlockNode->ValidCode != VALIDCODE)
-		return false;
-
-	uint32_t allocindex = pBlockNode->allocindex;
-	_freestack.push(allocindex);
-	--_allocCount;
-
-#ifdef MEMORYPOOL_CALL_CTOR
-	if (_isUsector)
+	if (InterlockedAdd(&m_iAllocCount, -1) < 0)
 	{
-		Data->~NodeType();
+		InterlockedAdd(&m_iAllocCount, 1);
+		return false;
 	}
-#endif
+
+	st_Pop OldPop;
+	LONG64 UniqueCount = InterlockedIncrement64(&m_iUnique) % MAXLONG64;
+	while (1)
+	{
+		OldPop = { 0 };
+
+		OldPop._TopNode = pPop->_TopNode;
+		OldPop.UniqueCount = pPop->UniqueCount;
+
+		if (OldPop._TopNode != pDel->pNextBlock && OldPop._TopNode != pDel)
+			pDel->pNextBlock = OldPop._TopNode;
+
+		if (InterlockedCompareExchange128((LONG64 *)pPop, (size_t)UniqueCount, (size_t)pDel, (LONG64 *)&OldPop))
+			break;
+	}
 
 	return true;
 }
 
-template <class NodeType>
-int CObjectPool<NodeType>::GetBlockCount(void)
+
+template <class DATA>
+void CObjectPool<DATA>::MakeNewNode()
 {
-	return _blockSize;
+	st_BLOCK_NODE *pNewNode = (st_BLOCK_NODE *)malloc(sizeof(st_BLOCK_NODE));
+	memset(pNewNode, 0, sizeof(st_BLOCK_NODE));
+	pNewNode->pNextBlock = nullptr;
+
+	List.push_back(pNewNode);
+
+	st_Pop OldPop; 
+	size_t UniqueCount = InterlockedIncrement64(&m_iUnique) % MAXLONG64;
+
+	while (1)
+	{
+		OldPop = { 0 };
+
+		OldPop._TopNode = pPop->_TopNode;
+		OldPop.UniqueCount = pPop->UniqueCount;
+
+		if (OldPop._TopNode != pNewNode->pNextBlock && OldPop._TopNode != pNewNode)
+			pNewNode->pNextBlock = OldPop._TopNode;
+
+		if (InterlockedCompareExchange128((LONG64 *)pPop, (size_t)UniqueCount, (size_t)pNewNode, (LONG64 *)&OldPop))
+		{
+			InterlockedAdd(&m_iBlockSize, 1);
+			break;
+		}
+	}
 }
 
-template <class NodeType>
-int CObjectPool<NodeType>::GetAllocCount(void)
+template <class DATA>
+int CObjectPool<DATA>::GetBlockCount(void)
 {
-	return _allocCount;
+	return m_iBlockSize;
+}
+
+template <class DATA>
+int CObjectPool<DATA>::GetAllocCount(void)
+{
+	return m_iAllocCount;
 }

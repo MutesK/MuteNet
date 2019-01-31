@@ -69,4 +69,17 @@
 	std::shared_lock<std::shared_mutex> lock(##mutex) 
 
 #define UNIQUE_LOCK(mutex)	\
-	std::unique_lock<std::shared_mutex> lock(##mutex) 
+	std::unique_lock<std::shared_mutex> lock(##mutex)
+
+
+static void TurnOnLowFragmentHeap() // LFH On
+{
+	ULONG HeapFragValue;
+	HANDLE Heaps[100];
+	DWORD HeapCount = GetProcessHeaps(100, Heaps);
+
+	for (size_t i = 0; i < HeapCount; i++)
+	{
+		HeapSetInformation(Heaps[i], HeapCompatibilityInformation, &HeapFragValue, sizeof(HeapFragValue));
+	}
+}

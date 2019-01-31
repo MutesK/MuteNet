@@ -1,76 +1,84 @@
-ï»¿#pragma once
+#pragma once
 
+#include <Windows.h>
+#include <list>
+#include <memory>
+#include <atomic>
 #include "ObjectPool.h"
 
-/*
-ObjectPoolì„ ìŠ¤ë ˆë“œë³„ë¡œ, í• ë‹¹í•˜ê²Œ í•˜ë©´ì„œë„, í•´ì œëŠ” ì–´ë–¤ ìŠ¤ë ˆë“œë¼ë„ ê°€ëŠ¥í•˜ê²Œ í•œë‹¤.
+// dynamic TLS Alloc À» »ç¿ëÇÏ¿© ½º·¹µåº°·Î ChunkBlock ¸¦ ÇÒ´çÇÏ¸ç
+// ÀÌ¸¦ÅëÇØ¼­ ¸Ş¸ğ¸®¸¦ ÇÒ´ç ¹ŞÀ½.
+//
+// - CMemoryPool : ÅëÇÕ ¸Ş¸ğ¸® °ü¸®ÀÚ (CChunkBlock À» °ü¸®ÇÔ)
+// - CChunkBlock : ½ÇÁ¦ »ç¿ëÀÚ¿ë °´Ã¼¸¦ °ü¸®ÇÏ´Â ½º·¹µåº° ÇÒ´ç ºí·Ï
+//
+//
+// 1. MemoryPool ÀÎ½ºÅÏ½º°¡ »ı¼ºµÇ¸é CChunkBlock À» ÀÏÁ¤·® È®º¸ÇÏ¿© °ü¸® ÁØºñ¿¡ µé¾î°¨.
+// 2. MemoryPool »ı¼ºÀÚ¿¡¼­ TlsAlloc À» ÅëÇØ¼­ ¸Ş¸ğ¸®Ç® Àü¿ë TLS ÀÎµ¦½º¸¦ È®º¸.
+// 3. ÀÌ TLS ÀÎµ¦½º ¿µ¿ª¿¡ °¢ ½º·¹µå¿ë CChunkBlock ÀÌ ´ã°ÜÁø´Ù.
+//    ¸¸¾à ÇÑ ÇÁ·Î¼¼½º¿¡¼­ ¿©·¯°³ÀÇ MemoryPool À» »ç¿ëÇÏ°Ô µÈ´Ù¸é °¢ÀÚÀÇ TLS Index ¸¦ °¡Áö°Ô µÊ.
+// 4. ½º·¹µå¿¡¼­ MemoryPool.Alloc È£Ãâ
+// 5. TLS Index ¿¡ CChunkBlock ÀÌ ÀÖ´ÂÁö È®ÀÎ.
+// 6. Ã»Å©ºí·ÏÀÌ ¾ø´Ù¸é (NULL ÀÌ¶ó¸é)  MemoryPool ¿¡¼­ ChunkBlock À» ÇÒ´çÇÏ¿© TLS ¿¡ µî·Ï.
+// 7. TLS ¿¡ µî·ÏµÈ ChunkBlock ¿¡¼­ DATA Alloc ÈÄ ¹İÈ¯.
+// 8. ChunkBlock ¿¡ ´õ ÀÌ»ó DATA °¡ ¾ø´Ù¸é TLS ¸¦ NULL ·Î ¹Ù²Ù¾î ³õ°í Á¾·á.
+//
+// 1. MemoryPool.Free È£Ãâ½Ã
+// 2. ÀÔ·Â Æ÷ÀÎÅÍ¸¦ ±âÁØÀ¸·Î ChunkBlock ¿¡ Á¢±Ù.
+// 3. ChunkBlock Ref ¸¦ ÁÙÀÓ.
+// 4. ChunkBlock Ref °¡ 0 ÀÌ¶ó¸é MemoryPool ·Î ChunkBlock ¹İÈ¯.
+// -. Free ÀÇ °æ¿ì´Â ½º·¹µåÀÇ ±¸ºĞÀÌ ¾øÀ¸¹Ç·Î ½º·¹µå ¼¼ÀÌÇÁ ÇÏµµ·Ï ±¸Çö.
+//
+// Alloc ÇÒ´çÀº TLS ¿¡ ÇÒ´çµÈ CChunkBlock ¿¡¼­ ½º·¹µå¸¶´Ù °³º°ÀûÀ¸·Î ÁøÇà
+// Free ÇØÁ¦´Â CChunkBlock ·¹ÆÛ·±½º Ä«¿îÅÍ¸¸ ÁÙÀÎ µÚ ÇØ´ç Ã»Å©ºí·Ï¿¡ »ç¿ëÁßÀÎ °³¼ö°¡ 0 ÀÎ°æ¿ì CMemoryPool ·Î ¹İÈ¯.
+//
+// ChunkBlock Àº DATA ÀÇ ÇÒ´ç¸¸ °¡´ÉÇÏ¸ç, ¹İÈ¯ ÈÄ Àç»ç¿ëÀº °í·ÁÇÏÁö ¾ÊÀ½.
+// ÀÌÀ¯´Â ¹İÈ¯ÀÇ °æ¿ì ¾î¶² ½º·¹µå¿¡¼­µç °¡´ÉÇØ¾ß ÇÏ±â ¶§¹®¿¡ µ¿±âÈ­ ¹®Á¦·Î ¹İÈ¯Àº ¾øÀ½.
+//
+// ChunkBlock ¿¡ 10 °³ÀÇ DATA °¡ ÀÖ´Ù¸é ÀÌ 10°³ÀÇ DATA ¸¦ ¸ğµÎ ÇÒ´ç ÈÄ ¹İÈ¯ ÇÏ°Ô µÉ ¶§ 
+// ChunkBlock ÀÚÃ¼°¡ ÅëÇÕ ¸Ş¸ğ¸®Ç®·Î ¹İÈ¯µÇ¾î Ã»Å© ÀÚÃ¼ÀÇ Àç »ç¿ëÀ» ±â´Ù¸®°Ô µÈ´Ù.
+//////////////////////////////////////////////////////////////////
 
-ChunkDATAì„ ë°°ì—´ë¡œ ChunkBlockì´ ê°€ì§€ê³ ìˆê³ ,
-ObjectPoolì€ ChunkBlock í…œí”Œë¦¿ ì¸ìŠ¤í„´ìŠ¤í™” í•œë‹¤. 
 
-ì‚¬ìš©ì‹œ ì£¼ì˜ì‚¬í•­
-* MEMORYPOOL_CALL_CTOR í”Œë˜ê·¸ë¥¼ ì‚¬ìš©ì¤‘ì´ë¼ë©´, ê¸°ë³¸ ìƒì„±ìëŠ” ë¬´ì¡°ê±´ ì¡´ì¬í•´ì•¼ëœë‹¤. Placement Newì„ í†µí•´ ìˆ˜ë™ ìƒì„±ì í˜¸ì¶œì„ í´ë˜ìŠ¤ì—ì„œ ì•Œì•„ì„œ í•´ì£¼ê¸° ë•Œë¬¸.
-
-*/
-
-#define BLOCK_CHECK 0xABCDEF123456789A
-#define INIT_CHECK 0x777778888899999A
+// 19.1.30
+// C++ 11, 13 ÀÌ»ó thread_local Å°¿öµå·Î º¯°æ
+// Vaild CheckerÀÇ À¯È¿¼ºÀÌ ¾ó¸¶³ª Á¤È®ÇÑÁö.. ÀÌ¹Ì CorruptionÀÌ ÀÏ¾î³µÀ¸¸é, ÀÇ¹Ì ¾øÁö ¾ÊÀº°¡?
 
 template <class DATA>
 class CObjectPoolTLS
 {
-private:
+public:
+	class CChunkBlock;
+	// ChunkPool¿¡¼­ Chunk
+	struct st_ChunkDATA
+	{
+		DATA	Data;
+		CChunkBlock *pThisChunk;
+		CObjectPool<CChunkBlock>* pObjectPool;
+	};
+
 	class CChunkBlock
 	{
 	public:
-		struct st_ChunkDATA
-		{
-			DATA	Data;
-			uint64_t BlockCheck; 
-			CChunkBlock *pThisChunk;
-			CObjectPool<CChunkBlock>* ObjectPool;
-			bool    Alloced;
-		};
-	public:
-		CChunkBlock()
-		{
-			m_lReferenceCount = 0;
-			m_lAllocCount = 0;
-		}
-		~CChunkBlock()
-		{
-			//int *p = nullptr;
-			//*p = 0;
-		}
-		void Init(const std::shared_ptr<CObjectPool<CChunkBlock>>& ObjectPool, int BlockSize = 2000, bool mConstructor = false)
+		CChunkBlock(CObjectPool<CChunkBlock> *pObjectPool, int BlockSize = 2000, bool mConstructor = false)
 		{
 			Constructor = mConstructor;
 
-			if (pArrayChunk == nullptr || m_lInit != INIT_CHECK)
-				pArrayChunk = static_cast<st_ChunkDATA *>(malloc(sizeof(st_ChunkDATA) * BlockSize));
+			if (pArrayChunk == nullptr)
+				pArrayChunk = (st_ChunkDATA *)malloc(sizeof(st_ChunkDATA) * BlockSize);
 
 			for (int i = 0; i < BlockSize; i++)
 			{
-				pArrayChunk[i].BlockCheck = BLOCK_CHECK;
 				pArrayChunk[i].pThisChunk = this;
-				pArrayChunk[i].Alloced = false;
-				pArrayChunk[i].ObjectPool = ObjectPool.get();
+				pArrayChunk[i].pObjectPool = pObjectPool;
 			}
 
-			m_lInit = 0;
 			m_lAllocCount = 0;
 			m_lReferenceCount = BlockSize;
 		}
 
 		DATA* Alloc()
 		{
-			if (pArrayChunk[m_lAllocCount].BlockCheck != BLOCK_CHECK)
-				return nullptr;
-
-			if (pArrayChunk[m_lAllocCount].Alloced)
-				m_lAllocCount++;
-
-			pArrayChunk[m_lAllocCount].Alloced = true;
 			DATA *ret = &pArrayChunk[m_lAllocCount].Data;
 
 			m_lAllocCount++;
@@ -79,44 +87,30 @@ private:
 		}
 		bool Free(DATA *pData, st_ChunkDATA *pBlock)
 		{
-			if (pBlock->BlockCheck != BLOCK_CHECK)
-				return false;
-
-			if (!pBlock->Alloced)
-				return false;
-
-			pBlock->Alloced = false;
-			--m_lReferenceCount;
-
-			if (m_lReferenceCount == 0)
+			if (--m_lReferenceCount == 0)
 			{
-				pBlock->ObjectPool->Free(pBlock->pThisChunk);
-				m_lInit = INIT_CHECK;
+				pBlock->pObjectPool->Free(pBlock->pThisChunk);
 			}
+
+			--m_lAllocCount;
 
 			return true;
 		}
 
-	public:
 		st_ChunkDATA *pArrayChunk;
 
-		atomic<uint32_t>	m_lReferenceCount;
-		atomic<uint32_t>	m_lAllocCount;
+		std::atomic<size_t>	m_lReferenceCount;
+		std::atomic<size_t>	m_lAllocCount;
 		bool    Constructor;
-		atomic<uint64_t>	m_lInit; 
-
-
-		template <class DATA>
-		friend class CMemoryPoolTLS;
 	};
 
 public:
-	CObjectPoolTLS(int ChunkSize = 1000, int BlockSize = 5000, bool mConstructor = false)
+	CObjectPoolTLS(int ChunkSize = 1000, int BlockSize = 0, bool mConstructor = false)
 		:BlockSize(BlockSize), b_Constructor(mConstructor), ChunkSize(ChunkSize)
 	{
 		m_lAllocCount = 0;
 
-		ObjectPool = make_shared<CObjectPool<CChunkBlock>>(ChunkSize, ChunkSize * 2, true);
+		pObjectPool = new CObjectPool<CChunkBlock>(BlockSize, false);
 
 		TLSIndex = TlsAlloc();
 		if (TLSIndex == TLS_OUT_OF_INDEXES)
@@ -124,59 +118,157 @@ public:
 			int *p = nullptr;
 			*p = 0;
 		}
+
 	}
 
 	~CObjectPoolTLS()
 	{
-		TlsFree(TLSIndex);
 	}
 
-	DATA* Alloc()
+	template<class... Args >
+	std::shared_ptr<DATA> get_shared(Args&&... args)
 	{
-		CChunkBlock *pBlock = (CChunkBlock *)TlsGetValue(TLSIndex);
+		DATA *ptr = Alloc();
 
-		if (pBlock == nullptr)
+
+		std::shared_ptr<DATA> pRet(ptr, [&](DATA *ptr)
 		{
-			pBlock = ObjectPool->Alloc();
-			pBlock->Init(ObjectPool, BlockSize, b_Constructor);
-			TlsSetValue(TLSIndex, pBlock);
-		}
-
-		DATA* pRet = pBlock->Alloc();
-		new (pRet) DATA();
-		++m_lAllocCount;
-
-		if (pBlock->m_lAllocCount == BlockSize || pBlock->m_lReferenceCount == 0)
-			TlsSetValue(TLSIndex, nullptr);
+			this->Free(ptr);
+		});
+		new (*pRet) DATA(args);
 
 		return pRet;
 	}
-	bool Free(DATA *pData)
+
+	std::shared_ptr<DATA> get_shared()
 	{
-		CChunkBlock::st_ChunkDATA *pBlock = reinterpret_cast<CChunkBlock::st_ChunkDATA *>(reinterpret_cast<__int64 *>(pData));
+		DATA *ptr = Alloc();
 
-		if (pBlock->pThisChunk->Free(pData, pBlock))
-			--m_lAllocCount;
+		std::shared_ptr<DATA> pRet(ptr, [&](DATA *ptr)
+		{
+			this->Free(ptr);
+		});
+		new (pRet.get()) DATA();
 
-		pData->~DATA();
-
-		return true;
+		return pRet;
 	}
-	uint32_t GetChunkSize()
+
+	template <class... Args>
+	std::unique_ptr<DATA> get_unique(Args&&... args)
 	{
-		return ObjectPool->GetAllocCount();
+		DATA *ptr = Alloc();
+		auto deleter = [&]()
+		{
+			this->Free(ptr);
+		};
+
+		std::unique_ptr<DATA> pRet(ptr, [&](DATA *ptr)
+		{
+			this->Free(ptr);
+		});
+		new (*pRet) DATA(args);
+
+		return pRet;
 	}
-	uint32_t GetAllocCount()
+
+	std::unique_ptr<DATA> get_unique()
+	{
+		DATA *ptr = Alloc();
+		auto deleter = [&]()
+		{
+			this->Free(ptr);
+		};
+
+		std::unique_ptr<DATA> pRet(ptr, [&](DATA *ptr)
+		{
+			this->Free(ptr);
+		});
+		new (*pRet) DATA();
+
+		return pRet;
+	}
+
+	template <class... Args>
+	std::weak_ptr<DATA> get_weak(Args&&... args)
+	{
+		DATA *ptr = Alloc();
+		auto deleter = [&]()
+		{
+			this->Free(ptr);
+		};
+
+		std::weak_ptr<DATA> pRet(ptr, [&](DATA *ptr)
+		{
+			this->Free(ptr);
+		});
+		new (*pRet) DATA(args);
+
+		return pRet;
+	}
+
+	std::weak_ptr<DATA> get_weak()
+	{
+		DATA *ptr = Alloc();
+		auto deleter = [&]()
+		{
+			this->Free(ptr);
+		};
+
+		std::weak_ptr<DATA> pRet(ptr, [&](DATA *ptr)
+		{
+			this->Free(ptr);
+		});
+		new (*pRet) DATA();
+
+		return pRet;
+	}
+
+	long GetChunkSize()
+	{
+		return pObjectPool->GetAllocCount();
+	}
+	long GetAllocCount()
 	{
 		return  m_lAllocCount;
 	}
 private:
-	std::shared_ptr<CObjectPool<CChunkBlock>> ObjectPool;
+		DATA* Alloc()
+		{
+			CChunkBlock *pBlock = (CChunkBlock *)TlsGetValue(TLSIndex);
+
+			if (pBlock == nullptr)
+			{
+				pBlock = pObjectPool->Alloc();
+				new (pBlock) CChunkBlock(pObjectPool, ChunkSize, b_Constructor);
+				TlsSetValue(TLSIndex, pBlock);
+			}
+
+			DATA* pRet = pBlock->Alloc();
+			++m_lAllocCount;
+
+
+			if (pBlock->m_lAllocCount == ChunkSize || pBlock->m_lReferenceCount == 0)
+				TlsSetValue(TLSIndex, nullptr);
+			
+			return pRet;
+		}
+		void Free(DATA *pData)
+		{
+			st_ChunkDATA *pBlock = reinterpret_cast<st_ChunkDATA *>(pData);
+
+			if (pBlock->pThisChunk->Free(pData, pBlock))
+				--m_lAllocCount;
+
+			pData->~DATA();
+		}
+public:
+		std::atomic<size_t>		m_lAllocCount;
+		std::atomic<size_t>		BlockSize;
+		std::atomic<size_t>		ChunkSize;
+private:
+	CObjectPool<CChunkBlock>* pObjectPool;
 
 	uint32_t TLSIndex;
-	static atomic<uint32_t> m_lAllocCount;
-	atomic<uint32_t>	BlockSize;
-	atomic<uint32_t>	ChunkSize;
-
 	bool	b_Constructor;
+	friend class DATADeleter;
 };
