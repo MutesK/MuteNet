@@ -141,9 +141,9 @@ DATA* CObjectPool<DATA>::Alloc(void)
 	DATA *ret = nullptr;
 	size_t UniqueCount = InterlockedIncrement64(&m_iUnique) % MAXLONG64;
 
+RETRY:
 	if (pPop->_TopNode->pNextBlock == nullptr)
-	{
-
+	{	
 		for(int i=0; i<10000; i++)
 			MakeNewNode();
 	}
@@ -155,6 +155,9 @@ DATA* CObjectPool<DATA>::Alloc(void)
 		// 자료구조를 변경한다.
 		OldPop._TopNode = pPop->_TopNode;
 		OldPop.UniqueCount = pPop->UniqueCount;
+
+		if (OldPop._TopNode->pNextBlock == nullptr)
+			goto RETRY;
 
 		pNewNode = OldPop._TopNode->pNextBlock;
 
@@ -222,6 +225,7 @@ void CObjectPool<DATA>::MakeNewNode()
 
 		if (OldPop._TopNode != pNewNode->pNextBlock && OldPop._TopNode != pNewNode)
 			pNewNode->pNextBlock = OldPop._TopNode;
+		else continue;
 
 		if (InterlockedCompareExchange128((LONG64 *)pPop, (size_t)UniqueCount, (size_t)pNewNode, (LONG64 *)&OldPop))
 		{

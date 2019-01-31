@@ -1,68 +1,46 @@
 #include <iostream>
-#include "ObjectPoolTLS.h"
+#include "CLockFreeQueue.h"
+#include "CLockFreeStack.h"
 #include <thread>
 #include <vector>
 
 using namespace std;
 
-
-enum ValidCode
-{
-	FOR_VAILD = 0x9876
-};
-class Lab
-{
-public:
-
-	Lab()
-	{
-	}
-	~Lab()
-	{
-	}
-	union vaild
-	{
-		unsigned short makecount;
-		unsigned short vaildcode;
-		int	  fullvaild;
-	};
-
-	vaild vaildNum;
-};
-
-CObjectPoolTLS<Lab> _testTls;
+CLockFreeStack<size_t> _stack;
+CLockFreeQueue<size_t> _queue;
 std::vector<std::thread> _testThreadPool;
 
 int main()
 {
-	for(int i=0; i<5; i++)
+	for(int i=0; i<10; i++)
 		_testThreadPool.push_back(std::thread([&]()
 	{
 		while (1)
 		{
-			list<std::shared_ptr<Lab>> list;
-
-			for (int i = 0; i < 100000; i++)
-				list.push_back(_testTls.get_shared());
+			size_t temp;
+			for (int i = 0; i < 10000; i++)
+				_queue.Enqueue(i);
 
 			std::this_thread::sleep_for(1s);
 
-			for (int i = 0; i < 100000; i++)
-				list.pop_back();
+			for (int i = 0; i < 10000; i++)
+				_queue.Dequeue(&temp);
+
+			std::this_thread::sleep_for(1s);
 		}
 	}));
 
-	for (int i = 0; i < 5; i++)
+	for (int i = 0; i < 10; i++)
 	{
 		_testThreadPool[i].joinable();
 	}
 
 	while (1)
 	{
-		std::cout << "Object Pool TLS 부하 테스트\n";
-		std::cout << "Alloced Chunk Block Size : " << _testTls.GetChunkSize() << std::endl;
-		std::cout << "Total Alloc Data Size : " << _testTls.GetAllocCount() << std::endl;
-		std::this_thread::sleep_for(1s);
+		std::cout << "LockFree Queue 부하 테스트\n";
+		std::cout << "Use Queue Size : " << _queue.GetUseSize() << std::endl;
+		std::cout << "Total Queue Data Size : " << _queue.GetQueueSize() << std::endl;
+		std::this_thread::sleep_for(0.2s);
 		system("cls");
 	}
 

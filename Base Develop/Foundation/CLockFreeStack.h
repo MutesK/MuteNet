@@ -19,10 +19,10 @@ private:
 		__int64	 UniqueCount;
 	};
 public:
-	CLockFreeStack(int iSize = 0);
+	CLockFreeStack(int iSize = 5000);
 	virtual ~CLockFreeStack();
 
-	void Push(DATA&& Data);
+	void Push(const DATA& Data);
 	bool Pop(DATA *pData);
 	///////////////////////////////////////////////////
 	// 스택 내부를 깨끗하게 지운다.
@@ -77,11 +77,11 @@ void CLockFreeStack<DATA>::ClearStack()
 	m_iUseSize = 0;
 }
 template <class DATA>
-void CLockFreeStack<DATA>::Push(DATA&& Data)
+void CLockFreeStack<DATA>::Push(const DATA& Data)
 {
 	st_NODE *pNewNode = pMemoryPool->Alloc();
 
-	pNewNode->Data = std::move(Data);
+	pNewNode->Data = Data;
 	pNewNode->pNextNode = nullptr;
 
 	LONG64 Unique = ++m_iUnique;

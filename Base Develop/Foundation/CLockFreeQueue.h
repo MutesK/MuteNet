@@ -18,10 +18,10 @@ private:
 		__int64	 UniqueCount;
 	};
 public:
-	CLockFreeQueue(int iSize=0);
+	CLockFreeQueue(int iSize=100000);
 	virtual ~CLockFreeQueue();
 
-	void Enqueue(const DATA *data);
+	void Enqueue(const DATA& data);
 	bool Dequeue(DATA *pOutData);
 
 
@@ -100,7 +100,7 @@ void CLockFreeQueue<DATA>::ClearQueue()
 template <class DATA>
 LONG CLockFreeQueue<DATA>::GetUseSize()
 {
-	return max(m_iUseSize, 0);
+	return m_iUseSize;
 }
 template <class DATA>
 int CLockFreeQueue<DATA>::GetQueueSize()
@@ -108,11 +108,11 @@ int CLockFreeQueue<DATA>::GetQueueSize()
 	return pMemoryPool->GetBlockCount();
 }
 template <class DATA>
-void CLockFreeQueue<DATA>::Enqueue(const DATA *data)
+void CLockFreeQueue<DATA>::Enqueue(const DATA& data)
 {
 	st_NODE *pNewNode = pMemoryPool->Alloc();
 
-	pNewNode->Data = *data;
+	pNewNode->Data = data;
 	pNewNode->pNextNode = nullptr;
 
 	st_DUMMY rear;
