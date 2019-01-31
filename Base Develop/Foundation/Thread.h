@@ -1,7 +1,7 @@
 #pragma once
 
 /*
-	Thread Class
+	Thread Class (예전 스타일)
 
 	1. 스레드 우선순위 설정 및 변경
 	2. 스레드 중지 시작기능

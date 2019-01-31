@@ -10,6 +10,9 @@ template <class DATA>
 class CObjectPool
 {
 private:
+	friend class ObjectPoolTLS;
+	friend class CChunkBlock;
+
 	struct st_BLOCK_NODE
 	{
 		DATA Data;
@@ -27,7 +30,7 @@ public:
 	// int - 블럭 갯수
 	// bool - 블록 생성자 호출여부(기본값 = FALSE)
 	//////////////////////////////////
-	CObjectPool(int blockSize = 50000, bool bConst = false);
+	CObjectPool(int blockSize = 50000);
 	virtual ~CObjectPool();
 
 
@@ -66,8 +69,6 @@ private:
 	// 생성시 할당량
 	LONG m_iBlockSize;
 
-	bool m_bUseConstruct;
-
 	LONG m_iAllocCount;
 	LONG64 m_iUnique;
 
@@ -82,8 +83,7 @@ private:
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 template <class DATA>
-CObjectPool<DATA>::CObjectPool(int blockSize, bool bConst)
-	: m_bUseConstruct(bConst)
+CObjectPool<DATA>::CObjectPool(int blockSize)
 {
 	m_iAllocCount = 0;
 	m_iBlockSize = 0;

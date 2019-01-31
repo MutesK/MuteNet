@@ -40,10 +40,6 @@
 //////////////////////////////////////////////////////////////////
 
 
-// 19.1.30
-// C++ 11, 13 이상 thread_local 키워드로 변경
-// Vaild Checker의 유효성이 얼마나 정확한지.. 이미 Corruption이 일어났으면, 의미 없지 않은가?
-
 template <class DATA>
 class CObjectPoolTLS
 {
@@ -60,10 +56,8 @@ public:
 	class CChunkBlock
 	{
 	public:
-		CChunkBlock(CObjectPool<CChunkBlock> *pObjectPool, int BlockSize = 2000, bool mConstructor = false)
+		CChunkBlock(CObjectPool<CChunkBlock> *pObjectPool, int BlockSize = 2000)
 		{
-			Constructor = mConstructor;
-
 			if (pArrayChunk == nullptr)
 				pArrayChunk = (st_ChunkDATA *)malloc(sizeof(st_ChunkDATA) * BlockSize);
 
@@ -97,20 +91,21 @@ public:
 			return true;
 		}
 
+		friend class CObjectPoolTLS;
+	private:
 		st_ChunkDATA *pArrayChunk;
 
 		std::atomic<size_t>	m_lReferenceCount;
 		std::atomic<size_t>	m_lAllocCount;
-		bool    Constructor;
 	};
 
 public:
-	CObjectPoolTLS(int ChunkSize = 1000, int BlockSize = 0, bool mConstructor = false)
-		:BlockSize(BlockSize), b_Constructor(mConstructor), ChunkSize(ChunkSize)
+	CObjectPoolTLS(int ChunkSize = 1000, int BlockSize = 0)
+		:BlockSize(BlockSize), ChunkSize(ChunkSize)
 	{
 		m_lAllocCount = 0;
 
-		pObjectPool = new CObjectPool<CChunkBlock>(BlockSize, false);
+		pObjectPool = new CObjectPool<CChunkBlock>(BlockSize);
 
 		TLSIndex = TlsAlloc();
 		if (TLSIndex == TLS_OUT_OF_INDEXES)
@@ -239,7 +234,7 @@ private:
 			if (pBlock == nullptr)
 			{
 				pBlock = pObjectPool->Alloc();
-				new (pBlock) CChunkBlock(pObjectPool, ChunkSize, b_Constructor);
+				new (pBlock) CChunkBlock(pObjectPool, ChunkSize);
 				TlsSetValue(TLSIndex, pBlock);
 			}
 
@@ -269,6 +264,4 @@ private:
 	CObjectPool<CChunkBlock>* pObjectPool;
 
 	uint32_t TLSIndex;
-	bool	b_Constructor;
-	friend class DATADeleter;
 };

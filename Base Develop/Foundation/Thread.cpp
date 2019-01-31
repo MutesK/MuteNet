@@ -48,6 +48,7 @@ void Thread::Start()
 
 void Thread::Stop()
 {
+
 	// 스레드 동작중인지 체크
 	if (!_isthreadwork)
 		return;

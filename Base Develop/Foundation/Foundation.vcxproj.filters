@@ -49,6 +49,9 @@
     <Filter Include="Processes">
       <UniqueIdentifier>{5d136d87-ffc1-4353-bb69-ffc99c0219a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="LockFreeAlgorithm">
+      <UniqueIdentifier>{a3c796aa-a2a3-4475-8072-be11afe74d7a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="foundation_test.cpp">
@@ -157,6 +160,12 @@
     </ClInclude>
     <ClInclude Include="ObjectPoolTLS.h">
       <Filter>ObjectPool</Filter>
+    </ClInclude>
+    <ClInclude Include="CLockFreeQueue.h">
+      <Filter>LockFreeAlgorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="CLockFreeStack.h">
+      <Filter>LockFreeAlgorithm</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

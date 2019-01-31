@@ -133,6 +133,8 @@
     <ClCompile Include="Thread.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CLockFreeQueue.h" />
+    <ClInclude Include="CLockFreeStack.h" />
     <ClInclude Include="ConsolePrinter.h" />
     <ClInclude Include="DateTime.h" />
     <ClInclude Include="EnvironmentImpl.h" />
