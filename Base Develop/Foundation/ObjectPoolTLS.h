@@ -93,7 +93,7 @@ public:
 
 		friend class CObjectPoolTLS;
 	private:
-		st_ChunkDATA *pArrayChunk;
+		volatile st_ChunkDATA *pArrayChunk;
 
 		std::atomic<size_t>	m_lReferenceCount;
 		std::atomic<size_t>	m_lAllocCount;
@@ -261,7 +261,7 @@ public:
 		std::atomic<size_t>		BlockSize;
 		std::atomic<size_t>		ChunkSize;
 private:
-	CObjectPool<CChunkBlock>* pObjectPool;
+	volatile CObjectPool<CChunkBlock>* pObjectPool;
 
 	uint32_t TLSIndex;
 };

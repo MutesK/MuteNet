@@ -67,15 +67,15 @@ private:
 	void MakeNewNode();
 private:
 	// 생성시 할당량
-	LONG m_iBlockSize;
+	volatile LONG m_iBlockSize;
 
-	LONG m_iAllocCount;
-	LONG64 m_iUnique;
+	volatile LONG m_iAllocCount;
+	volatile LONG64 m_iUnique;
 
-	st_Pop *pPop;
-	st_BLOCK_NODE *pTail;
+	volatile st_Pop *pPop;
+	volatile st_BLOCK_NODE *pTail;
 
-	std::list<st_BLOCK_NODE *> List;
+	volatile std::list<st_BLOCK_NODE *> List;
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include "ObjectPoolTLS.h"
 
 template <class DATA>
@@ -39,10 +40,10 @@ public:
 	int GetQueueSize();
 
 private:
-	CObjectPool<st_NODE> *pMemoryPool;
+	volatile CObjectPool<st_NODE> *pMemoryPool;
 
-	st_DUMMY *_Rear;
-	st_DUMMY *_Front;
+	volatile st_DUMMY *_Rear;
+	volatile st_DUMMY *_Front;
 
 	std::atomic<size_t> m_iUseSize;
 	std::atomic<size_t> m_iUnique;
