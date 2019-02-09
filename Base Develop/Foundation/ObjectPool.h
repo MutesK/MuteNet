@@ -72,10 +72,10 @@ private:
 	volatile LONG m_iAllocCount;
 	volatile LONG64 m_iUnique;
 
-	volatile st_Pop *pPop;
+	st_Pop *pPop;
 	volatile st_BLOCK_NODE *pTail;
 
-	volatile std::list<st_BLOCK_NODE *> List;
+	std::list<st_BLOCK_NODE *> List;
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -1,14 +1,11 @@
 #include <iostream>
-#include "StreamBuffer.h"
-
+#include "RingBuffer.h"
 
 RingBuffer::RingBuffer()
 	:m_front(0), m_rear(0), m_bufferSize(enBUFFER_SIZE)
 {
 	m_buffer = new char[enBUFFER_SIZE];
 	memset(m_buffer, 0, enBUFFER_SIZE);
-
-	InitializeCriticalSection(&RQueue);
 }
 
 RingBuffer::RingBuffer(int iSize)
@@ -16,15 +13,12 @@ RingBuffer::RingBuffer(int iSize)
 {
 	m_buffer = new char[iSize];
 	memset(m_buffer, 0, iSize);
-
-	InitializeCriticalSection(&RQueue);
 }
 
 
 RingBuffer::~RingBuffer()
 {
 	delete[] m_buffer;
-	DeleteCriticalSection(&RQueue);
 }
 
 int	RingBuffer::GetBufferSize(void)
@@ -126,9 +120,6 @@ int	RingBuffer::PutData(char *chpData, int iSize)
 		memcpy(m_buffer + m_rear, chpData, iSize);
 		m_rear += iSize;
 	}
-
-	if (m_rear == m_bufferSize)
-		m_rear = 0;
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -166,9 +157,6 @@ int	RingBuffer::GetData(char *chpDest, int iSize)
 			m_front = iSize - ReadSize;
 		}
 	}
-
-	if (m_rear == m_front)
-		m_rear = m_front = 0;
 
 	return iSize;
 }
@@ -228,8 +216,6 @@ void RingBuffer::RemoveData(int iSize)
 			m_front = iSize - ReadSize;
 		}
 	}
-	if (m_front == m_bufferSize)
-		m_front = 0;
 }
 
 void RingBuffer::MoveWritePos(int iSize)
@@ -260,9 +246,6 @@ void RingBuffer::MoveWritePos(int iSize)
 	{
 		m_rear += iSize;
 	}
-
-	if (m_rear == m_bufferSize)
-		m_rear = 0;
 }
 
 void RingBuffer::ClearBuffer(void)
@@ -285,16 +268,6 @@ char* RingBuffer::GetReadBufferPtr(void)
 char* RingBuffer::GetWriteBufferPtr(void)
 {
 	return m_buffer + m_rear;
-}
-
-
-void RingBuffer::Lock()
-{
-	EnterCriticalSection(&RQueue);
-}
-void RingBuffer::UnLock()
-{
-	LeaveCriticalSection(&RQueue);
 }
 
 RingBuffer	&RingBuffer::operator = (RingBuffer &clSrStreamBuffer)

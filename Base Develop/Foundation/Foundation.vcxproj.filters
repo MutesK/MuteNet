@@ -40,17 +40,14 @@
     <Filter Include="Thread">
       <UniqueIdentifier>{2122fdf3-07cd-49a3-b3c9-7936418c06c4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Environment">
-      <UniqueIdentifier>{dd4e4fc3-df0c-45f7-bdb8-b91e5c65df59}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FileSystem">
-      <UniqueIdentifier>{db775765-8027-4df3-83f7-44e94d6cc83f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Processes">
       <UniqueIdentifier>{5d136d87-ffc1-4353-bb69-ffc99c0219a9}</UniqueIdentifier>
     </Filter>
     <Filter Include="LockFreeAlgorithm">
       <UniqueIdentifier>{a3c796aa-a2a3-4475-8072-be11afe74d7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Property">
+      <UniqueIdentifier>{2ab45e03-dc57-40e3-bd1d-660bca5147ef}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -83,24 +80,6 @@
     </ClCompile>
     <ClCompile Include="ConsolePrinter.hpp">
       <Filter>Logger</Filter>
-    </ClCompile>
-    <ClCompile Include="EnvironmentImpl.cpp">
-      <Filter>Environment</Filter>
-    </ClCompile>
-    <ClCompile Include="Path.cpp">
-      <Filter>FileSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="PathImpl.cpp">
-      <Filter>FileSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="Pipe.cpp">
-      <Filter>Processes</Filter>
-    </ClCompile>
-    <ClCompile Include="PipeImpl.cpp">
-      <Filter>Processes</Filter>
-    </ClCompile>
-    <ClCompile Include="ProcessImpl.cpp">
-      <Filter>Processes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -137,24 +116,6 @@
     <ClInclude Include="Exception.h">
       <Filter>Exception</Filter>
     </ClInclude>
-    <ClInclude Include="EnvironmentImpl.h">
-      <Filter>Environment</Filter>
-    </ClInclude>
-    <ClInclude Include="Path.h">
-      <Filter>FileSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="PathImpl.h">
-      <Filter>FileSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="Pipe.h">
-      <Filter>Processes</Filter>
-    </ClInclude>
-    <ClInclude Include="PipeImpl.h">
-      <Filter>Processes</Filter>
-    </ClInclude>
-    <ClInclude Include="ProcessImpl.h">
-      <Filter>Processes</Filter>
-    </ClInclude>
     <ClInclude Include="ObjectPool.h">
       <Filter>ObjectPool</Filter>
     </ClInclude>
@@ -166,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="CLockFreeStack.h">
       <Filter>LockFreeAlgorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="Property.h">
+      <Filter>Property</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -32,7 +32,6 @@ public:
 
 	void Log(char *function, size_t line, const char* szStringFormat, ...);
 
-	GET_SET_ATTRIBUTE(size_t, logLevel);
 protected:
 	virtual void DoWork() override;
 	virtual void EmitWakeupSignal() override;

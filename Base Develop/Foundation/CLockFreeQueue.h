@@ -40,10 +40,10 @@ public:
 	int GetQueueSize();
 
 private:
-	volatile CObjectPool<st_NODE> *pMemoryPool;
+	CObjectPool<st_NODE> *pMemoryPool;
 
-	volatile st_DUMMY *_Rear;
-	volatile st_DUMMY *_Front;
+	st_DUMMY *_Rear;
+	st_DUMMY *_Front;
 
 	std::atomic<size_t> m_iUseSize;
 	std::atomic<size_t> m_iUnique;

@@ -117,15 +117,9 @@
   <ItemGroup>
     <ClCompile Include="ConsolePrinter.hpp" />
     <ClCompile Include="DateTime.cpp" />
-    <ClCompile Include="EnvironmentImpl.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="foundation_test.cpp" />
     <ClCompile Include="MiniDump.hpp" />
-    <ClCompile Include="Path.cpp" />
-    <ClCompile Include="PathImpl.cpp" />
-    <ClCompile Include="Pipe.cpp" />
-    <ClCompile Include="PipeImpl.cpp" />
-    <ClCompile Include="ProcessImpl.cpp" />
     <ClCompile Include="Singleton.hpp" />
     <ClCompile Include="Task.cpp" />
     <ClCompile Include="TaskAgent.cpp" />
@@ -137,18 +131,13 @@
     <ClInclude Include="CLockFreeStack.h" />
     <ClInclude Include="ConsolePrinter.h" />
     <ClInclude Include="DateTime.h" />
-    <ClInclude Include="EnvironmentImpl.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Exception.h" />
     <ClInclude Include="foundation.h" />
     <ClInclude Include="MiniDump.h" />
     <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="ObjectPoolTLS.h" />
-    <ClInclude Include="Path.h" />
-    <ClInclude Include="PathImpl.h" />
-    <ClInclude Include="Pipe.h" />
-    <ClInclude Include="PipeImpl.h" />
-    <ClInclude Include="ProcessImpl.h" />
+    <ClInclude Include="Property.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskAgent.h" />

@@ -38,12 +38,12 @@ public:
 	int GetStackSize();
 
 private:
-	volatile CObjectPool<st_NODE> *pMemoryPool;
+	CObjectPool<st_NODE> *pMemoryPool;
 
 	volatile std::atomic<size_t> m_iUseSize;
 	volatile std::atomic<size_t> m_iUnique;
 
-	volatile st_Top *pTop;
+	st_Top *pTop;
 };
 
 template <class DATA>

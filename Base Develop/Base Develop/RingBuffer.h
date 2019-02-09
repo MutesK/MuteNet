@@ -1,7 +1,9 @@
 #pragma once
 
 #include "../Foundation/foundation.h"
-
+/*
+	Not Thread Safe
+*/
 class RingBuffer
 {
 public:
@@ -118,11 +120,6 @@ public:
 	}
 
 	RingBuffer	&operator = (RingBuffer &clSrStreamBuffer);
-
-	void Lock();
-	void UnLock();
-
-
 	~RingBuffer();
 
 private:
@@ -131,8 +128,6 @@ private:
 	int m_rear;
 
 	int m_bufferSize;
-
-	CRITICAL_SECTION RQueue;
 
 	enum
 	{

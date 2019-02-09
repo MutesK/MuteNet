@@ -1,5 +1,4 @@
-
-#include "PacketBuffer.h"
+#include "StreamBuffer.h"
 
 StreamBuffer::StreamBuffer()
 {
