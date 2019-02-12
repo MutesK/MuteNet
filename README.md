@@ -23,7 +23,7 @@
 
 ## TO-DO
 
-- [ ] Libs 폴더를 Old Branch로 빼고, Base Develop을 New Branch로 분리
+- [x] Libs 폴더를 Old Branch로 빼고, Base Develop을 New Branch로 분리
 - [ ] Delay Dection 추가
 - [ ] 네트워크 파트는 소켓과 소켓 입출력 모드를 Plug-in 하여 처리할수 있는 모양새로 변경
 - [ ] Lock - Free Algorithm Windows System Dependency 제거 - 리눅스에서도 사용가능하게 변경
