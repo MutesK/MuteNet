@@ -2,57 +2,66 @@
 #include <random>
 #include <thread>
 #include <chrono>
+#include "Select.h"
+
+using namespace std;
+
+
+#define SIZE 1024
+
+void OnRecv(TcpSocketPtr socket);
+void OnAccept(TcpSocketPtr socket);
+void OnSend(TcpSocketPtr socket);
+void OnExcept(TcpSocketPtr socket);
+
+std::vector<TcpSocketPtr> _clientSocketList;
+
 int main()
 {
-	RingBuffer buffer;
+	auto listen = SocketUtil::CreateTCPSocket(AF_INET);
+	auto address = SocketAddress(INADDR_ANY, 20000);
 
-	auto test_unit = [&buffer]() {
-		std::random_device rn;
-		std::mt19937_64 rnd(rn());
+	listen->bind(address);
+	auto IOService = SelectIO(listen, OnAccept, OnRecv, OnSend, OnExcept);
 
-		while (1)
-		{
-			std::uniform_int_distribution<int> range(0, 5000);
-			auto count = range(rnd);
-
-			for (int i = 0; i < count - 1; i++)
-			{
-				buffer << i;
-			}
-			
-			for (int i = 0; i < count - 1; i++)
-			{
-				int temp;
-				buffer >> temp;
-
-				if (temp != i)
-				{
-					int *p = 0;
-					*p = 1;
-				}
-					
-			}
-
-			if (buffer.GetUseSize() != 0)
-			{
-				int *p = 0;
-				*p = 1;
-			}
-
-		}
-	};
-
-	std::thread th1(test_unit);
-	th1.joinable();
+	IOService.Start();
 
 	while (1)
 	{
-		std::cout << "Ring Buffer (Byte) 부하 테스트\n";
-		std::cout << "Use Byte : " << buffer.GetUseSize() << std::endl;
-		std::cout << "Free Byte : " << buffer.GetFreeSize() << std::endl;
 
-		Sleep(1000);
-		system("cls");
 	}
+
+	IOService.Stop();
+
+}
+
+void OnRecv(TcpSocketPtr socket)
+{
+	char bytes[SIZE];
+
+	int dataRecv = socket->Recv(bytes, 1024);
+
+	if (bytes == 0)
+	{
+		std::cout << "Client Disconnect" << std::endl;
+
+		auto iter = std::find(_clientSocketList.begin(), _clientSocketList.end(),
+			[s = socket](TcpSocketPtr p) {if (s == p) return true; return false; });
+
+		_clientSocketList.erase(iter);
+	}
+
+}
+void OnAccept(TcpSocketPtr socket)
+{
+	_clientSocketList.push_back(socket);
+}
+void OnSend(TcpSocketPtr socket)
+{
+
+}
+
+void OnExcept(TcpSocketPtr socket)
+{
 
 }

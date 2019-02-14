@@ -125,6 +125,7 @@
     <ClCompile Include="TaskAgent.cpp" />
     <ClCompile Include="TaskManager.cpp" />
     <ClCompile Include="Thread.cpp" />
+    <ClCompile Include="time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CLockFreeQueue.h" />
@@ -143,6 +144,7 @@
     <ClInclude Include="TaskAgent.h" />
     <ClInclude Include="TaskManager.h" />
     <ClInclude Include="Thread.h" />
+    <ClInclude Include="time.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

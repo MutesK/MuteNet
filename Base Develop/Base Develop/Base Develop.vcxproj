@@ -19,13 +19,29 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Acceptor.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Select.cpp" />
+    <ClCompile Include="Session.cpp" />
+    <ClCompile Include="Socket.cpp" />
+    <ClCompile Include="SocketAddress.cpp" />
     <ClCompile Include="StreamBuffer.cpp" />
     <ClCompile Include="RingBuffer.cpp" />
+    <ClCompile Include="TcpSocket.cpp" />
+    <ClCompile Include="UdpSocket.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Acceptor.h" />
+    <ClInclude Include="Select.h" />
+    <ClInclude Include="Session.h" />
+    <ClInclude Include="Socket.h" />
+    <ClInclude Include="SocketAddress.h" />
+    <ClInclude Include="SocketAddressFactory.h" />
+    <ClInclude Include="SocketUtil.h" />
     <ClInclude Include="StreamBuffer.h" />
     <ClInclude Include="RingBuffer.h" />
+    <ClInclude Include="TcpSocket.h" />
+    <ClInclude Include="UdpSocket.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

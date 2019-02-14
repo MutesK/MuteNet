@@ -49,6 +49,9 @@
     <Filter Include="Property">
       <UniqueIdentifier>{2ab45e03-dc57-40e3-bd1d-660bca5147ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Timing">
+      <UniqueIdentifier>{1c0e04e5-22be-483c-bef5-ae8e7b24c024}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="foundation_test.cpp">
@@ -80,6 +83,9 @@
     </ClCompile>
     <ClCompile Include="ConsolePrinter.hpp">
       <Filter>Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="time.cpp">
+      <Filter>Timing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="Property.h">
       <Filter>Property</Filter>
+    </ClInclude>
+    <ClInclude Include="time.h">
+      <Filter>Timing</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
