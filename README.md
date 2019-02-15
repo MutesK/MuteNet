@@ -24,6 +24,7 @@
 ## TO-DO
 
 - [x] Libs 폴더를 Old Branch로 빼고, Base Develop을 New Branch로 분리
+- [ ] Windows API에 의존적인 TLS 파트 thread_local(C++ 11 표준)로 변경
 - [ ] Delay Detection 추가
 - [ ] 네트워크 파트는 소켓과 소켓 입출력 모드를 Plug-in 하여 처리할수 있는 모양새로 변경
 - [ ] Lock - Free Algorithm Windows System Dependency 제거 - 리눅스에서도 사용가능하게 변경
