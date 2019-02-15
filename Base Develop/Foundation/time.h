@@ -14,7 +14,7 @@ namespace Timing
 
 	inline Time SecondsToTicks(Time t)
 	{
-		return Tick((t * 1000.0) + 0.5); // 반올림
+		return Time((t * 1000.0) + 0.5); // 반올림
 	}
 
 	bool SystemTimeToTimet(const SYSTEMTIME& IN val, time_t& OUT timet);

@@ -1,8 +1,8 @@
 #pragma once
 
+#include "SocketAddress.h"
 #include "TcpSocket.h"
 #include "UdpSocket.h"
-#include "SocketAddress.h"
 
 using UdpSocketPtr = std::shared_ptr<UdpSocket>;
 using TcpSocketPtr = std::shared_ptr<TcpSocket>;

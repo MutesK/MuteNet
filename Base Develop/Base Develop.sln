@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Base Develop", "Base Develop\Base Develop.vcxproj", "{3FC4BB24-2EC1-4F93-9BD1-B2B1CF9F2D10}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E384BEC7-A920-4645-9793-85A054E928D7} = {E384BEC7-A920-4645-9793-85A054E928D7}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Foundation", "Foundation\Foundation.vcxproj", "{E384BEC7-A920-4645-9793-85A054E928D7}"
 EndProject

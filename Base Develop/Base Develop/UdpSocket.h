@@ -1,10 +1,11 @@
 #pragma once
+
 #include "Socket.h"
+
 class UdpSocket : public Socket
 {
-protected:
-	UdpSocket(ADDRESS_FAMILY);
 public:
+	UdpSocket(ADDRESS_FAMILY);
 	virtual ~UdpSocket();
 
 	virtual bool bind(const SocketAddress& address);
@@ -12,6 +13,8 @@ public:
 	int SendTo(const void* inData, int inLen, const SocketAddress& inTo);
 
 	int ReceiveFrom(void *inBuffer, int inLen, SocketAddress& outFrom);
+
+	friend class SocketUtil;
 
 };
 

@@ -43,14 +43,14 @@ int UdpSocket::SendTo(const void* inData, int inLen, const SocketAddress& inTo)
 		return byte;
 
 	_lastError = WSAGetLastError();
-	return -_lastError;
+	return _lastError * -1;
 }
 
 int UdpSocket::ReceiveFrom(void *inBuffer, int inLen, SocketAddress& outFrom)
 {
 	int length = outFrom.getSize();
 
-	int recv = recvfrom(_socket, (const char*)inBuffer, inLen, 0, 
+	int recv = recvfrom(_socket, (char*)inBuffer, inLen, 0, 
 		const_cast<sockaddr *>(outFrom.get_socketaddress()),
 		&length);
 
@@ -58,5 +58,5 @@ int UdpSocket::ReceiveFrom(void *inBuffer, int inLen, SocketAddress& outFrom)
 		return recv;
 
 	_lastError = WSAGetLastError();
-	return -_lastError;
+	return _lastError * -1;
 }

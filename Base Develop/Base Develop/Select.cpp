@@ -4,13 +4,13 @@ SelectIO::SelectIO(TcpSocketPtr& listen, std::function<void(TcpSocketPtr)> Accep
 	std::function<void(TcpSocketPtr)> Recv, std::function<void(TcpSocketPtr)> Send,
 	std::function<void(TcpSocketPtr)> Except)
 	: _listen(listen), _OnAccpet(Accept), _OnRecv(Recv), _OnSend(Send),
-	_OnExcept(Except)
+	_OnExcept(Except), Thread()
 {
 }
 
 fd_set* SelectIO::InFillFDSet(int mode)
 {
-	fd_set target;
+	fd_set target{0};
 
 	switch (mode)
 	{

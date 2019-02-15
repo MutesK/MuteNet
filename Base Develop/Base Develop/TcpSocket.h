@@ -1,10 +1,11 @@
 #pragma once
+
 #include "Socket.h"
+
 class TcpSocket : public Socket
 {
-protected:
-	TcpSocket(ADDRESS_FAMILY f);
 public:
+	TcpSocket(ADDRESS_FAMILY f);
 	virtual ~TcpSocket();
 
 	void setNagle(bool bOption);
@@ -23,6 +24,5 @@ public:
 	int Send(const void* inData, int inLen);
 
 	int Recv(void* inData, int inLen);
-
 };
 

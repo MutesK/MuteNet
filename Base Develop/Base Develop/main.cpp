@@ -3,7 +3,7 @@
 #include <thread>
 #include <chrono>
 #include "Select.h"
-
+#include "SocketUtil.h"
 using namespace std;
 
 
@@ -15,23 +15,23 @@ void OnSend(TcpSocketPtr socket);
 void OnExcept(TcpSocketPtr socket);
 
 std::vector<TcpSocketPtr> _clientSocketList;
-
+std::shared_ptr<SelectIO> IOService;
 int main()
 {
 	auto listen = SocketUtil::CreateTCPSocket(AF_INET);
 	auto address = SocketAddress(INADDR_ANY, 20000);
 
 	listen->bind(address);
-	auto IOService = SelectIO(listen, OnAccept, OnRecv, OnSend, OnExcept);
+	IOService =  std::make_shared<SelectIO>(listen, OnAccept, OnRecv, OnSend, OnExcept);
 
-	IOService.Start();
+	IOService->Start();
 
 	while (1)
 	{
 
 	}
 
-	IOService.Stop();
+	IOService->Stop();
 
 }
 
@@ -45,11 +45,20 @@ void OnRecv(TcpSocketPtr socket)
 	{
 		std::cout << "Client Disconnect" << std::endl;
 
-		auto iter = std::find(_clientSocketList.begin(), _clientSocketList.end(),
-			[s = socket](TcpSocketPtr p) {if (s == p) return true; return false; });
+		auto iter = std::find(_clientSocketList.begin(), _clientSocketList.end(), socket);
+		if (iter == _clientSocketList.end())
+			return;
 
 		_clientSocketList.erase(iter);
+		IOService->DequeueSocket(socket);
 	}
+	else
+	{
+		// Echo
+		socket->Send((void *)bytes, dataRecv);
+	}
+
+
 
 }
 void OnAccept(TcpSocketPtr socket)

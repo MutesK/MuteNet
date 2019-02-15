@@ -2,7 +2,6 @@
 
 #include "../Foundation/foundation.h"
 #include "../Foundation/Thread.h"
-#include "Acceptor.h"
 #include "SocketUtil.h"
 
 enum SetMode

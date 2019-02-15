@@ -67,12 +67,14 @@ std::shared_ptr<TcpSocket> TcpSocket::Accept(SocketAddress& address)
 		const_cast<sockaddr *>(address.get_socketaddress()),
 		&addressSize);
 
-	std::shared_ptr<TcpSocket> ret = std::make_shared<TcpSocket>();
+	std::shared_ptr<TcpSocket> ret = std::make_shared<TcpSocket>(_address_family);
 
 	ret->set_socket(newSocket);
 
 	if (newSocket == INVALID_SOCKET)
 		_lastError = WSAGetLastError();
+
+	return ret;
 }
 
 
@@ -86,6 +88,11 @@ std::shared_ptr<SocketAddress> TcpSocket::getAddress()
 	return std::make_shared<SocketAddress>(addr);
 }
 
+int TcpSocket::setNoDelay(bool toggle)
+{
+	return setsockopt(_socket, IPPROTO_TCP, TCP_NODELAY, (const char *)&toggle, sizeof(bool));
+}
+
 int TcpSocket::Send(const void* inData, int inLen)
 {
 	int sentbyte = send(_socket, (const char*)(inData), inLen, 0);
@@ -94,7 +101,7 @@ int TcpSocket::Send(const void* inData, int inLen)
 		return sentbyte;
 
 	_lastError = WSAGetLastError();
-	return -_lastError;
+	return _lastError * -1;
 }
 
 
@@ -107,5 +114,5 @@ int TcpSocket::Recv(void* inData, int inLen)
 		return recvbytes;
 
 	_lastError = WSAGetLastError();
-	return -_lastError;
+	return _lastError * -1;
 }
