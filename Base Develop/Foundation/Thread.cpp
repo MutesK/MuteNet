@@ -35,6 +35,8 @@ void Thread::Start()
 		break;
 	}
 
+	_isthreadwork = true;
+
 	_hthreadId = GetThreadId(_hthreadhandle);
 	_event.SetEventName(_threadname + "event");
 	_event.SetResetFlag(false);
@@ -43,7 +45,6 @@ void Thread::Start()
 	// Resume Thread
 	ResumeThread(_hthreadhandle);
 
-	_isthreadwork = true;
 }
 
 void Thread::Stop()

@@ -4,6 +4,14 @@
 #include "../Foundation/Thread.h"
 #include "SocketUtil.h"
 
+/*
+	SelectIO Select File Descriptor Set 과  Select 콜을 스레드로 따로 처리해주는 구조.
+
+	_inSession에 비동기적으로 Enqueue, Dequeue하므로, 이미 끊어진 소켓인데, 콜백이 올수도 있음.
+	-> 봇용으로 사용하지 않는다면, 안쓰는걸 추천. (소규모 네트워크에 사용권장)
+
+	Map -> Mutex 추가예정
+*/
 enum SetMode
 {
 	eReadMode,

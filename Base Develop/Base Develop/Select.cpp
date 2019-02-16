@@ -136,7 +136,7 @@ void SelectIO::ExcpetSetCallback()
 
 void SelectIO::DoWork()
 {
-	while (1)
+	while (_isthreadwork)
 	{
 		Select();
 	}
@@ -144,7 +144,7 @@ void SelectIO::DoWork()
 
 void SelectIO::EmitWakeupSignal()
 {
-
+	_isthreadwork = !_isthreadwork;
 }
 void SelectIO::EnqueueSocket(TcpSocketPtr& ptr)
 {
