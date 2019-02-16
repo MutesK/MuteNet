@@ -33,3 +33,4 @@
 - [ ] Foundation 기능 추가 - IPC, Pipe, Frame(Timer), Application Factory
 - [ ] 모던 C++ Task 문법 적용한 State-Machine 제공 예정
 - [ ] Type-Safe C# Stytle Logger
+- [ ] Lock Free 알고리즘 사용한 구간(Object Pool, Lock Free Queue, Stack)에 대해 Memory Barrier 구간(재배치 금지) 적용시킨다.
