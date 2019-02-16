@@ -6,27 +6,23 @@
 using uint = unsigned int;
 #endif
 
-
-#pragma pack(push, 16) 
-struct uint128_t
-{
-	uint64_t _low;
-	uint64_t _high;
-};
-#pragma pack(pop)
-
 #ifdef __linux__
-inline bool CompareAndSwap(volatile uint* Src, uint cmp, uint swap)
+
+#define _aligned_malloc(SIZE, ALIGNMENT) aligned_malloc((ALIGNMENT), (SIZE))
+
+#define _aligned_free aligned_free
+
+inline bool CompareAndSwap(volatile uint* Src, uint cmp, uint& swap)
 {
 	return  __sync_val_compare_and_swap(Src, cmp, swap);
 }
 
-inline bool CompareAndSwap(volatile uint64_t* Src, uint64_t cmp, uint64_t swap)
+inline bool CompareAndSwap(volatile uint64_t* Src, uint64_t cmp, uint64_t& swap)
 {
 	return  __sync_val_compare_and_swap(Src, cmp, swap);
 }
 
-inline bool CompareAndSwap(volatile uint128_t* pSrc, uint128_t cmp, uint128_t swap)
+inline bool CompareAndSwap128((volatile uint64_t* pSrc, uint64_t ExchangeHigh, uint64_t ExchangeLow, uint64_t* swap)
 {
 	bool result;
 
@@ -36,31 +32,35 @@ inline bool CompareAndSwap(volatile uint128_t* pSrc, uint128_t cmp, uint128_t sw
 		"setz %0"
 		:"=q" (result)
 		, "+m" (*pSrc)
-		, "+d" (cmp._high)
-		, "+a" (cmp._low)
-		: "c" (swap._high)
-		, "b" (swap._low)
+		, "+d" (ExchangeHigh)
+		, "+a" (ExchangeLow)
+		: "c" (swap)
+		, "b" (swap >> 64)
 		: "cc");
 
 	return result;
 }
+
+inline void* aligned_malloc(size_t alignment, size_t size)
+{
+	return std::aligned_malloc(alignment, size);
+}
 #endif
 
 #ifdef _WIN32
-#include <Windows.h>
 
-inline bool CompareAndSwap(volatile uint64_t* pSrc, uint64_t Cmp, uint64_t Swap)
+inline bool CompareAndSwap(volatile uint64_t* pSrc, uint64_t Cmp, uint64_t& Swap)
 {
 	return InterlockedCompareExchange64(reinterpret_cast<volatile LONG64 *>(pSrc), static_cast<LONG64>(Cmp), static_cast<LONG64>(Swap));
 }
 
-inline bool CompareAndSwap(volatile uint* pSrc, uint cmp, uint Swap)
+inline bool CompareAndSwap(volatile uint* pSrc, uint cmp, uint& Swap)
 {
 	return InterlockedCompareExchange(reinterpret_cast<volatile LONG *>(pSrc), static_cast<LONG>(cmp), static_cast<LONG>(Swap));
 }
 
-inline bool CompareAndSwap128(volatile uint128_t* pSrc, uint128_t cmp, uint128_t swap)
+inline bool CompareAndSwap128(volatile uint64_t* pSrc, uint64_t ExchangeHigh, uint64_t ExchangeLow, uint64_t* swap)
 {
-	return InterlockedCompareExchange128(reinterpret_cast<volatile LONG64 *>(pSrc), static_cast<LONG64>(cmp._high), static_cast<LONG64>(cmp._low), reinterpret_cast<LONG64 *>(&swap));
+	return InterlockedCompareExchange128(reinterpret_cast<volatile LONG64 *>(pSrc), static_cast<LONG64>(ExchangeHigh), static_cast<LONG64>(ExchangeLow), reinterpret_cast<LONG64 *>(swap));
 }
 #endif

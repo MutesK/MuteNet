@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include <tchar.h>
-
+#include <cstdlib>
 
 #include <winsock2.h>
 #include <ws2tcpip.h>

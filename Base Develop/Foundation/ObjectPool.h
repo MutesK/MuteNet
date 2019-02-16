@@ -1,10 +1,7 @@
 #pragma once
 
-#include <Windows.h>
-#include <new>
-#include <vector>
-#include <list>
-using namespace std;
+#include "foundation.h"
+#include "TypeCAS.h"
 
 template <class DATA>
 class CObjectPool
@@ -67,10 +64,10 @@ private:
 	void MakeNewNode();
 private:
 	// 생성시 할당량
-	volatile LONG m_iBlockSize;
+	std::atomic<uint32_t> m_iBlockSize;
 
-	volatile LONG m_iAllocCount;
-	volatile LONG64 m_iUnique;
+	std::atomic<uint32_t> m_iAllocCount;
+	std::atomic<uint64_t> m_iUnique;
 
 	st_Pop *pPop;
 	volatile st_BLOCK_NODE *pTail;
@@ -125,7 +122,7 @@ CObjectPool<DATA>::~CObjectPool()
 	for (; iter != List.end();)
 	{
 		st_BLOCK_NODE *pNode = (*iter);
-		List.erase(iter);
+		iter = List.erase(iter);
 		free(pNode);
 	}
 
@@ -139,7 +136,7 @@ DATA* CObjectPool<DATA>::Alloc(void)
 	st_Pop OldPop;
 	st_BLOCK_NODE *pNewNode = nullptr;
 	DATA *ret = nullptr;
-	size_t UniqueCount = InterlockedIncrement64(&m_iUnique) % MAXLONG64;
+	size_t UniqueCount = ++m_iUnique % size_t(std::numeric_limits<uint64_t>::max);
 
 RETRY:
 	if (pPop->_TopNode->pNextBlock == nullptr)
@@ -161,14 +158,14 @@ RETRY:
 
 		pNewNode = OldPop._TopNode->pNextBlock;
 
-		if (InterlockedCompareExchange128((LONG64 *)pPop, (size_t)UniqueCount, (size_t)pNewNode, (LONG64 *)&OldPop))
+		if (CompareAndSwap128((uint64_t *)pPop, (uint64_t)UniqueCount, (uint64_t)pNewNode, (uint64_t *)&OldPop))
 		{
 			ret = &OldPop._TopNode->Data;
 			break;
 		}
 
 	}
-	InterlockedIncrement(&m_iAllocCount);
+	++m_iAllocCount;
 
 	return ret;
 }
@@ -178,14 +175,14 @@ bool CObjectPool<DATA>::Free(DATA *pData)
 {
 	st_BLOCK_NODE *pDel = (st_BLOCK_NODE *)(pData);
 
-	if (InterlockedAdd(&m_iAllocCount, -1) < 0)
+	if (--m_iAllocCount < 0)
 	{
-		InterlockedAdd(&m_iAllocCount, 1);
+		++m_iAllocCount;
 		return false;
 	}
 
 	st_Pop OldPop;
-	LONG64 UniqueCount = InterlockedIncrement64(&m_iUnique) % MAXLONG64;
+	uint64_t UniqueCount = ++m_iUnique % size_t(std::numeric_limits<uint64_t>::max);
 	while (1)
 	{
 		OldPop = { 0 };
@@ -196,7 +193,7 @@ bool CObjectPool<DATA>::Free(DATA *pData)
 		if (OldPop._TopNode != pDel->pNextBlock && OldPop._TopNode != pDel)
 			pDel->pNextBlock = OldPop._TopNode;
 
-		if (InterlockedCompareExchange128((LONG64 *)pPop, (size_t)UniqueCount, (size_t)pDel, (LONG64 *)&OldPop))
+		if (CompareAndSwap128((uint64_t *)pPop, (uint64_t)UniqueCount, (uint64_t)pDel, (uint64_t *)&OldPop))
 			break;
 	}
 
@@ -214,7 +211,7 @@ void CObjectPool<DATA>::MakeNewNode()
 	List.push_back(pNewNode);
 
 	st_Pop OldPop; 
-	size_t UniqueCount = InterlockedIncrement64(&m_iUnique) % MAXLONG64;
+	size_t UniqueCount = ++m_iUnique % size_t(std::numeric_limits<uint64_t>::max);
 
 	while (1)
 	{
@@ -227,9 +224,9 @@ void CObjectPool<DATA>::MakeNewNode()
 			pNewNode->pNextBlock = OldPop._TopNode;
 		else continue;
 
-		if (InterlockedCompareExchange128((LONG64 *)pPop, (size_t)UniqueCount, (size_t)pNewNode, (LONG64 *)&OldPop))
+		if (CompareAndSwap128((uint64_t *)pPop, (uint64_t)UniqueCount, (uint64_t)pNewNode, (uint64_t *)&OldPop))
 		{
-			InterlockedAdd(&m_iBlockSize, 1);
+			++m_iBlockSize;
 			break;
 		}
 	}

@@ -1,9 +1,6 @@
 #pragma once
 
-#include <Windows.h>
-#include <list>
-#include <memory>
-#include <atomic>
+#include "foundation.h"
 #include "ObjectPool.h"
 
 // dynamic TLS Alloc 을 사용하여 스레드별로 ChunkBlock 를 할당하며
@@ -40,18 +37,22 @@
 //////////////////////////////////////////////////////////////////
 
 
+
+
+
+
 template <class DATA>
 class CObjectPoolTLS
 {
 public:
 	class CChunkBlock;
-	// ChunkPool에서 Chunk
 	struct st_ChunkDATA
 	{
 		DATA	Data;
 		CChunkBlock *pThisChunk;
 		CObjectPool<CChunkBlock>* pObjectPool;
 	};
+
 
 	class CChunkBlock
 	{
@@ -71,14 +72,15 @@ public:
 			m_lReferenceCount = BlockSize;
 		}
 
+
 		DATA* Alloc()
 		{
 			DATA *ret = &pArrayChunk[m_lAllocCount].Data;
 
 			m_lAllocCount++;
-
 			return ret;
 		}
+
 		bool Free(DATA *pData, st_ChunkDATA *pBlock)
 		{
 			if (--m_lReferenceCount == 0)
@@ -93,12 +95,11 @@ public:
 
 		friend class CObjectPoolTLS;
 	private:
-		volatile st_ChunkDATA *pArrayChunk;
+		st_ChunkDATA *pArrayChunk;
 
 		std::atomic<size_t>	m_lReferenceCount;
 		std::atomic<size_t>	m_lAllocCount;
 	};
-
 public:
 	CObjectPoolTLS(int ChunkSize = 1000, int BlockSize = 0)
 		:BlockSize(BlockSize), ChunkSize(ChunkSize)
@@ -106,21 +107,13 @@ public:
 		m_lAllocCount = 0;
 
 		pObjectPool = new CObjectPool<CChunkBlock>(BlockSize);
-
-		TLSIndex = TlsAlloc();
-		if (TLSIndex == TLS_OUT_OF_INDEXES)
-		{
-			int *p = nullptr;
-			*p = 0;
-		}
-
 	}
-
+		
 	~CObjectPoolTLS()
 	{
 	}
 
-	template<class... Args >
+	template<class... Args>
 	std::shared_ptr<DATA> get_shared(Args&&... args)
 	{
 		DATA *ptr = Alloc();
@@ -130,7 +123,7 @@ public:
 		{
 			this->Free(ptr);
 		});
-		new (*pRet) DATA(args);
+		::new (ptr) DATA(std::forward<Args>(args)...);
 
 		return pRet;
 	}
@@ -143,7 +136,7 @@ public:
 		{
 			this->Free(ptr);
 		});
-		new (pRet.get()) DATA();
+		::new (ptr) DATA();
 
 		return pRet;
 	}
@@ -161,7 +154,7 @@ public:
 		{
 			this->Free(ptr);
 		});
-		new (*pRet) DATA(args);
+		::new (ptr) DATA(std::forward<Args>(args)...);
 
 		return pRet;
 	}
@@ -178,7 +171,7 @@ public:
 		{
 			this->Free(ptr);
 		});
-		new (*pRet) DATA();
+		::new (ptr) DATA();
 
 		return pRet;
 	}
@@ -187,16 +180,12 @@ public:
 	std::weak_ptr<DATA> get_weak(Args&&... args)
 	{
 		DATA *ptr = Alloc();
-		auto deleter = [&]()
-		{
-			this->Free(ptr);
-		};
 
 		std::weak_ptr<DATA> pRet(ptr, [&](DATA *ptr)
 		{
 			this->Free(ptr);
 		});
-		new (*pRet) DATA(args);
+		::new (ptr) DATA(std::forward<Args>(args)...);
 
 		return pRet;
 	}
@@ -204,16 +193,12 @@ public:
 	std::weak_ptr<DATA> get_weak()
 	{
 		DATA *ptr = Alloc();
-		auto deleter = [&]()
-		{
-			this->Free(ptr);
-		};
 
 		std::weak_ptr<DATA> pRet(ptr, [&](DATA *ptr)
 		{
 			this->Free(ptr);
 		});
-		new (*pRet) DATA();
+		::new (ptr) DATA();
 
 		return pRet;
 	}
@@ -227,41 +212,47 @@ public:
 		return  m_lAllocCount;
 	}
 private:
-		DATA* Alloc()
+	DATA* Alloc()
+	{
+		CChunkBlock *pBlock = thread_block;
+
+		if (pBlock == nullptr)
 		{
-			CChunkBlock *pBlock = (CChunkBlock *)TlsGetValue(TLSIndex);
-
-			if (pBlock == nullptr)
-			{
-				pBlock = pObjectPool->Alloc();
-				new (pBlock) CChunkBlock(pObjectPool, ChunkSize);
-				TlsSetValue(TLSIndex, pBlock);
-			}
-
-			DATA* pRet = pBlock->Alloc();
-			++m_lAllocCount;
-
-
-			if (pBlock->m_lAllocCount == ChunkSize || pBlock->m_lReferenceCount == 0)
-				TlsSetValue(TLSIndex, nullptr);
-			
-			return pRet;
+			pBlock = pObjectPool->Alloc();
+			new (pBlock) CChunkBlock(pObjectPool, ChunkSize);
+			thread_block = pBlock;
 		}
-		void Free(DATA *pData)
-		{
-			st_ChunkDATA *pBlock = reinterpret_cast<st_ChunkDATA *>(pData);
 
-			if (pBlock->pThisChunk->Free(pData, pBlock))
-				--m_lAllocCount;
+		DATA* pRet = (DATA *)pBlock->Alloc();
+		++m_lAllocCount;
 
-			pData->~DATA();
-		}
+
+		if (pBlock->m_lAllocCount == ChunkSize || pBlock->m_lReferenceCount == 0)
+			thread_block = nullptr;
+
+		return pRet;
+	}
+
+	void Free(DATA *pData)
+	{
+		st_ChunkDATA *pBlock = reinterpret_cast<st_ChunkDATA *>(pData);
+
+		if (pBlock->pThisChunk->Free(pData, pBlock))
+			--m_lAllocCount;
+
+		pData->~DATA();
+	}
+
 public:
 		std::atomic<size_t>		m_lAllocCount;
 		std::atomic<size_t>		BlockSize;
 		std::atomic<size_t>		ChunkSize;
 private:
-	volatile CObjectPool<CChunkBlock>* pObjectPool;
-
-	uint32_t TLSIndex;
+	CObjectPool<CChunkBlock>* pObjectPool;
+	static thread_local CChunkBlock* thread_block;
 };
+
+template <class DATA>
+thread_local typename CObjectPoolTLS<DATA>::CChunkBlock* CObjectPoolTLS<DATA>::thread_block = nullptr;
+
+

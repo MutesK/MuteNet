@@ -118,7 +118,7 @@ void CLockFreeQueue<DATA>::Enqueue(const DATA& data)
 
 	st_DUMMY rear;
 	st_NODE *pNext;
-	LONG64 Unique = (++m_iUnique) % MAXDWORD64;
+	size_t UniqueCount = ++m_iUnique % size_t(std::numeric_limits<uint64_t>::max);
 
 	while (1)
 	{
