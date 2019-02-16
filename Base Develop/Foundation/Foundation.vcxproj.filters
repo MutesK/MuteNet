@@ -1,21 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="소스 파일">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="헤더 파일">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="리소스 파일">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="DateTime">
-      <UniqueIdentifier>{ed080d61-6cdd-4380-b8b6-b7330ae41752}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Event">
       <UniqueIdentifier>{72beca7b-b3ae-46c3-b74e-81dbd5b37840}</UniqueIdentifier>
     </Filter>
@@ -52,19 +37,19 @@
     <Filter Include="Timing">
       <UniqueIdentifier>{1c0e04e5-22be-483c-bef5-ae8e7b24c024}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CompareAndSwap">
+      <UniqueIdentifier>{99e79d49-9883-4e04-b2c2-2f27eb89b31a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Random">
+      <UniqueIdentifier>{8b822a8a-1eed-41e8-b196-60cb241d6fab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="foundation_test.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Thread.cpp">
       <Filter>Thread</Filter>
     </ClCompile>
     <ClCompile Include="Event.cpp">
       <Filter>Event</Filter>
-    </ClCompile>
-    <ClCompile Include="DateTime.cpp">
-      <Filter>DateTime</Filter>
     </ClCompile>
     <ClCompile Include="Task.cpp">
       <Filter>TaskManager</Filter>
@@ -87,11 +72,11 @@
     <ClCompile Include="time.cpp">
       <Filter>Timing</Filter>
     </ClCompile>
+    <ClCompile Include="RandomGenerator.cpp">
+      <Filter>Random</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="foundation.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Thread.h">
       <Filter>Thread</Filter>
     </ClInclude>
@@ -100,9 +85,6 @@
     </ClInclude>
     <ClInclude Include="MiniDump.h">
       <Filter>MiniDump</Filter>
-    </ClInclude>
-    <ClInclude Include="DateTime.h">
-      <Filter>DateTime</Filter>
     </ClInclude>
     <ClInclude Include="Task.h">
       <Filter>TaskManager</Filter>
@@ -139,6 +121,13 @@
     </ClInclude>
     <ClInclude Include="time.h">
       <Filter>Timing</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeCAS.h">
+      <Filter>CompareAndSwap</Filter>
+    </ClInclude>
+    <ClInclude Include="foundation.h" />
+    <ClInclude Include="RandomGenerator.h">
+      <Filter>Random</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

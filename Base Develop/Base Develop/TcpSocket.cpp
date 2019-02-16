@@ -5,6 +5,7 @@
 TcpSocket::TcpSocket(ADDRESS_FAMILY f)
 	:Socket(f)
 {
+	_socket = socket(_address_family, SOCK_STREAM, IPPROTO_TCP);
 }
 
 
@@ -15,8 +16,6 @@ TcpSocket::~TcpSocket()
 
 bool TcpSocket::bind(const SocketAddress& addr)
 {
-	_socket = socket(_address_family, SOCK_STREAM, IPPROTO_TCP);
-
 	if (_socket == INVALID_SOCKET)
 	{
 		_lastError = WSAGetLastError();
@@ -45,6 +44,21 @@ void TcpSocket::setNagle(bool bOption)
 		(const char *)&opt, sizeof(int));
 }
 
+bool TcpSocket::connect(SocketAddress& serverAddress)
+{
+	int result = ::connect(_socket, serverAddress.get_socketaddress(),
+		serverAddress.getSize());
+
+	if (result == SOCKET_ERROR)
+	{
+		_lastError = WSAGetLastError();
+		_socket = INVALID_SOCKET;
+		return false;
+	}
+
+	return true;
+}
+
 bool TcpSocket::listen(int backlog)
 {
 	int result = ::listen(_socket, backlog);
@@ -52,6 +66,7 @@ bool TcpSocket::listen(int backlog)
 	if (result == SOCKET_ERROR)
 	{
 		_lastError = WSAGetLastError();
+		_socket = INVALID_SOCKET;
 		return false;
 	}
 
@@ -59,12 +74,14 @@ bool TcpSocket::listen(int backlog)
 }
 
 
-std::shared_ptr<TcpSocket> TcpSocket::Accept(SocketAddress& address)
+std::shared_ptr<TcpSocket> TcpSocket::Accept()
 {
-	int addressSize = address.getSize();
+	SOCKADDR_IN ClientAddress;
+
+	int addressSize = sizeof(ClientAddress);
 
 	SOCKET newSocket = ::accept(_socket,
-		const_cast<sockaddr *>(address.get_socketaddress()),
+		reinterpret_cast<sockaddr *>(&ClientAddress),
 		&addressSize);
 
 	std::shared_ptr<TcpSocket> ret = std::make_shared<TcpSocket>(_address_family);
@@ -101,7 +118,7 @@ int TcpSocket::Send(const void* inData, int inLen)
 		return sentbyte;
 
 	_lastError = WSAGetLastError();
-	return _lastError * -1;
+	return 0;
 }
 
 
@@ -114,5 +131,5 @@ int TcpSocket::Recv(void* inData, int inLen)
 		return recvbytes;
 
 	_lastError = WSAGetLastError();
-	return _lastError * -1;
+	return 0;
 }

@@ -22,31 +22,32 @@ public:
 			service = "0";
 		}
 
-		addrinfo info;
-		memset(&info, 0, sizeof(addrinfo));
+		addrinfo hint;
+		memset(&hint, 0, sizeof(addrinfo));
+		hint.ai_family = AF_INET;
 
-		info.ai_family = AF_INET;
+		addrinfo* result = nullptr;
+		int error = getaddrinfo(host.c_str(), service.c_str(), &hint, &result);
+		addrinfo* initresult = result;
 
-		addrinfo* r = nullptr;
-		int result = getaddrinfo(host.c_str(), service.c_str(), &info, &r);
-
-		if (result != 0 && r != nullptr)
+		if (error != 0 && result != nullptr)
 		{
-			freeaddrinfo(r);
+			freeaddrinfo(initresult);
 			return nullptr;
 		}
 
-		while (!r->ai_addr && r->ai_next)
-			r = r->ai_next;
+		while (!result->ai_addr && result->ai_next)
+			result = result->ai_next;
 
-		if (!r->ai_addr)
+		if (!result->ai_addr)
 		{
-			freeaddrinfo(r);
+			freeaddrinfo(initresult);
 			return nullptr;
 		}
 
-		auto ret = std::make_shared<SocketAddress>(*r->ai_addr);
-		freeaddrinfo(r);
+
+		auto ret = std::make_shared<SocketAddress>(*result->ai_addr);
+		freeaddrinfo(initresult);
 
 		return ret;
 	}

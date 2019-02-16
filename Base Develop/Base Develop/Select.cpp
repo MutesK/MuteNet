@@ -1,75 +1,81 @@
 #include "Select.h"
 
-SelectIO::SelectIO(TcpSocketPtr& listen, std::function<void(TcpSocketPtr)> Accept,
-	std::function<void(TcpSocketPtr)> Recv, std::function<void(TcpSocketPtr)> Send,
-	std::function<void(TcpSocketPtr)> Except)
-	: _listen(listen), _OnAccpet(Accept), _OnRecv(Recv), _OnSend(Send),
-	_OnExcept(Except), Thread()
+SelectIO::SelectIO(TcpSocketPtr& listen, std::function<void(TcpSocketPtr)>&& Accept,
+	std::function<void(TcpSocketPtr)>&& Recv, std::function<void(TcpSocketPtr)>&& Send,
+	std::function<void(TcpSocketPtr)>&& Except)
+	: _listen(listen), _OnAccpet(std::move(Accept)), _OnRecv(std::move(Recv)), _OnSend(std::move(Send)),
+	_OnExcept(std::move(Except)), Thread()
 {
+	EnqueueSocket(listen);
 }
 
-fd_set* SelectIO::InFillFDSet(int mode)
+SelectIO::SelectIO(TcpSocketPtr& clientsock,
+	std::function<void(TcpSocketPtr)>&& Recv, std::function<void(TcpSocketPtr)>&& Send,
+	std::function<void(TcpSocketPtr)>&& Except)
+	: _OnRecv(std::move(Recv)), _OnSend(std::move(Send)),
+	_OnExcept(std::move(Except)), Thread()
 {
-	fd_set target{0};
+	EnqueueSocket(clientsock);
+
+}
+void SelectIO::InFillFDSet(int mode)
+{
+	fd_set* target = nullptr;
 
 	switch (mode)
 	{
 	case eReadMode:
-		target = read;
+		target = &read;
 		break;
 	case eWriteMode:
-		target = write;
+		target = &write;
 		break;
 	case eExcpetMode:
-		target = except;
+		target = &except;
 		break;
 	}
 
-	if (_inSession.size() <= 0)
-		return nullptr;
+	FD_ZERO(target);
 
-	FD_ZERO(&target);
+	if (_inSession.size() <= 0)
+		return;
 
 	for (auto& mapiter : _inSession)
 	{
 		std::shared_ptr<TcpSocket>& socket = mapiter.second;
 
-		FD_SET(socket->get_socket(), &target);
+		FD_SET(socket->get_socket(), target);
 	}
-
-	return &target;
 }
 
 void SelectIO::OutFillFDSet(int mode)
 {
-	fd_set target;
+	fd_set* target = nullptr;
 	std::map<__int64, TcpSocketPtr>* _outSession = nullptr;
 
 	switch (mode)
 	{
 	case eReadMode:
-		target = read;
+		target = &read;
 		_outSession = &_OutReadSet;
 		break;
 	case eWriteMode:
-		target = write;
+		target = &write;
 		_outSession = &_OutWrtieSet;
 		break;
 	case eExcpetMode:
-		target = except;
+		target = &except;
 		_outSession = &_OutExceptSet;
 		break;
 
 	}
-	if (_inSession.size() == 0 && _outSession->size() == 0)
-		return;
-
 	_outSession->clear();
+
 	for (const auto& iter : _inSession)
 	{
 		const TcpSocketPtr& socket = iter.second;
 		
-		if (FD_ISSET(socket->get_socket(), &target))
+		if (FD_ISSET(socket->get_socket(), target))
 			(*_outSession)[socket->get_socket()] = socket;
 	}
 
@@ -77,11 +83,11 @@ void SelectIO::OutFillFDSet(int mode)
 
 int SelectIO::Select()
 {
-	fd_set *pRead = InFillFDSet(eReadMode);
-	fd_set *pWrite = InFillFDSet(eWriteMode);
-	fd_set *pExcept = InFillFDSet(eExcpetMode);
+	InFillFDSet(eReadMode);
+	InFillFDSet(eWriteMode);
+	InFillFDSet(eExcpetMode);
 
-	int result = select(0, pRead, pWrite, pExcept, nullptr);
+	int result = select(0, &read, &write, &except, nullptr);
 
 	if (result <= 0)
 		return result;
@@ -94,6 +100,7 @@ int SelectIO::Select()
 	WriteSetCallback();
 	ExcpetSetCallback();
 
+	return result;
 }
 
 void SelectIO::ReadSetCallback()
@@ -102,12 +109,13 @@ void SelectIO::ReadSetCallback()
 	{
 		if (readiter.second == _listen)
 		{
-			_OnAccpet(readiter.second);
+			_OnAccpet(readiter.second->Accept());
 		}
 		else
 			_OnRecv(readiter.second);
-
 	}
+
+	_OutReadSet.clear();
 }
 void SelectIO::WriteSetCallback()
 {
@@ -115,6 +123,7 @@ void SelectIO::WriteSetCallback()
 	{
 		_OnSend(writeIter.second);
 	}
+	_OutWrtieSet.clear();
 }
 void SelectIO::ExcpetSetCallback()
 {
@@ -122,11 +131,12 @@ void SelectIO::ExcpetSetCallback()
 	{
 		_OnExcept(writeIter.second);
 	}
+	_OutExceptSet.clear();
 }
 
 void SelectIO::DoWork()
 {
-	while (!_isthreadwork)
+	while (1)
 	{
 		Select();
 	}

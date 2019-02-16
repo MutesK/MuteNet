@@ -16,11 +16,17 @@
     <Filter Include="Network\Accepter">
       <UniqueIdentifier>{0b22f623-58d9-4a42-8a85-97d57945a99e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Network\SelectIO">
-      <UniqueIdentifier>{489d041d-d018-4799-82c8-d96ff54e5100}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Test">
       <UniqueIdentifier>{2a82eb95-ddf7-44ef-9561-cffa542382a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\Connector">
+      <UniqueIdentifier>{6c314715-dec9-4433-9a56-0a76037495dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\IOService">
+      <UniqueIdentifier>{5fb66af9-e44f-4743-8c83-348f41705066}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\IOService\SelectIO">
+      <UniqueIdentifier>{489d041d-d018-4799-82c8-d96ff54e5100}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -49,10 +55,13 @@
       <Filter>Network\Accepter</Filter>
     </ClCompile>
     <ClCompile Include="Select.cpp">
-      <Filter>Network\SelectIO</Filter>
+      <Filter>Network\IOService\SelectIO</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Test</Filter>
+    </ClCompile>
+    <ClCompile Include="Connector.cpp">
+      <Filter>Network\Connector</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -87,7 +96,10 @@
       <Filter>Network\Accepter</Filter>
     </ClInclude>
     <ClInclude Include="Select.h">
-      <Filter>Network\SelectIO</Filter>
+      <Filter>Network\IOService\SelectIO</Filter>
+    </ClInclude>
+    <ClInclude Include="Connector.h">
+      <Filter>Network\Connector</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

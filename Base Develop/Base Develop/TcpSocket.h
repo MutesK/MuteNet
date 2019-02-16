@@ -10,11 +10,13 @@ public:
 
 	void setNagle(bool bOption);
 
+	bool connect(SocketAddress& serverAddress);
+
 	virtual bool bind(const SocketAddress& addr);
 
 	bool listen(int backlog);
 
-	std::shared_ptr<TcpSocket> Accept(SocketAddress& address);
+	std::shared_ptr<TcpSocket> Accept();
 
 	std::shared_ptr<SocketAddress> getAddress();
 

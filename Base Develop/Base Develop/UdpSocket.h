@@ -1,5 +1,8 @@
 #pragma once
 
+/*
+	이 클래스를 한번더  오버랩해서 레이턴시, 지터링, 신뢰성을 추가할 예정.
+*/
 #include "Socket.h"
 
 class UdpSocket : public Socket

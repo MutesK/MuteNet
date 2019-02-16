@@ -14,14 +14,18 @@ enum SetMode
 class SelectIO : public Thread
 {
 public:
-	SelectIO(TcpSocketPtr& listen, std::function<void(TcpSocketPtr)> Accept,
-		std::function<void(TcpSocketPtr)> Recv, std::function<void(TcpSocketPtr)> Send,
-		std::function<void(TcpSocketPtr)> Except);
+	SelectIO(TcpSocketPtr& listen, std::function<void(TcpSocketPtr)>&& Accept,
+		std::function<void(TcpSocketPtr)>&& Recv, std::function<void(TcpSocketPtr)>&& Send,
+		std::function<void(TcpSocketPtr)>&& Except);
+
+	SelectIO(TcpSocketPtr& clientsock,
+		std::function<void(TcpSocketPtr)>&& Recv, std::function<void(TcpSocketPtr)>&& Send,
+		std::function<void(TcpSocketPtr)>&& Except);
 
 	void EnqueueSocket(TcpSocketPtr& ptr);
 	void DequeueSocket(TcpSocketPtr& ptr);
 private:
-	fd_set* InFillFDSet(int mode);
+	void InFillFDSet(int mode);
 	void OutFillFDSet(int mode);
 
 	void ReadSetCallback();
@@ -32,6 +36,7 @@ private:
 
 private:
 	TcpSocketPtr _listen;
+
 
 	std::map<__int64, TcpSocketPtr> _inSession;
 	

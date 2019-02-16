@@ -5,6 +5,7 @@
 UdpSocket::UdpSocket(ADDRESS_FAMILY f)
 	:Socket(f)
 {
+	_socket = socket(_address_family, SOCK_DGRAM, IPPROTO_UDP);
 }
 
 
@@ -14,7 +15,6 @@ UdpSocket::~UdpSocket()
 
 bool UdpSocket::bind(const SocketAddress& address)
 {
-	_socket = socket(_address_family, SOCK_DGRAM, IPPROTO_UDP);
 
 	if (_socket == INVALID_SOCKET)
 	{

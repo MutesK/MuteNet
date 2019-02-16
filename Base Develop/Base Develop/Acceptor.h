@@ -17,7 +17,7 @@ class Acceptor : public Thread
 public:
 	Acceptor(std::shared_ptr<TcpSocket>& _listen_socket,
 		SocketAddress& address,
-		std::function<void(std::shared_ptr<TcpSocket>)>& onAccept);
+		std::function<void(std::shared_ptr<TcpSocket>)>&& onAccept);
 	~Acceptor();
 private:
 	std::shared_ptr<TcpSocket> _listensocket;
