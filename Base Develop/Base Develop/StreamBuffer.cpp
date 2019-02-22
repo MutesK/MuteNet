@@ -8,7 +8,7 @@ StreamBuffer::StreamBuffer()
 	m_iBufferSize = eBUFFER_DEFAULT;
 
 	m_chpReadPos = m_chpBuffer;
-	m_chpWritePos = m_chpBuffer;
+	m_chpWritePos = m_chpBuffer + 2;
 }
 
 StreamBuffer::StreamBuffer(int iBufferSize)
@@ -20,7 +20,7 @@ StreamBuffer::StreamBuffer(int iBufferSize)
 
 
 	m_chpReadPos = m_chpBuffer;
-	m_chpWritePos = m_chpBuffer;
+	m_chpWritePos = m_chpBuffer + 2;
 }
 
 StreamBuffer::~StreamBuffer()

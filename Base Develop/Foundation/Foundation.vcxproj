@@ -78,6 +78,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -135,6 +136,7 @@
     <ClInclude Include="Event.h" />
     <ClInclude Include="Exception.h" />
     <ClInclude Include="foundation.h" />
+    <ClInclude Include="Frame.h" />
     <ClInclude Include="MiniDump.h" />
     <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="ObjectPoolTLS.h" />
@@ -146,6 +148,7 @@
     <ClInclude Include="TaskManager.h" />
     <ClInclude Include="Thread.h" />
     <ClInclude Include="time.h" />
+    <ClInclude Include="DeltaTime.h" />
     <ClInclude Include="TypeCAS.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

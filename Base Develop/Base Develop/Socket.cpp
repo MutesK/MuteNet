@@ -62,3 +62,16 @@ int Socket::setIOMode(bool ioflag)
 
 	return true;
 }
+
+int Socket::shutdown(ShutdownBlockMode Mode)
+{
+	int result = ::shutdown(_socket, static_cast<int>(Mode));
+
+	if (SOCKET_ERROR == result)
+	{
+		_lastError = WSAGetLastError();
+		return _lastError;
+	}
+
+	return true;
+}

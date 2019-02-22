@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ObjectPoolTLS.h"
+#include "TypeCAS.h"
 
 
 template <class DATA>
@@ -97,7 +98,7 @@ void CLockFreeStack<DATA>::Push(const DATA& Data)
 		if (OldTop._TopNode != nullptr)
 			pNewNode->pNextNode = OldTop._TopNode;
 
-	} while (!InterlockedCompareExchange128((LONG64 *)pTop, (LONG64)Unique, (LONG64)pNewNode, (LONG64 *)&OldTop));
+	} while (!CompareAndSwap128((uint64_t *)pTop, (uint64_t)Unique, (uint64_t)pNewNode, (uint64_t *)&OldTop));
 
 
 	++m_iUseSize;
@@ -123,7 +124,7 @@ bool CLockFreeStack<DATA>::Pop(DATA *pData)
 
 		pNewNode = OldTop._TopNode->pNextNode;
 
-	} while (!InterlockedCompareExchange128((LONG64 *)pTop, (LONG64)Unique, (LONG64)pNewNode, (LONG64 *)&OldTop));
+	} while (!CompareAndSwap128((uint64_t *)pTop, (uint64_t)Unique, (uint64_t)pNewNode, (uint64_t *)&OldTop));
 
 
 	--m_iUseSize;

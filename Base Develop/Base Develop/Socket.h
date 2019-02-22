@@ -3,6 +3,12 @@
 #include "../Foundation/foundation.h"
 #include "SocketAddress.h"
 
+enum class ShutdownBlockMode
+{
+	RecvBlock = SD_RECEIVE,
+	SendBlock = SD_SEND,
+	BothBlock = SD_BOTH,
+};
 class Socket
 {
 protected:
@@ -27,6 +33,7 @@ public:
 	int setSendCallLimitTime(DWORD time);
 
 	int setUseKeepAlive(bool toggle);
+	int shutdown(ShutdownBlockMode Mode);
 
 	GET_SET_ATTRIBUTE(SOCKET, socket);
 

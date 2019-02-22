@@ -12,6 +12,12 @@ using uint = unsigned int;
 
 #define _aligned_free aligned_free
 
+inline void* CompareAndSwapPointer(volatile void** pSrc, void* cmp, void* Comperand)
+{
+	__sync_val_compare_and_swap(*Src, cmp, swap);
+	return *Src;
+}
+
 inline bool CompareAndSwap(volatile uint* Src, uint cmp, uint& swap)
 {
 	return  __sync_val_compare_and_swap(Src, cmp, swap);
@@ -62,5 +68,10 @@ inline bool CompareAndSwap(volatile uint* pSrc, uint cmp, uint& Swap)
 inline bool CompareAndSwap128(volatile uint64_t* pSrc, uint64_t ExchangeHigh, uint64_t ExchangeLow, uint64_t* swap)
 {
 	return InterlockedCompareExchange128(reinterpret_cast<volatile LONG64 *>(pSrc), static_cast<LONG64>(ExchangeHigh), static_cast<LONG64>(ExchangeLow), reinterpret_cast<LONG64 *>(swap));
+}
+
+inline void* CompareAndSwapPointer(volatile void** pSrc, void* cmp, void* Comperand)
+{
+	return InterlockedCompareExchangePointer((PVOID *)pSrc, cmp, Comperand);
 }
 #endif

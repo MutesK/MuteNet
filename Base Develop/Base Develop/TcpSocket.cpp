@@ -133,3 +133,35 @@ int TcpSocket::Recv(void* inData, int inLen)
 	_lastError = WSAGetLastError();
 	return 0;
 }
+
+int TcpSocket::OverlappedIORecv(WSABUF* pBufArr, int Arrlen, void* OverlappedIO)
+{
+	DWORD RecvSize = 0;
+	DWORD Flag = 0;
+
+	int result = WSARecv(_socket, pBufArr, Arrlen, &RecvSize, &Flag, (LPOVERLAPPED)OverlappedIO, nullptr);
+
+	int errorCode = WSAGetLastError();
+
+	if ((result != SOCKET_ERROR) || (result == SOCKET_ERROR && errorCode == WSA_IO_PENDING))
+		return result;
+
+	_lastError = errorCode;
+	return -1;
+}
+
+int TcpSocket::OverlappedIOSend(WSABUF* pBufArr, int Arrlen, void* OverlappedIO)
+{
+	DWORD SendSize = 0;
+	DWORD Flag = 0;
+
+	int result = WSASend(_socket, pBufArr, Arrlen, &SendSize, Flag, (LPOVERLAPPED)OverlappedIO, nullptr);
+
+	int errorCode = WSAGetLastError();
+
+	if ((result != SOCKET_ERROR) || (result == SOCKET_ERROR && errorCode == WSA_IO_PENDING))
+		return result;
+
+	_lastError = errorCode;
+	return -1;
+}

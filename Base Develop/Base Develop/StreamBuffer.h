@@ -1,13 +1,15 @@
 #pragma once
 
 #include "../Foundation/foundation.h"
+#include "../Foundation/Singleton.hpp"
+#include "../Foundation/ObjectPoolTLS.h"
 
 /*
 	해깔리는 용어
 	Serializer, Marshalling
 */
 
-class StreamBuffer
+class StreamBuffer : public Singleton<CObjectPoolTLS<StreamBuffer>>
 {
 private:
 	enum en_PACKET

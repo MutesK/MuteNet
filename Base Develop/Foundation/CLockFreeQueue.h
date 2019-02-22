@@ -2,6 +2,7 @@
 
 
 #include "ObjectPoolTLS.h"
+#include "TypeCAS.h"
 
 template <class DATA>
 class CLockFreeQueue
@@ -130,22 +131,22 @@ void CLockFreeQueue<DATA>::Enqueue(const DATA& data)
 		if (pNewNode == rear.pNode)
 		{
 			if(pNext != nullptr)
-				InterlockedCompareExchangePointer((PVOID *)&_Rear->pNode, pNext, rear.pNode);
+				CompareAndSwapPointer(&_Rear->pNode, pNext, rear.pNode);
 		}
 		
 		if (rear.pNode == _Rear->pNode)
 		{
 			if (pNext == nullptr)
 			{
-				if (InterlockedCompareExchangePointer((PVOID *)&rear.pNode->pNextNode, pNewNode, nullptr) == nullptr)
+				if (CompareAndSwapPointer(&rear.pNode->pNextNode, pNewNode, nullptr) == nullptr)
 				{
-					InterlockedCompareExchange128((LONG64 *)_Rear, (LONG64)Unique, (LONG64)pNewNode, (LONG64 *)&rear);
+					CompareAndSwap128((uint64_t *)_Rear, (uint64_t)UniqueCount, (uint64_t)pNewNode, (uint64_t *)&rear);
 					break;
 				}
 			}
 			else
 			{
-				InterlockedCompareExchangePointer((PVOID *)&_Rear->pNode, pNext, rear.pNode);
+				CompareAndSwapPointer(&_Rear->pNode, pNext, rear.pNode);
 			}
 		}
 
@@ -163,7 +164,7 @@ bool CLockFreeQueue<DATA>::Dequeue(DATA *pOutData)
 		return false;
 	
 
-	LONG64 Unique = (++m_iUnique) % MAXDWORD64;
+	LONG64 Unique = (++m_iUnique) % size_t(std::numeric_limits<uint64_t>::max);;
 	st_DUMMY front;
 	st_DUMMY rear;
 	st_NODE *pNext;
@@ -186,7 +187,7 @@ bool CLockFreeQueue<DATA>::Dequeue(DATA *pOutData)
 
 		if (pRearNext != nullptr)
 		{
-			InterlockedCompareExchangePointer((PVOID *)&_Rear->pNode, pRearNext, rear.pNode);
+			CompareAndSwapPointer(&_Rear->pNode, pRearNext, rear.pNode);
 			continue;
 		}
 
@@ -210,7 +211,7 @@ bool CLockFreeQueue<DATA>::Dequeue(DATA *pOutData)
 				if (front.pNode == rear.pNode || front.pNode == _Rear->pNode)
 					continue;
 
-				if (InterlockedCompareExchange128((LONG64 *)_Front, (LONG64)Unique, (LONG64)pNext, (LONG64 *)&front))
+				if (CompareAndSwap128((uint64_t *)_Front, (uint64_t)Unique, (uint64_t)pNext, (uint64_t *)&front))
 				{
 					pMemoryPool->Free(front.pNode);
 					break;

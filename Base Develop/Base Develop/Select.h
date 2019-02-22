@@ -11,6 +11,9 @@
 	-> 봇용으로 사용하지 않는다면, 안쓰는걸 추천. (소규모 네트워크에 사용권장)
 
 	Map -> Mutex 추가예정
+
+
+	사용시, FD_SIZE 고려할것.
 */
 enum SetMode
 {
@@ -19,7 +22,7 @@ enum SetMode
 	eExcpetMode
 };
 
-class SelectIO : public Thread
+class SelectIO final : public Thread
 {
 public:
 	SelectIO(TcpSocketPtr& listen, std::function<void(TcpSocketPtr)>&& Accept,

@@ -78,7 +78,7 @@
 
 static void TurnOnLowFragmentHeap() // LFH On
 {
-	ULONG HeapFragValue;
+	ULONG HeapFragValue{ 0 };
 	HANDLE Heaps[100];
 	DWORD HeapCount = GetProcessHeaps(100, Heaps);
 

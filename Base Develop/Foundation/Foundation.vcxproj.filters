@@ -129,5 +129,11 @@
     <ClInclude Include="RandomGenerator.h">
       <Filter>Random</Filter>
     </ClInclude>
+    <ClInclude Include="Frame.h">
+      <Filter>Timing</Filter>
+    </ClInclude>
+    <ClInclude Include="DeltaTime.h">
+      <Filter>Timing</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -24,7 +24,10 @@ public:
 
 	// Not Use Socket IO Moudle Function
 	int Send(const void* inData, int inLen);
-
 	int Recv(void* inData, int inLen);
+
+	int OverlappedIORecv(WSABUF* pBufArr, int Arrlen, void* OverlappedIO);
+	int OverlappedIOSend(WSABUF* pBufArr, int Arrlen, void* OverlappedIO);
+
 };
 

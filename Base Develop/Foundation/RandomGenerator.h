@@ -5,7 +5,7 @@
 #include "Singleton.hpp"
 /*
 	랜덤 값 출력
-	-> mt19937 가 Thread-Safe하지 않기 때문에, 이점 고려하면서 짜야됨.
+	-> Random Device isn't Thread Safe
 */
 class RandomGenerator : public Singleton<RandomGenerator>
 {
@@ -13,13 +13,12 @@ public:
 	RandomGenerator();
 	~RandomGenerator();
 
-	void SetSeed(uint32_t Seed);
-	float GetRandomFloat();
-	uint32_t GetRandomUInt();
-	int32_t GetRandomInt();
-
+	uint32_t GetRandomUInt(uint32_t min, uint32_t max);
+	int32_t GetRandomInt(int32_t min, int32_t max);
+	float GetRandomFloat(float min, float max);
 private:
-	std::mt19937 _generator;
-	std::mutex	 _mutex;
+	void SetSeed();
+private:
+	uint32_t		    _seed;
 };
 

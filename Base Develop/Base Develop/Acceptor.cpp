@@ -3,12 +3,11 @@
 #include "SocketUtil.h"
 
 Acceptor::Acceptor(std::shared_ptr<TcpSocket>& _listen_socket,
-	SocketAddress& address,
 	std::function<void(std::shared_ptr<TcpSocket>)>&& onAccept)
-	: _listensocket(_listen_socket),
-	_address(address), _callback(std::move(onAccept)), Thread()
+	: _listensocket(_listen_socket), _callback(std::move(onAccept)), Thread()
 {
-	
+	std::string threadName = "Acceptor";
+	SetThreadName(threadName);
 }
 
 

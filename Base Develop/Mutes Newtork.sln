@@ -24,6 +24,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SelectClientTest", "SelectC
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FoundationTest", "FoundationTest\FoundationTest.vcxproj", "{2177C833-C2D2-48D8-9131-54109855943A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{5DA4A7B5-0809-4F67-8C80-C2CB5487763F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -75,6 +77,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E84A9392-7C82-4E57-B334-57D84078B437} = {5DA4A7B5-0809-4F67-8C80-C2CB5487763F}
+		{F375E5FD-F255-4BB2-8F2E-D297FB792624} = {5DA4A7B5-0809-4F67-8C80-C2CB5487763F}
+		{2177C833-C2D2-48D8-9131-54109855943A} = {5DA4A7B5-0809-4F67-8C80-C2CB5487763F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B919A433-A551-4DF3-93B0-9EFBA50A0112}

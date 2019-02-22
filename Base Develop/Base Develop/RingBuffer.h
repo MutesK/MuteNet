@@ -1,10 +1,12 @@
 #pragma once
 
 #include "../Foundation/foundation.h"
+#include "../Foundation/ObjectPoolTLS.h"
+#include "../Foundation/Singleton.hpp"
 /*
 	Not Thread Safe
 */
-class RingBuffer
+class RingBuffer : public Singleton<CObjectPoolTLS<RingBuffer>>
 {
 public:
 	RingBuffer();
@@ -135,4 +137,3 @@ private:
 		enBUFFER_SIZE = 20000
 	};
 };
-

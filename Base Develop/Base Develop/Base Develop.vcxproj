@@ -21,7 +21,8 @@
   <ItemGroup>
     <ClCompile Include="Acceptor.cpp" />
     <ClCompile Include="Connector.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="IOCPManager.cpp" />
+    <ClCompile Include="Network.cpp" />
     <ClCompile Include="Select.cpp" />
     <ClCompile Include="Session.cpp" />
     <ClCompile Include="Socket.cpp" />
@@ -30,10 +31,13 @@
     <ClCompile Include="RingBuffer.cpp" />
     <ClCompile Include="TcpSocket.cpp" />
     <ClCompile Include="UdpSocket.cpp" />
+    <ClCompile Include="WorkerThread.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Acceptor.h" />
     <ClInclude Include="Connector.h" />
+    <ClInclude Include="IOCPManager.h" />
+    <ClInclude Include="Network.h" />
     <ClInclude Include="Select.h" />
     <ClInclude Include="Session.h" />
     <ClInclude Include="Socket.h" />
@@ -44,6 +48,7 @@
     <ClInclude Include="RingBuffer.h" />
     <ClInclude Include="TcpSocket.h" />
     <ClInclude Include="UdpSocket.h" />
+    <ClInclude Include="WorkerThread.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
@@ -133,6 +138,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
