@@ -19,7 +19,10 @@
 4. Property  Template Class
    1. 매크로 함수를 줄이기 위해서 만들어졌지만, 선택적 기능.
 
+## Research
 
+- [ ] Reliable UDP
+- [ ] NAT Traversal (Hole Punching)
 
 ## TO-DO
 
