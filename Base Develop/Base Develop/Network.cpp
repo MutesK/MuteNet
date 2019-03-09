@@ -1,21 +1,28 @@
 #include "Network.h"
-
+#include "SessionManager.h"
 
 
 Network::Network()
 {
+	WSAStartup(MAKEWORD(2, 2), &_winsockData);
+
 }
 
 
 Network::~Network()
 {
+	Stop();
+	WSACleanup();
 }
 
-void Network::Start(NetworkMode networkMode, SocketAddress& address)
+void Network::Start(NetworkMode networkMode, std::string resolveDNSAddress,
+	size_t maxSession)
 {
+	auto address = SocketAddressFactory::CreateSocketAddress(resolveDNSAddress);
+
 	initIOCPMoudle(networkMode, address);
 
-	_acceptor->Start();
+	_maxSession = maxSession;
 }
 
 void Network::Stop()
@@ -24,22 +31,26 @@ void Network::Stop()
 	_iocpIO->Stop();
 }
 
-void Network::initIOCPMoudle(NetworkMode& Mode, SocketAddress& address)
+void Network::initIOCPMoudle(NetworkMode& Mode, std::shared_ptr<SocketAddress>& address)
 {
 	if (Mode == Server)
 	{
-		_socket = SocketUtil::CreateTCPSocket(AF_INET);
-		_socket->bind(address);
+		TcpSocketPtr _socket = SocketUtil::CreateTCPSocket(AF_INET);
+		_socket->bind(*address);
 		_socket->listen(0);
 
 
 		_iocpIO = std::make_unique<IOCPManager>(5);
+
+		_acceptor->Start();
 	}
 }
 
 void Network::OnAccept(TcpSocketPtr ptr)
 {
-	auto session = _sessionManager.get_shared(ptr);
+	auto session = SessionManager::GetInstance()->AppendSession(ptr);
+
+	_iocpIO->RegisterSocket(session->get_socket(), );
+
 	
-	_iocpIO->RegisterSocket(ptr, );
 }

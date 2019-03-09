@@ -35,6 +35,9 @@ public:
 	void SetEvent();
 
 	void SetThreadID(uint32_t threadID);
+
+	GET_SET_ATTRIBUTE(HANDLE, hthreadhandle);
+
 protected:
 	virtual void DoWork();
 	virtual void EmitWakeupSignal() = 0; // 상속받은 클래스가 종료루틴을 처리하게 한다.
@@ -65,4 +68,30 @@ inline void Thread::SetThreadID(uint32_t threadID)
 inline void Thread::SetEvent()
 {
 	_event.SetEvent();
+}
+
+
+inline void SetThreadName(HANDLE handle, const char* str)
+{
+	typedef struct tagTHREADNAME_INFO
+	{
+		DWORD dwType;        // must be 0x1000
+		LPCSTR szName;       // pointer to name (in same addr space)
+		DWORD dwThreadID;    // thread ID (-1 caller thread)
+		DWORD dwFlags;       // reserved for future use, most be zero
+	} THREADNAME_INFO;
+
+	THREADNAME_INFO info;
+	info.dwType = 0x1000;
+	info.szName = str;
+	info.dwThreadID = ::GetCurrentThreadId();
+	info.dwFlags = 0;
+
+	__try
+	{
+		RaiseException(MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(DWORD), (const ULONG_PTR *)&info);
+	}
+	__except (EXCEPTION_CONTINUE_EXECUTION)
+	{
+	}
 }

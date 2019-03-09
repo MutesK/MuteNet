@@ -67,6 +67,9 @@
       <Filter>Network\IOService\IOCP</Filter>
     </ClCompile>
     <ClCompile Include="Network.cpp" />
+    <ClCompile Include="SessionManager.cpp">
+      <Filter>Network\Session</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RingBuffer.h">
@@ -112,5 +115,12 @@
       <Filter>Network\IOService\IOCP</Filter>
     </ClInclude>
     <ClInclude Include="Network.h" />
+    <ClInclude Include="WorkItem.h">
+      <Filter>Network\IOService</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h" />
+    <ClInclude Include="SessionManager.h">
+      <Filter>Network\Session</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

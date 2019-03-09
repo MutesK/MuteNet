@@ -81,7 +81,13 @@ bool Session::SendPost()
 
 }
 
-// 하나의 패킷의 크기를 어떻게 알것인가?
+void Session::SendPacket(std::shared_ptr<StreamBuffer> buffer)
+{
+	_SendQ->PutData(buffer->GetBufferPtr(), buffer->GetUseSize());
+
+	SendPost();
+}
+
 bool Session::RecvCompletionIO(DWORD Transferred)
 {
 	{
@@ -128,13 +134,14 @@ bool Session::IOCallback(DWORD cbTransferred, LPOVERLAPPED Overlapped)
 {
 	if (cbTransferred == 0)
 	{
-		// 로그아웃 통지
+		_socket->shutdown(ShutdownBlockMode::BothBlock);
+		return true;
 	}
 
 	if (Overlapped == nullptr)
 		return false;
 
-	if (Overlapped == &_sendOverlapped)
+	if (Overlapped == _sendOverlapped)
 		SendCompletionIO(cbTransferred);
 	else if (Overlapped == &_recvOverlapped)
 		RecvCompletionIO(cbTransferred);

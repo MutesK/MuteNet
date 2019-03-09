@@ -22,7 +22,7 @@ enum SetMode
 	eExcpetMode
 };
 
-class SelectIO final : public Thread
+class SelectIO final
 {
 public:
 	SelectIO(TcpSocketPtr& listen, std::function<void(TcpSocketPtr)>&& Accept,
@@ -62,14 +62,14 @@ private:
 	std::function<void(TcpSocketPtr)>	_OnExcept;
 
 	int    _lastError;
+
 	fd_set read;
 	fd_set write;
 	fd_set except;
+
+	std::future<void>	_networkProc;
+	std::atomic<bool>	_flag;
 protected:
-	virtual void DoWork() override;
-
-
-	virtual void EmitWakeupSignal() override;
-
+	void DoWork();
 };
 

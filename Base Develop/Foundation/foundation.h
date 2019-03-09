@@ -42,6 +42,7 @@
 #include <concurrent_unordered_map.h>
 
 #include <sql.h>
+#include <future>
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -75,8 +76,9 @@
 	std::unique_lock<std::shared_mutex> lock(##mutex)
 
 #define WIN32_LEAN_AND_MEAN
+#define MS_VC_EXCEPTION 0x406d1388
 
-static void TurnOnLowFragmentHeap() // LFH On
+inline void TurnOnLowFragmentHeap() // LFH On
 {
 	ULONG HeapFragValue{ 0 };
 	HANDLE Heaps[100];

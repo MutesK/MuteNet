@@ -1,8 +1,6 @@
 
 #include "Thread.h"
 
-#define MS_VC_EXCEPTION 0x406d1388
-
 Thread::Thread()
 	:_hthreadhandle(0), _threadname(""),
 	_priority(eTHREAD_NORMAL), _stackSize(16111),

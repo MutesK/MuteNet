@@ -1,32 +1,51 @@
 #include "Acceptor.h"
-#include "TcpSocket.h"
-#include "SocketUtil.h"
 
-Acceptor::Acceptor(std::shared_ptr<TcpSocket>& _listen_socket,
-	std::function<void(std::shared_ptr<TcpSocket>)>&& onAccept)
-	: _listensocket(_listen_socket), _callback(std::move(onAccept)), Thread()
+
+Acceptor::Acceptor(std::shared_ptr<TcpSocket>& _listen_socket)
+	: _listensocket(_listen_socket), std::thread(std::bind(&Acceptor::DoWork, this))
 {
-	std::string threadName = "Acceptor";
-	SetThreadName(threadName);
+	SetThreadName(native_handle(), "Acceptor Thread");
 }
-
 
 Acceptor::~Acceptor()
 {
+	Stop();
+
+	join();
+	detach();
+}
+
+void Acceptor::Start()
+{
+	_flag = true;
+}
+
+void Acceptor::Stop()
+{
+	_flag = false;
+}
+
+void Acceptor::SetOnAccept(std::function<void(TcpSocketPtr)>& Callback)
+{
+	_flag = true;
+	_OnAccept = Callback;
 }
 
 void Acceptor::DoWork()
 {
-	while (!_isthreadwork)
+	while (true)
 	{
-		TcpSocketPtr newSocket = _listensocket->Accept();
+		std::unique_lock<decltype(_mutex)> lock(_mutex);
+		_cv.wait(lock, [this] { return _flag;  });
 
-		_callback(newSocket);
+		TcpSocketPtr socket = _listensocket->Accept();
 
+		if (socket->get_socket() == INVALID_SOCKET)
+			continue;
+
+		Enqueue_Agent_Task(([socket = socket, Accept = _OnAccept]()
+			{
+				Accept(socket);
+			}), 1);
 	}
-}
-
-void Acceptor::EmitWakeupSignal()
-{
-	_event.SetEvent();
 }

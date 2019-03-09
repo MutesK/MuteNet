@@ -4,16 +4,18 @@ SelectIO::SelectIO(TcpSocketPtr& listen, std::function<void(TcpSocketPtr)>&& Acc
 	std::function<void(TcpSocketPtr)>&& Recv, std::function<void(TcpSocketPtr)>&& Send,
 	std::function<void(TcpSocketPtr)>&& Except)
 	: _listen(listen), _OnAccpet(std::move(Accept)), _OnRecv(std::move(Recv)), _OnSend(std::move(Send)),
-	_OnExcept(std::move(Except)), Thread()
+	_OnExcept(std::move(Except))
 {
 	EnqueueSocket(listen);
+
+	_flag = true;
 }
 
 SelectIO::SelectIO(TcpSocketPtr& clientsock,
 	std::function<void(TcpSocketPtr)>&& Recv, std::function<void(TcpSocketPtr)>&& Send,
 	std::function<void(TcpSocketPtr)>&& Except)
 	: _OnRecv(std::move(Recv)), _OnSend(std::move(Send)),
-	_OnExcept(std::move(Except)), Thread()
+	_OnExcept(std::move(Except))
 {
 	EnqueueSocket(clientsock);
 

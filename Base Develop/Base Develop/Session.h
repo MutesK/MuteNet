@@ -10,12 +10,9 @@
 	- 이중 완료통지 금지
 */
 
-#include "../Foundation/foundation.h"
-#include "../Foundation/Singleton.hpp"
-#include "../Foundation/ObjectPoolTLS.h"
+#include "framework.h"
 #include "Ringbuffer.h"
 #include "Streambuffer.h"
-#include "SocketUtil.h"
 
 
 class Session
@@ -24,16 +21,22 @@ public:
 	Session(TcpSocketPtr& socket);
 	~Session();
 
-	bool RecvPost();
-	bool SendPost();
-
-	bool RecvCompletionIO(DWORD Transferred);
-	bool SendCompletionIO(DWORD Transferred);
 
 	bool IOCallback(DWORD cbTransferred, LPOVERLAPPED Overlapped);
 
-	GET_SET_ATTRIBUTE(OVERLAPPED, sendOverlapped);
-	GET_SET_ATTRIBUTE(OVERLAPPED, recvOverlapped);
+	void SendPacket(std::shared_ptr<StreamBuffer> buffer);
+
+	inline LinkHandle getHandle()
+	{
+		return reinterpret_cast<LinkHandle>(_socket->get_socket());
+	}
+
+private:
+	bool RecvCompletionIO(DWORD Transferred);
+	bool SendCompletionIO(DWORD Transferred);
+
+	bool RecvPost();
+	bool SendPost();
 private:
 	TcpSocketPtr			_socket;
 
@@ -48,8 +51,10 @@ private:
 
 	std::atomic<bool>			_sendFlag;
 	std::atomic<bool>			_recvFlag;
+
+
+	std::function<void(DWORD, LPOVERLAPPED)> _OverlappedCallback;
+
+
+	friend class IOCPManager;
 };
-
-using SessionManager = CObjectPoolTLS<Session>;
-static SessionManager sessionManager;
-

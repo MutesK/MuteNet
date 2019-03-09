@@ -1,18 +1,19 @@
 #pragma once
 
-#include "../Foundation/foundation.h"
-#include "../Foundation/Thread.h"
-#include "Session.h"
+#include "framework.h"
 
-class WorkerThread final : public Thread
+class WorkerThread final
 {
 public:
 	WorkerThread(HANDLE iocp);
 	~WorkerThread();
+
+	void Stop();
 protected:
-	virtual void DoWork() override;
-	virtual void EmitWakeupSignal() override;
+	void DoWork();
 private:
 	HANDLE _hIOCP;
+	std::list<std::thread> workers;
 };
+
 

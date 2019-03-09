@@ -1,6 +1,5 @@
 #include "IOCPManager.h"
-
-
+#include "Session.h"
 
 IOCPManager::IOCPManager(int workerSize)
 {
@@ -18,19 +17,18 @@ IOCPManager::~IOCPManager()
 	Stop();
 }
 
-void IOCPManager::RegisterSocket(TcpSocketPtr& _socket, void* CallbackPointer)
+void IOCPManager::RegisterSocket(std::shared_ptr<Session>& session)
 {
-	CreateIoCompletionPort(reinterpret_cast<HANDLE>(_socket->get_socket()), _IocpHandle, (ULONG64)CallbackPointer,
-		0);
+	session->_OverlappedCallback = std::bind(&Session::IOCallback, session.get(), std::placeholders::_1,
+		std::placeholders::_2);
+
+	CreateIoCompletionPort(reinterpret_cast<HANDLE>(session->getHandle()), _IocpHandle,
+		(ULONG64)&session->_OverlappedCallback, 0);
 }
 
 void IOCPManager::Stop()
 {
 	PostQueuedCompletionStatus(_IocpHandle, 0, 0, 0);
 
-	for (auto thread : _workerthreadPool)
-	{
-		thread.Stop();
-	}
-
+	_workerthreadPool.clear();
 }

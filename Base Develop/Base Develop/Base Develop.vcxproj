@@ -25,6 +25,7 @@
     <ClCompile Include="Network.cpp" />
     <ClCompile Include="Select.cpp" />
     <ClCompile Include="Session.cpp" />
+    <ClCompile Include="SessionManager.cpp" />
     <ClCompile Include="Socket.cpp" />
     <ClCompile Include="SocketAddress.cpp" />
     <ClCompile Include="StreamBuffer.cpp" />
@@ -36,10 +37,12 @@
   <ItemGroup>
     <ClInclude Include="Acceptor.h" />
     <ClInclude Include="Connector.h" />
+    <ClInclude Include="framework.h" />
     <ClInclude Include="IOCPManager.h" />
     <ClInclude Include="Network.h" />
     <ClInclude Include="Select.h" />
     <ClInclude Include="Session.h" />
+    <ClInclude Include="SessionManager.h" />
     <ClInclude Include="Socket.h" />
     <ClInclude Include="SocketAddress.h" />
     <ClInclude Include="SocketAddressFactory.h" />
@@ -49,6 +52,7 @@
     <ClInclude Include="TcpSocket.h" />
     <ClInclude Include="UdpSocket.h" />
     <ClInclude Include="WorkerThread.h" />
+    <ClInclude Include="WorkItem.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
