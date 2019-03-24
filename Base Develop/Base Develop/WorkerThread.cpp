@@ -46,7 +46,7 @@ void WorkerThread::DoWork()
 			break;
 		}
 
-			// IO Callback
+		// IO Callback
 		std::function<void(DWORD, LPOVERLAPPED)> *pFunction = (std::function<void(DWORD, LPOVERLAPPED)> *)pCallback;
 		(*pFunction)(cbTransferred, pOverlapped);
 	}

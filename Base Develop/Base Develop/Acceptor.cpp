@@ -42,10 +42,5 @@ void Acceptor::DoWork()
 
 		if (socket->get_socket() == INVALID_SOCKET)
 			continue;
-
-		Enqueue_Agent_Task(([socket = socket, Accept = _OnAccept]()
-			{
-				Accept(socket);
-			}), 1);
 	}
 }

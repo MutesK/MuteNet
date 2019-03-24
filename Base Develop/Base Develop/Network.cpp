@@ -4,8 +4,8 @@
 
 Network::Network()
 {
-	WSAStartup(MAKEWORD(2, 2), &_winsockData);
-
+	WSADATA data;
+	WSAStartup(MAKEWORD(2, 2), &data);
 }
 
 

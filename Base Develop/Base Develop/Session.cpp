@@ -129,22 +129,3 @@ bool Session::SendCompletionIO(DWORD Transferred)
 
 	// Send Noti
 }
-
-bool Session::IOCallback(DWORD cbTransferred, LPOVERLAPPED Overlapped)
-{
-	if (cbTransferred == 0)
-	{
-		_socket->shutdown(ShutdownBlockMode::BothBlock);
-		return true;
-	}
-
-	if (Overlapped == nullptr)
-		return false;
-
-	if (Overlapped == _sendOverlapped)
-		SendCompletionIO(cbTransferred);
-	else if (Overlapped == &_recvOverlapped)
-		RecvCompletionIO(cbTransferred);
-
-	return true;
-}

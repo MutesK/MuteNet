@@ -21,22 +21,21 @@ public:
 	Session(TcpSocketPtr& socket);
 	~Session();
 
+	inline LinkHandle getHandle();
 
-	bool IOCallback(DWORD cbTransferred, LPOVERLAPPED Overlapped);
+	void Send(const std::shared_ptr<StreamBuffer> buffer);
+	void Recv();
 
-	void SendPacket(std::shared_ptr<StreamBuffer> buffer);
+	void SendNext(int numOfTransffered);
 
-	inline LinkHandle getHandle()
-	{
-		return reinterpret_cast<LinkHandle>(_socket->get_socket());
-	}
-
+	std::shared_ptr<StreamBuffer> LockReadBuffer();
+	void UnlockReadBuffer();
 private:
-	bool RecvCompletionIO(DWORD Transferred);
-	bool SendCompletionIO(DWORD Transferred);
-
 	bool RecvPost();
 	bool SendPost();
+
+	void ReadLock();
+	void ReadUnLock();
 private:
 	TcpSocketPtr			_socket;
 
@@ -46,15 +45,15 @@ private:
 	OVERLAPPED				_sendOverlapped;
 	OVERLAPPED				_recvOverlapped;
 
-	std::mutex				_sendMutex;
 	std::mutex				_recvMutex;
 
 	std::atomic<bool>			_sendFlag;
 	std::atomic<bool>			_recvFlag;
 
-
-	std::function<void(DWORD, LPOVERLAPPED)> _OverlappedCallback;
-
-
 	friend class IOCPManager;
 };
+
+inline LinkHandle Session::getHandle()
+{
+	return reinterpret_cast<LinkHandle>(_socket->get_socket());
+}
