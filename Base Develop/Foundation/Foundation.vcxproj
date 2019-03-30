@@ -118,20 +118,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Connection.cpp" />
     <ClCompile Include="ConsolePrinter.hpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="MiniDump.hpp" />
     <ClCompile Include="RandomGenerator.cpp" />
     <ClCompile Include="Singleton.hpp" />
+    <ClCompile Include="Statement.cpp" />
     <ClCompile Include="Task.cpp" />
     <ClCompile Include="TaskAgent.cpp" />
     <ClCompile Include="TaskManager.cpp" />
     <ClCompile Include="Thread.cpp" />
     <ClCompile Include="time.cpp" />
+    <ClCompile Include="Transaction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CLockFreeQueue.h" />
     <ClInclude Include="CLockFreeStack.h" />
+    <ClInclude Include="Connection.h" />
     <ClInclude Include="ConsolePrinter.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Exception.h" />
@@ -143,12 +147,14 @@
     <ClInclude Include="Property.h" />
     <ClInclude Include="RandomGenerator.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="Statement.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskAgent.h" />
     <ClInclude Include="TaskManager.h" />
     <ClInclude Include="Thread.h" />
     <ClInclude Include="time.h" />
     <ClInclude Include="DeltaTime.h" />
+    <ClInclude Include="Transaction.h" />
     <ClInclude Include="TypeCAS.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

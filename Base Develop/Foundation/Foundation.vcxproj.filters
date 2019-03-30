@@ -43,6 +43,9 @@
     <Filter Include="Random">
       <UniqueIdentifier>{8b822a8a-1eed-41e8-b196-60cb241d6fab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ODBC">
+      <UniqueIdentifier>{af9dcdd1-28a3-44b4-bdf6-0f3851551076}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Thread.cpp">
@@ -75,6 +78,13 @@
     <ClCompile Include="RandomGenerator.cpp">
       <Filter>Random</Filter>
     </ClCompile>
+    <ClCompile Include="Connection.cpp">
+      <Filter>ODBC</Filter>
+    </ClCompile>
+    <ClCompile Include="Transaction.cpp">
+      <Filter>ODBC</Filter>
+    </ClCompile>
+    <ClCompile Include="Statement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Thread.h">
@@ -135,5 +145,12 @@
     <ClInclude Include="DeltaTime.h">
       <Filter>Timing</Filter>
     </ClInclude>
+    <ClInclude Include="Connection.h">
+      <Filter>ODBC</Filter>
+    </ClInclude>
+    <ClInclude Include="Transaction.h">
+      <Filter>ODBC</Filter>
+    </ClInclude>
+    <ClInclude Include="Statement.h" />
   </ItemGroup>
 </Project>
