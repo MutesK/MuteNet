@@ -1,4 +1,4 @@
-#include "foundation.h"
+
 #include "Statement.h"
 #include "Connection.h"
 #include "Transaction.h"
@@ -14,29 +14,29 @@ Statement::~Statement()
 Statement::Statement()
 	:_stmt(0) ,_open(false)
 {
-	_CTypeConvert[typeid(unsigned char *)] = SQL_C_CHAR;
-	_CTypeConvert[typeid(wchar_t *)] = SQL_C_WCHAR;
-	_CTypeConvert[typeid(short int)] = SQL_C_SSHORT;
-	_CTypeConvert[typeid(unsigned short int)] = SQL_C_USHORT;
-	_CTypeConvert[typeid(long int)] = SQL_C_SLONG;
-	_CTypeConvert[typeid(unsigned long int)] = SQL_C_ULONG;
-	_CTypeConvert[typeid(float)] = SQL_C_FLOAT;
-	_CTypeConvert[typeid(double)] = SQL_C_DOUBLE;
-	_CTypeConvert[typeid(unsigned char)] = SQL_C_BIT;
-	_CTypeConvert[typeid(bool)] = SQL_C_BIT;
-	_CTypeConvert[typeid(signed char)] = SQL_C_STINYINT;
+	_CTypeConvert[typeid(unsigned char *).hash_code()] = SQL_C_CHAR;
+	_CTypeConvert[typeid(wchar_t *).hash_code()] = SQL_C_WCHAR;
+	_CTypeConvert[typeid(short int).hash_code()] = SQL_C_SSHORT;
+	_CTypeConvert[typeid(unsigned short int).hash_code()] = SQL_C_USHORT;
+	_CTypeConvert[typeid(long int).hash_code()] = SQL_C_SLONG;
+	_CTypeConvert[typeid(unsigned long int).hash_code()] = SQL_C_ULONG;
+	_CTypeConvert[typeid(float).hash_code()] = SQL_C_FLOAT;
+	_CTypeConvert[typeid(double).hash_code()] = SQL_C_DOUBLE;
+	_CTypeConvert[typeid(unsigned char).hash_code()] = SQL_C_BIT;
+	_CTypeConvert[typeid(bool).hash_code()] = SQL_C_BIT;
+	_CTypeConvert[typeid(signed char).hash_code()] = SQL_C_STINYINT;
 	
-	_SQLTypeConvert[typeid(unsigned char *)] = SQL_CHAR;
-	_SQLTypeConvert[typeid(wchar_t *)] = SQL_WCHAR;
-	_SQLTypeConvert[typeid(short int)] = SQL_SMALLINT;
-	_SQLTypeConvert[typeid(unsigned short int)] = SQL_SMALLINT;
-	_SQLTypeConvert[typeid(long int)] = SQL_INTEGER;
-	_SQLTypeConvert[typeid(unsigned long int)] = SQL_INTEGER;
-	_SQLTypeConvert[typeid(float)] = SQL_REAL;
-	_SQLTypeConvert[typeid(double)] = SQL_FLOAT;
-	_SQLTypeConvert[typeid(unsigned char)] = SQL_BIT;
-	_SQLTypeConvert[typeid(bool)] = SQL_BIT;
-	_SQLTypeConvert[typeid(signed char)] = SQL_TINYINT;
+	_SQLTypeConvert[typeid(unsigned char *).hash_code()] = SQL_CHAR;
+	_SQLTypeConvert[typeid(wchar_t *).hash_code()] = SQL_WCHAR;
+	_SQLTypeConvert[typeid(short int).hash_code()] = SQL_SMALLINT;
+	_SQLTypeConvert[typeid(unsigned short int).hash_code()] = SQL_SMALLINT;
+	_SQLTypeConvert[typeid(long int).hash_code()] = SQL_INTEGER;
+	_SQLTypeConvert[typeid(unsigned long int).hash_code()] = SQL_INTEGER;
+	_SQLTypeConvert[typeid(float).hash_code()] = SQL_REAL;
+	_SQLTypeConvert[typeid(double).hash_code()] = SQL_FLOAT;
+	_SQLTypeConvert[typeid(unsigned char).hash_code()] = SQL_BIT;
+	_SQLTypeConvert[typeid(bool).hash_code()] = SQL_BIT;
+	_SQLTypeConvert[typeid(signed char).hash_code()] = SQL_TINYINT;
 
 }
 
@@ -89,7 +89,7 @@ void Statement::Prepare(const std::string& query, size_t timeout)
 		this->Timeout(timeout);
 }
 
-void Statement::Timeout(long timeout)
+void Statement::Timeout(size_t timeout)
 {
 	RETCODE rc = SQLSetStmtAttr(_stmt, SQL_ATTR_QUERY_TIMEOUT,
 		(SQLPOINTER)(std::intptr_t)timeout, 0);
@@ -124,3 +124,9 @@ short Statement::CountParameter()
 	return Params;
 }
 
+
+void Statement::Cancle()
+{
+	RETCODE rc = SQLCancel(_stmt);
+	CHECK_AND_EXCEPT(rc);
+}

@@ -84,7 +84,9 @@
     <ClCompile Include="Transaction.cpp">
       <Filter>ODBC</Filter>
     </ClCompile>
-    <ClCompile Include="Statement.cpp" />
+    <ClCompile Include="Statement.cpp">
+      <Filter>ODBC</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Thread.h">
@@ -151,6 +153,8 @@
     <ClInclude Include="Transaction.h">
       <Filter>ODBC</Filter>
     </ClInclude>
-    <ClInclude Include="Statement.h" />
+    <ClInclude Include="Statement.h">
+      <Filter>ODBC</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

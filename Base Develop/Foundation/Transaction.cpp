@@ -1,6 +1,5 @@
 #include "foundation.h"
 #include "Transaction.h"
-#include "Connection.h"
 
 using namespace ODBC;
 

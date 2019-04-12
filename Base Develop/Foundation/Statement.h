@@ -1,17 +1,8 @@
 #pragma once
 
-/*
-	Bind Parameter, 
-	Prepare, 
-	SQLCancle,
-	QueryTimeout
-	DirectExecute
-	Execute
-	RowCount
-	ResetParameter
-	ParameterCount
-	ParameterSize
-*/
+#include "foundation.h"
+#include "Connection.h"
+
 namespace ODBC
 {
 	enum ParamTYPE
@@ -31,6 +22,7 @@ namespace ODBC
 
 		bool Open(class Connection& conn);
 		bool Close();
+		void Cancle();
 
 		bool isOpen() { return _open; }
 
@@ -51,7 +43,7 @@ namespace ODBC
 		{
 			short type;
 			auto rc = SQLBindParameter(_stmt, index, Type,
-				_CTypeConvert[typeid(value)], _SQLTypeConvert[typeid(value)],
+				_CTypeConvert[typeid(value).hash_code()], _SQLTypeConvert[typeid(value).hash_code()],
 				0, 0, &value, 0, &SQL_NTS);
 			
 			if (rc != SQL_SUCCESS)
@@ -62,14 +54,31 @@ namespace ODBC
 			return true;
 		}
 
+		template<typename T>
+		void GetValue(volatile T& value, int index)
+		{
+			SQLLEN cbNum = SQL_NTS;
+
+			SQLRETURN ret = SQLGetData(_stmt, (SQLUSMALLINT)index,
+				_CTypeConvert[typeid(value).hash_code()], (SQLPOINTER)&value, sizeof(T), cbNum);
+		}
+
+		void GetValue(volatile char* buffer, int index, int bufferSize)
+		{
+			SQLLEN cbNum = SQL_NTS;
+			
+			SQLRETURN ret = SQLGetData(_stmt, (SQLUSMALLINT)index,
+				SQL_C_CHAR, (SQLPOINTER *)buffer, bufferSize, &cbNum);
+		}
+
 	private:
-		void Timeout(long timeout);
+		void Timeout(size_t timeout);
 	private:
 		HSTMT _stmt;
 		bool  _open;
 		class Connection _conn;
 
-		std::unordered_map<std::type_info, SQLSMALLINT> _CTypeConvert;
-		std::unordered_map<std::type_info, SQLSMALLINT> _SQLTypeConvert;
+		std::unordered_map<size_t, size_t> _CTypeConvert;
+		std::unordered_map<size_t, size_t> _SQLTypeConvert;
 	};
 }

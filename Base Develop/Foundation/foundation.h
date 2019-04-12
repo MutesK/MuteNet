@@ -132,6 +132,8 @@ namespace ODBC
 			return "SQL_NEED_DATA";
 		case SQL_STILL_EXECUTING:
 			return "SQL_STILL_EXECUTING";
+		default:
+			return "FAILED";
 		}
 	}
 

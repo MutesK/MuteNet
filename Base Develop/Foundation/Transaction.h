@@ -1,9 +1,8 @@
 #pragma once
 
-/*
-	Rollback, Commit
-	RAII ∫∏¿Â
-*/
+#include "foundation.h"
+#include "Connection.h"
+
 namespace ODBC
 {
 	class Transaction final

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "foundation.h"
+
 namespace ODBC
 {
 	class Connection final
@@ -8,10 +10,10 @@ namespace ODBC
 		Connection();
 		~Connection();
 
-		void Connect(std::string& dsn, std::string& userid, std::string& password, size_t timeout = 0) throw();
-		void Connect(std::string& connect_string, size_t timeout = 0) throw();
+		void Connect(std::string& dsn, std::string& userid, std::string& password, size_t timeout = 0);
+		void Connect(std::string& connect_string, size_t timeout = 0);
 
-		bool Disconnect() const;
+		bool Disconnect();
 
 		void* native_env_handle() { return _henv; }
 		void* native_dbc_handle() { return _hdbc; }
