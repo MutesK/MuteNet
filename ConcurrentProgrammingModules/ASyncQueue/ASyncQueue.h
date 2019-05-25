@@ -4,7 +4,7 @@
 
 namespace Module
 {
-	class ASyncQueue abstract : private Noncopyable
+	class ASyncQueue abstract
 	{
 	public:
 		ASyncQueue();

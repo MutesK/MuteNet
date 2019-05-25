@@ -8,7 +8,8 @@ public:
 	State(const std::string& statename);
 	~State();
 
-	virtual void DoWork() = 0;
+	virtual void BeginState() = 0;
+	virtual void EndState() = 0;
 private:
 	friend class StateMachine;
 
