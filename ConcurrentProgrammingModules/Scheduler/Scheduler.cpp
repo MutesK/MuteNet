@@ -25,7 +25,7 @@ void Scheduler::RegisterTask(ScheduleTask* pTask)
 	{
 		std::lock_guard<std::mutex> lock(_queueMutex);
 
-		_taskQueue.insert(std::make_pair(pTask->_time, pTask));
+		_taskQueue.insert(std::make_pair(pTask->_startime, pTask));
 	}
 }
 
@@ -36,7 +36,7 @@ void Scheduler::UnRegisterTask(ScheduleTask* pTask)
 
 	std::lock_guard<std::mutex> lock(_queueMutex);
 
-	_taskQueue.erase(pTask->_time);
+	_taskQueue.erase(pTask->_startime);
 }
 
 void Scheduler::DoWork()
@@ -52,7 +52,7 @@ void Scheduler::DoWork()
 		{
 			pTask = _taskQueue.begin()->second;
 
-			if (pTask->_time >= high_resolution_clock::now())
+			if (pTask->_startime >= high_resolution_clock::now())
 				continue;
 
 			std::future<void> fut = std::async(std::bind(&ScheduleTask::Process, pTask));
@@ -61,7 +61,7 @@ void Scheduler::DoWork()
 			{
 				std::lock_guard<std::mutex> lock(_queueMutex);
 
-				_taskQueue.erase(pTask->_time);
+				_taskQueue.erase(pTask->_startime);
 			}
 		}
 

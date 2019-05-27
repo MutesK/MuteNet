@@ -15,6 +15,7 @@
 #include "../DeadLock Checker/SafeSharedLock.h"
 #include <queue>
 
+template <typename Data>
 class DoublyQueue final
 {
 public:
@@ -23,12 +24,12 @@ public:
 
 	void SwapQueues();
 
-	void Put(const std::string& _data);
-	void Get(std::string& OUT _data);
+	void Put(const Data& _data);
+	void Get(Data& OUT _data);
 private:
 	SafeSharedLock _lock;
 
-	std::queue<std::string> _forwardQueue;
-	std::queue<std::string> _backwardQueue;
+	std::queue<Data> _forwardQueue;
+	std::queue<Data> _backwardQueue;
 };
 

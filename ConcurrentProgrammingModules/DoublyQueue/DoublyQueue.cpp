@@ -1,31 +1,34 @@
 #include "DoublyQueue.h"
 
 
-
-DoublyQueue::DoublyQueue()
+template <typename Data>
+DoublyQueue<Data>::DoublyQueue()
 {
 }
 
-
-DoublyQueue::~DoublyQueue()
+template <typename Data>
+DoublyQueue<Data>::~DoublyQueue()
 {
 }
 
-void DoublyQueue::SwapQueues()
+template <typename Data>
+void DoublyQueue<Data>::SwapQueues()
 {
 	SAFE_UNIQUELOCK(_lock);
 	
 	std::swap(_forwardQueue, _backwardQueue);
 }
 
-void DoublyQueue::Put(const std::string& data)
+template <typename Data>
+void DoublyQueue<Data>::Put(const Data& data)
 {
 	SAFE_SHAREDLOCK(_lock);
 
 	_forwardQueue.emplace(data);
 }
 
-void DoublyQueue::Get(std::string& _data)
+template <typename Data>
+void DoublyQueue<Data>::Get(Data& OUT _data)
 {
 	SAFE_SHAREDLOCK(_lock);
 

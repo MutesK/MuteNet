@@ -17,7 +17,7 @@ namespace Module
 	private:
 		bool operator()(ScheduleTask* left, ScheduleTask* right) const
 		{
-			return left->_time > right->_time;
+			return left->_startime > right->_startime;
 		}
 
 		NON_COPYABLE(ScheduleTask);
@@ -27,6 +27,7 @@ namespace Module
 		friend class Scheduler;
 	private:
 		uint32_t _repeatcount;
-		Timestamp _time;
+
+		Timestamp _startime;
 	};
 }

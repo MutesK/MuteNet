@@ -1,13 +1,14 @@
 #include "LRUCache.h"
 
 
-
-LRUCache::LRUCache(int capacity)
+template <typename Data>
+LRUCache<Data>::LRUCache(int capacity)
 	:_size(0), _capacity(capacity)
 {
 }
 
-void LRUCache::Put(size_t id, const std::string& data)
+template <typename Data>
+void LRUCache<Data>::Put(size_t id, const Data& data)
 {
 	const auto iter = _pageMap.find(id);
 
@@ -36,21 +37,22 @@ void LRUCache::Put(size_t id, const std::string& data)
 	_size++;
 }
 
-void LRUCache::Get(size_t id)
+template <typename Data>
+void LRUCache<Data>::Get(size_t id)
 {
 	const auto iter = _pageMap.find(id);
 	if (iter == _pageMap.end())
 		return;
 
 	const auto & node = iter->second;
-	std::string value = node->_data;
+	Data value = node->_data;
 
 	_pageList.remove(node);
 	_pageList.push_front(node);
 }
 
-
-void LRUCache::EraseNode(const std::shared_ptr<Node>& node)
+template <typename Data>
+void LRUCache<Data>::EraseNode(const std::shared_ptr<Node<Data>>& node)
 {
 	const auto iter = _pageMap.find(node->_id);
 

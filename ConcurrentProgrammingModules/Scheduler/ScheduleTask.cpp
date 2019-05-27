@@ -6,7 +6,7 @@ using namespace std::chrono_literals;
 
 
 ScheduleTask::ScheduleTask(const Timestamp& time, const uint32_t RepeatCount)
-	:_repeatcount(RepeatCount), _time(time)
+	:_repeatcount(RepeatCount), _startime(time)
 {
 }
 
