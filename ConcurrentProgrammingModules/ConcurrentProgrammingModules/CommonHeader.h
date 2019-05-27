@@ -5,6 +5,9 @@
 #include <atomic>
 #include <vector>
 
+#include <map>
+#include <list>
+
 #include <thread>
 #include <functional>
 #include <algorithm>

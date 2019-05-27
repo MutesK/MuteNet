@@ -33,9 +33,9 @@ public:
 
 	#define SAFE_SHAREDLOCK(mutex)									\
 		SafeSharedLock::OwnChecker checker(mutex._ownMap);			\
-		std::shared_lock lock(mutex._lock);						    \
+		std::shared_lock<std::shared_mutex> lock(mutex._lock);								    
 																	
 	#define SAFE_UNIQUELOCK(mutex)									\
 		SafeSharedLock::OwnChecker checker(mutex._ownMap);			\
-		std::unique_lock lock(mutex._lock);						    \
+		std::unique_lock<std::shared_mutex> lock(mutex._lock);						    
  
