@@ -6,7 +6,6 @@
 #include "../Foundation/ObjectPoolTLS.h"
 #include "../Foundation/Thread.h"
 #include "../Foundation/TaskManager.h"
-#include "WorkItem.h"
 #include "TcpSocket.h"
 #include "UdpSocket.h"
 #include "SocketUtil.h"

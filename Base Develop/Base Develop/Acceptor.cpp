@@ -1,46 +1,55 @@
 #include "Acceptor.h"
+#include "Network.h"
+#include "SessionManager.h"
 
 
-Acceptor::Acceptor(std::shared_ptr<TcpSocket>& _listen_socket)
-	: _listensocket(_listen_socket), std::thread(std::bind(&Acceptor::DoWork, this))
+Acceptor::Acceptor(const std::shared_ptr<IOCPManager>& SocketIO, const std::string& DnsAddress)
+	: _SocketIO(SocketIO)
 {
-	SetThreadName(native_handle(), "Acceptor Thread");
+	auto address = SocketAddressFactory::CreateSocketAddress(DnsAddress);
+
+	_listensocket = SocketUtil::CreateTCPSocket(AF_INET);
+	_listensocket->bind(address);
+	_listensocket->listen(0);
+
+	if (_listensocket->getLastError() == SOCKET_ERROR)
+		throw std::exception("Listen Socket Bind Error");
 }
 
 Acceptor::~Acceptor()
 {
-	Stop();
-
-	join();
-	detach();
+	Destory();
 }
 
 void Acceptor::Start()
 {
-	_flag = true;
 }
 
 void Acceptor::Stop()
 {
-	_flag = false;
 }
 
-void Acceptor::SetOnAccept(std::function<void(TcpSocketPtr)>& Callback)
+void Acceptor::Destory()
 {
-	_flag = true;
-	_OnAccept = Callback;
 }
 
 void Acceptor::DoWork()
 {
 	while (true)
 	{
-		std::unique_lock<decltype(_mutex)> lock(_mutex);
-		_cv.wait(lock, [this] { return _flag;  });
+		if (Network::_currentSession >= Network::_maxSession)
+			continue;
 
 		TcpSocketPtr socket = _listensocket->Accept();
 
-		if (socket->get_socket() == INVALID_SOCKET)
+		if (socket->get_handle() == INVALID_SOCKET)
 			continue;
+
+		auto session = SessionManager::GetInstance()->AppendSession(socket);
+		_SocketIO->RegisterSocket(session);
+		session->RecvPost();
+
+		Network::OnAccept(session->getHandle());
+			
 	}
 }

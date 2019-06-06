@@ -5,27 +5,19 @@
 TcpSocket::TcpSocket(ADDRESS_FAMILY f)
 	:Socket(f)
 {
-	_socket = socket(_address_family, SOCK_STREAM, IPPROTO_TCP);
+	_handle = socket(_address_family, SOCK_STREAM, IPPROTO_TCP);
 }
 
-
-TcpSocket::~TcpSocket()
+bool TcpSocket::bind(const std::shared_ptr<SocketAddress>& address)
 {
-}
-
-
-bool TcpSocket::bind(const SocketAddress& addr)
-{
-	if (_socket == INVALID_SOCKET)
+	if (_handle == INVALID_SOCKET)
 	{
 		_lastError = WSAGetLastError();
 		return false;
 	}
 
-
-	int result = ::bind(_socket,
-		addr.get_socketaddress(), addr.getSize());
-
+	int result = ::bind(_handle,
+		address->get_socketaddress(), address->getSize());
 
 	if (result == SOCKET_ERROR)
 	{
@@ -40,19 +32,19 @@ void TcpSocket::setNagle(bool bOption)
 {
 	int opt = bOption;
 
-	setsockopt(_socket, IPPROTO_TCP, TCP_NODELAY,
+	setsockopt(_handle, IPPROTO_TCP, TCP_NODELAY,
 		(const char *)&opt, sizeof(int));
 }
 
 bool TcpSocket::connect(SocketAddress& serverAddress)
 {
-	int result = ::connect(_socket, serverAddress.get_socketaddress(),
+	int result = ::connect(_handle, serverAddress.get_socketaddress(),
 		serverAddress.getSize());
 
 	if (result == SOCKET_ERROR)
 	{
 		_lastError = WSAGetLastError();
-		_socket = INVALID_SOCKET;
+		_handle = INVALID_SOCKET;
 		return false;
 	}
 
@@ -61,12 +53,12 @@ bool TcpSocket::connect(SocketAddress& serverAddress)
 
 bool TcpSocket::listen(int backlog)
 {
-	int result = ::listen(_socket, backlog);
+	int result = ::listen(_handle, backlog);
 
 	if (result == SOCKET_ERROR)
 	{
 		_lastError = WSAGetLastError();
-		_socket = INVALID_SOCKET;
+		_handle = INVALID_SOCKET;
 		return false;
 	}
 
@@ -80,13 +72,13 @@ std::shared_ptr<TcpSocket> TcpSocket::Accept()
 
 	int addressSize = sizeof(ClientAddress);
 
-	SOCKET newSocket = ::accept(_socket,
+	SOCKET newSocket = ::accept(_handle,
 		reinterpret_cast<sockaddr *>(&ClientAddress),
 		&addressSize);
 
 	std::shared_ptr<TcpSocket> ret = std::make_shared<TcpSocket>(_address_family);
 
-	ret->set_socket(newSocket);
+	ret->set_handle(newSocket);
 
 	if (newSocket == INVALID_SOCKET)
 		_lastError = WSAGetLastError();
@@ -100,19 +92,19 @@ std::shared_ptr<SocketAddress> TcpSocket::getAddress()
 	SOCKADDR addr;
 
 	int len = sizeof(addr);
-	getpeername(_socket, (SOCKADDR *)&addr, &len);
+	getpeername(_handle, (SOCKADDR *)&addr, &len);
 
 	return std::make_shared<SocketAddress>(addr);
 }
 
 int TcpSocket::setNoDelay(bool toggle)
 {
-	return setsockopt(_socket, IPPROTO_TCP, TCP_NODELAY, (const char *)&toggle, sizeof(bool));
+	return setsockopt(_handle, IPPROTO_TCP, TCP_NODELAY, (const char *)&toggle, sizeof(bool));
 }
 
 int TcpSocket::Send(const void* inData, int inLen)
 {
-	int sentbyte = send(_socket, (const char*)(inData), inLen, 0);
+	int sentbyte = send(_handle, (const char*)(inData), inLen, 0);
 
 	if (sentbyte >= 0)
 		return sentbyte;
@@ -124,7 +116,7 @@ int TcpSocket::Send(const void* inData, int inLen)
 
 int TcpSocket::Recv(void* inData, int inLen)
 {
-	int recvbytes = recv(_socket, static_cast<char *>(inData),
+	int recvbytes = recv(_handle, static_cast<char *>(inData),
 		inLen, 0);
 
 	if (recvbytes >= 0)
@@ -139,7 +131,7 @@ int TcpSocket::OverlappedIORecv(WSABUF* pBufArr, int Arrlen, void* OverlappedIO)
 	DWORD RecvSize = 0;
 	DWORD Flag = 0;
 
-	int result = WSARecv(_socket, pBufArr, Arrlen, &RecvSize, &Flag, (LPOVERLAPPED)OverlappedIO, nullptr);
+	int result = WSARecv(_handle, pBufArr, Arrlen, &RecvSize, &Flag, (LPOVERLAPPED)OverlappedIO, nullptr);
 
 	int errorCode = WSAGetLastError();
 
@@ -155,7 +147,7 @@ int TcpSocket::OverlappedIOSend(WSABUF* pBufArr, int Arrlen, void* OverlappedIO)
 	DWORD SendSize = 0;
 	DWORD Flag = 0;
 
-	int result = WSASend(_socket, pBufArr, Arrlen, &SendSize, Flag, (LPOVERLAPPED)OverlappedIO, nullptr);
+	int result = WSASend(_handle, pBufArr, Arrlen, &SendSize, Flag, (LPOVERLAPPED)OverlappedIO, nullptr);
 
 	int errorCode = WSAGetLastError();
 

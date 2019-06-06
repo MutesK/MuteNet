@@ -8,25 +8,21 @@
 	 - Select 입출력 모델에는 호환되지않는다.
 */
 
-class Acceptor final : public std::thread
+class IOCPManager;
+
+class Acceptor final
 {
 public:
-	Acceptor(std::shared_ptr<TcpSocket>& _listen_socket);
+	Acceptor(const std::shared_ptr<IOCPManager>& SocketIO, const std::string& DnsAddress);
 	~Acceptor();
 
 	void Start();
 	void Stop();
-
-	void SetOnAccept(std::function<void(TcpSocketPtr)>& Callback);
+	void Destory();
 protected:
 	void DoWork();
 private:
-	std::shared_ptr<TcpSocket> _listensocket;
-
-	std::function<void(TcpSocketPtr)> _OnAccept;
-	bool		   _flag;
-
-	::std::condition_variable _cv;
-	::std::mutex _mutex;
+	TcpSocketPtr	 _listensocket;
+	std::shared_ptr<IOCPManager> _SocketIO;
 };
 

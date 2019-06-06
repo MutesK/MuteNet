@@ -2,17 +2,17 @@
 
 #include "Socket.h"
 
-class TcpSocket : public Socket
+class TcpSocket final : public Socket
 {
 public:
 	TcpSocket(ADDRESS_FAMILY f);
-	virtual ~TcpSocket();
+	virtual ~TcpSocket() = default;
 
 	void setNagle(bool bOption);
 
 	bool connect(SocketAddress& serverAddress);
 
-	virtual bool bind(const SocketAddress& addr);
+	bool bind(const std::shared_ptr<SocketAddress>& address) override;
 
 	bool listen(int backlog);
 

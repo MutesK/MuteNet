@@ -5,7 +5,7 @@
 UdpSocket::UdpSocket(ADDRESS_FAMILY f)
 	:Socket(f)
 {
-	_socket = socket(_address_family, SOCK_DGRAM, IPPROTO_UDP);
+	_handle = socket(_address_family, SOCK_DGRAM, IPPROTO_UDP);
 }
 
 
@@ -16,13 +16,13 @@ UdpSocket::~UdpSocket()
 bool UdpSocket::bind(const SocketAddress& address)
 {
 
-	if (_socket == INVALID_SOCKET)
+	if (_handle == INVALID_SOCKET)
 	{
 		_lastError = WSAGetLastError();
 		return false;
 	}
 
-	int result = ::bind(_socket,
+	int result = ::bind(_handle,
 		address.get_socketaddress(), address.getSize());
 
 	if (result == SOCKET_ERROR)
@@ -36,7 +36,7 @@ bool UdpSocket::bind(const SocketAddress& address)
 
 int UdpSocket::SendTo(const void* inData, int inLen, const SocketAddress& inTo)
 {
-	int byte = sendto(_socket, (const char *)inData, inLen, 0, inTo.get_socketaddress(),
+	int byte = sendto(_handle, (const char *)inData, inLen, 0, inTo.get_socketaddress(),
 		inTo.getSize());
 
 	if (byte >= 0)
@@ -50,7 +50,7 @@ int UdpSocket::ReceiveFrom(void *inBuffer, int inLen, SocketAddress& outFrom)
 {
 	int length = outFrom.getSize();
 
-	int recv = recvfrom(_socket, (char*)inBuffer, inLen, 0, 
+	int recv = recvfrom(_handle, (char*)inBuffer, inLen, 0,
 		const_cast<sockaddr *>(outFrom.get_socketaddress()),
 		&length);
 

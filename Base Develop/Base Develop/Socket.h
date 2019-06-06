@@ -16,7 +16,7 @@ protected:
 public:
 	virtual ~Socket();
 
-	virtual bool bind(const SocketAddress& address) = 0;
+	virtual bool bind(const std::shared_ptr<SocketAddress>& address) = 0;
 
 	// false : Block IO Mode
 	// true : Non-Block IO Mode
@@ -35,12 +35,12 @@ public:
 	int setUseKeepAlive(bool toggle);
 	int shutdown(ShutdownBlockMode Mode);
 
-	GET_SET_ATTRIBUTE(SOCKET, socket);
+	GET_SET_ATTRIBUTE(SOCKET, handle);
 
 	friend class SocketUtil;
 
 protected:
-	SOCKET			_socket;
+	SOCKET			_handle;
 	DWORD			_lastError;
 	ADDRESS_FAMILY	_address_family;
 };

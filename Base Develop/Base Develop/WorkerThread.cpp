@@ -28,9 +28,10 @@ void WorkerThread::Stop()
 
 void WorkerThread::DoWork()
 {
-	DWORD cbTransferred;
-	LPOVERLAPPED pOverlapped;
-	void* pCallback;
+	DWORD cbTransferred = 0;
+	LPOVERLAPPED pOverlapped = nullptr;
+	PULONG_PTR CompletionKey = nullptr;
+	void(*pCallback)(LPOVERLAPPED, int) = nullptr;
 
 	while (true)
 	{
@@ -38,7 +39,7 @@ void WorkerThread::DoWork()
 		pOverlapped = nullptr;
 		pCallback = nullptr;
 
-		int retval = GetQueuedCompletionStatus(_hIOCP, &cbTransferred, (PULONG_PTR)pCallback, &pOverlapped, INFINITE);
+		GetQueuedCompletionStatus(_hIOCP, &cbTransferred, CompletionKey, &pOverlapped, INFINITE);
 
 		if (pOverlapped == nullptr && pCallback == nullptr && cbTransferred == 0)
 		{
@@ -46,8 +47,9 @@ void WorkerThread::DoWork()
 			break;
 		}
 
-		// IO Callback
-		std::function<void(DWORD, LPOVERLAPPED)> *pFunction = (std::function<void(DWORD, LPOVERLAPPED)> *)pCallback;
-		(*pFunction)(cbTransferred, pOverlapped);
+		
+		pCallback = reinterpret_cast<void(*)(LPOVERLAPPED, int)>(CompletionKey);
+		(*pCallback)(pOverlapped, cbTransferred);
+
 	}
 }

@@ -19,7 +19,7 @@ namespace Module
 	};
 
 	template <typename T, const uint32_t PoolSize, class Ctor = Constructor<T>>
-	class MemoryPool final : private Noncopyable
+	class MemoryPool final
 	{
 	private:
 		struct MemoryEntry
@@ -31,6 +31,8 @@ namespace Module
 			SLIST_ENTRY ItemEntry;
 			T* pData;
 		};
+
+		NON_COPYABLE(MemoryPool);
 	public:
 		MemoryPool();
 		~MemoryPool();

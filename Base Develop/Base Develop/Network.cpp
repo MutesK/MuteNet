@@ -12,45 +12,47 @@ Network::Network()
 Network::~Network()
 {
 	Stop();
+	Destroy();
 	WSACleanup();
 }
 
-void Network::Start(NetworkMode networkMode, std::string resolveDNSAddress,
-	size_t maxSession)
+void Network::Init(const std::string& dnsAddress, size_t maxSession)
 {
-	auto address = SocketAddressFactory::CreateSocketAddress(resolveDNSAddress);
-
-	initIOCPMoudle(networkMode, address);
-
-	_maxSession = maxSession;
+	_acceptor = std::make_unique<Acceptor>(_socketio, dnsAddress);
 }
+
+bool Network::Start()
+{
+	_acceptor->Start();
+}
+
 
 void Network::Stop()
 {
 	_acceptor->Stop();
-	_iocpIO->Stop();
 }
 
-void Network::initIOCPMoudle(NetworkMode& Mode, std::shared_ptr<SocketAddress>& address)
+void Network::Destroy()
 {
-	if (Mode == Server)
-	{
-		TcpSocketPtr _socket = SocketUtil::CreateTCPSocket(AF_INET);
-		_socket->bind(*address);
-		_socket->listen(0);
-
-
-		_iocpIO = std::make_unique<IOCPManager>(5);
-
-		_acceptor->Start();
-	}
+	_acceptor->Destory();
+	_socketio->ForceDestroy();
 }
 
-void Network::OnAccept(TcpSocketPtr ptr)
+void Network::OnAccept(LinkHandle link)
 {
-	auto session = SessionManager::GetInstance()->AppendSession(ptr);
+	++_currentSession;
+}
 
-	_iocpIO->RegisterSocket(session->get_socket(), );
+void Network::OnReceived(LinkHandle link, void* pContext)
+{
+}
 
-	
+void Network::OnClosed(LinkHandle link)
+{
+	--_currentSession;
+}
+
+void Network::OnSended(LinkHandle link, int SendSize)
+{
+	++_SendPacketCnt;
 }

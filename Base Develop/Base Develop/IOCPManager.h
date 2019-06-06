@@ -12,7 +12,7 @@ public:
 
 	void RegisterSocket(std::shared_ptr<Session>& session);
 
-	void Stop();
+	void ForceDestroy();
 private:
 	HANDLE					_IocpHandle;
 

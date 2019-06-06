@@ -22,9 +22,6 @@
     <Filter Include="Network\IOService">
       <UniqueIdentifier>{5fb66af9-e44f-4743-8c83-348f41705066}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Network\IOService\SelectIO">
-      <UniqueIdentifier>{489d041d-d018-4799-82c8-d96ff54e5100}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Network\IOService\IOCP">
       <UniqueIdentifier>{15109465-6793-4f16-9885-61055f9dff18}</UniqueIdentifier>
     </Filter>
@@ -53,9 +50,6 @@
     </ClCompile>
     <ClCompile Include="Acceptor.cpp">
       <Filter>Network\Accepter</Filter>
-    </ClCompile>
-    <ClCompile Include="Select.cpp">
-      <Filter>Network\IOService\SelectIO</Filter>
     </ClCompile>
     <ClCompile Include="Connector.cpp">
       <Filter>Network\Connector</Filter>
@@ -101,9 +95,6 @@
     </ClInclude>
     <ClInclude Include="Acceptor.h">
       <Filter>Network\Accepter</Filter>
-    </ClInclude>
-    <ClInclude Include="Select.h">
-      <Filter>Network\IOService\SelectIO</Filter>
     </ClInclude>
     <ClInclude Include="Connector.h">
       <Filter>Network\Connector</Filter>
