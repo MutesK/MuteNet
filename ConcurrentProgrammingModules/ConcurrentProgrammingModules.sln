@@ -22,6 +22,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LRUCache", "LRUCache\LRUCac
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DoublyQueue", "DoublyQueue\DoublyQueue.vcxproj", "{0C5C0F30-9644-482C-89C0-C452EA86CAF6}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MemoryStream", "MemoryStream\MemoryStream.vcxproj", "{FECC4286-F1B9-4604-9577-E703935F5B80}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -86,6 +88,14 @@ Global
 		{0C5C0F30-9644-482C-89C0-C452EA86CAF6}.Release|x64.Build.0 = Release|x64
 		{0C5C0F30-9644-482C-89C0-C452EA86CAF6}.Release|x86.ActiveCfg = Release|Win32
 		{0C5C0F30-9644-482C-89C0-C452EA86CAF6}.Release|x86.Build.0 = Release|Win32
+		{FECC4286-F1B9-4604-9577-E703935F5B80}.Debug|x64.ActiveCfg = Debug|x64
+		{FECC4286-F1B9-4604-9577-E703935F5B80}.Debug|x64.Build.0 = Debug|x64
+		{FECC4286-F1B9-4604-9577-E703935F5B80}.Debug|x86.ActiveCfg = Debug|Win32
+		{FECC4286-F1B9-4604-9577-E703935F5B80}.Debug|x86.Build.0 = Debug|Win32
+		{FECC4286-F1B9-4604-9577-E703935F5B80}.Release|x64.ActiveCfg = Release|x64
+		{FECC4286-F1B9-4604-9577-E703935F5B80}.Release|x64.Build.0 = Release|x64
+		{FECC4286-F1B9-4604-9577-E703935F5B80}.Release|x86.ActiveCfg = Release|Win32
+		{FECC4286-F1B9-4604-9577-E703935F5B80}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

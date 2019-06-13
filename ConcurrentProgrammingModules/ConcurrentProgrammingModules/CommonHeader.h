@@ -1,7 +1,7 @@
 #pragma once
-
-#include <iostream>
+#define NOMINMAX
 #include <Windows.h>
+#include <iostream>
 #include <atomic>
 #include <vector>
 
@@ -19,8 +19,8 @@
 #include <concurrent_unordered_map.h>
 #include <shared_mutex>
 
-#define WIN32_LEAN_AND_MEAN
 
+#define WIN32_LEAN_AND_MEAN
 
 #define NON_COPYABLE(name)					\
 name(const name&) = delete;					\

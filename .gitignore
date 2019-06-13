@@ -50,3 +50,4 @@ Base Develop/Release/*
 Base Develop/x64/*
 
 
+*.user
