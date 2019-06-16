@@ -1,8 +1,7 @@
+#pragma once
 #include "MemoryPool.h"
 
-
-using namespace Module;
-
+using namespace Util;
 
 template <typename T, const uint32_t PoolSize, class Ctor>
 MemoryPool<T, PoolSize, Ctor>::MemoryPool()
@@ -11,7 +10,7 @@ MemoryPool<T, PoolSize, Ctor>::MemoryPool()
 	_pFreeMemoryEntries = AllocatedList();
 	_pFreeUnusedDatas = AllocatedList();
 
-	Reserve();
+	Reserve(1000);
 }
 
 
@@ -34,11 +33,11 @@ MemoryPool<T, PoolSize, Ctor>::~MemoryPool()
 template <typename T, const uint32_t PoolSize, class Ctor>
 T* MemoryPool<T, PoolSize, Ctor>::Allocate()
 {
-	PSLIST_ENTRY listEntry = ::InterlockedPopEntrySList(_pFreeUnusedDatas);
+	auto listEntry = ::InterlockedPopEntrySList(_pFreeUnusedDatas);
 
 	if (listEntry == nullptr)
 	{
-		_Reserve(std::max<uint32_t>(1, PoolSize / 5));
+		Reserve(std::max<uint32_t>(1, PoolSize / 5));
 		return _constructor.Construct();
 	}
 
@@ -54,7 +53,7 @@ T* MemoryPool<T, PoolSize, Ctor>::Allocate()
 template <typename T, const uint32_t PoolSize, class Ctor>
 void MemoryPool<T, PoolSize, Ctor>::Free(T* const ptr)
 {
-	PSLIST_ENTRY pListEntry = ::InterlockedPopEntrySList(_pFreeMemoryEntries);
+	auto pListEntry = ::InterlockedPopEntrySList(_pFreeMemoryEntries);
 
 	if (pListEntry == nullptr)
 	{
@@ -78,7 +77,7 @@ void MemoryPool<T, PoolSize, Ctor>::Free(T* const ptr)
 template <typename T, const uint32_t PoolSize, class Ctor>
 PSLIST_HEADER MemoryPool<T, PoolSize, Ctor>::AllocatedList()
 {
-	PSLIST_HEADER pListHeader = static_cast<PSLIST_HEADER>(
+	const auto pListHeader = static_cast<PSLIST_HEADER>(
 		::_aligned_malloc(sizeof(SLIST_HEADER), MEMORY_ALLOCATION_ALIGNMENT));
 
 	if (pListHeader == nullptr)
@@ -91,7 +90,7 @@ PSLIST_HEADER MemoryPool<T, PoolSize, Ctor>::AllocatedList()
 template <typename T, const uint32_t PoolSize, class Ctor>
 void MemoryPool<T, PoolSize, Ctor>::FreeList(PSLIST_HEADER& header)
 {
-	PSLIST_ENTRY pListEntry = ::InterlockedFlushSList(header);
+	auto pListEntry = ::InterlockedFlushSList(header);
 
 	if (nullptr != pListEntry)
 	{

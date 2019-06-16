@@ -1,7 +1,7 @@
 #include "Example.h"
 #include "Scheduler.h"
 
-using namespace Module;
+using namespace Util;
 using namespace std::chrono_literals;
 
 Scheduler scheduler;

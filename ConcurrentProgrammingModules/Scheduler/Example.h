@@ -2,9 +2,9 @@
 
 #include "ScheduleTask.h"
 
-namespace Module
+namespace Util
 {
-	class Example : public ScheduleTask
+	class Example : public Module::ScheduleTask
 	{
 	public:
 		Example(const Timestamp& time, const uint32_t RepeatCount=1);

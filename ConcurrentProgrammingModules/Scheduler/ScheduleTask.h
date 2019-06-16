@@ -3,7 +3,7 @@
 
 #include "../ConcurrentProgrammingModules/CommonHeader.h"
 
-namespace Module
+namespace Util
 {
 	class ScheduleTask abstract
 	{

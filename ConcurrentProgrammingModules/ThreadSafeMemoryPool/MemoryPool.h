@@ -2,7 +2,7 @@
 
 #include "../ConcurrentProgrammingModules/CommonHeader.h"
 
-namespace Module
+namespace Util
 {
 	template <typename T>
 	struct Constructor
@@ -25,9 +25,10 @@ namespace Module
 		struct MemoryEntry
 		{
 			MemoryEntry(void)
-				:pData(nullptr)
-			{}
-			
+				: ItemEntry(), pData(nullptr)
+			{
+			}
+
 			SLIST_ENTRY ItemEntry;
 			T* pData;
 		};

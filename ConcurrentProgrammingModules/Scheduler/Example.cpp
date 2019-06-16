@@ -1,6 +1,6 @@
 #include "Example.h"
 
-namespace Module
+namespace Util
 {
 	Example::Example(const Timestamp& time, const uint32_t RepeatCount)
 		:ScheduleTask(time, RepeatCount)
