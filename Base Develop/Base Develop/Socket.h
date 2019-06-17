@@ -1,6 +1,7 @@
 #pragma once
 
-#include "../Foundation/foundation.h"
+#include <WinSock2.h>
+#include <memory>
 #include "SocketAddress.h"
 
 enum class ShutdownBlockMode
