@@ -34,6 +34,7 @@ bool ASyncQueue::Initialize(const uint32_t numberOfWorkers, const uint32_t timeo
 	for (uint32_t i = 0; i < numberOfWorkers; ++i)
 	{
 		_workers.push_back(new std::thread(std::bind(&ASyncQueue::Run, this, i)));
+		ChangeThreadName(_workers[i]->native_handle(), "WorkerThread");
 	}
 
 	return true;
@@ -83,17 +84,17 @@ void ASyncQueue::Run(const uint32_t workerIndex)
 		if (GetQueuedCompletionStatus(_iocpHandle, &byteTransferred,
 			&CompletionKey, &lpOverlapped, _timeout) == false)
 		{
-			const DWORD lastError = GetLastError();
+			const auto lastError = GetLastError();
 			
 			if (WAIT_TIMEOUT != lastError)
 			{
 				break;
 			}
 
-			HandleTimeout(workerIndex);
+			HandleTimeout(workerIndex, CompletionKey);
 			continue;
 		}
 
-		HandleCompletion(workerIndex);
+		HandleCompletion(workerIndex, CompletionKey, lpOverlapped);
 	}
 }

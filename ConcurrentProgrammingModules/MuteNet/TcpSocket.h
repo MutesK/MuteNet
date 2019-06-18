@@ -1,32 +1,32 @@
 #pragma once
 
-
-class TcpSocket final : public Socket
+namespace Network
 {
-public:
-	TcpSocket(ADDRESS_FAMILY f);
-	virtual ~TcpSocket() = default;
+	class TcpSocket final : public Socket
+	{
+	public:
+		TcpSocket(ADDRESS_FAMILY f);
+		virtual ~TcpSocket() = default;
 
-	void setNagle(bool bOption);
+		void setNagle(bool bOption);
 
-	bool connect(SocketAddress& serverAddress);
+		bool connect(const std::string& ip, uint16_t port);
 
-	virtual bool Bind(const SocketAddress& address) override;
+		virtual bool Bind(const std::string& ip, uint16_t port) override;
 
-	bool listen(int backlog);
+		bool listen(int backlog);
 
-	std::shared_ptr<TcpSocket> Accept();
+		std::shared_ptr<TcpSocket> Accept();
 
-	std::shared_ptr<SocketAddress> getAddress();
+		int SetNoDelay(bool toggle);
 
-	int SetNoDelay(bool toggle);
+		// Not Use Socket IO Function
+		int Send(const void* inData, int inLen);
+		int Recv(void* inData, int inLen);
 
-	// Not Use Socket IO Function
-	int Send(const void* inData, int inLen);
-	int Recv(void* inData, int inLen);
+		int OverlappedIORecv(WSABUF* pBufArr, int Arrlen, void* OverlappedIO);
+		int OverlappedIOSend(WSABUF* pBufArr, int Arrlen, void* OverlappedIO);
 
-	int OverlappedIORecv(WSABUF* pBufArr, int Arrlen, void* OverlappedIO);
-	int OverlappedIOSend(WSABUF* pBufArr, int Arrlen, void* OverlappedIO);
+	};
 
-};
-
+}

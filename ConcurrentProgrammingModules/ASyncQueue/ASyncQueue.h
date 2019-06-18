@@ -17,10 +17,10 @@ namespace Util
 
 		void Run(const uint32_t workerIndex);
 
-		virtual void HandleCompletion(const uint32_t workerIndex) = 0;
-		virtual void HandleTimeout(const uint32_t WorkerIndex) =0;
+		virtual void HandleCompletion(const uint32_t workerIndex, ULONG_PTR Context, LPOVERLAPPED Overlapped) = 0;
+		virtual void HandleTimeout(const uint32_t WorkerIndex, ULONG_PTR Context) =0;
 
-	private:
+	protected:
 		HANDLE				  _iocpHandle;
 		std::atomic<uint32_t> _workerIndex;
 		std::vector<std::thread*> _workers;

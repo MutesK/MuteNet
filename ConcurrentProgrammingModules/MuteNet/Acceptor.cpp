@@ -12,43 +12,56 @@ namespace Network
 	bool Acceptor::Listen(const std::string& ip, uint16_t port, uint16_t maxthread)
 	{
 		_Listen->listen(0);
-		_Listen->Bind(SocketAddress(ip, port));
+		_Listen->Bind(ip, port);
 
 		const auto work = std::bind(&Acceptor::AcceptorWork, this);
 
 		for(auto thread_count = 0; thread_count <= maxthread; ++thread_count)
 		{
-			_threads.emplace_back(std::thread(work));
+			_threadpool.emplace_back(new std::thread(work));
 		}
 
-		for(auto thread : _threads)
+		for(auto i = 0; i< maxthread; ++i)
 		{
-			Util::ChangeThreadName(thread.native_handle(), "Acceptor Thread");
+			Util::ChangeThreadName(_threadpool[i]->native_handle(), "Acceptor Thread");
 		}
 
+		return true;
+	}
 
+	void Acceptor::Start()
+	{
 	}
 
 	void Acceptor::Stop()
 	{
-		for(auto thread : _threads)
+		for (auto& thread : _threadpool)
 		{
-			thread.join();
+			thread->join();
+			delete thread;
 		}
+
+		_threadpool.clear();
+
+	}
+
+	void Acceptor::SetOnAccept(const Event& callback)
+	{
+		_OnAccept = std::move(callback);
 	}
 
 	void Acceptor::AcceptorWork()
 	{
 		while (true)
 		{
-			auto socket = _Listen->Accept();
+			const auto socket = _Listen->Accept();
 
 			// User Session Pool -> 임시로 이렇게 처리...
-			Link* link = new Link();
+			auto link = new Link();
 			link->_socket = socket;
-			LinkPtr ptr(link);
+			const LinkPtr ptr(link);
 
-			IOEngine::InterAccept();
+			_OnAccept(ptr, link->native_handle());
 		}
 	}
 

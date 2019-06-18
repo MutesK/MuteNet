@@ -19,7 +19,7 @@ public:
 			_TypePtr->AddRef();
 	}
 
-	explicit RefCountPtr(const RefCountPtr& rhs)
+	RefCountPtr(const RefCountPtr& rhs)
 		:_TypePtr(rhs._TypePtr)
 	{
 		if (_TypePtr)
