@@ -1,5 +1,7 @@
 #pragma once
 
+#include "MuteNetFoundation.h"
+
 enum class ShutdownBlockMode
 {
 	RecvBlock = SD_RECEIVE,
@@ -12,10 +14,10 @@ class Socket
 {
 protected:
 	Socket(ADDRESS_FAMILY);
-	
-	virtual bool Bind(const std::shared_ptr<SocketAddress>& address) = 0;
 public:
 	virtual ~Socket();
+	virtual bool Bind(const SocketAddress& address) = 0;
+
 	int SetIoMode(bool ioflag);
 
 	int GetLastError() const;
@@ -49,30 +51,30 @@ inline int Socket::GetLastError() const
 
 inline int Socket::SetRecvSocketBufferSize(int size) const
 {
-	return setsockopt(_handle, SOL_SOCKET, SO_RCVBUF, (const char*)& size, sizeof(int));
+	return setsockopt(_handle, SOL_SOCKET, SO_RCVBUF, reinterpret_cast<const char*>(& size), sizeof(int));
 }
 
 inline int Socket::SetSendSocketBufferSize(int size) const
 {
-	return setsockopt(_handle, SOL_SOCKET, SO_SNDBUF, (const char*)& size, sizeof(int));
+	return setsockopt(_handle, SOL_SOCKET, SO_SNDBUF, reinterpret_cast<const char*>(& size), sizeof(int));
 }
 
 inline int Socket::SetReUseAddress(bool toggle) const
 {
-	return setsockopt(_handle, SOL_SOCKET, SO_REUSEADDR, (const char*)& toggle, sizeof(bool));
+	return setsockopt(_handle, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<const char*>(& toggle), sizeof(bool));
 }
 
 inline int Socket::SetRecvCallLimitTime(DWORD time) const
 {
-	return setsockopt(_handle, SOL_SOCKET, SO_RCVTIMEO, (const char*)& time, sizeof(DWORD));
+	return setsockopt(_handle, SOL_SOCKET, SO_RCVTIMEO, reinterpret_cast<const char*>(& time), sizeof(DWORD));
 }
 
 inline int Socket::SetSendCallLimitTime(DWORD time) const
 {
-	return setsockopt(_handle, SOL_SOCKET, SO_SNDTIMEO, (const char*)& time, sizeof(DWORD));
+	return setsockopt(_handle, SOL_SOCKET, SO_SNDTIMEO, reinterpret_cast<const char*>(& time), sizeof(DWORD));
 }
 
 inline int Socket::SetUseKeepAlive(bool toggle) const
 {
-	return setsockopt(_handle, SOL_SOCKET, SO_KEEPALIVE, (const char*)& toggle, sizeof(bool));
+	return setsockopt(_handle, SOL_SOCKET, SO_KEEPALIVE, reinterpret_cast<const char*>(& toggle), sizeof(bool));
 }

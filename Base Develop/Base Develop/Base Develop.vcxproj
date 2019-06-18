@@ -22,13 +22,10 @@
     <ClCompile Include="Acceptor.cpp" />
     <ClCompile Include="Connector.cpp" />
     <ClCompile Include="IOCPManager.cpp" />
-    <ClCompile Include="Network.cpp" />
-    <ClCompile Include="Session.cpp" />
-    <ClCompile Include="SessionManager.cpp" />
+    <ClCompile Include="IOEngine.cpp" />
+    <ClCompile Include="LinkTcp.cpp" />
     <ClCompile Include="Socket.cpp" />
     <ClCompile Include="SocketAddress.cpp" />
-    <ClCompile Include="StreamBuffer.cpp" />
-    <ClCompile Include="RingBuffer.cpp" />
     <ClCompile Include="TcpSocket.cpp" />
     <ClCompile Include="UdpSocket.cpp" />
     <ClCompile Include="WorkerThread.cpp" />
@@ -36,17 +33,13 @@
   <ItemGroup>
     <ClInclude Include="Acceptor.h" />
     <ClInclude Include="Connector.h" />
-    <ClInclude Include="framework.h" />
     <ClInclude Include="IOCPManager.h" />
-    <ClInclude Include="Network.h" />
-    <ClInclude Include="Session.h" />
-    <ClInclude Include="SessionManager.h" />
+    <ClInclude Include="IOEngine.h" />
+    <ClInclude Include="LinkTcp.h" />
     <ClInclude Include="Socket.h" />
     <ClInclude Include="SocketAddress.h" />
     <ClInclude Include="SocketAddressFactory.h" />
     <ClInclude Include="SocketUtil.h" />
-    <ClInclude Include="StreamBuffer.h" />
-    <ClInclude Include="RingBuffer.h" />
     <ClInclude Include="TcpSocket.h" />
     <ClInclude Include="UdpSocket.h" />
     <ClInclude Include="WorkerThread.h" />

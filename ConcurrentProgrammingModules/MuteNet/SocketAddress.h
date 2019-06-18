@@ -1,9 +1,8 @@
 #pragma once
 
-/*
-	소켓주소를 담당한다.
-*/
-class SocketAddress
+#include "MuteNetFoundation.h"
+
+class SocketAddress final
 {
 public:
 	SocketAddress(uint32_t address, uint16_t inPort);
@@ -11,27 +10,28 @@ public:
 	SocketAddress(const sockaddr& sockAddr);
 	~SocketAddress() = default;
 
-	const sockaddr* GetSocketAddress() const;
+	const sockaddr* GetSocketAddress();
 
-	int GetSize() const;
+	static int GetSize();
 
-	std::string getIpAddress() const;
-	int	getPort() const;
+	std::string GetIpAddress() const;
+	int	GetPort() const;
 private:
 	sockaddr_in _sockAddr{};
 };
 
-inline const sockaddr* SocketAddress::GetSocketAddress() const
+
+inline const sockaddr* SocketAddress::GetSocketAddress()
 {
 	return reinterpret_cast<const sockaddr*>(&_sockAddr);
 }
 
-inline int SocketAddress::getPort() const
+inline int SocketAddress::GetPort() const
 {
 	return ntohs(_sockAddr.sin_port);
 }
 
-inline int SocketAddress::GetSize() const
+inline int SocketAddress::GetSize()
 {
 	return sizeof(sockaddr);
 }
