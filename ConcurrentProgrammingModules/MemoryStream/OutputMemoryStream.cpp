@@ -10,7 +10,7 @@ OutputMemoryStream::~OutputMemoryStream()
 	std::free(_buffer);
 }
 
-void OutputMemoryStream::Write(const void* inData, const size_t inByteCount)
+void OutputMemoryStream::Write(const void* inData, const uint32_t inByteCount)
 {
 	const uint32_t resultPosition = _head + inByteCount;
 	

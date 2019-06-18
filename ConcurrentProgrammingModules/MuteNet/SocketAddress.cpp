@@ -18,8 +18,7 @@ SocketAddress::SocketAddress(const sockaddr& sockAddr)
 	memcpy(&_sockAddr, &sockAddr, sizeof(sockaddr_in));
 }
 
-
-std::string SocketAddress::getIpAddress() const
+std::string SocketAddress::GetIpAddress() const
 {
 	char buffer[20];
 	InetNtop(AF_INET, &_sockAddr, buffer, 20);

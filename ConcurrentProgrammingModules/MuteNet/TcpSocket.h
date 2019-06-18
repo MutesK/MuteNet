@@ -11,7 +11,7 @@ public:
 
 	bool connect(SocketAddress& serverAddress);
 
-	bool Bind(const std::shared_ptr<SocketAddress>& address) override;
+	virtual bool Bind(const SocketAddress& address) override;
 
 	bool listen(int backlog);
 
@@ -19,9 +19,9 @@ public:
 
 	std::shared_ptr<SocketAddress> getAddress();
 
-	int setNoDelay(bool toggle);
+	int SetNoDelay(bool toggle);
 
-	// Not Use Socket IO Moudle Function
+	// Not Use Socket IO Function
 	int Send(const void* inData, int inLen);
 	int Recv(void* inData, int inLen);
 

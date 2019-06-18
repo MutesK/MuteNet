@@ -10,7 +10,7 @@ TcpSocket::TcpSocket(ADDRESS_FAMILY f)
 	_handle = socket(_address_family, SOCK_STREAM, IPPROTO_TCP);
 }
 
-bool TcpSocket::bind(const std::shared_ptr<SocketAddress>& address)
+bool TcpSocket::Bind(const SocketAddress& address)
 {
 	if (_handle == INVALID_SOCKET)
 	{
@@ -19,7 +19,7 @@ bool TcpSocket::bind(const std::shared_ptr<SocketAddress>& address)
 	}
 
 	int result = ::bind(_handle,
-		address->get_socketaddress(), address->getSize());
+		address.GetSocketAddress(), address.GetSize());
 
 	if (result == SOCKET_ERROR)
 	{
@@ -40,8 +40,8 @@ void TcpSocket::setNagle(bool bOption)
 
 bool TcpSocket::connect(SocketAddress& serverAddress)
 {
-	int result = ::connect(_handle, serverAddress.get_socketaddress(),
-		serverAddress.getSize());
+	int result = ::connect(_handle, serverAddress.GetSocketAddress(),
+		serverAddress.GetSize());
 
 	if (result == SOCKET_ERROR)
 	{
@@ -99,7 +99,7 @@ std::shared_ptr<SocketAddress> TcpSocket::getAddress()
 	return std::make_shared<SocketAddress>(addr);
 }
 
-int TcpSocket::setNoDelay(bool toggle)
+int TcpSocket::SetNoDelay(bool toggle)
 {
 	return setsockopt(_handle, IPPROTO_TCP, TCP_NODELAY, (const char *)&toggle, sizeof(bool));
 }

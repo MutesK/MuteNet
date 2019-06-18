@@ -18,29 +18,11 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Acceptor.cpp" />
-    <ClCompile Include="IOEngine.cpp" />
-    <ClCompile Include="Link.cpp" />
-    <ClCompile Include="Socket.cpp" />
-    <ClCompile Include="SocketAddress.cpp" />
-    <ClCompile Include="TcpSocket.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Acceptor.h" />
-    <ClInclude Include="IOEngine.h" />
-    <ClInclude Include="IOService.h" />
-    <ClInclude Include="Link.h" />
-    <ClInclude Include="MuteNetFoundation.h" />
-    <ClInclude Include="Socket.h" />
-    <ClInclude Include="SocketAddress.h" />
-    <ClInclude Include="TcpSocket.h" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{11FFBD58-3F37-4BDE-8E98-623DC8B761FF}</ProjectGuid>
+    <ProjectGuid>{DA3FBF22-5BD3-4B2B-8DA7-6AA99051EFDC}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>MuteNet</RootNamespace>
+    <RootNamespace>RefCount</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -64,11 +46,11 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -168,6 +150,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="RefCount.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

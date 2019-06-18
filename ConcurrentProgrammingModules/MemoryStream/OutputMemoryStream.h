@@ -16,7 +16,7 @@ public:
 	const char* GetBufferPtr() const;
 	uint32_t GetLength() const;
 
-	void Write(const void* inData, size_t inByteCount);
+	void Write(const void* inData, uint32_t inByteCount);
 
 	template <typename Type>
 	void Write(const Type& inData);
