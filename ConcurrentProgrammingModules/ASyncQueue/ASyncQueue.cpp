@@ -95,6 +95,6 @@ void ASyncQueue::Run(const uint32_t workerIndex)
 			continue;
 		}
 
-		HandleCompletion(workerIndex, CompletionKey, lpOverlapped);
+		HandleCompletion(workerIndex, CompletionKey, lpOverlapped, byteTransferred);
 	}
 }

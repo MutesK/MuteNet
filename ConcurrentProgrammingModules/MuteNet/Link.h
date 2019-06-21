@@ -22,9 +22,10 @@ namespace Network
 		OVERLAPPED _RecvOverlapped;
 
 		// Buffer(Queue)
-
 	public:
-		Link();
+		Link(const std::shared_ptr<TcpSocket>& socket);
+		Link(const TcpSocket* socket);
+
 		~Link();
 
 		// User Request Function
@@ -41,7 +42,8 @@ namespace Network
 		void AddRef();
 		void Release();
 
-		void* native_handle();
+		void* native_handle() const;
+
 		// Inner Function To Manangement Session
 		// Buffer Management
 		// IOCP Request

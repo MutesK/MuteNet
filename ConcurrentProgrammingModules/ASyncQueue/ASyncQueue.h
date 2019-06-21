@@ -11,13 +11,13 @@ namespace Util
 		virtual ~ASyncQueue();
 
 	protected:
-		bool Initialize(const uint32_t numberOfWorkers, const uint32_t timeout);
-		void Stop();
+		virtual bool Initialize(const uint32_t numberOfWorkers, const uint32_t timeout);
+		virtual void Stop();
 		bool PostQueue(ULONG_PTR Pointer);
 
 		void Run(const uint32_t workerIndex);
 
-		virtual void HandleCompletion(const uint32_t workerIndex, ULONG_PTR Context, LPOVERLAPPED Overlapped) = 0;
+		virtual void HandleCompletion(const uint32_t workerIndex, ULONG_PTR Context, LPOVERLAPPED Overlapped, DWORD TransfferedBytes) = 0;
 		virtual void HandleTimeout(const uint32_t WorkerIndex, ULONG_PTR Context) =0;
 
 	protected:

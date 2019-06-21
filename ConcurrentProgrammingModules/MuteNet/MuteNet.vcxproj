@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="IOContext.h" />
     <ClInclude Include="Acceptor.h" />
     <ClInclude Include="IOEngine.h" />
     <ClInclude Include="IOService.h" />
     <ClInclude Include="Link.h" />
+    <ClInclude Include="MuteNetFoundation.h" />
     <ClInclude Include="Socket.h" />
     <ClInclude Include="EndPoint.h" />
     <ClInclude Include="TcpSocket.h" />
@@ -30,6 +32,7 @@
   <ItemGroup>
     <ClCompile Include="Acceptor.cpp" />
     <ClCompile Include="IOEngine.cpp" />
+    <ClCompile Include="IOService.cpp" />
     <ClCompile Include="Link.cpp" />
     <ClCompile Include="Socket.cpp" />
     <ClCompile Include="EndPoint.cpp" />

@@ -11,12 +11,14 @@ namespace Network
 		EndPoint(const EndPoint& address);
 		EndPoint(const sockaddr& sockAddr);
 		EndPoint(const sockaddr_in& sockAddr_in);
-		EndPoint(EndPoint&& Point);
+		
+		EndPoint() = default;
 		~EndPoint() = default;
 
+		EndPoint(EndPoint&& Point);
 		EndPoint& operator=(EndPoint&& Point) noexcept;
 
-		const sockaddr* GetSocketAddress();
+		sockaddr* GetSocketAddress();
 		std::string GetIpAddress() const;
 		int	GetPort() const;
 
@@ -34,7 +36,7 @@ namespace Network
 		return *this;
 	}
 
-	inline const sockaddr* EndPoint::GetSocketAddress()
+	inline sockaddr* EndPoint::GetSocketAddress()
 	{
 		return reinterpret_cast<const sockaddr*>(&_sockAddr);
 	}

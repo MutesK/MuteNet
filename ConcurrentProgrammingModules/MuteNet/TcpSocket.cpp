@@ -1,5 +1,5 @@
 #include "MuteNetFoundation.h"
-#include "SocketAddress.h"
+#include "EndPoint.h"
 #include "Socket.h"
 #include "TcpSocket.h"
 
@@ -33,7 +33,7 @@ namespace Network
 		return true;
 	}
 
-	void TcpSocket::setNagle(bool bOption)
+	void TcpSocket::SetNagle(bool bOption)
 	{
 		int opt = bOption;
 
@@ -41,24 +41,7 @@ namespace Network
 			reinterpret_cast<const char*>(& opt), sizeof(int));
 	}
 
-	bool TcpSocket::connect(const std::string& ip, uint16_t port)
-	{
-		_endPoint = EndPoint(ip, port);
-
-		const auto result = ::connect(_handle, _endPoint.GetSocketAddress(),
-			_endPoint.GetSize());
-
-		if (result == SOCKET_ERROR)
-		{
-			_lastError = WSAGetLastError();
-			_handle = INVALID_SOCKET;
-			return false;
-		}
-
-		return true;
-	}
-
-	bool TcpSocket::listen(int backlog)
+	bool TcpSocket::Listen(int backlog)
 	{
 		const auto result = ::listen(_handle, backlog);
 
@@ -81,7 +64,7 @@ namespace Network
 		const SOCKET newSocket = ::accept(_handle, reinterpret_cast<sockaddr*>(&ClientAddress), &addressSize);
 
 		auto ret = std::make_shared<TcpSocket>(_address_family);
-		ret->set_handle(newSocket);
+		ret->set_native_handle((HANDLE)newSocket);
 		ret->_endPoint = EndPoint(ClientAddress);
 
 		if (newSocket == INVALID_SOCKET)
@@ -90,9 +73,48 @@ namespace Network
 		return ret;
 	}
 
-	int TcpSocket::SetNoDelay(bool toggle)
+	SOCKET TcpSocket::AcceptEx(LPOVERLAPPED Overlapped)
 	{
-		return setsockopt(_handle, IPPROTO_TCP, TCP_NODELAY, (const char*)& toggle, sizeof(bool));
+		char buf[2014];
+		int buflen = 1024;
+		DWORD bytes;
+
+		SOCKET AcceptSocket = INVALID_SOCKET;
+
+		::AcceptEx(_handle, AcceptSocket, buf, buflen - AddressLength * 2,
+			AddressLength, AddressLength, &bytes, Overlapped);
+
+
+		return AcceptSocket;
+	}
+
+	void TcpSocket::SetEndPoint()
+	{
+		char buffer[250];
+
+
+
+	}
+
+	int TcpSocket::SetConditionAccept(bool trigger) const
+	{
+		return setsockopt(_handle, SOL_SOCKET, SO_CONDITIONAL_ACCEPT,
+			reinterpret_cast<char*>(&trigger), sizeof(bool));
+	}
+
+	int TcpSocket::SetLoadAcceptExFunction(GUID& guid, LPFN_ACCEPTEX& Lpfn) const
+	{
+		DWORD bytes;
+
+		return WSAIoctl(_handle, SIO_GET_EXTENSION_FUNCTION_POINTER,
+			&guid, sizeof(guid),
+			&Lpfn, sizeof(Lpfn),
+			&bytes, nullptr, nullptr);
+	}
+
+	int TcpSocket::SetNoDelay(bool toggle) const
+	{
+		return setsockopt(_handle, IPPROTO_TCP, TCP_NODELAY, reinterpret_cast<const char*>(& toggle), sizeof(bool));
 	}
 
 	int TcpSocket::Send(const void* inData, int inLen)

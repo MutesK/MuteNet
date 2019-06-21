@@ -35,7 +35,7 @@ namespace Network
 			delete this;
 	}
 
-	void* Link::native_handle()
+	void* Link::native_handle() const
 	{
 		return reinterpret_cast<void*>(_socket->_handle);
 	}

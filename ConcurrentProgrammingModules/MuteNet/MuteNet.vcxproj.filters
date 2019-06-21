@@ -18,6 +18,8 @@
     <ClInclude Include="Link.h" />
     <ClInclude Include="Socket.h" />
     <ClInclude Include="EndPoint.h" />
+    <ClInclude Include="MuteNetFoundation.h" />
+    <ClInclude Include="IOContext.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Acceptor.cpp">
@@ -36,6 +38,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="EndPoint.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="IOService.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

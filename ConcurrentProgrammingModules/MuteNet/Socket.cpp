@@ -1,5 +1,5 @@
 
-#include "SocketAddress.h"
+
 #include "Socket.h"
 
 namespace Network
@@ -41,4 +41,5 @@ namespace Network
 
 		return true;
 	}
+
 }

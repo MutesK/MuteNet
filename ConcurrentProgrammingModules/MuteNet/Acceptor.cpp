@@ -1,68 +1,66 @@
+
 #include "Acceptor.h"
 #include "Link.h"
 #include "IOEngine.h"
+#include "TcpSocket.h"
+#include "IOService.h"
+#include "IOContext.h"
+
 
 namespace Network
 {
-	Acceptor::Acceptor()
+	Acceptor::Acceptor(const std::shared_ptr<IOService>& service,
+		const std::string& ip, uint16_t port)
+		:_Service(service)
 	{
 		_Listen = std::make_unique<TcpSocket>(AF_INET);
-	}
+		_Service->RegisterHandle(_Listen->native_handle(), this);
 
-	bool Acceptor::Listen(const std::string& ip, uint16_t port, uint16_t maxthread)
-	{
-		_Listen->listen(0);
 		_Listen->Bind(ip, port);
+		_Listen->Listen(0);
+		_Listen->SetLoadAcceptExFunction(_GuidAcceptEx, _AcceptEx);
 
-		const auto work = std::bind(&Acceptor::AcceptorWork, this);
-
-		for(auto thread_count = 0; thread_count <= maxthread; ++thread_count)
-		{
-			_threadpool.emplace_back(new std::thread(work));
-		}
-
-		for(auto i = 0; i< maxthread; ++i)
-		{
-			Util::ChangeThreadName(_threadpool[i]->native_handle(), "Acceptor Thread");
-		}
-
-		return true;
+		AcceptPost();
 	}
 
-	void Acceptor::Start()
+	void Acceptor::ProcessAccept(AcceptIOContext& Context)
 	{
+		// 클라이언트 정보 (Link, TcpSocket, EndPoint) 생성
+		// 해당 소켓 RecvPost
+
+		// 클라이언트 풀의 필요성!!!!
+		Link* pLink = new Link(Context._Socket);
+
+
+
+		AcceptPost();
 	}
 
-	void Acceptor::Stop()
+
+	void Acceptor::AcceptPost()
 	{
-		for (auto& thread : _threadpool)
+		memset(&_Context, 0, sizeof(AcceptIOContext));
+
+		_Context._Type = OverlappedType::eAccepted;
+		_Context._Socket = new TcpSocket(AF_INET);  // 소켓풀 필요성. !!
+
+		DWORD Recvied = 0;
+
+		const auto result = _AcceptEx(reinterpret_cast<SOCKET>(_Listen->native_handle()),
+			reinterpret_cast<SOCKET>(_Context._Socket->native_handle()),
+			_Context._buffer, TcpSocket::AddressLength * 2,
+			TcpSocket::AddressLength, TcpSocket::AddressLength, &Recvied,
+			reinterpret_cast<LPOVERLAPPED>(&_Context));
+
+
+		if(result == SOCKET_ERROR)
 		{
-			thread->join();
-			delete thread;
-		}
+			const auto error = WSAGetLastError();
 
-		_threadpool.clear();
-
-	}
-
-	void Acceptor::SetOnAccept(const Event& callback)
-	{
-		_OnAccept = std::move(callback);
-	}
-
-	void Acceptor::AcceptorWork()
-	{
-		while (true)
-		{
-			const auto socket = _Listen->Accept();
-
-			// User Session Pool -> 임시로 이렇게 처리...
-			auto link = new Link();
-			link->_socket = socket;
-			const LinkPtr ptr(link);
-
-			_OnAccept(ptr, link->native_handle());
+			if(error != WSA_IO_PENDING)
+			{
+				throw;
+			}
 		}
 	}
-
 }

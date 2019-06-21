@@ -1,9 +1,11 @@
 #pragma once
 
 #include "MuteNetFoundation.h"
+#include "EndPoint.h"
 
 namespace Network
 {
+
 	enum class ShutdownBlockMode
 	{
 		RecvBlock = SD_RECEIVE,
@@ -18,6 +20,9 @@ namespace Network
 		Socket(ADDRESS_FAMILY);
 	public:
 		virtual ~Socket();
+
+		virtual bool Bind(const EndPoint& endpoint) = 0;
+		virtual bool Bind(const std::string& connection) = 0;
 		virtual bool Bind(const std::string& ip, uint16_t port) = 0;
 
 		int SetIoMode(bool ioflag);
@@ -35,9 +40,9 @@ namespace Network
 		int SetUseKeepAlive(bool toggle) const;
 		int Shutdown(ShutdownBlockMode Mode);
 
-		GET_SET_ATTRIBUTE(SOCKET, handle);
+		HANDLE native_handle() const;
+		void set_native_handle(HANDLE handle);
 
-		friend class SocketUtil;
 		friend class Link;
 
 	protected:
@@ -81,5 +86,15 @@ namespace Network
 	inline int Socket::SetUseKeepAlive(bool toggle) const
 	{
 		return setsockopt(_handle, SOL_SOCKET, SO_KEEPALIVE, reinterpret_cast<const char*>(&toggle), sizeof(bool));
+	}
+
+	inline HANDLE Socket::native_handle() const
+	{
+		return reinterpret_cast<HANDLE>(_handle);
+	}
+
+	inline void Socket::set_native_handle(HANDLE handle)
+	{
+		_handle = reinterpret_cast<SOCKET>(handle);
 	}
 }

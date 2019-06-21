@@ -17,9 +17,6 @@ namespace Network
 
 	void IOEngine::StartServer(const std::string ip, uint16_t port)
 	{
-		_Acceptor.SetOnAccept(std::bind(&IOEngine::InterAccept, this, std::placeholders::_1, std::placeholders::_2));
-
-		_Acceptor.Listen(ip, port, 5);
-		_IOService.Initialize(5, INFINITE);
+		
 	}
 }

@@ -1,5 +1,5 @@
 #include "MuteNetFoundation.h"
-#include "SocketAddress.h"
+#include "EndPoint.h"
 
 namespace Network
 {
