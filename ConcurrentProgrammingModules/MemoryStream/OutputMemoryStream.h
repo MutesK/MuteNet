@@ -13,7 +13,7 @@ public:
 	OutputMemoryStream();
 	virtual ~OutputMemoryStream();
 
-	const char* GetBufferPtr() const;
+	char* GetBufferPtr();
 	uint32_t GetLength() const;
 
 	void Write(const void* inData, uint32_t inByteCount);
@@ -32,7 +32,7 @@ private:
 };
 
 
-inline const char* OutputMemoryStream::GetBufferPtr() const
+inline char* OutputMemoryStream::GetBufferPtr()
 {
 	return _buffer;
 }
@@ -45,10 +45,6 @@ inline uint32_t OutputMemoryStream::GetLength() const
 template <typename Type>
 void OutputMemoryStream::Write(const Type& inData)
 {
-	static_assert(std::is_arithmetic_v<Type> ||
-		std::is_enum_v<Type>,
-		"Generic Write Only Supports Primitive Data Types");
-
 	Write(&inData, sizeof(Type));
 }
 

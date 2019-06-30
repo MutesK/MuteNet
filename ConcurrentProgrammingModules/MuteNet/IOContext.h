@@ -24,7 +24,7 @@ namespace Network
 	{
 		OverlappedType _Type;
 		TcpSocket*     _Socket;
-		char		   _buffer[50];
+		char		   _buffer[AddressLength * 2 + 1];
 	};
 
 }

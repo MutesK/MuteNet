@@ -5,6 +5,7 @@
 #include "TcpSocket.h"
 #include "IOService.h"
 #include "IOContext.h"
+#include "AddReadIO.h"
 
 
 namespace Network
@@ -18,7 +19,7 @@ namespace Network
 
 		_Listen->Bind(ip, port);
 		_Listen->Listen(0);
-		_Listen->SetLoadAcceptExFunction(_GuidAcceptEx, _AcceptEx);
+		
 
 		AcceptPost();
 	}
@@ -31,6 +32,17 @@ namespace Network
 		// 클라이언트 풀의 필요성!!!!
 		Link* pLink = new Link(Context._Socket);
 
+		SOCKADDR* LocalSockAddr = nullptr;
+		int LocalSize = 0;
+
+		SOCKADDR* RemoteSockAddr = nullptr;
+		int RemoteSize = 0;
+
+		GetAcceptExSockaddrs(Context._buffer, AddressLength * 2, AddressLength, AddressLength, &LocalSockAddr, &LocalSize,
+			&RemoteSockAddr, &RemoteSize);
+
+		pLink->SetEndPoint(LocalSockAddr);
+		pLink->SetRemotePoint(RemoteSockAddr);
 
 
 		AcceptPost();
@@ -48,8 +60,8 @@ namespace Network
 
 		const auto result = _AcceptEx(reinterpret_cast<SOCKET>(_Listen->native_handle()),
 			reinterpret_cast<SOCKET>(_Context._Socket->native_handle()),
-			_Context._buffer, TcpSocket::AddressLength * 2,
-			TcpSocket::AddressLength, TcpSocket::AddressLength, &Recvied,
+			_Context._buffer, AddressLength * 2,
+			AddressLength, AddressLength, &Recvied,
 			reinterpret_cast<LPOVERLAPPED>(&_Context));
 
 
@@ -63,4 +75,15 @@ namespace Network
 			}
 		}
 	}
+
+	void Acceptor::LoadAcceptExFP()
+	{
+		DWORD bytes;
+
+		WSAIoctl(reinterpret_cast<SOCKET>(_Listen->native_handle()), SIO_GET_EXTENSION_FUNCTION_POINTER,
+				&_GuidAcceptEx, sizeof(_GuidAcceptEx),
+				&_AcceptEx, sizeof(_AcceptEx),
+				&bytes, nullptr, nullptr);
+	}
+
 }

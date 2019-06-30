@@ -152,7 +152,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="InputMemoryStream.cpp" />
-    <ClCompile Include="MemoryStream.cpp" />
     <ClCompile Include="OutputMemoryStream.cpp" />
   </ItemGroup>
   <ItemGroup>

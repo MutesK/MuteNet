@@ -3,10 +3,12 @@
 #include "../RefCount/RefCount.h"
 #include "Socket.h"
 #include "TcpSocket.h"
-#include "EndPoint.h"
+#include "ConnectPoint.h"
+#include "../MemoryStream/MemoryStream.h"
 
 namespace Network
 {
+	class AddReadIO;
 	class Link;
 	typedef RefCountPtr<Link> LinkPtr;
 
@@ -18,34 +20,40 @@ namespace Network
 		std::shared_ptr<TcpSocket> _socket;
 		std::atomic_int _refCount;
 
-		OVERLAPPED _SendOverlapped;
-		OVERLAPPED _RecvOverlapped;
+		ConnectPoint _RemotePoint;
+		ConnectPoint _EndPoint;
 
-		// Buffer(Queue)
+
+
 	public:
 		Link(const std::shared_ptr<TcpSocket>& socket);
 		Link(const TcpSocket* socket);
 
 		~Link();
 
-		// User Request Function
-		// Send Packet Request
-
-		static EndPoint* GetEndPoint(Handle handle);
-		static void ForceDisconnect(Handle handle);
 	private:
 		friend class Acceptor;
-		friend class IOEngine;
 		friend class IOService;
-
+		friend class AddReadIO;
 	public:
 		void AddRef();
 		void Release();
 
-		void* native_handle() const;
+		void SetRemotePoint(SOCKADDR* Remote);
+		void SetEndPoint(SOCKADDR* End);
+
 
 		// Inner Function To Manangement Session
 		// Buffer Management
 		// IOCP Request
 	};
+	inline void Link::SetRemotePoint(SOCKADDR* Remote)
+	{
+		_RemotePoint.SetConnectPoint(*Remote);
+	}
+
+	inline void Link::SetEndPoint(SOCKADDR* End)
+	{
+		_EndPoint.SetConnectPoint(*End);
+	}
 }

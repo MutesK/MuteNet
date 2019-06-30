@@ -1,25 +1,21 @@
 
 #include "Link.h"
 
+
 namespace Network
 {
-	Link::Link()
+	Link::Link(const std::shared_ptr<TcpSocket>& socket)
 		:_refCount(0)
 	{
 	}
 
-	EndPoint* Link::GetEndPoint(Handle handle)
+	Link::Link(const TcpSocket* socket)
+		: _refCount(0)
 	{
-		LinkPtr Link(handle);
-
-		return &Link->_socket->_endPoint;
 	}
 
-	void Link::ForceDisconnect(Handle handle)
+	Link::~Link()
 	{
-		LinkPtr Link(handle);
-
-		Link->_socket->Shutdown(ShutdownBlockMode::SendBlock);
 	}
 
 	void Link::AddRef()
@@ -33,10 +29,5 @@ namespace Network
 
 		if (_refCount <= 0)
 			delete this;
-	}
-
-	void* Link::native_handle() const
-	{
-		return reinterpret_cast<void*>(_socket->_handle);
 	}
 }

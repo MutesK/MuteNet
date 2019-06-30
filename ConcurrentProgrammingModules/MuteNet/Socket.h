@@ -1,10 +1,11 @@
 #pragma once
 
 #include "MuteNetFoundation.h"
-#include "EndPoint.h"
+#include "ConnectPoint.h"
 
 namespace Network
 {
+	class EndPoint;
 
 	enum class ShutdownBlockMode
 	{
@@ -20,10 +21,6 @@ namespace Network
 		Socket(ADDRESS_FAMILY);
 	public:
 		virtual ~Socket();
-
-		virtual bool Bind(const EndPoint& endpoint) = 0;
-		virtual bool Bind(const std::string& connection) = 0;
-		virtual bool Bind(const std::string& ip, uint16_t port) = 0;
 
 		int SetIoMode(bool ioflag);
 
@@ -43,15 +40,14 @@ namespace Network
 		HANDLE native_handle() const;
 		void set_native_handle(HANDLE handle);
 
+
 		friend class Link;
 
 	protected:
 		SOCKET			_handle;
 		DWORD			_lastError;
 		ADDRESS_FAMILY	_address_family;
-		EndPoint		_endPoint;
 	};
-
 
 	inline int Socket::GetLastError() const
 	{
@@ -97,4 +93,5 @@ namespace Network
 	{
 		_handle = reinterpret_cast<SOCKET>(handle);
 	}
+
 }

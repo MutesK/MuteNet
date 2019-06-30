@@ -15,6 +15,7 @@ namespace Network
 		std::shared_ptr<IOService> _Service;
 
 		LPFN_ACCEPTEX			   _AcceptEx;
+
 		GUID					   _GuidAcceptEx = WSAID_ACCEPTEX;
 
 		AcceptIOContext			   _Context;
@@ -26,5 +27,6 @@ namespace Network
 	private:
 		void AcceptPost();
 
+		void LoadAcceptExFP();
 	};
 }

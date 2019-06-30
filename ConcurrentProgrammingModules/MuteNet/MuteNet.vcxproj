@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AddReadIO.h" />
+    <ClInclude Include="ConnectPoint.h" />
     <ClInclude Include="IOContext.h" />
     <ClInclude Include="Acceptor.h" />
     <ClInclude Include="IOEngine.h" />
@@ -26,16 +28,16 @@
     <ClInclude Include="Link.h" />
     <ClInclude Include="MuteNetFoundation.h" />
     <ClInclude Include="Socket.h" />
-    <ClInclude Include="EndPoint.h" />
     <ClInclude Include="TcpSocket.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Acceptor.cpp" />
+    <ClCompile Include="AddReadIO.cpp" />
+    <ClCompile Include="ConnectPoint.cpp" />
     <ClCompile Include="IOEngine.cpp" />
     <ClCompile Include="IOService.cpp" />
     <ClCompile Include="Link.cpp" />
     <ClCompile Include="Socket.cpp" />
-    <ClCompile Include="EndPoint.cpp" />
     <ClCompile Include="TcpSocket.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -1,6 +1,4 @@
 #include "MuteNetFoundation.h"
-#include "EndPoint.h"
-#include "Socket.h"
 #include "TcpSocket.h"
 
 namespace Network
@@ -11,27 +9,7 @@ namespace Network
 		_handle = socket(_address_family, SOCK_STREAM, IPPROTO_TCP);
 	}
 
-	bool TcpSocket::Bind(const std::string& ip, uint16_t port)
-	{
-		if (_handle == INVALID_SOCKET)
-		{
-			_lastError = WSAGetLastError();
-			return false;
-		}
 
-		_endPoint = EndPoint(ip, port);
-
-		const auto result = ::bind(_handle,
-			_endPoint.GetSocketAddress(), _endPoint.GetSize());
-
-		if (result == SOCKET_ERROR)
-		{
-			_lastError = WSAGetLastError();
-			return false;
-		}
-
-		return true;
-	}
 
 	void TcpSocket::SetNagle(bool bOption)
 	{
@@ -56,23 +34,6 @@ namespace Network
 	}
 
 
-	std::shared_ptr<TcpSocket> TcpSocket::Accept()
-	{
-		sockaddr_in ClientAddress {};
-		int addressSize = sizeof(ClientAddress);
-
-		const SOCKET newSocket = ::accept(_handle, reinterpret_cast<sockaddr*>(&ClientAddress), &addressSize);
-
-		auto ret = std::make_shared<TcpSocket>(_address_family);
-		ret->set_native_handle((HANDLE)newSocket);
-		ret->_endPoint = EndPoint(ClientAddress);
-
-		if (newSocket == INVALID_SOCKET)
-			_lastError = WSAGetLastError();
-
-		return ret;
-	}
-
 	SOCKET TcpSocket::AcceptEx(LPOVERLAPPED Overlapped)
 	{
 		char buf[2014];
@@ -84,32 +45,13 @@ namespace Network
 		::AcceptEx(_handle, AcceptSocket, buf, buflen - AddressLength * 2,
 			AddressLength, AddressLength, &bytes, Overlapped);
 
-
 		return AcceptSocket;
-	}
-
-	void TcpSocket::SetEndPoint()
-	{
-		char buffer[250];
-
-
-
 	}
 
 	int TcpSocket::SetConditionAccept(bool trigger) const
 	{
 		return setsockopt(_handle, SOL_SOCKET, SO_CONDITIONAL_ACCEPT,
 			reinterpret_cast<char*>(&trigger), sizeof(bool));
-	}
-
-	int TcpSocket::SetLoadAcceptExFunction(GUID& guid, LPFN_ACCEPTEX& Lpfn) const
-	{
-		DWORD bytes;
-
-		return WSAIoctl(_handle, SIO_GET_EXTENSION_FUNCTION_POINTER,
-			&guid, sizeof(guid),
-			&Lpfn, sizeof(Lpfn),
-			&bytes, nullptr, nullptr);
 	}
 
 	int TcpSocket::SetNoDelay(bool toggle) const
@@ -171,5 +113,10 @@ namespace Network
 
 		_lastError = errorCode;
 		return -1;
+	}
+
+	HANDLE TcpSocket::native_handle()
+	{
+		return reinterpret_cast<HANDLE>(_handle);
 	}
 }

@@ -1,34 +1,14 @@
 #include "MuteNetFoundation.h"
-#include "EndPoint.h"
+#include "ConnectPoint.h"
 
 namespace Network
 {
-	EndPoint::EndPoint(const std::string& address, uint16_t inPort)
-	{
-		CreateSockAddr(address, inPort);
-	}
-
-	EndPoint::EndPoint(const EndPoint& address)
-	{
-		memcpy(&_sockAddr, &address._sockAddr, sizeof(sockaddr_in));
-	}
-
-	EndPoint::EndPoint(const sockaddr& sockAddr)
-	{
-		memcpy(&_sockAddr, &sockAddr, sizeof(sockaddr_in));
-	}
-
-	EndPoint::EndPoint(const sockaddr_in& sockAddr_in)
-	{
-		memcpy(&_sockAddr, &sockAddr_in, sizeof(sockaddr_in));
-	}
-
-	EndPoint::EndPoint(EndPoint&& Point)
+	ConnectPoint::ConnectPoint(ConnectPoint&& Point) noexcept
 	{
 		_sockAddr = std::move(Point._sockAddr);
 	}
 
-	std::string EndPoint::GetIpAddress() const
+	std::string ConnectPoint::GetIpConnectPoint() const
 	{
 		char buffer[20] {'\0'};
 		InetNtop(AF_INET, &_sockAddr, buffer, 20);
@@ -37,7 +17,7 @@ namespace Network
 	}
 
 
-	void EndPoint::CreateSockAddr(const std::string& address, uint16_t port)
+	void ConnectPoint::CreateSockAddr(const std::string& ConnectPoint, uint16_t port)
 	{
 		char buffer[6] {0};
 
@@ -47,7 +27,7 @@ namespace Network
 		addrinfo* pinfo = nullptr;
 
 		_itoa_s(port, buffer, 6,10);
-		const auto result = getaddrinfo(address.c_str(), buffer, &info, &pinfo);
+		const auto result = getaddrinfo(ConnectPoint.c_str(), buffer, &info, &pinfo);
 		addrinfo* addr_result = pinfo;
 
 		if(result != 0 && pinfo != nullptr)

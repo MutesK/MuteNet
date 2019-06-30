@@ -8,3 +8,6 @@
 #include <mswsock.h>
 
 #include "../ConcurrentProgrammingModules/CommonHeader.h"
+
+
+static const DWORD AddressLength = sizeof(SOCKADDR_IN) + 16;
