@@ -3,13 +3,12 @@
 #include "Socket.h"
 #include "TcpSocket.h"
 #include "ConnectPoint.h"
-#include "../MemoryStream/MemoryStream.h"
 
 namespace Network
 {
 	typedef Link* LinkPtr;
 
-	class Link final : std::enable_shared_from_this<Link>
+	class Link final
 	{
 	private:
 		TcpSocket	 _Socket;
@@ -20,10 +19,15 @@ namespace Network
 		Link();
 		~Link();
 
-		SOCKET		socket_handle();
+		SOCKET		socket_handle() const;
 
 		friend class LinkManager;
 		friend class Acceptor;
 		friend class IOService;
 	};
+
+	inline SOCKET Link::socket_handle() const 
+	{
+		return _Socket.socket_handle();
+	}
 }

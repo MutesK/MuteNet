@@ -1,6 +1,7 @@
 #pragma once
 #include <winbase.h>
 #include "Link.h"
+#include "../ObjectPool/ObjectPool.h"
 
 
 namespace Network

@@ -1,9 +1,10 @@
 #pragma once
-#include "Link.h"
-#include "../ThreadSafeMemoryPool/MemoryPool.h"
+
+#include <memory>
 
 namespace Network
 {
+	class Link;
 	class LinkManager
 	{
 	public:
