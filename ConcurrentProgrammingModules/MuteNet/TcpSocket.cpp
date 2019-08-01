@@ -10,6 +10,10 @@ namespace Network
 	}
 
 
+	int TcpSocket::Bind(ConnectPoint& Point)
+	{
+		return bind(_handle, Point.GetSocketConnectPointPtr(), Point.GetSize());
+	}
 
 	void TcpSocket::SetNagle(bool bOption)
 	{
@@ -33,21 +37,6 @@ namespace Network
 		return true;
 	}
 
-
-	SOCKET TcpSocket::AcceptEx(LPOVERLAPPED Overlapped)
-	{
-		char buf[2014];
-		int buflen = 1024;
-		DWORD bytes;
-
-		SOCKET AcceptSocket = INVALID_SOCKET;
-
-		::AcceptEx(_handle, AcceptSocket, buf, buflen - AddressLength * 2,
-			AddressLength, AddressLength, &bytes, Overlapped);
-
-		return AcceptSocket;
-	}
-
 	int TcpSocket::SetConditionAccept(bool trigger) const
 	{
 		return setsockopt(_handle, SOL_SOCKET, SO_CONDITIONAL_ACCEPT,
@@ -69,7 +58,6 @@ namespace Network
 		_lastError = WSAGetLastError();
 		return 0;
 	}
-
 
 	int TcpSocket::Recv(void* inData, int inLen)
 	{
@@ -113,10 +101,5 @@ namespace Network
 
 		_lastError = errorCode;
 		return -1;
-	}
-
-	HANDLE TcpSocket::native_handle()
-	{
-		return reinterpret_cast<HANDLE>(_handle);
 	}
 }

@@ -4,17 +4,15 @@
 namespace Network
 {
 	class EndPoint;
-
 	class TcpSocket final : public Socket
 	{
 	public:
 		TcpSocket(ADDRESS_FAMILY f);
 		virtual ~TcpSocket() = default;		
 
+		int  Bind(ConnectPoint& Point);
 		void SetNagle(bool bOption);
 		bool Listen(int backlog);
-
-		SOCKET AcceptEx(LPOVERLAPPED Overlapped);
 
 		int SetConditionAccept(bool trigger) const;
 		int SetNoDelay(bool toggle) const;
@@ -25,10 +23,5 @@ namespace Network
 
 		int OverlappedIORecv(WSABUF* pBufArr, int Arrlen, void* OverlappedIO);
 		int OverlappedIOSend(WSABUF* pBufArr, int Arrlen, void* OverlappedIO);
-
-		HANDLE native_handle();
-
-		friend class Link;
 	};
-
 }

@@ -14,7 +14,6 @@ namespace Network
 		BothBlock = SD_BOTH,
 	};
 
-	class SocketAddress;
 	class Socket
 	{
 	protected:
@@ -37,12 +36,13 @@ namespace Network
 		int SetUseKeepAlive(bool toggle) const;
 		int Shutdown(ShutdownBlockMode Mode);
 
+		SOCKET socket_handle() const;
+		void set_socket_handle(SOCKET handle);
+
 		HANDLE native_handle() const;
 		void set_native_handle(HANDLE handle);
 
-
 		friend class Link;
-
 	protected:
 		SOCKET			_handle;
 		DWORD			_lastError;
@@ -84,12 +84,21 @@ namespace Network
 		return setsockopt(_handle, SOL_SOCKET, SO_KEEPALIVE, reinterpret_cast<const char*>(&toggle), sizeof(bool));
 	}
 
+	inline SOCKET Socket::socket_handle() const
+	{
+		return _handle;
+	}
+
+	inline void Socket::set_socket_handle(SOCKET handle)
+	{
+		_handle = handle;
+	}
+
 	inline HANDLE Socket::native_handle() const
 	{
 		return reinterpret_cast<HANDLE>(_handle);
 	}
-
-	inline void Socket::set_native_handle(HANDLE handle)
+	void Socket::set_native_handle(HANDLE handle)
 	{
 		_handle = reinterpret_cast<SOCKET>(handle);
 	}

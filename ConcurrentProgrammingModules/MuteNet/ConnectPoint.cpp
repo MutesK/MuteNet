@@ -16,7 +16,6 @@ namespace Network
 		return buffer;
 	}
 
-
 	void ConnectPoint::CreateSockAddr(const std::string& ConnectPoint, uint16_t port)
 	{
 		char buffer[6] {0};

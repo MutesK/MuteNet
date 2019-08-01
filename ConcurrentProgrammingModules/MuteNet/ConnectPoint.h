@@ -4,6 +4,11 @@
 
 namespace Network
 {
+	/*
+	 *  SOCKADDR Wrapper Class
+	 *
+	 *	유저 레벨에서는 이 클래스를 통해 쉽게 주소정보를 가져오도록 한다.
+	 */
 	class ConnectPoint final
 	{
 	public:		
@@ -18,7 +23,7 @@ namespace Network
 		void SetConnectPoint(const sockaddr& sockAddr);
 		void SetConnectPoint(const sockaddr_in& sockAddr_in);
 
-		sockaddr* GetSocketConnectPoint();
+		sockaddr* GetSocketConnectPointPtr();
 		std::string GetIpConnectPoint() const;
 		int	GetPort() const;
 
@@ -36,7 +41,7 @@ namespace Network
 		return *this;
 	}
 
-	inline sockaddr* ConnectPoint::GetSocketConnectPoint()
+	inline sockaddr* ConnectPoint::GetSocketConnectPointPtr()
 	{
 		return reinterpret_cast<sockaddr*>(&_sockAddr);
 	}

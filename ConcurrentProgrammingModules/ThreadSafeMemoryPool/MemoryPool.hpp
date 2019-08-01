@@ -75,6 +75,39 @@ void MemoryPool<T, PoolSize, Ctor>::Free(T* const ptr)
 }
 
 template <typename T, const uint32_t PoolSize, class Ctor>
+std::shared_ptr<T> MemoryPool<T, PoolSize, Ctor>::make_shared()
+{
+	auto pData = Allocate();
+
+	return std::shared_ptr<T>(pData, [&](T *Ptr)
+		{
+			this->Free(Ptr);
+		});
+}
+
+template <typename T, const uint32_t PoolSize, class Ctor>
+std::unique_ptr<T> MemoryPool<T, PoolSize, Ctor>::make_unique()
+{
+	auto pData = Allocate();
+
+	return std::unique_ptr<T>(pData, [&](T* Ptr)
+		{
+			this->Free(Ptr);
+		});
+}
+
+template <typename T, const uint32_t PoolSize, class Ctor>
+std::weak_ptr<T> MemoryPool<T, PoolSize, Ctor>::make_weak()
+{
+	auto pData = Allocate();
+
+	return std::weak_ptr<T>(pData, [&](T* Ptr)
+		{
+			this->Free(Ptr);
+		});
+}
+
+template <typename T, const uint32_t PoolSize, class Ctor>
 PSLIST_HEADER MemoryPool<T, PoolSize, Ctor>::AllocatedList()
 {
 	const auto pListHeader = static_cast<PSLIST_HEADER>(

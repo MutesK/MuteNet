@@ -18,16 +18,4 @@ namespace Network
 	{
 	}
 
-	void Link::AddRef()
-	{
-		++_refCount;
-	}
-
-	void Link::Release()
-	{
-		--_refCount;
-
-		if (_refCount <= 0)
-			delete this;
-	}
 }

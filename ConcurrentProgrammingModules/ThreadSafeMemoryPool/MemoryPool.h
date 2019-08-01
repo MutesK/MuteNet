@@ -41,6 +41,10 @@ namespace Util
 		T* Allocate();
 		void Free(T* const ptr);
 
+		std::shared_ptr<T> make_shared();
+		std::unique_ptr<T> make_unique();
+		std::weak_ptr<T> make_weak();
+
 	private:
 		PSLIST_HEADER AllocatedList();
 		void FreeList(PSLIST_HEADER& header);
