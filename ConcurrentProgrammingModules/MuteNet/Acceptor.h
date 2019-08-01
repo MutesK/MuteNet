@@ -21,6 +21,7 @@ namespace Network
 		std::thread	 _acceptorThread;
 	public:
 		static LPFN_ACCEPTEX AcceptEx;
+		static byte AcceptBuf[64];
 	public:
 		Acceptor(const std::shared_ptr<IOService>& service,
 			const std::string& ip, uint16_t port);

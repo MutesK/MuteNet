@@ -7,32 +7,23 @@
 
 namespace Network
 {
-	class AddReadIO;
-	class Link;
+	typedef Link* LinkPtr;
 
 	class Link final : std::enable_shared_from_this<Link>
 	{
-	public:
-		typedef Link* Handle;
 	private:
-		std::shared_ptr<TcpSocket> _socket;
-		std::atomic_int _refCount;
+		TcpSocket	 _Socket;
 
 		ConnectPoint _RemotePoint;
 		ConnectPoint _EndPoint;
-	public:
-		Link(const std::shared_ptr<TcpSocket>& socket);
-		Link(const TcpSocket* socket);
-
+	private:
+		Link();
 		~Link();
 
-	private:
+		SOCKET		socket_handle();
+
+		friend class LinkManager;
 		friend class Acceptor;
 		friend class IOService;
-		friend class AddReadIO;
-	public:
-		// Inner Function To Manangement Session
-		// Buffer Management
-		// IOCP Request
 	};
 }

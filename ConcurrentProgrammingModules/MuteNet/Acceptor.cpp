@@ -3,6 +3,8 @@
 #include "Link.h"
 #include "TcpSocket.h"
 #include "IOService.h"
+#include "LinkManager.h"
+#include "IOContext.h"
 
 
 namespace Network
@@ -33,11 +35,22 @@ namespace Network
 		_acceptorThread = std::thread(std::bind(&Acceptor::PostAccept, this));
 	}
 
+	void Acceptor::Stop()
+	{
+	}
+
 	void Acceptor::PostAccept()
 	{
+		DWORD bytes = 0;
+		DWORD flags = 0;
+
 		while(true)
 		{
-			// Client Pool
+			auto link = LinkManager::make_shared();
+			
+
+			if(FALSE == AcceptEx(_listen->socket_handle(), link->socket_handle(), AcceptBuf, 0,
+				sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, &bytes, ))
 		}
 	}
 }

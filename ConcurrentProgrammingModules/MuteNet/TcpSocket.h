@@ -10,6 +10,7 @@ namespace Network
 		TcpSocket(ADDRESS_FAMILY f);
 		virtual ~TcpSocket() = default;		
 
+		bool Init(ADDRESS_FAMILY f);
 		int  Bind(ConnectPoint& Point);
 		void SetNagle(bool bOption);
 		bool Listen(int backlog);

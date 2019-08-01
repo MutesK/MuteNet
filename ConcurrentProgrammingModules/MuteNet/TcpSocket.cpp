@@ -6,9 +6,17 @@ namespace Network
 	TcpSocket::TcpSocket(ADDRESS_FAMILY f)
 		:Socket(f)
 	{
-		_handle = socket(_address_family, SOCK_STREAM, IPPROTO_TCP);
+		Init(f);
 	}
 
+
+	bool TcpSocket::Init(ADDRESS_FAMILY f)
+	{
+		_handle = socket(_address_family, SOCK_STREAM, IPPROTO_TCP);
+
+		if (_handle == INVALID_SOCKET)
+			return false;
+	}
 
 	int TcpSocket::Bind(ConnectPoint& Point)
 	{

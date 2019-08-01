@@ -9,57 +9,61 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="IOContext">
-      <UniqueIdentifier>{ccb4966c-5def-48c7-823a-48abc459a034}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Socket">
       <UniqueIdentifier>{9a975304-d434-455b-94e4-c7cc1f7bb3c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Acceptor">
+      <UniqueIdentifier>{9500adb7-f2cb-4249-a228-63565adf7ee4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Link">
+      <UniqueIdentifier>{bee8ee61-9ef1-4593-a3c2-d12152c4443c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IOContext">
+      <UniqueIdentifier>{c200014e-1232-4ad5-9460-6d80327c957c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Acceptor.h" />
-    <ClInclude Include="IOEngine.h" />
     <ClInclude Include="IOService.h" />
-    <ClInclude Include="Link.h" />
     <ClInclude Include="MuteNetFoundation.h" />
     <ClInclude Include="ConnectPoint.h" />
-    <ClInclude Include="IOContext.h">
-      <Filter>IOContext</Filter>
-    </ClInclude>
-    <ClInclude Include="AddReadIO.h">
-      <Filter>IOContext</Filter>
-    </ClInclude>
     <ClInclude Include="Socket.h">
       <Filter>Socket</Filter>
     </ClInclude>
     <ClInclude Include="TcpSocket.h">
       <Filter>Socket</Filter>
     </ClInclude>
+    <ClInclude Include="Acceptor.h">
+      <Filter>Acceptor</Filter>
+    </ClInclude>
+    <ClInclude Include="Link.h">
+      <Filter>Link</Filter>
+    </ClInclude>
+    <ClInclude Include="LinkManager.h" />
+    <ClInclude Include="IOContext.h">
+      <Filter>IOContext</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Acceptor.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="IOEngine.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Link.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="IOService.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="ConnectPoint.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="AddReadIO.cpp">
-      <Filter>IOContext</Filter>
-    </ClCompile>
     <ClCompile Include="TcpSocket.cpp">
       <Filter>Socket</Filter>
     </ClCompile>
     <ClCompile Include="Socket.cpp">
       <Filter>Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="Acceptor.cpp">
+      <Filter>Acceptor</Filter>
+    </ClCompile>
+    <ClCompile Include="Link.cpp">
+      <Filter>Link</Filter>
+    </ClCompile>
+    <ClCompile Include="LinkManager.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
