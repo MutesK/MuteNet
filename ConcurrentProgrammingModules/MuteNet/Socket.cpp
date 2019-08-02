@@ -1,6 +1,7 @@
 
 
 #include "Socket.h"
+#include "ConnectPoint.h"
 
 namespace Network
 {
@@ -25,6 +26,17 @@ namespace Network
 			_lastError = WSAGetLastError();
 			return _lastError;
 		}
+
+		return true;
+	}
+
+	int Socket::GetAddress(ConnectPoint& Point) const
+	{
+		SOCKADDR_IN Address;
+		int addrlen = sizeof(SOCKADDR_IN);
+
+		if (SOCKET_ERROR == getpeername(_handle, reinterpret_cast<SOCKADDR*>(&Address), &addrlen))
+			return false;
 
 		return true;
 	}

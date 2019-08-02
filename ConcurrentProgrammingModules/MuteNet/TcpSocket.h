@@ -12,11 +12,12 @@ namespace Network
 
 		bool Init(ADDRESS_FAMILY f);
 		int  Bind(ConnectPoint& Point);
-		void SetNagle(bool bOption);
+		int SetNagle(bool bOption);
 		bool Listen(int backlog);
 
 		int SetConditionAccept(bool trigger) const;
 		int SetNoDelay(bool toggle) const;
+		int SetUpdateAcceptContext(SOCKET listen) const;
 
 		// Not Use Socket IO Function
 		int Send(const void* inData, int inLen);

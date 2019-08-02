@@ -5,6 +5,8 @@
 
 namespace Network
 {
+	struct IOContext;
+	struct AcceptContext;
 	/*
 	 * IOService에 AcceptEx 함수를 통해 호출시키게 한다.
 	 */
@@ -21,16 +23,17 @@ namespace Network
 		std::thread	 _acceptorThread;
 	public:
 		static LPFN_ACCEPTEX AcceptEx;
-		static byte AcceptBuf[64];
 	public:
 		Acceptor(const std::shared_ptr<IOService>& service,
 			const std::string& ip, uint16_t port);
 
-		void Start();
+		bool Initialize();
+
+		// Acceptor Thread Start or Stop
+		bool Start();
 		void Stop();
 	private:
 		void PostAccept();
-		void AcceptCompletion();
-		
+		void AcceptCompletion(IOContext* pContext);
 	};
 }

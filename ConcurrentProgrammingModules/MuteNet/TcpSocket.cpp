@@ -16,6 +16,8 @@ namespace Network
 
 		if (_handle == INVALID_SOCKET)
 			return false;
+
+		return true;
 	}
 
 	int TcpSocket::Bind(ConnectPoint& Point)
@@ -23,11 +25,11 @@ namespace Network
 		return bind(_handle, Point.GetSocketConnectPointPtr(), Point.GetSize());
 	}
 
-	void TcpSocket::SetNagle(bool bOption)
+	int TcpSocket::SetNagle(bool bOption)
 	{
 		int opt = bOption;
 
-		setsockopt(_handle, IPPROTO_TCP, TCP_NODELAY,
+		return setsockopt(_handle, IPPROTO_TCP, TCP_NODELAY,
 			reinterpret_cast<const char*>(& opt), sizeof(int));
 	}
 
@@ -54,6 +56,12 @@ namespace Network
 	int TcpSocket::SetNoDelay(bool toggle) const
 	{
 		return setsockopt(_handle, IPPROTO_TCP, TCP_NODELAY, reinterpret_cast<const char*>(& toggle), sizeof(bool));
+	}
+
+	int TcpSocket::SetUpdateAcceptContext(SOCKET listen) const
+	{
+		return setsockopt(_handle, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT,
+			reinterpret_cast<char*>(listen), sizeof(SOCKET));
 	}
 
 	int TcpSocket::Send(const void* inData, int inLen)

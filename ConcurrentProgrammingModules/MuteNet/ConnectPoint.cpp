@@ -5,7 +5,7 @@ namespace Network
 {
 	ConnectPoint::ConnectPoint(ConnectPoint&& Point) noexcept
 	{
-		_sockAddr = std::move(Point._sockAddr);
+		_sockAddr = Point._sockAddr;
 	}
 
 	std::string ConnectPoint::GetIpConnectPoint() const

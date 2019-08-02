@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MuteNetFoundation.h"
+#include "TcpSocket.h"
 
 namespace Network
 {
@@ -11,14 +12,36 @@ namespace Network
 	 */
 	class ConnectPoint final
 	{
-	public:		
+	public:
+		class Setter
+		{
+		public:
+			static bool SetConnectionPoint(const std::string& address, uint16_t port, ConnectPoint& OUT Point)
+			{
+				Point.CreateSockAddr(address, port);
+
+				return true;
+			}
+			static bool SetConnectionPoint(SOCKADDR_IN& address, ConnectPoint& OUT Point)
+			{
+				Point.SetConnectPoint(address);
+
+				return true;
+			}
+
+			static bool SetConnectionPoint(TcpSocket& socket, ConnectPoint& OUT Point)
+			{
+				return socket.GetAddress(Point) != SOCKET_ERROR;
+			}
+		};
+
 		ConnectPoint() = default;
 		~ConnectPoint() = default;
 
 		ConnectPoint(ConnectPoint&& Point) noexcept;
 		ConnectPoint& operator=(ConnectPoint&& Point) noexcept;
 
-		void SetConnectPoint(const std::string& address, uint16_t inPort);
+		void SetConnectPoint(const std::string& ConnectPoint, uint16_t inPort);
 		void SetConnectPoint(const ConnectPoint& ConnectPoint);
 		void SetConnectPoint(const sockaddr& sockAddr);
 		void SetConnectPoint(const sockaddr_in& sockAddr_in);
@@ -29,7 +52,7 @@ namespace Network
 
 		static int GetSize();
 	private:
-		void CreateSockAddr(const std::string& address, uint16_t port);
+		void CreateSockAddr(const std::string& ConnectPoint, uint16_t port);
 	private:
 		sockaddr_in _sockAddr{};
 	};
@@ -37,7 +60,7 @@ namespace Network
 
 	inline ConnectPoint& ConnectPoint::operator=(ConnectPoint&& Point) noexcept
 	{
-		_sockAddr = std::move(Point._sockAddr);
+		_sockAddr = Point._sockAddr;
 		return *this;
 	}
 

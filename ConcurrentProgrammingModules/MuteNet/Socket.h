@@ -25,6 +25,8 @@ namespace Network
 
 		int GetLastError() const;
 
+		int GetAddress(ConnectPoint& OUT Point) const;
+
 		int SetRecvSocketBufferSize(int size) const;
 		int SetSendSocketBufferSize(int size) const;
 

@@ -21,11 +21,15 @@
     <Filter Include="IOContext">
       <UniqueIdentifier>{c200014e-1232-4ad5-9460-6d80327c957c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="IOService">
+      <UniqueIdentifier>{0c661987-ad58-4fe6-ad14-7afd9631c944}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ConnectionPoint">
+      <UniqueIdentifier>{944b2fe4-5639-4190-8a6b-74063164eaf7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IOService.h" />
     <ClInclude Include="MuteNetFoundation.h" />
-    <ClInclude Include="ConnectPoint.h" />
     <ClInclude Include="Socket.h">
       <Filter>Socket</Filter>
     </ClInclude>
@@ -38,18 +42,20 @@
     <ClInclude Include="Link.h">
       <Filter>Link</Filter>
     </ClInclude>
-    <ClInclude Include="LinkManager.h" />
     <ClInclude Include="IOContext.h">
       <Filter>IOContext</Filter>
     </ClInclude>
+    <ClInclude Include="LinkManager.h">
+      <Filter>Link</Filter>
+    </ClInclude>
+    <ClInclude Include="IOService.h">
+      <Filter>IOService</Filter>
+    </ClInclude>
+    <ClInclude Include="ConnectPoint.h">
+      <Filter>ConnectionPoint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="IOService.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="ConnectPoint.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="TcpSocket.cpp">
       <Filter>Socket</Filter>
     </ClCompile>
@@ -63,7 +69,13 @@
       <Filter>Link</Filter>
     </ClCompile>
     <ClCompile Include="LinkManager.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Link</Filter>
+    </ClCompile>
+    <ClCompile Include="IOService.cpp">
+      <Filter>IOService</Filter>
+    </ClCompile>
+    <ClCompile Include="ConnectPoint.cpp">
+      <Filter>ConnectionPoint</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
