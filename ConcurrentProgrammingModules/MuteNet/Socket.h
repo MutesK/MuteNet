@@ -1,11 +1,10 @@
 #pragma once
 
 #include "MuteNetFoundation.h"
-#include "ConnectPoint.h"
 
 namespace Network
 {
-	class EndPoint;
+	class ConnectPoint;
 
 	enum class ShutdownBlockMode
 	{
@@ -36,6 +35,7 @@ namespace Network
 		int SetSendCallLimitTime(DWORD time) const;
 
 		int SetUseKeepAlive(bool toggle) const;
+
 		int Shutdown(ShutdownBlockMode Mode);
 
 		SOCKET socket_handle() const;
@@ -100,7 +100,7 @@ namespace Network
 	{
 		return reinterpret_cast<HANDLE>(_handle);
 	}
-	void Socket::set_native_handle(HANDLE handle)
+	inline void Socket::set_native_handle(HANDLE handle)
 	{
 		_handle = reinterpret_cast<SOCKET>(handle);
 	}

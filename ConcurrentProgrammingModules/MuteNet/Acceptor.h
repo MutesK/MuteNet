@@ -1,12 +1,10 @@
 #pragma once
 
 #include "MuteNetFoundation.h"
-#include "ConnectPoint.h"
+#include "Link.h"
 
 namespace Network
 {
-	struct IOContext;
-	struct AcceptContext;
 	/*
 	 * IOService에 AcceptEx 함수를 통해 호출시키게 한다.
 	 */
@@ -21,6 +19,7 @@ namespace Network
 
 		ConnectPoint _bindPoint;
 		std::thread	 _acceptorThread;
+		ContextCallback _acceptCallback;
 	public:
 		static LPFN_ACCEPTEX AcceptEx;
 	public:
@@ -34,6 +33,6 @@ namespace Network
 		void Stop();
 	private:
 		void PostAccept();
-		void AcceptCompletion(IOContext* pContext);
+		void AcceptCompletion(IOContext* pContext, DWORD TransferredBytes, void* CompletionKey);
 	};
 }

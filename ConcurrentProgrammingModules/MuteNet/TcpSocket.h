@@ -11,8 +11,8 @@ namespace Network
 		virtual ~TcpSocket() = default;		
 
 		bool Init(ADDRESS_FAMILY f);
-		int  Bind(ConnectPoint& Point);
-		int SetNagle(bool bOption);
+		int  Bind(ConnectPoint& Point) const;
+		int SetNagle(bool bOption) const;
 		bool Listen(int backlog);
 
 		int SetConditionAccept(bool trigger) const;

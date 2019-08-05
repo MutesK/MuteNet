@@ -4,20 +4,29 @@
 #include "TcpSocket.h"
 #include "ConnectPoint.h"
 
+
+
 namespace Network
 {
-	typedef Link* LinkPtr;
+	using ContextCallback = std::function<void(struct IOContext*, DWORD, void*)>;
 
-	class Link final
+	struct IOContext;
+	class Link final : std::enable_shared_from_this<Link>
 	{
 	private:
 		TcpSocket	 _Socket;
-
-		ConnectPoint _RemotePoint;
 		ConnectPoint _EndPoint;
-	private:
+
+		ContextCallback _CallBack;
+	public:
 		Link();
-		~Link();
+		virtual ~Link();
+
+		void Recv();
+		void Send();
+
+	private:
+		void IOCompletion(IOContext* pContext, DWORD TransferredBytes, void* CompletionKey);
 
 		SOCKET		socket_handle() const;
 

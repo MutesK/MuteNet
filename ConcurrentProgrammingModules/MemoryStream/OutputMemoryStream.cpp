@@ -1,5 +1,7 @@
 #include "OutputMemoryStream.h"
 
+using namespace Util;
+
 OutputMemoryStream::OutputMemoryStream()
 	:_buffer(nullptr), _head(0), _capacity(0)
 {
@@ -12,6 +14,8 @@ OutputMemoryStream::~OutputMemoryStream()
 
 void OutputMemoryStream::Write(const void* inData, const uint32_t inByteCount)
 {
+	_mutex.lock();
+
 	const uint32_t resultPosition = _head + inByteCount;
 	
 	if (resultPosition > _capacity)
@@ -19,6 +23,9 @@ void OutputMemoryStream::Write(const void* inData, const uint32_t inByteCount)
 
 	std::memcpy(_buffer + _head, inData, inByteCount);
 	_head += inByteCount;
+
+	_mutex.unlock();
+
 }
 
 

@@ -1,5 +1,6 @@
 #include "MuteNetFoundation.h"
 #include "TcpSocket.h"
+#include "ConnectPoint.h"
 
 namespace Network
 {
@@ -20,12 +21,12 @@ namespace Network
 		return true;
 	}
 
-	int TcpSocket::Bind(ConnectPoint& Point)
+	int TcpSocket::Bind(ConnectPoint& Point) const
 	{
 		return bind(_handle, Point.GetSocketConnectPointPtr(), Point.GetSize());
 	}
 
-	int TcpSocket::SetNagle(bool bOption)
+	int TcpSocket::SetNagle(bool bOption) const
 	{
 		int opt = bOption;
 

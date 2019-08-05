@@ -1,5 +1,7 @@
 #include "InputMemoryStream.h"
 
+using namespace Util;
+
 InputMemoryStream::InputMemoryStream(char* buffer, uint32_t inByteCount)
 	:_buffer(buffer), _capacity(inByteCount)
 {
@@ -19,8 +21,12 @@ void InputMemoryStream::Read(void* outData, uint32_t inByteCount)
 	if (_head + inByteCount >= _capacity)
 		throw;
 
+	_mutex.lock();
+
 	memcpy(outData, _buffer + _head, inByteCount);
 	_head += inByteCount;
+
+	_mutex.unlock();
 }
 
 

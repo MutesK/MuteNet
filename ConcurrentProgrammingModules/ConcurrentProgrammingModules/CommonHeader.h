@@ -23,6 +23,7 @@
 #include <shared_mutex>
 #include <concurrent_queue.h>
 
+#include "ObjectPool.h"
 
 #define WIN32_LEAN_AND_MEAN
 

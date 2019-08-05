@@ -17,8 +17,8 @@ namespace Util
 
 		void Run(const uint32_t workerIndex);
 
-		virtual void HandleCompletion(const uint32_t workerIndex, ULONG_PTR Context, LPOVERLAPPED Overlapped, DWORD TransfferedBytes) = 0;
-		virtual void HandleTimeout(const uint32_t WorkerIndex, ULONG_PTR Context) =0;
+		virtual void HandleCompletion(const uint32_t workerIndex, ULONG_PTR CompletionKey, LPOVERLAPPED Overlapped, DWORD TransfferedBytes) = 0;
+		virtual void HandleTimeout(const uint32_t WorkerIndex, ULONG_PTR CompletionKey) =0;
 
 	protected:
 		HANDLE				  _iocpHandle;

@@ -5,14 +5,18 @@
 #include "IOService.h"
 #include "LinkManager.h"
 #include "IOContext.h"
-
-
 namespace Network
 {
+	LPFN_ACCEPTEX Acceptor::AcceptEx = nullptr;
+	Util::TL::ObjectPool<AcceptContext> AcceptContext::OverlappedPool;
+
 	Acceptor::Acceptor(const std::shared_ptr<IOService>& service, const std::string& ip, uint16_t port)
 		:_service(service)
 	{
 		_bindPoint.SetConnectPoint(ip, port);
+
+		_acceptCallback = std::bind(&Acceptor::AcceptCompletion, this, std::placeholders::_1,
+			std::placeholders::_2, std::placeholders::_3);
 	}
 
 	bool Acceptor::Initialize()
@@ -58,22 +62,17 @@ namespace Network
 		DWORD flags = 0;
 		byte AcceptBuf[64];
 
-		static auto completionCallback = std::bind(&Acceptor::AcceptCompletion, this, std::placeholders::_1);
-
 		while(true)
 		{
 			auto link = LinkManager::make_shared();
 
-			const auto AcceptOverlapped = AcceptContext::OverlappedPool();
-			new (AcceptOverlapped) AcceptContext(link);
-			AcceptOverlapped->Callback = completionCallback;
+			const auto AcceptOverlapped = AcceptContext::OverlappedPool(link, _acceptCallback);
 
 			if(FALSE == AcceptEx(_listen->socket_handle(), link->socket_handle(), AcceptBuf, 0,
 				sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, &bytes, reinterpret_cast<LPOVERLAPPED>(AcceptOverlapped)))
 			{
 				if(WSAGetLastError() != WSA_IO_PENDING)
 				{
-					AcceptOverlapped->~AcceptContext();
 					AcceptContext::OverlappedPool.Free(AcceptOverlapped);
 
 					// Logger
@@ -82,7 +81,7 @@ namespace Network
 		}
 	}
 
-	void Acceptor::AcceptCompletion(IOContext* pContext)
+	void Acceptor::AcceptCompletion(IOContext* pContext, DWORD TransferredBytes, void* CompletionKey)
 	{
 		if(nullptr == pContext)
 		{
@@ -90,8 +89,8 @@ namespace Network
 			return;
 		}
 
-		const auto AcceptIOContext = static_cast<AcceptContext *>(pContext);  // non-virtaul classes - can't use the dynamic_cast 
-		const auto link = AcceptIOContext->linkPtr;
+		const auto AcceptIOContext = reinterpret_cast<AcceptContext *>(pContext);  // non-virtaul classes - can't use the dynamic_cast 
+		auto link = AcceptIOContext->linkPtr;
 
 		// 家南 可记 汲隆
 		auto socket = link->_Socket;
@@ -100,10 +99,9 @@ namespace Network
 		socket.SetNagle(true);
 		ConnectPoint::Setter::SetConnectionPoint(socket, link->_EndPoint);
 
-		_service->RegisterHandle(socket.native_handle(), (void*)&link);
+		_service->RegisterHandle(socket.native_handle(), nullptr);
 		// PreRecv
 
-		AcceptIOContext->~AcceptContext();
 		AcceptContext::OverlappedPool.Free(AcceptIOContext);
 	}
 }

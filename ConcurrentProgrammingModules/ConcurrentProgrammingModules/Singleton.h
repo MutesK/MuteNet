@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../ConcurrentProgrammingModules/CommonHeader.h"
+#include "CommonHeader.h"
 
 namespace Util
 {

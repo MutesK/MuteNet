@@ -27,6 +27,9 @@
     <Filter Include="ConnectionPoint">
       <UniqueIdentifier>{944b2fe4-5639-4190-8a6b-74063164eaf7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NewFilter1">
+      <UniqueIdentifier>{c6bf9905-533e-49db-899f-5383162bdd81}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MuteNetFoundation.h" />

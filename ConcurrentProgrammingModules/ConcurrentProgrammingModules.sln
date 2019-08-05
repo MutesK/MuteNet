@@ -8,6 +8,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AF7A1853-9760-4EF8-BAAA-A18D1BECE81E}"
 	ProjectSection(SolutionItems) = preProject
 		ConcurrentProgrammingModules\CommonHeader.h = ConcurrentProgrammingModules\CommonHeader.h
+		ConcurrentProgrammingModules\ObjectPool.h = ConcurrentProgrammingModules\ObjectPool.h
+		ConcurrentProgrammingModules\Singleton.h = ConcurrentProgrammingModules\Singleton.h
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Scheduler", "Scheduler\Scheduler.vcxproj", "{AAD16611-9235-41A6-8224-667361FA53B0}"
@@ -37,10 +39,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MuteNet", "MuteNet\MuteNet.vcxproj", "{11FFBD58-3F37-4BDE-8E98-623DC8B761FF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StateMachine", "StateMachine\StateMachine.vcxproj", "{29974077-CDF2-4E28-AD9F-25A7752F619E}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ObjectPool", "ObjectPool\ObjectPool.vcxproj", "{FBBA2FDB-1595-4408-874C-59BE4DBE134E}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Singleton", "Singleton\Singleton.vcxproj", "{5C1773D8-F96F-4D00-B5C0-172C2EB0C9F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -154,22 +152,6 @@ Global
 		{29974077-CDF2-4E28-AD9F-25A7752F619E}.Release|x64.Build.0 = Release|x64
 		{29974077-CDF2-4E28-AD9F-25A7752F619E}.Release|x86.ActiveCfg = Release|Win32
 		{29974077-CDF2-4E28-AD9F-25A7752F619E}.Release|x86.Build.0 = Release|Win32
-		{FBBA2FDB-1595-4408-874C-59BE4DBE134E}.Debug|x64.ActiveCfg = Debug|x64
-		{FBBA2FDB-1595-4408-874C-59BE4DBE134E}.Debug|x64.Build.0 = Debug|x64
-		{FBBA2FDB-1595-4408-874C-59BE4DBE134E}.Debug|x86.ActiveCfg = Debug|Win32
-		{FBBA2FDB-1595-4408-874C-59BE4DBE134E}.Debug|x86.Build.0 = Debug|Win32
-		{FBBA2FDB-1595-4408-874C-59BE4DBE134E}.Release|x64.ActiveCfg = Release|x64
-		{FBBA2FDB-1595-4408-874C-59BE4DBE134E}.Release|x64.Build.0 = Release|x64
-		{FBBA2FDB-1595-4408-874C-59BE4DBE134E}.Release|x86.ActiveCfg = Release|Win32
-		{FBBA2FDB-1595-4408-874C-59BE4DBE134E}.Release|x86.Build.0 = Release|Win32
-		{5C1773D8-F96F-4D00-B5C0-172C2EB0C9F9}.Debug|x64.ActiveCfg = Debug|x64
-		{5C1773D8-F96F-4D00-B5C0-172C2EB0C9F9}.Debug|x64.Build.0 = Debug|x64
-		{5C1773D8-F96F-4D00-B5C0-172C2EB0C9F9}.Debug|x86.ActiveCfg = Debug|Win32
-		{5C1773D8-F96F-4D00-B5C0-172C2EB0C9F9}.Debug|x86.Build.0 = Debug|Win32
-		{5C1773D8-F96F-4D00-B5C0-172C2EB0C9F9}.Release|x64.ActiveCfg = Release|x64
-		{5C1773D8-F96F-4D00-B5C0-172C2EB0C9F9}.Release|x64.Build.0 = Release|x64
-		{5C1773D8-F96F-4D00-B5C0-172C2EB0C9F9}.Release|x86.ActiveCfg = Release|Win32
-		{5C1773D8-F96F-4D00-B5C0-172C2EB0C9F9}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -187,8 +169,6 @@ Global
 		{D14F9608-3C4F-4040-AF48-EE2BBA2D2A48} = {2ED320A5-40ED-411A-A405-69E6583DBD21}
 		{0D3FA4AA-CDBF-4124-ACD9-3CD330EBD1CF} = {2ED320A5-40ED-411A-A405-69E6583DBD21}
 		{29974077-CDF2-4E28-AD9F-25A7752F619E} = {2ED320A5-40ED-411A-A405-69E6583DBD21}
-		{FBBA2FDB-1595-4408-874C-59BE4DBE134E} = {5B1F7926-F94C-4668-BCCC-C07301B78397}
-		{5C1773D8-F96F-4D00-B5C0-172C2EB0C9F9} = {5B1F7926-F94C-4668-BCCC-C07301B78397}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D25AF9E2-BF7D-4AE6-A886-248432729C8D}

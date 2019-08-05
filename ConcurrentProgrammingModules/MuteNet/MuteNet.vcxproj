@@ -38,6 +38,11 @@
     <ClCompile Include="Socket.cpp" />
     <ClCompile Include="TcpSocket.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ASyncQueue\ASyncQueue.vcxproj">
+      <Project>{99cdb35a-dd44-41fa-919d-f832614a9a71}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{11FFBD58-3F37-4BDE-8E98-623DC8B761FF}</ProjectGuid>

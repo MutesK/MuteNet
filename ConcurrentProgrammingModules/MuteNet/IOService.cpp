@@ -1,5 +1,5 @@
 #include "IOService.h"
-#include "Acceptor.h"
+#include "IOContext.h"
 
 namespace Network
 {
@@ -13,12 +13,21 @@ namespace Network
 		ASyncQueue::Stop();
 	}
 
-	void IOService::HandleCompletion(const uint32_t workerIndex, ULONG_PTR Context, LPOVERLAPPED Overlapped,
+	void IOService::HandleCompletion(const uint32_t workerIndex, ULONG_PTR CompletionKey, LPOVERLAPPED Overlapped,
 		DWORD TransfferedBytes)
 	{
+		IOContext* pContext = reinterpret_cast<IOContext*>(Overlapped);
+
+		if(nullptr == pContext)
+		{
+			// Logger
+			return;
+		}
+
+		pContext->Callback(pContext, TransfferedBytes, reinterpret_cast<void *>(CompletionKey));
 	}
 
-	void IOService::HandleTimeout(const uint32_t WorkerIndex, ULONG_PTR Context)
+	void IOService::HandleTimeout(const uint32_t WorkerIndex, ULONG_PTR CompletionKey)
 	{
 	}
 }
