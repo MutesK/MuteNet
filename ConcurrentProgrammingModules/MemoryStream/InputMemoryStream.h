@@ -4,9 +4,9 @@
 
 namespace Util
 {
-	class InputMemoryStream final : public MemoryStream
+	class InputMemoryStream : public MemoryStream
 	{
-	private:
+	protected:
 		char* _buffer = nullptr;
 
 		uint32_t _head = 0;
@@ -15,9 +15,9 @@ namespace Util
 		InputMemoryStream(char* buffer, uint32_t inByteCount);
 		virtual ~InputMemoryStream();
 
-		uint32_t GetRemainingDataSize() const;
+		virtual uint32_t GetRemainingDataSize() const;
 
-		void Read(void* outData, uint32_t inByteCount);
+		virtual void Read(void* outData, uint32_t inByteCount);
 
 		template <typename Type>
 		void Read(Type& outData);
@@ -26,7 +26,7 @@ namespace Util
 		void Read(std::vector<Type>& vector);
 
 		virtual bool IsInput() override;
-		virtual void Serialize(void* inData, uint32_t inByteCount) override;
+		virtual void Serialize(void* outData, uint32_t inByteCount) override;
 	};
 
 	inline uint32_t InputMemoryStream::GetRemainingDataSize() const

@@ -8,7 +8,6 @@
 namespace Network
 {
 	LPFN_ACCEPTEX Acceptor::AcceptEx = nullptr;
-	Util::TL::ObjectPool<AcceptContext> AcceptContext::OverlappedPool;
 
 	Acceptor::Acceptor(const std::shared_ptr<IOService>& service, const std::string& ip, uint16_t port)
 		:_service(service)
@@ -74,7 +73,6 @@ namespace Network
 				if(WSAGetLastError() != WSA_IO_PENDING)
 				{
 					AcceptContext::OverlappedPool.Free(AcceptOverlapped);
-
 					// Logger
 				}
 			}
@@ -100,7 +98,7 @@ namespace Network
 		ConnectPoint::Setter::SetConnectionPoint(socket, link->_EndPoint);
 
 		_service->RegisterHandle(socket.native_handle(), nullptr);
-		// PreRecv
+		link->RecvPost();
 
 		AcceptContext::OverlappedPool.Free(AcceptIOContext);
 	}

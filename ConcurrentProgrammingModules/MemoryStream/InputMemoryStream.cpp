@@ -30,9 +30,9 @@ void InputMemoryStream::Read(void* outData, uint32_t inByteCount)
 }
 
 
-void InputMemoryStream::Serialize(void* inData, uint32_t inByteCount)
+void InputMemoryStream::Serialize(void* outData, uint32_t inByteCount)
 {
-	Read(inData, inByteCount);
+	Read(outData, inByteCount);
 }
 
 

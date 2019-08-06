@@ -4,9 +4,9 @@
 
 namespace Util
 {
-	class OutputMemoryStream final : public MemoryStream
+	class OutputMemoryStream : public MemoryStream
 	{
-	private:
+	protected:
 		char* _buffer = nullptr;
 
 		uint32_t _head = 0;
@@ -16,9 +16,9 @@ namespace Util
 		virtual ~OutputMemoryStream();
 
 		char* GetBufferPtr();
-		uint32_t GetLength() const;
+		virtual uint32_t GetLength() const;
 
-		void Write(const void* inData, uint32_t inByteCount);
+		virtual void Write(const void* inData, uint32_t inByteCount);
 
 		template <typename Type>
 		void Write(const Type& inData);

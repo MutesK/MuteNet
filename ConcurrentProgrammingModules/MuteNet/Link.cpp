@@ -1,33 +1,32 @@
 
 #include "Link.h"
 #include "IOContext.h"
+#include "../MemoryStream/BufferPool.h"
+
 
 using namespace Util;
 namespace Network
 {
-	Util::TL::ObjectPool<SendContext> SendContext::OverlappedPool;
-	Util::TL::ObjectPool<RecvContext> RecvContext::OverlappedPool;
-
 	Link::Link()
 		:_Socket(AF_INET)
 	{
 		_CallBack = std::bind(&Link::IOCompletion, this, std::placeholders::_1,
 			std::placeholders::_2, std::placeholders::_3);
+
 	}
 
 	Link::~Link()
 	{
 	}
 
-	void Link::Recv()
+	void Link::RecvPost()
 	{
 		const auto Overlapped = RecvContext::OverlappedPool(shared_from_this(), _CallBack);
 
-		// WSABUF는 임시로 nullptr
-		_Socket.OverlappedIORecv(nullptr, 0, &Overlapped->Overlapped);
+		_Socket.OverlappedIORecv(&wsabuf, 0, &Overlapped->Overlapped);
 	}
 
-	void Link::Send()
+	void Link::SendPost()
 	{
 		const auto Overlapped = SendContext::OverlappedPool(shared_from_this(), _CallBack);
 

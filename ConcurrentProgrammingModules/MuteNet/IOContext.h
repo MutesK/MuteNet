@@ -1,9 +1,12 @@
 #pragma once
 
-#include "Link.h"
+#include "MuteNetFoundation.h"
 
 namespace Network
 {
+	struct IOConext;
+	class Link;
+
 	enum IOType
 	{
 		IO_NONE,
@@ -13,6 +16,7 @@ namespace Network
 		IO_CONNECT,  // Connector
 	};
 
+	using ContextCallback = std::function<void(struct IOContext*, DWORD, void*)>;
 	struct IOContext
 	{
 		OVERLAPPED Overlapped;
