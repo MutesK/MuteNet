@@ -32,6 +32,7 @@
   <ItemGroup>
     <ClCompile Include="Acceptor.cpp" />
     <ClCompile Include="ConnectPoint.cpp" />
+    <ClCompile Include="IOContext.cpp" />
     <ClCompile Include="IOService.cpp" />
     <ClCompile Include="Link.cpp" />
     <ClCompile Include="LinkManager.cpp" />
