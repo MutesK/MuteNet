@@ -16,31 +16,34 @@ namespace Network
 		IO_CONNECT,  // Connector
 	};
 
-	using ContextCallback = std::function<void(struct IOContext*, DWORD, void*)>;
 	struct IOContext
 	{
 		OVERLAPPED Overlapped;
 		std::shared_ptr<Link> linkPtr;
-		ContextCallback& Callback;
 		IOType     Type;
 
-		IOContext(const std::shared_ptr<Link> link, ContextCallback& Callback)
-			:linkPtr(link), Callback(Callback)
+		IOContext(const std::shared_ptr<Link> link)
+			:linkPtr(link)
 		{
 			memset(&Overlapped, 0, sizeof(OVERLAPPED));
 			Type = IO_NONE;
 		}
+
+		virtual ~IOContext() = default;
+		virtual void IOComplete() = 0;
 	};
 
 	struct SendContext : public IOContext
 	{
 		static Util::TL::ObjectPool<SendContext> OverlappedPool;
 
-		SendContext(const std::shared_ptr<Link> link, ContextCallback& Callback)
-			:IOContext(link, Callback)
+		SendContext(const std::shared_ptr<Link> link)
+			:IOContext(link)
 		{
 			Type = IO_SEND;
 		}
+
+		void IOComplete() override;
 
 	};
 
@@ -48,33 +51,39 @@ namespace Network
 	{
 		static Util::TL::ObjectPool<RecvContext> OverlappedPool;
 
-		RecvContext(const std::shared_ptr<Link> link, ContextCallback& Callback)
-			:IOContext(link, Callback)
+		RecvContext(const std::shared_ptr<Link> link)
+			:IOContext(link)
 		{
 			Type = IO_RECV;
 		}
+
+		void IOComplete() override;
 	};
 
 	struct AcceptContext : public IOContext
 	{
 		static Util::TL::ObjectPool<AcceptContext> OverlappedPool;
 
-		AcceptContext(const std::shared_ptr<Link> link, ContextCallback& Callback)
-			:IOContext(link, Callback)
+		AcceptContext(const std::shared_ptr<Link> link)
+			:IOContext(link)
 		{
 			Type = IO_ACCEPT;
 		}
+
+		void IOComplete() override;
 	};
 
-	struct ConnectContext : IOContext
+	struct ConnectContext : public IOContext
 	{
 		static Util::TL::ObjectPool<ConnectContext> OverlappedPool;
 
-		ConnectContext(const std::shared_ptr<Link> link, ContextCallback& Callback)
-			:IOContext(link, Callback)
+		ConnectContext(const std::shared_ptr<Link> link)
+			:IOContext(link)
 		{
 			Type = IO_CONNECT;
 		}
+
+		void IOComplete() override;
 	};
 
 

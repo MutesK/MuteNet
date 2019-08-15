@@ -17,12 +17,14 @@ namespace Util
 		CircularBuffer();
 		~CircularBuffer();
 
+		static std::unique_ptr<CircularBuffer> Alloc();
+
 		void Reset();
 		bool isEmpty() const;
 		size_t GetFreeSize() const;
 		size_t GetUsedSize() const;
 
-		void GetBufferPtr(void* firstBuffer, size_t& firstLength,
+		uint32_t GetWrtieBufferPtr(void* firstBuffer, size_t& firstLength,
 			void* secondBuffer, size_t& secondLength);
 
 		void MoveReadPostion(const size_t& position);

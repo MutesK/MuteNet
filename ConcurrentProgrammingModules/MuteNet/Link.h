@@ -7,7 +7,7 @@
 
 namespace Util
 {
-	class OutputByteStream;
+	class CircularBuffer;
 };
 
 namespace Network
@@ -19,24 +19,23 @@ namespace Network
 	private:
 		TcpSocket					_Socket;
 		ConnectPoint				_EndPoint;
-
-		ContextCallback				_CallBack;
+		
+		std::unique_ptr<Util::CircularBuffer> _RecvQ;
+		std::unique_ptr<Util::CircularBuffer> _SendQ;
 	public:
 		Link();
 		virtual ~Link();
 
 		void RecvPost();
 		void SendPost();
-
 	private:
-		void IOCompletion(IOContext* pContext, DWORD TransferredBytes, void* CompletionKey);
-
 		SOCKET		socket_handle() const;
 
 		friend class LinkManager;
 		friend class Acceptor;
 		friend class Connector;
 		friend class IOService;
+		friend class IOContext;
 	};
 
 	inline SOCKET Link::socket_handle() const 

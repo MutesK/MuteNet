@@ -3,6 +3,8 @@
 
 namespace Util
 {
+	TL::ObjectPool<CircularBuffer> BufferPool;
+
 	CircularBuffer::CircularBuffer()
 	{
 		_buffer = new char[BUFFER_SIZE];
@@ -13,8 +15,31 @@ namespace Util
 		delete[] _buffer;
 	}
 
-	void CircularBuffer::GetBufferPtr(void* firstBuffer, size_t& firstLength, void* secondBuffer, size_t& secondLength)
+	std::unique_ptr<CircularBuffer> CircularBuffer::Alloc()
 	{
+		return BufferPool.make_unique();
+	}
+
+	uint32_t CircularBuffer::GetWrtieBufferPtr(void* firstBuffer, size_t& firstLength,
+		void* secondBuffer, size_t& secondLength)
+	{
+		firstBuffer = _buffer + _tail;
+
+		if (_head < _tail)
+			firstLength = _head - _tail;
+		else
+			firstLength = BUFFER_SIZE - _tail;
+			
+		
+		if (firstLength < GetFreeSize())
+		{
+			secondBuffer = _buffer;
+			secondLength = GetFreeSize() - firstLength;
+			return 2;
+		}
+		
+		return 1;
+
 	}
 
 	void CircularBuffer::MoveReadPostion(const size_t& position)
