@@ -4,6 +4,8 @@ namespace Util
 {
 	class CircularBuffer final 
 	{
+	public:
+		std::recursive_mutex _mutex;
 	private:
 		const size_t BUFFER_SIZE = 25000;
 
@@ -11,8 +13,6 @@ namespace Util
 
 		size_t _head = 0;
 		size_t _tail = 0;
-
-		std::recursive_mutex _mutex;
 	public:
 		CircularBuffer();
 		~CircularBuffer();
@@ -24,7 +24,9 @@ namespace Util
 		size_t GetFreeSize() const;
 		size_t GetUsedSize() const;
 
-		uint32_t GetWrtieBufferPtr(void* firstBuffer, size_t& firstLength,
+		uint32_t GetWriteBufferAndLengths(void* firstBuffer, size_t& firstLength,
+			void* secondBuffer, size_t& secondLength);
+		uint32_t GetReadBufferAndLengths(void* firstBuffer, size_t& firstLength,
 			void* secondBuffer, size_t& secondLength);
 
 		void MoveReadPostion(const size_t& position);
@@ -34,10 +36,13 @@ namespace Util
 		void MoveWritePostion(const size_t& position);
 		size_t PutData(void* inData, const size_t size);
 
-		NON_COPYABLE(CircularBuffer);
-	private:
+		char* GetWriteBufferPtr();
+		char* GetReadBufferPtr();
+
 		void Lock();
 		void UnLock();
+
+		NON_COPYABLE(CircularBuffer);
 	};
 
 	inline void CircularBuffer::Reset()
@@ -59,4 +64,27 @@ namespace Util
 
 		return BUFFER_SIZE - _head + _tail;
 	}
+
+	inline char* CircularBuffer::GetWriteBufferPtr()
+	{
+		return _buffer + _tail;
+	}
+
+	inline char* CircularBuffer::GetReadBufferPtr()
+	{
+		return _buffer + _head;
+	}
+
+	inline void CircularBuffer::Lock()
+	{
+		_mutex.lock();
+	}
+
+	inline void CircularBuffer::UnLock()
+	{
+		_mutex.unlock();
+	}
+
+
+
 }

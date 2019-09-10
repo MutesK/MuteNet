@@ -23,7 +23,7 @@ namespace Network
 		std::unique_ptr<Util::CircularBuffer> _RecvQ;
 		std::unique_ptr<Util::CircularBuffer> _SendQ;
 
-		
+		std::atomic_bool					  _isSend;
 	public:
 		Link();
 		virtual ~Link();
@@ -35,6 +35,7 @@ namespace Network
 		GET_SET_ATTRIBUTE(ConnectPoint&, EndPoint);
 		GET_SET_ATTRIBUTE(std::unique_ptr<Util::CircularBuffer>&, RecvQ);
 		GET_SET_ATTRIBUTE(std::unique_ptr<Util::CircularBuffer>&, SendQ);
+		GET_SET_ATTRIBUTE(std::atomic_bool&, isSend);
 	private:
 		SOCKET		socket_handle() const;
 

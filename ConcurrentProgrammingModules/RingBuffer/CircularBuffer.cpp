@@ -20,7 +20,7 @@ namespace Util
 		return BufferPool.make_unique();
 	}
 
-	uint32_t CircularBuffer::GetWrtieBufferPtr(void* firstBuffer, size_t& firstLength,
+	uint32_t CircularBuffer::GetWriteBufferAndLengths(void* firstBuffer, size_t& firstLength,
 		void* secondBuffer, size_t& secondLength)
 	{
 		firstBuffer = _buffer + _tail;
@@ -40,6 +40,28 @@ namespace Util
 		
 		return 1;
 
+	}
+
+	uint32_t CircularBuffer::GetReadBufferAndLengths(void* firstBuffer, size_t& firstLength, void* secondBuffer, size_t& secondLength)
+	{
+		firstBuffer = _buffer + _head;
+
+		if (_head <= _tail)
+		{
+			firstLength = _tail - _head;
+		}
+		else
+			firstLength = BUFFER_SIZE - _head;
+
+		if (firstLength < GetUsedSize())
+		{
+			secondBuffer = _buffer;
+			secondLength = GetUsedSize() - firstLength;
+
+			return 2;
+		}
+
+		return 1;
 	}
 
 	void CircularBuffer::MoveReadPostion(const size_t& position)

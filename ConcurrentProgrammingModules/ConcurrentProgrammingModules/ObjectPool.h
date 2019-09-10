@@ -41,7 +41,7 @@ namespace Util
 
 			void Free(Type* ptr);
 
-			int UseCount() const
+			size_t UseCount() const
 			{
 				return _elementPool.size() - _unUsedIndexs.size();
 			}
