@@ -17,17 +17,24 @@ namespace Network
 	class Link final : std::enable_shared_from_this<Link>
 	{
 	private:
-		TcpSocket					_Socket;
+		TcpSocket					_socket;
 		ConnectPoint				_EndPoint;
 		
 		std::unique_ptr<Util::CircularBuffer> _RecvQ;
 		std::unique_ptr<Util::CircularBuffer> _SendQ;
+
+		
 	public:
 		Link();
 		virtual ~Link();
 
 		void RecvPost();
 		void SendPost();
+
+		GET_SET_ATTRIBUTE(TcpSocket&, socket);
+		GET_SET_ATTRIBUTE(ConnectPoint&, EndPoint);
+		GET_SET_ATTRIBUTE(std::unique_ptr<Util::CircularBuffer>&, RecvQ);
+		GET_SET_ATTRIBUTE(std::unique_ptr<Util::CircularBuffer>&, SendQ);
 	private:
 		SOCKET		socket_handle() const;
 
@@ -40,6 +47,6 @@ namespace Network
 
 	inline SOCKET Link::socket_handle() const 
 	{
-		return _Socket.socket_handle();
+		return _socket.socket_handle();
 	}
 }

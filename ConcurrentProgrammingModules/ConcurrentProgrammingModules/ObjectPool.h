@@ -18,7 +18,7 @@ namespace Util
 
 			std::function<void(Type* ptr)>			_customDeletor;
 		public:
-			ObjectPool(size_t PoolSize = 5000);
+			ObjectPool(size_t PoolSize = 50000);
 			~ObjectPool();
 
 			template <typename ...Args>
@@ -40,6 +40,11 @@ namespace Util
 			Type* Alloc(Args&&...arguments);
 
 			void Free(Type* ptr);
+
+			int UseCount() const
+			{
+				return _elementPool.size() - _unUsedIndexs.size();
+			}
 		};
 
 		template <typename Type>
@@ -125,6 +130,10 @@ namespace Util
 		{
 			{
 				std::lock_guard<std::mutex> lock(_mutex);
+
+				auto iter = _elementPool.find(ptr);
+				if (iter == _elementPool.end())
+					throw;
 
 				_unUsedIndexs.push(ptr);
 			}

@@ -54,6 +54,7 @@
     <ClInclude Include="ConnectPoint.h">
       <Filter>ConnectionPoint</Filter>
     </ClInclude>
+    <ClInclude Include="EngineIO.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TcpSocket.cpp">

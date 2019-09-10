@@ -24,7 +24,7 @@ namespace Network
 			return;
 		}
 
-		pContext->Callback(pContext, TransfferedBytes, reinterpret_cast<void *>(CompletionKey));
+		pContext->IOComplete(TransfferedBytes, reinterpret_cast<void *>(CompletionKey));
 	}
 
 	void IOService::HandleTimeout(const uint32_t WorkerIndex, ULONG_PTR CompletionKey)

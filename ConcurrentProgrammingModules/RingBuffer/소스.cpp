@@ -1,11 +1,14 @@
 #include <iostream>
+#include <thread>
+#include <array>
 #include "..//ConcurrentProgrammingModules/CommonHeader.h"
 #include "CircularBuffer.h"
+#include "../ConcurrentProgrammingModules/ObjectPool.h"
 
 using namespace Util;
 using namespace std;
 
-int main()
+void bufferTest()
 {
 	CircularBuffer buffer;
 	std::cout << "Single Thread CircularBuffer I/O Test \n";
@@ -48,6 +51,53 @@ int main()
 		}
 
 		testcase++;
+		std::this_thread::sleep_for(1s);
+	}
+}
+int main()
+{
+	struct TestStruct
+	{
+		int vaild;
+	};
+
+	auto startTime = std::chrono::system_clock::now();
+	TL::ObjectPool<TestStruct> structPool;
+
+	auto test = [&structPool]()
+	{
+		while (true)
+		{
+			std::list<TestStruct *> list;
+
+			for (auto i = 0; i < 10000; i++)
+			{
+				auto ptr = structPool.Alloc();
+				list.push_back(ptr);
+			}
+
+			for (auto ptr : list)
+			{
+				structPool.Free(ptr);
+			}
+		}
+	};
+
+	std::array<std::thread, 5> threadpool;
+	for (int i = 0; i < 5; i++)
+	{
+		threadpool[i] = std::thread(test);
+	}
+
+	while (true)
+	{
+		system("cls");
+		std::cout << "===================== OBJECT POOL TEST =====================\n";
+		std::cout << "Work Time(sec) : "
+			<< std::chrono::duration<double>(std::chrono::system_clock::now() - startTime).count() << std::endl;
+		std::cout << "Object Pool Use Count : " << structPool.UseCount() << std::endl;
+		std::cout << "\n\n";
+
 		std::this_thread::sleep_for(1s);
 	}
 }

@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="ConnectPoint.h" />
     <ClInclude Include="Acceptor.h" />
+    <ClInclude Include="EngineIO.h" />
     <ClInclude Include="IOService.h" />
     <ClInclude Include="Link.h" />
     <ClInclude Include="LinkManager.h" />

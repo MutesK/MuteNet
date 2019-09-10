@@ -13,20 +13,18 @@ namespace Network
 		:_service(service)
 	{
 		_bindPoint.SetConnectPoint(ip, port);
-
-		_acceptCallback = std::bind(&Acceptor::AcceptCompletion, this, std::placeholders::_1,
-			std::placeholders::_2, std::placeholders::_3);
 	}
 
 	bool Acceptor::Initialize()
 	{
 		bool flag = true;
 
-		_listen = std::make_unique<TcpSocket>(AF_INET);
+		_listen = std::make_shared<TcpSocket>(AF_INET);
 		flag = _listen->SetReUseAddress(true);
 		flag = _listen->Bind(_bindPoint);
 
-		_service->RegisterHandle(_listen->native_handle(), nullptr);
+		_service->RegisterHandle(_listen->native_handle(), 
+			&_listen);
 
 		GUID guidAcceptEx = WSAID_ACCEPTEX;
 		DWORD bytes = 0;
@@ -65,7 +63,7 @@ namespace Network
 		{
 			auto link = LinkManager::make_shared();
 
-			const auto AcceptOverlapped = AcceptContext::OverlappedPool(link, _acceptCallback);
+			const auto AcceptOverlapped = AcceptContext::OverlappedPool(link);
 
 			if(FALSE == AcceptEx(_listen->socket_handle(), link->socket_handle(), AcceptBuf, 0,
 				sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, &bytes, reinterpret_cast<LPOVERLAPPED>(AcceptOverlapped)))

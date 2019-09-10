@@ -47,15 +47,18 @@ namespace Util
 	template <typename Type>
 	void OutputMemoryStream::Write(const Type& inData)
 	{
-		Write(&inData, sizeof(Type));
+		unsigned short length = sizeof(unsigned short);
+
+		Write(&length, sizeof(size_t));
+		Write(&inData, sizeof(unsigned short));
 	}
 
 	template <typename Type>
 	void OutputMemoryStream::Write(const std::vector<Type>& vector)
 	{
-		size_t length = vector.size();
+		unsigned short length = static_cast<unsigned short>(vector.size());
 
-		Write(&length, sizeof(size_t));
+		Write(&length, sizeof(unsigned short));
 
 		for (const auto& elem : vector)
 		{

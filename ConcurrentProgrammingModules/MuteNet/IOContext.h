@@ -30,7 +30,7 @@ namespace Network
 		}
 
 		virtual ~IOContext() = default;
-		virtual void IOComplete() = 0;
+		virtual void IOComplete(DWORD TransfferedBytes, void* CompletionKey) = 0;
 	};
 
 	struct SendContext : public IOContext
@@ -43,7 +43,7 @@ namespace Network
 			Type = IO_SEND;
 		}
 
-		void IOComplete() override;
+		void IOComplete(DWORD TransfferedBytes, void* CompletionKey) override;
 
 	};
 
@@ -57,7 +57,7 @@ namespace Network
 			Type = IO_RECV;
 		}
 
-		void IOComplete() override;
+		void IOComplete(DWORD TransfferedBytes, void* CompletionKey) override;
 	};
 
 	struct AcceptContext : public IOContext
@@ -70,7 +70,7 @@ namespace Network
 			Type = IO_ACCEPT;
 		}
 
-		void IOComplete() override;
+		void IOComplete(DWORD TransfferedBytes, void* CompletionKey) override;
 	};
 
 	struct ConnectContext : public IOContext
@@ -83,7 +83,7 @@ namespace Network
 			Type = IO_CONNECT;
 		}
 
-		void IOComplete() override;
+		void IOComplete(DWORD TransfferedBytes, void* CompletionKey) override;
 	};
 
 

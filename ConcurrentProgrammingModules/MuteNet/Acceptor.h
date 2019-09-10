@@ -11,15 +11,15 @@ namespace Network
 	class TcpSocket;
 	class IOService;
 
-	class Acceptor final
+	class Acceptor final : public std::enable_shared_from_this<Acceptor>
 	{
 	private:
-		std::unique_ptr<TcpSocket> _listen {nullptr};
+		std::shared_ptr<TcpSocket> _listen {nullptr};
 		std::shared_ptr<IOService> _service {nullptr};
 
 		ConnectPoint _bindPoint;
 		std::thread	 _acceptorThread;
-		ContextCallback _acceptCallback;
+	
 	public:
 		static LPFN_ACCEPTEX AcceptEx;
 	public:
@@ -31,8 +31,9 @@ namespace Network
 		// Acceptor Thread Start or Stop
 		bool Start();
 		void Stop();
+
+		GET_SET_ATTRIBUTE(std::shared_ptr<TcpSocket>&, listen);
 	private:
 		void PostAccept();
-		void AcceptCompletion(IOContext* pContext, DWORD TransferredBytes, void* CompletionKey);
 	};
 }
