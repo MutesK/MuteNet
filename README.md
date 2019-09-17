@@ -19,16 +19,20 @@
 4. Property  Template Class
    1. 매크로 함수를 줄이기 위해서 만들어졌지만, 선택적 기능.
 
+## Research
 
+- [ ] Reliable UDP
+- [ ] NAT Traversal (Hole Punching)
 
 ## TO-DO
 
-- [ ] Libs 폴더를 Old Branch로 빼고, Base Develop을 New Branch로 분리
-- [ ] Delay Dection 추가
+- [x] Libs 폴더를 Old Branch로 빼고, Base Develop을 New Branch로 분리
+- [x] Windows API에 의존적인 TLS 파트 thread_local(C++ 11 표준)로 변경
+- [ ] Delay Detection 추가
 - [ ] 네트워크 파트는 소켓과 소켓 입출력 모드를 Plug-in 하여 처리할수 있는 모양새로 변경
-- [ ] Lock - Free Algorithm Windows System Dependency 제거 - 리눅스에서도 사용가능하게 변경
-- [ ] Object Pool , Object Pool Windows System Dependency 제거  - 리눅스에서도 사용가능하게 변경
+- [ ] Lock Free Algorithm ( C++ 모던 적용 )
 - [ ] ODBC 를 이용한 DB 연결 정책 수용 , ODBC Api를 간편하게 사용가능할수 있는 클래스 제작
 - [ ] Foundation 기능 추가 - IPC, Pipe, Frame(Timer), Application Factory
 - [ ] 모던 C++ Task 문법 적용한 State-Machine 제공 예정
 - [ ] Type-Safe C# Stytle Logger
+- [ ] Lock Free 알고리즘 사용한 구간(Object Pool, Lock Free Queue, Stack)에 대해 Memory Barrier 구간(재배치 금지) 적용시킨다.
