@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="TaskManager">
+      <UniqueIdentifier>{c27c9315-7566-4b80-8045-53f789046670}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ASyncQueue">
+      <UniqueIdentifier>{68745539-7540-4c82-9762-6cdb5ef56d2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BufferStream">
+      <UniqueIdentifier>{c4e02021-4903-4342-8694-b2bb626283a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MiniDump">
+      <UniqueIdentifier>{2da9d40c-eca5-4b00-a33e-32dad893673c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SafeSharedLock">
+      <UniqueIdentifier>{f3311d03-5903-49e8-b670-7ea773dd59fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Template">
+      <UniqueIdentifier>{84db6f12-c7af-464b-86fa-037c450ef39f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Task.h">
+      <Filter>TaskManager</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskAgent.h">
+      <Filter>TaskManager</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskManager.h">
+      <Filter>TaskManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ASyncQueue.h">
+      <Filter>ASyncQueue</Filter>
+    </ClInclude>
+    <ClInclude Include="CircularBuffer.h">
+      <Filter>BufferStream</Filter>
+    </ClInclude>
+    <ClInclude Include="InputMemoryStream.h">
+      <Filter>BufferStream</Filter>
+    </ClInclude>
+    <ClInclude Include="OutputMemoryStream.h">
+      <Filter>BufferStream</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryStream.h">
+      <Filter>BufferStream</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniDump.h">
+      <Filter>MiniDump</Filter>
+    </ClInclude>
+    <ClInclude Include="SafeSharedLock.h">
+      <Filter>SafeSharedLock</Filter>
+    </ClInclude>
+    <ClInclude Include="Exception.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectPool.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Template</Filter>
+    </ClInclude>
+    <ClInclude Include="foundation.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Task.cpp">
+      <Filter>TaskManager</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskAgent.cpp">
+      <Filter>TaskManager</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskManager.cpp">
+      <Filter>TaskManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ASyncQueue.cpp">
+      <Filter>ASyncQueue</Filter>
+    </ClCompile>
+    <ClCompile Include="InputMemoryStream.cpp">
+      <Filter>BufferStream</Filter>
+    </ClCompile>
+    <ClCompile Include="OutputMemoryStream.cpp">
+      <Filter>BufferStream</Filter>
+    </ClCompile>
+    <ClCompile Include="CircularBuffer.cpp">
+      <Filter>BufferStream</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniDump.cpp">
+      <Filter>MiniDump</Filter>
+    </ClCompile>
+    <ClCompile Include="SafeSharedLock.cpp">
+      <Filter>SafeSharedLock</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
