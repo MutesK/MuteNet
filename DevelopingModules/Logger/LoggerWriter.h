@@ -1,11 +1,7 @@
 #pragma once
 
-#include <queue>
-#include <string>
-#include <thread>
-#include <shared_mutex>
-#include <fstream>
-#include <iostream>
+#include "Logger.h"
+#include "RotateLogger.h"
 
 class LoggerWriter
 {
@@ -16,15 +12,17 @@ private:
 	std::shared_mutex		 _mutex;
 	std::thread				 _writer;
 	bool					 _signal = true;
+
+	RotateLogger			 _rotater;
 public:
 	LoggerWriter();
 	~LoggerWriter();
 
 	void FinializeLogger();
-	void WriterTask();
-
 private:
 	void SwapQueue();
+	void WriterTask();
+
 	void WriteLog();
 };
 

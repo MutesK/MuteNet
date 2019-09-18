@@ -40,8 +40,6 @@ void LoggerWriter::SwapQueue()
 
 void LoggerWriter::WriteLog()
 {
-	std::shared_lock<std::shared_mutex> lock(_mutex);
-
 	FILE* fp = nullptr;
 	std::string location;
 
@@ -50,6 +48,9 @@ void LoggerWriter::WriteLog()
 		const auto& logStr = _writerqueue.front();
 
 		std::cout << logStr;
+
+
+
 		_writerqueue.pop();
 	}
 }
