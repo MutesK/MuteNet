@@ -13,8 +13,8 @@ namespace Network
 	class Acceptor final : public std::enable_shared_from_this<Acceptor>
 	{
 	private:
+		const IOService* _service;
 		std::shared_ptr<TcpSocket> _listen {nullptr};
-		std::shared_ptr<IOService> _service {nullptr};
 
 		ConnectPoint _bindPoint;
 		std::thread	 _acceptorThread;
@@ -22,10 +22,10 @@ namespace Network
 	public:
 		static LPFN_ACCEPTEX AcceptEx;
 	public:
-		Acceptor(const std::shared_ptr<IOService>& service,
-			const std::string& ip, uint16_t port);
+		Acceptor() = default;
 
-		bool Initialize();
+		bool Initialize(const IOService& service,
+			const std::string& ip, uint16_t port);
 
 		// Acceptor Thread Start or Stop
 		bool Start();

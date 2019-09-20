@@ -35,6 +35,7 @@ namespace Network
 	class SendContext : public IOContext
 	{
 	public:
+		uint16_t SendCount;
 		static Util::TL::ObjectPool<SendContext> OverlappedPool;
 
 		SendContext(const std::shared_ptr<Link> link)

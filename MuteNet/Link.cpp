@@ -50,4 +50,12 @@ namespace Network
 
 	}
 
+	void Link::SendPacket(const std::shared_ptr<Util::OutputMemoryStream>& Packet)
+	{
+		std::lock_guard<std::recursive_mutex> lock(_SendQ->_mutex);
+
+		_SendQ->PutData(Packet->GetBufferPtr(), Packet->GetLength());
+	}
+
+
 }

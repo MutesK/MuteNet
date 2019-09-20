@@ -30,6 +30,7 @@ namespace Network
 
 		void RecvPost();
 		void SendPost();
+		void SendPacket(const std::shared_ptr<Util::OutputMemoryStream>& Packet);
 
 		GET_SET_ATTRIBUTE(bool, isSend);
 		GET_SET_ATTRIBUTE(TcpSocket&, socket);

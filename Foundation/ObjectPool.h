@@ -1,4 +1,6 @@
 #pragma once
+#pragma warning(disable : 6550)
+
 #include <mutex>
 #include <map>
 #include <stack>

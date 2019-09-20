@@ -8,7 +8,7 @@ namespace Network
 		_sockAddr = Point._sockAddr;
 	}
 
-	std::string ConnectPoint::GetIpConnectPoint() const
+	std::string ConnectPoint::GetIP() const
 	{
 		char buffer[20] {'\0'};
 		InetNtop(AF_INET, &_sockAddr, buffer, 20);

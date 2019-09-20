@@ -1,6 +1,7 @@
 #pragma once
 
 #include "framework.h"
+#include "Link.h"
 
 namespace Network
 {
@@ -14,5 +15,5 @@ namespace Network
 		static void(*OnRecived)(std::shared_ptr<Link>, std::shared_ptr<Util::InputMemoryStream>);
 		static void(*OnSended)(std::shared_ptr<Link>, size_t SendedSize);
 	};
-
 }
+

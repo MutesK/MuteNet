@@ -7,7 +7,6 @@
 namespace Network
 {
 	LPFN_CONNECTEX Connector::Connectex = nullptr;
-	Util::TL::ObjectPool<ConnectContext> ConnectContext::OverlappedPool;
 
 	Connector::Connector(const std::shared_ptr<IOService>& service, const std::string& ip, uint16_t port)
 		:_service(service)
@@ -42,18 +41,4 @@ namespace Network
 		return true;
 	}
 
-	//void Connector::ConnectCompletion(IOContext* pContext, DWORD TransferredBytes, void* CompletionKey)
-	//{
-	//	const auto ConnectOverlapped = reinterpret_cast<ConnectContext*>(pContext);
-	//	auto link = ConnectOverlapped->linkPtr;
-	//	auto& socket = link->get_socket();
-
-	//	socket.SetNagle(true);
-	//	ConnectPoint::Setter::SetConnectionPoint(socket, link->_EndPoint);
-	//	
-	//	_service->RegisterHandle(socket.native_handle(), nullptr);
-	//	link->RecvPost();
-
-	//	ConnectContext::OverlappedPool.Free(ConnectOverlapped);
-	//}
 }

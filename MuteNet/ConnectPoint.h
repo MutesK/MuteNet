@@ -45,7 +45,7 @@ namespace Network
 		void SetConnectPoint(const sockaddr_in& sockAddr_in);
 
 		sockaddr* GetSocketConnectPointPtr();
-		std::string GetIpConnectPoint() const;
+		std::string GetIP() const;
 		int	GetPort() const;
 
 		static int GetSize();

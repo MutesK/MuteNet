@@ -10,14 +10,11 @@ namespace Network
 {
 	LPFN_ACCEPTEX Acceptor::AcceptEx = nullptr;
 
-	Acceptor::Acceptor(const std::shared_ptr<IOService>& service, const std::string& ip, uint16_t port)
-		:_service(service)
+	bool Acceptor::Initialize(const IOService& service, const std::string& ip, uint16_t port)
 	{
+		_service = &service;
 		_bindPoint.SetConnectPoint(ip, port);
-	}
 
-	bool Acceptor::Initialize()
-	{
 		bool flag = true;
 
 		_listen = std::make_shared<TcpSocket>(AF_INET);
