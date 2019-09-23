@@ -1,41 +1,54 @@
+
 #include "ServerApplication.h"
-#include "..//MuteNet/EngineIO.hpp"
+#include "../MuteNet/IOService.h"
+#include "../MuteNet/Acceptor.h"
+#include "../MuteNet/Link.h"
+
+using namespace Network;
 
 ServerApplication::ServerApplication()
 {
-	EngineIO::OnAccepted = OnAccepted;
-	EngineIO::OnRecived = OnRecived;
-	EngineIO::OnSended = OnSended;
+	_acceptor = std::make_shared<Network::Acceptor>();
+	_service = std::make_shared<Network::IOService>();
+
+	EngineIO::OnAccepted = &OnAccepted;
+	EngineIO::OnConnected = &OnConnected;
+	EngineIO::OnRecived = &OnRecived;
+	EngineIO::OnSended = &OnSended;
 }
 
 bool ServerApplication::Open()
 {
-	if(!_Service.Initialize(8, INFINITE))
+	if (!_service->Initialize(8, INFINITE))
 		return false;
 
-	if (!_Acceptor.Initialize(_Service,
-		"127.0.0.1", 8000))
+	if (!_acceptor->Initialize(*_service.get(),
+		"localhost", 25000))
+	{
+		std::cout << WSAGetLastError() << std::endl;
+		return false;
+	}
+
+	if (!_acceptor->Start())
 		return false;
 
-
+	return true;
 }
 
 void ServerApplication::OnAccepted(std::shared_ptr<Link> link)
 {
-	std::cout << "Connected..\n";
-
-	const auto& EndPoint = link->get_endPoint();
-	std::cout << "IP : " << EndPoint.GetIP() << std::endl;
-	std::cout << "Port : " << EndPoint.GetPort() << std::endl;
+	std::cout << "Accepted\n";
 }
 
-void ServerApplication::OnRecived(std::shared_ptr<Link>
-	link, std::shared_ptr<Util::InputMemoryStream> buffer)
+void ServerApplication::OnConnected(std::shared_ptr<Link>)
 {
-	std::cout << "Recived..\n";
 }
 
-void ServerApplication::OnSended(std::shared_ptr<Link> link, size_t size)
+void ServerApplication::OnRecived(std::shared_ptr<Link>, std::shared_ptr<Util::InputMemoryStream>)
 {
-	std::cout << "Sended..\n";
 }
+
+void ServerApplication::OnSended(std::shared_ptr<Link>, size_t SendedSize)
+{
+}
+

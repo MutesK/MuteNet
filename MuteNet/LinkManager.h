@@ -10,6 +10,7 @@ namespace Network
 	{
 	public:
 		static std::shared_ptr<Link> make_shared();
+		static size_t UserSize();
 
 		static std::map<Link*, std::shared_ptr<Link>>::iterator begin();
 		static std::map<Link*, std::shared_ptr<Link>>::iterator end();

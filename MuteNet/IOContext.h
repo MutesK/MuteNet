@@ -35,7 +35,6 @@ namespace Network
 	class SendContext : public IOContext
 	{
 	public:
-		uint16_t SendCount;
 		static Util::TL::ObjectPool<SendContext> OverlappedPool;
 
 		SendContext(const std::shared_ptr<Link> link)
@@ -43,6 +42,7 @@ namespace Network
 		{
 			Type = IO_SEND;
 		}
+		virtual ~SendContext() = default;
 
 		void IOComplete(DWORD TransfferedBytes, void* CompletionKey) override;
 
@@ -58,6 +58,7 @@ namespace Network
 		{
 			Type = IO_RECV;
 		}
+		virtual ~RecvContext() = default;
 
 		void IOComplete(DWORD TransfferedBytes, void* CompletionKey) override;
 	};
@@ -72,6 +73,7 @@ namespace Network
 		{
 			Type = IO_ACCEPT;
 		}
+		virtual ~AcceptContext() = default;
 
 		void IOComplete(DWORD TransfferedBytes, void* CompletionKey) override;
 	};
@@ -86,6 +88,7 @@ namespace Network
 		{
 			Type = IO_CONNECT;
 		}
+		virtual ~ConnectContext() = default;
 
 		void IOComplete(DWORD TransfferedBytes, void* CompletionKey) override;
 	};

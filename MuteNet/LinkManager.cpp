@@ -16,6 +16,11 @@ namespace Network
 		return Link;
 	}
 
+	size_t LinkManager::UserSize()
+	{
+		return linkMap.size();
+	}
+
 	std::map<Link*, std::shared_ptr<Link>>::iterator LinkManager::begin()
 	{
 		return linkMap.begin();

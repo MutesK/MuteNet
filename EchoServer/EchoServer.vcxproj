@@ -107,6 +107,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -134,6 +135,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Foundation\Foundation.vcxproj">
       <Project>{287c57e3-82e3-4730-b2e7-fea9f54f8639}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\MuteNet\MuteNet.vcxproj">
+      <Project>{a6cbc6af-d3c1-4857-8bd5-a54a2a6254dd}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -13,7 +13,7 @@ namespace Network
 	class Acceptor final : public std::enable_shared_from_this<Acceptor>
 	{
 	private:
-		const IOService* _service;
+		IOService* _service{ nullptr };
 		std::shared_ptr<TcpSocket> _listen {nullptr};
 
 		ConnectPoint _bindPoint;
@@ -24,7 +24,7 @@ namespace Network
 	public:
 		Acceptor() = default;
 
-		bool Initialize(const IOService& service,
+		bool Initialize(IOService& service,
 			const std::string& ip, uint16_t port);
 
 		// Acceptor Thread Start or Stop

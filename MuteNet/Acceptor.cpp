@@ -10,7 +10,7 @@ namespace Network
 {
 	LPFN_ACCEPTEX Acceptor::AcceptEx = nullptr;
 
-	bool Acceptor::Initialize(const IOService& service, const std::string& ip, uint16_t port)
+	bool Acceptor::Initialize(IOService& service, const std::string& ip, uint16_t port)
 	{
 		_service = &service;
 		_bindPoint.SetConnectPoint(ip, port);
@@ -18,8 +18,7 @@ namespace Network
 		bool flag = true;
 
 		_listen = std::make_shared<TcpSocket>(AF_INET);
-		flag = _listen->SetReUseAddress(true);
-		flag = _listen->Bind(_bindPoint);
+		_listen->Bind(_bindPoint);
 
 		_service->RegisterHandle(_listen->native_handle(), 
 			&_listen);
@@ -55,10 +54,13 @@ namespace Network
 	{
 		DWORD bytes = 0;
 		DWORD flags = 0;
-		BYTE AcceptBuf[64];
+		BYTE AcceptBuf[256];
 
 		while(true)
 		{
+			if (LinkManager::UserSize() > 5000)
+				continue;
+
 			auto link = LinkManager::make_shared();
 
 			const auto AcceptOverlapped = AcceptContext::OverlappedPool(link);
@@ -66,7 +68,8 @@ namespace Network
 			if(FALSE == AcceptEx(_listen->socket_handle(), link->socket_handle(), AcceptBuf, 0,
 				sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, &bytes, reinterpret_cast<LPOVERLAPPED>(AcceptOverlapped)))
 			{
-				if(WSAGetLastError() != WSA_IO_PENDING)
+				const auto error = WSAGetLastError();
+				if(error != WSA_IO_PENDING)
 				{
 					AcceptContext::OverlappedPool.Free(AcceptOverlapped);
 					// Logger

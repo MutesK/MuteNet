@@ -18,9 +18,9 @@ namespace Util
 			std::map<void*, void*>				_elementPool;
 			std::stack<void*>					_unUsedIndexs;
 
-			std::function<void(Type* ptr)>			_customDeletor;
+			std::function<void(Type* ptr)>		_customDeletor;
 		public:
-			ObjectPool(size_t PoolSize = 50000);
+			ObjectPool(size_t PoolSize = 10000);
 			~ObjectPool();
 
 			template <typename ...Args>

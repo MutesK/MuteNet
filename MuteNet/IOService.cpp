@@ -6,6 +6,9 @@ namespace Network
 {
 	bool IOService::Initialize(const uint32_t numberOfWorkers, const uint32_t timeout)
 	{
+		WSADATA wsadata;
+		WSAStartup(MAKEWORD(2, 2), &wsadata);
+
 		return ASyncQueue::Initialize(numberOfWorkers, timeout);
 	}
 

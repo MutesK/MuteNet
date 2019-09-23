@@ -1,24 +1,28 @@
 #pragma once
 
+#include "../MuteNet/framework.h"
 #include "../MuteNet/EngineIO.h"
-#include "..//MuteNet/IOService.h"
-#include "../MuteNet/Acceptor.h"
 
-using namespace Network;
+namespace Network
+{
+	class Acceptor;
+	class IOService;
+	class Link;
+}
 
 class ServerApplication
 {
 private:
-	IOService _Service;
-	Acceptor _Acceptor;
+	std::shared_ptr<Network::IOService> _service;
+	std::shared_ptr<Network::Acceptor> _acceptor;
 public:
 	ServerApplication();
 
 	bool Open();
-	
-	static void OnAccepted(std::shared_ptr<Link> link);
-	static void OnRecived(std::shared_ptr<Link>, std::shared_ptr<Util::InputMemoryStream>);
-	static void OnSended(std::shared_ptr<Link>, size_t);
 
+	static void OnAccepted(std::shared_ptr<Network::Link>);
+	static void OnConnected(std::shared_ptr<Network::Link>);
+	static void OnRecived(std::shared_ptr<Network::Link>, std::shared_ptr<Util::InputMemoryStream>);
+	static void OnSended(std::shared_ptr<Network::Link>, size_t SendedSize);
 };
 
