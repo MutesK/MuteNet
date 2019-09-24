@@ -7,17 +7,26 @@ namespace Network
 	class TcpSocket final : public Socket
 	{
 	public:
-		TcpSocket(ADDRESS_FAMILY f);
+		TcpSocket();
+		TcpSocket(SOCKET socket);
+
 		virtual ~TcpSocket() = default;		
 
 		bool Init(ADDRESS_FAMILY f);
 		int  Bind(ConnectPoint& Point) const;
-		int SetNagle(bool bOption) const;
+
+		int	 Connect(ConnectPoint& ServerPoint);
+		std::shared_ptr<TcpSocket> Accept(ConnectPoint& OUT ClientPoint);
+
+
+		int SetNagle(bool bOption);
 		bool Listen(int backlog);
 
-		int SetConditionAccept(bool trigger) const;
-		int SetNoDelay(bool toggle) const;
-		int SetUpdateAcceptContext(SOCKET listen) const;
+		int SetConditionAccept(bool trigger);
+		int SetNoDelay(bool toggle);
+		int SetUpdateAcceptContext(SOCKET listen);
+		int SetUpdateConnectContext();
+
 
 		// Not Use Socket IO Function
 		int Send(const void* inData, int inLen);

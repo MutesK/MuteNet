@@ -28,7 +28,15 @@ namespace Network
 			return;
 		}
 
-		pContext->IOComplete(TransfferedBytes, reinterpret_cast<void *>(CompletionKey));
+		switch (pContext->Type)
+		{
+		case IOType::IO_RECV:
+			reinterpret_cast<RecvContext*>(pContext)->IOComplete(TransfferedBytes, reinterpret_cast<void*>(CompletionKey));
+			break;
+		case IOType::IO_SEND:
+			reinterpret_cast<SendContext*>(pContext)->IOComplete(TransfferedBytes, reinterpret_cast<void*>(CompletionKey));
+			break;
+		}
 	}
 
 	void IOService::HandleTimeout(const uint32_t WorkerIndex, ULONG_PTR CompletionKey)

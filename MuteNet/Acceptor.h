@@ -18,14 +18,14 @@ namespace Network
 
 		ConnectPoint _bindPoint;
 		std::thread	 _acceptorThread;
-	
-	public:
-		static LPFN_ACCEPTEX AcceptEx;
+
+		bool				_iswork;
+		std::size_t			_maxSession;
 	public:
 		Acceptor() = default;
 
 		bool Initialize(IOService& service,
-			const std::string& ip, uint16_t port);
+			const std::string& ip, uint16_t port, std::size_t maxsession);
 
 		// Acceptor Thread Start or Stop
 		bool Start();
@@ -34,5 +34,6 @@ namespace Network
 		GET_SET_ATTRIBUTE(std::shared_ptr<TcpSocket>&, listen);
 	private:
 		void PostAccept();
+		void AcceptComplete();
 	};
 }

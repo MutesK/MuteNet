@@ -3,14 +3,22 @@
 
 using namespace Util;
 
+TL::ObjectPool<OutputMemoryStream> OutputMemoryStream::_objectPool;
+
 OutputMemoryStream::OutputMemoryStream()
 	:_buffer(nullptr), _head(0), _capacity(0)
 {
+	_objectPool.setDynamicAlloc(true);
 }
 
 OutputMemoryStream::~OutputMemoryStream()
 {
 	std::free(_buffer);
+}
+
+std::shared_ptr<OutputMemoryStream> Util::OutputMemoryStream::GenerateStream()
+{
+	return _objectPool.make_shared();
 }
 
 void OutputMemoryStream::Write(const void* inData, const uint32_t inByteCount)
@@ -28,7 +36,6 @@ void OutputMemoryStream::Write(const void* inData, const uint32_t inByteCount)
 	_mutex.unlock();
 
 }
-
 
 void OutputMemoryStream::Serialize(void* inData, uint32_t inByteCount)
 {

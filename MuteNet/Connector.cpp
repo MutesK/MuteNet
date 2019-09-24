@@ -3,40 +3,27 @@
 #include "IOContext.h"
 #include "LinkManager.h"
 #include "IOService.h"
+#include "EngineIO.hpp"
 
 namespace Network
 {
-	LPFN_CONNECTEX Connector::Connectex = nullptr;
-
-	Connector::Connector(const std::shared_ptr<IOService>& service, const std::string& ip, uint16_t port)
+	Connector::Connector(const std::shared_ptr<IOService>& service)
 		:_service(service)
 	{
-		_serverPoint.SetConnectPoint(ip, port);
 	}
 
-	bool Connector::Connect()
+	bool Connector::Connect(const std::string& ip, uint16_t port)
 	{
-		auto link = LinkManager::make_shared();
-		auto& socket = link->get_socket();
-		socket.Bind(_serverPoint);
+		_serverPoint.SetConnectPoint(ip, port);
 
-		_service->RegisterHandle(socket.native_handle(), nullptr);
+		std::shared_ptr<TcpSocket> socket = std::make_shared<TcpSocket>(AF_INET);
+		if (SOCKET_ERROR == socket->Connect(_serverPoint))
+			return false;
 
-		const auto ConnectOverlapped = ConnectContext::OverlappedPool(link);
+		_service->RegisterHandle(socket->native_handle(), nullptr);
 
-		GUID guidConnectEx = WSAID_CONNECTEX;
-		DWORD bytes = 0;
-		if(SOCKET_ERROR == WSAIoctl(link->socket_handle(), SIO_GET_EXTENSION_FUNCTION_POINTER,
-			&guidConnectEx, sizeof(GUID), &Connectex, sizeof(LPFN_CONNECTEX), &bytes,
-			reinterpret_cast<LPOVERLAPPED>(ConnectOverlapped), nullptr))
-		{
-			if(WSAGetLastError() != WSA_IO_PENDING)
-			{
-				ConnectContext::OverlappedPool.Free(ConnectOverlapped);
-				// Logger
-				return false;
-			}
-		}
+		auto link = LinkManager::make_shared(socket, _serverPoint);
+
 
 		return true;
 	}

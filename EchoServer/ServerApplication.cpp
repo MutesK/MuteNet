@@ -12,7 +12,6 @@ ServerApplication::ServerApplication()
 	_service = std::make_shared<Network::IOService>();
 
 	EngineIO::OnAccepted = &OnAccepted;
-	EngineIO::OnConnected = &OnConnected;
 	EngineIO::OnRecived = &OnRecived;
 	EngineIO::OnSended = &OnSended;
 }
@@ -23,7 +22,7 @@ bool ServerApplication::Open()
 		return false;
 
 	if (!_acceptor->Initialize(*_service.get(),
-		"localhost", 25000))
+		"localhost", 25000, 5000))
 	{
 		std::cout << WSAGetLastError() << std::endl;
 		return false;
@@ -38,17 +37,32 @@ bool ServerApplication::Open()
 void ServerApplication::OnAccepted(std::shared_ptr<Link> link)
 {
 	std::cout << "Accepted\n";
+	std::cout << "IP : " << link->get_endPoint().GetIP() <<
+		" PORT : " << link->get_endPoint().GetPort() << std::endl;
+
+	auto packet = Util::OutputMemoryStream::GenerateStream();
+
+	char text[100]{ "hello" };
+	packet->Write(text);
+
+	link->SendPacket(packet);
 }
 
-void ServerApplication::OnConnected(std::shared_ptr<Link>)
+void ServerApplication::OnRecived(std::shared_ptr<Link> link, std::shared_ptr<Util::InputMemoryStream> packet)
 {
+	std::cout << "Recived Packet \n";
+
+	char text[100];
+	packet->Read(text);
+
+	std::cout << "Recived Packet : " << text << std::endl;
+
+	auto sendpacket = std::dynamic_pointer_cast<Util::OutputMemoryStream>(packet);
+	link->SendPacket(sendpacket);
 }
 
-void ServerApplication::OnRecived(std::shared_ptr<Link>, std::shared_ptr<Util::InputMemoryStream>)
+void ServerApplication::OnSended(std::shared_ptr<Link> link, size_t SendedSize)
 {
-}
-
-void ServerApplication::OnSended(std::shared_ptr<Link>, size_t SendedSize)
-{
+	std::cout << "Sended Packet , Size : " << SendedSize << std::endl;
 }
 

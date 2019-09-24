@@ -15,6 +15,7 @@ namespace Network
 	{
 	protected:
 		Socket(ADDRESS_FAMILY);
+		Socket(SOCKET);
 	public:
 		virtual ~Socket();
 
