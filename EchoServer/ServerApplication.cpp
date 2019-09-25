@@ -1,15 +1,13 @@
 
 #include "ServerApplication.h"
-#include "../MuteNet/IOService.h"
-#include "../MuteNet/Acceptor.h"
 #include "../MuteNet/Link.h"
 
 using namespace Network;
 
 ServerApplication::ServerApplication()
 {
-	_acceptor = std::make_shared<Network::Acceptor>();
-	_service = std::make_shared<Network::IOService>();
+	_acceptor = std::make_unique<Network::Acceptor>();
+	_service = std::make_unique<Network::IOService>();
 
 	EngineIO::OnAccepted = &OnAccepted;
 	EngineIO::OnConnected = &OnConnected;
@@ -22,14 +20,14 @@ bool ServerApplication::Open()
 	if (!_service->Initialize(8, INFINITE))
 		return false;
 
-	if (!_acceptor->Initialize(*_service.get(),
+	if (!_acceptor->Initialize(_service.get(),
 		"localhost", 25000))
 	{
 		std::cout << WSAGetLastError() << std::endl;
 		return false;
 	}
 
-	if (!_acceptor->Start())
+	if (!_acceptor->Open())
 		return false;
 
 	return true;

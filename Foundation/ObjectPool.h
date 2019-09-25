@@ -11,6 +11,13 @@ namespace Util
 	namespace TL
 	{
 		template <typename Type>
+		class UniqueCustomDeleter
+		{
+		public:
+			static std::unique_ptr<Type, std::function<void(Type*)>> DeletorType;
+		};
+
+		template <typename Type>
 		class ObjectPool
 		{
 		private:
@@ -30,7 +37,7 @@ namespace Util
 			std::shared_ptr<Type> make_shared(Args&& ... arguments);
 
 			template <typename ...Args>
-			std::unique_ptr<Type> make_unique(Args&& ... arguments);
+			std::unique_ptr<Type, std::function<void(Type* ptr)>> make_unique(Args&& ... arguments);
 
 			template <typename ...Args>
 			Type* operator()(Args&& ... arguments)
@@ -97,11 +104,11 @@ namespace Util
 
 		template <typename Type>
 		template <typename ... Args>
-		std::unique_ptr<Type> ObjectPool<Type>::make_unique(Args&& ... arguments)
+		std::unique_ptr<Type, std::function<void(Type* ptr)>> ObjectPool<Type>::make_unique(Args&& ... arguments)
 		{
 			auto rawPtr = Alloc(arguments...);
 
-			return std::unique_ptr<Type>(rawPtr, _customDeletor);
+			return std::unique_ptr<Type, std::function<void(Type * ptr)>>(rawPtr, _customDeletor);
 		}
 
 		template <typename Type>

@@ -15,9 +15,9 @@ namespace Util
 		delete[] _buffer;
 	}
 
-	std::shared_ptr<CircularBuffer> CircularBuffer::Alloc()
+	auto CircularBuffer::Alloc() -> Ptr
 	{
-		return BufferPool.make_shared();
+		return BufferPool.make_unique();
 	}
 
 	uint32_t CircularBuffer::GetWriteBufferAndLengths(void* firstBuffer, size_t& firstLength,

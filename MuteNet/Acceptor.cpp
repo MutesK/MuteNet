@@ -10,18 +10,17 @@ namespace Network
 {
 	LPFN_ACCEPTEX Acceptor::AcceptEx = nullptr;
 
-	bool Acceptor::Initialize(IOService& service, const std::string& ip, uint16_t port)
+	bool Acceptor::Initialize(IOService* service, const std::string& ip, uint16_t port)
 	{
-		_service = &service;
+		_service = service;
 		_bindPoint.SetConnectPoint(ip, port);
 
 		bool flag = true;
 
-		_listen = std::make_shared<TcpSocket>(AF_INET);
+		_listen = std::make_unique<TcpSocket>(AF_INET);
 		_listen->Bind(_bindPoint);
 
-		_service->RegisterHandle(_listen->native_handle(), 
-			&_listen);
+		_service->RegisterHandle(_listen->native_handle(), this);
 
 		GUID guidAcceptEx = WSAID_ACCEPTEX;
 		DWORD bytes = 0;
@@ -33,21 +32,14 @@ namespace Network
 		return flag;
 	}
 
-	bool Acceptor::Start()
+	bool Acceptor::Open()
 	{
-		bool flag = true;
+		if (!_listen->Listen(0))
+			return false;
 
-		flag = _listen->Listen(0);
-		_acceptorThread = std::thread(std::bind(&Acceptor::PostAccept, this));
+		PostAccept();
 
-		Util::ChangeThreadName(_acceptorThread.native_handle(), "Acceptor");
-
-		return flag;
-	}
-
-	void Acceptor::Stop()
-	{
-		_acceptorThread.join();
+		return true;
 	}
 
 	void Acceptor::PostAccept()
@@ -56,24 +48,18 @@ namespace Network
 		DWORD flags = 0;
 		BYTE AcceptBuf[256];
 
-		while(true)
+		auto link = LinkManager::make_shared();
+
+		const auto AcceptOverlapped = AcceptContext::OverlappedPool(link);
+
+		if (FALSE == AcceptEx(_listen->socket_handle(), link->socket_handle(), AcceptBuf, 0,
+			sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, &bytes, reinterpret_cast<LPOVERLAPPED>(AcceptOverlapped)))
 		{
-			if (LinkManager::UserSize() > 5000)
-				continue;
-
-			auto link = LinkManager::make_shared();
-
-			const auto AcceptOverlapped = AcceptContext::OverlappedPool(link);
-
-			if(FALSE == AcceptEx(_listen->socket_handle(), link->socket_handle(), AcceptBuf, 0,
-				sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, &bytes, reinterpret_cast<LPOVERLAPPED>(AcceptOverlapped)))
+			const auto error = WSAGetLastError();
+			if (error != WSA_IO_PENDING)
 			{
-				const auto error = WSAGetLastError();
-				if(error != WSA_IO_PENDING)
-				{
-					AcceptContext::OverlappedPool.Free(AcceptOverlapped);
-					// Logger
-				}
+				AcceptContext::OverlappedPool.Free(AcceptOverlapped);
+				// Logger
 			}
 		}
 	}

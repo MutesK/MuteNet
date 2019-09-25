@@ -3,18 +3,14 @@
 #include "../MuteNet/framework.h"
 #include "../MuteNet/EngineIO.h"
 
-namespace Network
-{
-	class Acceptor;
-	class IOService;
-	class Link;
-}
+#include "../MuteNet/Acceptor.h"
+#include "../MuteNet/IOService.h"
 
 class ServerApplication
 {
 private:
-	std::shared_ptr<Network::IOService> _service;
-	std::shared_ptr<Network::Acceptor> _acceptor;
+	std::unique_ptr<Network::IOService> _service;
+	std::unique_ptr<Network::Acceptor> _acceptor;
 public:
 	ServerApplication();
 

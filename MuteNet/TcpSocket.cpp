@@ -13,55 +13,49 @@ namespace Network
 
 	bool TcpSocket::Init(ADDRESS_FAMILY f)
 	{
-		_handle = socket(_address_family, SOCK_STREAM, IPPROTO_TCP);
+		_handle = ::socket(_address_family, SOCK_STREAM, IPPROTO_TCP);
 
 		if (_handle == INVALID_SOCKET)
-			return false;
-
-		return true;
-	}
-
-	int TcpSocket::Bind(ConnectPoint& Point) const
-	{
-		return bind(_handle, Point.GetSocketConnectPointPtr(), Point.GetSize());
-	}
-
-	int TcpSocket::SetNagle(bool bOption) const
-	{
-		int opt = bOption;
-
-		return setsockopt(_handle, IPPROTO_TCP, TCP_NODELAY,
-			reinterpret_cast<const char*>(& opt), sizeof(int));
-	}
-
-	bool TcpSocket::Listen(int backlog)
-	{
-		const auto result = ::listen(_handle, backlog);
-
-		if (result == SOCKET_ERROR)
 		{
-			_lastError = WSAGetLastError();
-			_handle = INVALID_SOCKET;
+			// Exception
 			return false;
 		}
 
 		return true;
 	}
 
+	int TcpSocket::Bind(ConnectPoint& Point) const
+	{
+		return SocketDelgateInvoker::Invoke(::bind, _handle, Point.GetSocketConnectPointPtr(), Point.GetSize());
+	}
+
+	int TcpSocket::SetNagle(bool bOption) const
+	{
+		int opt = bOption;
+
+		return SocketDelgateInvoker::Invoke(::setsockopt, _handle, IPPROTO_TCP, TCP_NODELAY,
+			reinterpret_cast<const char*>(&opt), sizeof(int));
+	}
+
+	bool TcpSocket::Listen(int backlog)
+	{
+		return SocketDelgateInvoker::Invoke(listen,_handle, backlog);
+	}
+
 	int TcpSocket::SetConditionAccept(bool trigger) const
 	{
-		return setsockopt(_handle, SOL_SOCKET, SO_CONDITIONAL_ACCEPT,
+		return SocketDelgateInvoker::Invoke(setsockopt, _handle, SOL_SOCKET, SO_CONDITIONAL_ACCEPT,
 			reinterpret_cast<char*>(&trigger), sizeof(bool));
 	}
 
 	int TcpSocket::SetNoDelay(bool toggle) const
 	{
-		return setsockopt(_handle, IPPROTO_TCP, TCP_NODELAY, reinterpret_cast<const char*>(& toggle), sizeof(bool));
+		return SocketDelgateInvoker::Invoke(setsockopt, _handle, IPPROTO_TCP, TCP_NODELAY, reinterpret_cast<const char*>(&toggle), sizeof(bool));
 	}
 
 	int TcpSocket::SetUpdateAcceptContext(SOCKET listen) const
 	{
-		return setsockopt(_handle, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT,
+		return SocketDelgateInvoker::Invoke(setsockopt, _handle, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT,
 			reinterpret_cast<char*>(listen), sizeof(SOCKET));
 	}
 
@@ -93,15 +87,7 @@ namespace Network
 		DWORD RecvSize = 0;
 		DWORD Flag = 0;
 
-		const auto result = WSARecv(_handle, pBufArr, Arrlen, &RecvSize, &Flag, static_cast<LPOVERLAPPED>(OverlappedIO), nullptr);
-
-		const auto errorCode = WSAGetLastError();
-
-		if ((result != SOCKET_ERROR) || (result == SOCKET_ERROR && errorCode == WSA_IO_PENDING))
-			return result;
-
-		_lastError = errorCode;
-		return -1;
+		return SocketDelgateInvoker::Invoke(::WSARecv, _handle, pBufArr, Arrlen, &RecvSize, &Flag, static_cast<LPOVERLAPPED>(OverlappedIO), nullptr);
 	}
 
 	int TcpSocket::OverlappedIOSend(WSABUF* pBufArr, int Arrlen, void* OverlappedIO)
@@ -109,14 +95,6 @@ namespace Network
 		DWORD SendSize = 0;
 		const DWORD Flag = 0;
 
-		const auto result = WSASend(_handle, pBufArr, Arrlen, &SendSize, Flag, static_cast<LPOVERLAPPED>(OverlappedIO), nullptr);
-
-		const auto errorCode = WSAGetLastError();
-
-		if ((result != SOCKET_ERROR) || (result == SOCKET_ERROR && errorCode == WSA_IO_PENDING))
-			return result;
-
-		_lastError = errorCode;
-		return -1;
+		return SocketDelgateInvoker::Invoke(::WSASend,_handle, pBufArr, Arrlen, &SendSize, Flag, static_cast<LPOVERLAPPED>(OverlappedIO), nullptr);
 	}
 }

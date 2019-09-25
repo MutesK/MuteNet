@@ -5,6 +5,7 @@ namespace Util
 	class CircularBuffer final 
 	{
 	public:
+		using Ptr = decltype(TL::UniqueCustomDeleter<CircularBuffer>::DeletorType);
 		std::recursive_mutex _mutex;
 	private:
 		const size_t BUFFER_SIZE = 25000;
@@ -17,7 +18,7 @@ namespace Util
 		CircularBuffer();
 		~CircularBuffer();
 
-		static std::shared_ptr<CircularBuffer> Alloc();
+		static auto Alloc() ->Ptr;
 
 		void Reset();
 		bool isEmpty() const;

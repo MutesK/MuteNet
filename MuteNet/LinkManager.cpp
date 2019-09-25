@@ -16,7 +16,17 @@ namespace Network
 		return Link;
 	}
 
-	size_t LinkManager::UserSize()
+	void LinkManager::removesession(const std::shared_ptr<Link>& link)
+	{
+		auto iter = linkMap.find(link.get());
+
+		if (iter == linkMap.end())
+			return;
+
+		linkMap.erase(iter);
+	}
+
+	size_t LinkManager::usersize()
 	{
 		return linkMap.size();
 	}

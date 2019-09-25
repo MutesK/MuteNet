@@ -10,29 +10,30 @@ namespace Network
 	class TcpSocket;
 	class IOService;
 
-	class Acceptor final : public std::enable_shared_from_this<Acceptor>
+	class Acceptor final
 	{
 	private:
-		IOService* _service{ nullptr };
-		std::shared_ptr<TcpSocket> _listen {nullptr};
+		IOService*					_service{ nullptr };
+		std::unique_ptr<TcpSocket>  _listen {nullptr};
 
 		ConnectPoint _bindPoint;
-		std::thread	 _acceptorThread;
-	
 	public:
 		static LPFN_ACCEPTEX AcceptEx;
 	public:
 		Acceptor() = default;
+		~Acceptor() = default;
 
-		bool Initialize(IOService& service,
+		bool Initialize(IOService* service,
 			const std::string& ip, uint16_t port);
 
-		// Acceptor Thread Start or Stop
-		bool Start();
-		void Stop();
+		bool Open();
 
-		GET_SET_ATTRIBUTE(std::shared_ptr<TcpSocket>&, listen);
-	private:
 		void PostAccept();
+		TcpSocket* get_listen();
 	};
+
+	inline TcpSocket* Acceptor::get_listen()
+	{
+		return _listen.get();
+	}
 }

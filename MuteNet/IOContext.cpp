@@ -4,6 +4,8 @@
 #include "IOContext.h"
 #include "Acceptor.h"
 #include "EngineIO.hpp"
+#include "IOService.h"
+#include "LinkManager.h"
 
 using namespace Util;
 
@@ -16,7 +18,7 @@ namespace Network
 
 	void SendContext::IOComplete(DWORD TransfferedBytes, void* CompletionKey)
 	{
-		auto& SendQ = linkPtr->get_SendQ();
+		auto SendQ = linkPtr->get_SendQ();
 
 		{
 			std::lock_guard<std::recursive_mutex> lock(SendQ->_mutex);
@@ -25,8 +27,6 @@ namespace Network
 		}
 
 		EngineIO::OnSended(linkPtr, TransfferedBytes);
-
-		linkPtr->set_isSend(true);
 		SendContext::OverlappedPool.Free(this);
 	}
 
@@ -34,11 +34,12 @@ namespace Network
 	{
 		if (TransfferedBytes <= 0)
 		{
-			linkPtr->get_socket().Shutdown(ShutdownBlockMode::BothBlock);
+			linkPtr->get_socket()->Shutdown(ShutdownBlockMode::BothBlock);
+			LinkManager::removesession(linkPtr);
 		}
 		else
 		{
-			auto& RecvQ = linkPtr->get_RecvQ();
+			auto RecvQ = linkPtr->get_RecvQ();
 			RecvQ->MoveWritePostion(TransfferedBytes);
 			
 			uint32_t length = 0;
@@ -66,22 +67,20 @@ namespace Network
 		RecvContext::OverlappedPool.Free(this);
 	}
 
-	void AcceptContext::IOComplete(DWORD TransfferedBytes, void* CompletionKey)
+	void AcceptContext::IOComplete(DWORD TransfferedBytes, void* CompletionKey, IOService* Service)
 	{
-		auto ListenPtr = 
-			*static_cast<std::shared_ptr<TcpSocket>*>(CompletionKey);
-		
-		auto LinkSocket = linkPtr->get_socket();
+		auto acceptor = reinterpret_cast<Acceptor*>(CompletionKey);
+		auto socket = linkPtr->get_socket();
 
-		LinkSocket.SetUpdateAcceptContext(ListenPtr->socket_handle());
-		LinkSocket.SetNagle(true);
-		ConnectPoint::Setter::SetConnectionPoint(LinkSocket, linkPtr->get_endPoint());
+		socket->SetUpdateAcceptContext(acceptor->get_listen()->socket_handle());
+		socket->SetNagle(true);
 
-		// Register Socket To IOCP
+		Service->RegisterHandle(socket->native_handle(), nullptr);
 
 		EngineIO::OnAccepted(linkPtr);
-		
 		AcceptContext::OverlappedPool.Free(this);
+
+		acceptor->PostAccept();
 	}
 
 	void ConnectContext::IOComplete(DWORD TransfferedBytes, void* CompletionKey)

@@ -4,6 +4,7 @@ namespace Network
 {
 	struct IOConext;
 	class Link;
+	class IOService;
 
 	enum IOType
 	{
@@ -27,9 +28,6 @@ namespace Network
 			memset(&Overlapped, 0, sizeof(OVERLAPPED));
 			Type = IO_NONE;
 		}
-
-		virtual ~IOContext() = default;
-		virtual void IOComplete(DWORD TransfferedBytes, void* CompletionKey) = 0;
 	};
 
 	class SendContext : public IOContext
@@ -42,9 +40,9 @@ namespace Network
 		{
 			Type = IO_SEND;
 		}
-		virtual ~SendContext() = default;
+		~SendContext() = default;
 
-		void IOComplete(DWORD TransfferedBytes, void* CompletionKey) override;
+		void IOComplete(DWORD TransfferedBytes, void* CompletionKey);
 
 	};
 
@@ -58,9 +56,9 @@ namespace Network
 		{
 			Type = IO_RECV;
 		}
-		virtual ~RecvContext() = default;
+		~RecvContext() = default;
 
-		void IOComplete(DWORD TransfferedBytes, void* CompletionKey) override;
+		void IOComplete(DWORD TransfferedBytes, void* CompletionKey);
 	};
 
 	class AcceptContext : public IOContext
@@ -73,9 +71,9 @@ namespace Network
 		{
 			Type = IO_ACCEPT;
 		}
-		virtual ~AcceptContext() = default;
+		~AcceptContext() = default;
 
-		void IOComplete(DWORD TransfferedBytes, void* CompletionKey) override;
+		void IOComplete(DWORD TransfferedBytes, void* CompletionKey, IOService* Service);
 	};
 
 	class ConnectContext : public IOContext
@@ -88,9 +86,9 @@ namespace Network
 		{
 			Type = IO_CONNECT;
 		}
-		virtual ~ConnectContext() = default;
+		~ConnectContext() = default;
 
-		void IOComplete(DWORD TransfferedBytes, void* CompletionKey) override;
+		void IOComplete(DWORD TransfferedBytes, void* CompletionKey);
 	};
 
 

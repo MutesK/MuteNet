@@ -17,26 +17,26 @@ namespace Network
 	class Link final : std::enable_shared_from_this<Link>
 	{
 	private:
-		TcpSocket					_socket;
-		ConnectPoint				_endPoint;
+		std::unique_ptr<TcpSocket>				_socket;
+		ConnectPoint							_endPoint;
 		
-		std::shared_ptr<Util::CircularBuffer> _RecvQ;
-		std::shared_ptr<Util::CircularBuffer> _SendQ;
-
-		std::atomic_bool					  _isSend;
+		Util::CircularBuffer::Ptr _RecvQ;
+		Util::CircularBuffer::Ptr _SendQ;
 	public:
 		Link();
 		virtual ~Link();
 
 		void RecvPost();
 		void SendPost();
+
 		void SendPacket(const std::shared_ptr<Util::OutputMemoryStream>& Packet);
 
-		GET_SET_ATTRIBUTE(bool, isSend);
-		GET_SET_ATTRIBUTE(TcpSocket&, socket);
+
+		TcpSocket* get_socket();
+		Util::CircularBuffer* get_RecvQ();
+		Util::CircularBuffer* get_SendQ();
+
 		GET_SET_ATTRIBUTE(ConnectPoint&, endPoint);
-		GET_SET_ATTRIBUTE(std::shared_ptr<Util::CircularBuffer>&, RecvQ);
-		GET_SET_ATTRIBUTE(std::shared_ptr<Util::CircularBuffer>&, SendQ);
 	private:
 		SOCKET		socket_handle() const;
 
@@ -49,6 +49,20 @@ namespace Network
 
 	inline SOCKET Link::socket_handle() const 
 	{
-		return _socket.socket_handle();
+		return _socket->socket_handle();
+	}
+
+	inline TcpSocket* Link::get_socket()
+	{
+		return _socket.get();
+	}
+
+	inline Util::CircularBuffer* Link::get_RecvQ()
+	{
+		return _RecvQ.get();
+	}
+	inline Util::CircularBuffer* Link::get_SendQ()
+	{
+		return _SendQ.get();
 	}
 }

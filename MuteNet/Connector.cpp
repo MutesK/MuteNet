@@ -17,10 +17,10 @@ namespace Network
 	bool Connector::Connect()
 	{
 		auto link = LinkManager::make_shared();
-		auto& socket = link->get_socket();
-		socket.Bind(_serverPoint);
+		auto socket = link->get_socket();
+		socket->Bind(_serverPoint);
 
-		_service->RegisterHandle(socket.native_handle(), nullptr);
+		_service->RegisterHandle(socket->native_handle(), nullptr);
 
 		const auto ConnectOverlapped = ConnectContext::OverlappedPool(link);
 
