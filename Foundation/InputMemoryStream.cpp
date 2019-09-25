@@ -19,7 +19,7 @@ void InputMemoryStream::Read(void* outData, uint32_t inByteCount)
 	if (outData == nullptr)
 		throw;
 
-	if (_head + inByteCount >= _capacity)
+	if (_head + inByteCount > _capacity)
 		throw;
 
 	_mutex.lock();

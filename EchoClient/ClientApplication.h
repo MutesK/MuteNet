@@ -17,7 +17,7 @@ public:
 	bool Open();
 
 	static void OnConnected(std::shared_ptr<Network::Link>);
-	static void OnRecived(std::shared_ptr<Network::Link>, std::shared_ptr<Util::InputMemoryStream>);
+	static void OnRecived(std::shared_ptr<Network::Link>, std::shared_ptr<Util::MemoryStream>);
 	static void OnSended(std::shared_ptr<Network::Link>, size_t SendedSize);
 };
 

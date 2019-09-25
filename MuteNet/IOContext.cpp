@@ -49,7 +49,7 @@ namespace Network
 				length = 0;
 				RecvQ->Peek(&length, sizeof(uint32_t));
 
-				if (RecvQ->GetUsedSize() < length)
+				if (RecvQ->GetUsedSize() < (length + sizeof(uint32_t)))
 					break;
 
 				RecvQ->MoveReadPostion(sizeof(uint32_t));
@@ -59,7 +59,7 @@ namespace Network
 				auto bufferStream = std::make_shared<InputMemoryStream>(bufferPtr, length);
 				RecvQ->MoveReadPostion(length);
 
-				EngineIO::OnRecived(linkPtr, bufferStream);
+				EngineIO::OnRecived(linkPtr, std::dynamic_pointer_cast<MemoryStream>(bufferStream));
 			}
 
 
@@ -82,6 +82,7 @@ namespace Network
 		EngineIO::OnAccepted(linkPtr);
 		AcceptContext::OverlappedPool.Free(this);
 
+		linkPtr->RecvPost();
 		acceptor->PostAccept();
 	}
 
@@ -94,5 +95,7 @@ namespace Network
 
 		EngineIO::OnConnected(linkPtr);
 		ConnectContext::OverlappedPool.Free(this);
+
+		linkPtr->RecvPost();
 	}
 }

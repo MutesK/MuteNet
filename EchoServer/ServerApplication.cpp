@@ -20,7 +20,7 @@ bool ServerApplication::Open()
 		return false;
 
 	if (!_acceptor->Initialize(_service.get(),
-		"localhost", 25000))
+		"127.0.0.1", 25000))
 	{
 		std::cout << WSAGetLastError() << std::endl;
 		return false;
@@ -44,15 +44,16 @@ void ServerApplication::OnAccepted(std::shared_ptr<Link> link)
 
 }
 
-void ServerApplication::OnRecived(std::shared_ptr<Link> link, std::shared_ptr<Util::InputMemoryStream> buffer)
+void ServerApplication::OnRecived(std::shared_ptr<Link> link, std::shared_ptr<Util::MemoryStream> buffer)
 {
+	auto recvPacket = std::dynamic_pointer_cast<Util::InputMemoryStream>(buffer);
 	std::cout << "Recived\n";
 	char buf[1000]{ '\0' };
 
-	buffer->Serialize(buf, 6);
+	recvPacket->Serialize(buf, 6);
 	std::cout << "recv data : " << buf << std::endl;
 
-	auto packet = std::dynamic_pointer_cast<Util::OutputMemoryStream>(buffer);
+	auto packet = std::make_shared<Util::OutputMemoryStream>();
 	packet->Serialize(buf, 6);
 
 	link->SendPacket(packet);

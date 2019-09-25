@@ -20,7 +20,12 @@ namespace Network
 		auto link = LinkManager::make_shared();
 		auto socket = link->get_socket();
 
-		socket->Bind(_serverPoint);
+		{
+			ConnectPoint Point;
+			Point.SetConnectPoint();
+
+			socket->Bind(Point);
+		}
 		_service->RegisterHandle(socket->native_handle(), nullptr);
 
 		const auto ConnectOverlapped = ConnectContext::OverlappedPool(link);
@@ -28,11 +33,11 @@ namespace Network
 		GUID guidConnectEx = WSAID_CONNECTEX;
 		DWORD bytes = 0;
 
-		if (false == SocketDelgateInvoker::Invoke(WSAIoctl, link->socket_handle(), SIO_GET_EXTENSION_FUNCTION_POINTER,
+		if (!SocketDelgateInvoker::Invoke(WSAIoctl, link->socket_handle(), SIO_GET_EXTENSION_FUNCTION_POINTER,
 			&guidConnectEx, sizeof(GUID), &Connectex, sizeof(LPFN_CONNECTEX), &bytes, nullptr, nullptr))
 			return false;
 
-		if (FALSE == Connectex(socket->socket_handle(), _serverPoint.GetSocketConnectPointPtr(),
+		if (!Connectex(socket->socket_handle(), _serverPoint.GetSocketConnectPointPtr(),
 			_serverPoint.GetSize(), nullptr, 0, nullptr, &ConnectOverlapped->Overlapped))
 		{
 			const auto error = WSAGetLastError();

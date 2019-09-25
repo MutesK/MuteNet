@@ -17,6 +17,7 @@ namespace Network
 
 	Link::~Link()
 	{
+		std::cout << "Destory LINK ERROR!!!!!\n";
 	}
 
 	void Link::RecvPost()

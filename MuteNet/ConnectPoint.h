@@ -12,33 +12,13 @@ namespace Network
 	class ConnectPoint final
 	{
 	public:
-		class Setter
-		{
-		public:
-			static bool SetConnectionPoint(const std::string& address, uint16_t port, ConnectPoint& OUT Point)
-			{
-				Point.CreateSockAddr(address, port);
-
-				return true;
-			}
-			static bool SetConnectionPoint(SOCKADDR_IN& address, ConnectPoint& OUT Point)
-			{
-				Point.SetConnectPoint(address);
-
-				return true;
-			}
-
-			static bool SetConnectionPoint(TcpSocket& socket, ConnectPoint& OUT Point)
-			{
-				return socket.GetAddress(Point) != SOCKET_ERROR;
-			}
-		};
-
 		ConnectPoint() = default;
 		~ConnectPoint() = default;
 
 		ConnectPoint(ConnectPoint&& Point) noexcept;
 		ConnectPoint& operator=(const ConnectPoint&) noexcept;
+
+		void SetConnectPoint();
 		void SetConnectPoint(const std::string& ConnectPoint, uint16_t inPort);
 		void SetConnectPoint(const ConnectPoint& ConnectPoint);
 		void SetConnectPoint(const sockaddr& sockAddr);
@@ -49,8 +29,12 @@ namespace Network
 		int	GetPort() const;
 
 		static int GetSize();
+
+		friend class Setter;
 	private:
-		void CreateSockAddr(const std::string& ConnectPoint, uint16_t port);
+		void ConvertDNS(const std::string& dns, uint16_t port);
+		void ConvertDNS();
+
 	private:
 		sockaddr_in _sockAddr{};
 	};
@@ -79,7 +63,12 @@ namespace Network
 
 	inline void ConnectPoint::SetConnectPoint(const std::string& ConnectPoint, uint16_t inPort)
 	{
-		CreateSockAddr(ConnectPoint, inPort);
+		ConvertDNS(ConnectPoint, inPort);
+	}
+
+	inline void ConnectPoint::SetConnectPoint()
+	{
+		ConvertDNS();
 	}
 
 	inline void ConnectPoint::SetConnectPoint(const ConnectPoint& ConnectPoint)

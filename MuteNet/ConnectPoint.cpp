@@ -16,38 +16,36 @@ namespace Network
 		return buffer;
 	}
 
-	void ConnectPoint::CreateSockAddr(const std::string& ConnectPoint, uint16_t port)
+	void ConnectPoint::ConvertDNS(const std::string& dns, uint16_t port)
 	{
-		char buffer[6] {0};
+		struct addrinfo stinfo;
+		struct addrinfo* resultInfo;
+		char portStr[10]{ 0 };
 
-		addrinfo info{ 0 };
-		info.ai_family = AF_INET;
+		memset(&stinfo, 0, sizeof(addrinfo));
+		stinfo.ai_flags = AI_PASSIVE;
+		stinfo.ai_family = AF_INET;
+		stinfo.ai_socktype = SOCK_STREAM;
 
-		addrinfo* pinfo = nullptr;
+		_itoa_s(port, portStr, 10, 10);
 
-		_itoa_s(port, buffer, 6,10);
-		const auto result = getaddrinfo(ConnectPoint.c_str(), buffer, &info, &pinfo);
-		addrinfo* addr_result = pinfo;
+		const auto err = ::getaddrinfo(dns.c_str(), portStr, &stinfo, &resultInfo);
 
-		if(result != 0 && pinfo != nullptr)
+		if(0 != err)
 		{
-			freeaddrinfo(addr_result);
-			throw;
+			std::cout << "ConnectPoint Error : " << WSAGetLastError() << std::endl;
+			return;
 		}
 
-		while(!pinfo->ai_addr && pinfo->ai_next)
-		{
-			addr_result = addr_result->ai_next;
-		}
+		memcpy(&_sockAddr, resultInfo->ai_addr, sizeof(sockaddr_in));
+		freeaddrinfo(resultInfo);
+	}
 
-		if(!addr_result->ai_addr)
-		{
-			freeaddrinfo(addr_result);
-			throw;
-		}
-
-		memcpy(&_sockAddr, addr_result->ai_addr, sizeof(sockaddr_in));
-		freeaddrinfo(addr_result);
+	void ConnectPoint::ConvertDNS()
+	{
+		_sockAddr.sin_port = 0;
+		_sockAddr.sin_family = AF_INET;
+		_sockAddr.sin_addr.S_un.S_addr = INADDR_ANY;
 	}
 }
 
