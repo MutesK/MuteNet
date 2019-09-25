@@ -53,11 +53,12 @@ namespace Network
 					break;
 
 				RecvQ->MoveReadPostion(sizeof(uint32_t));
-
-				const auto bufferPtr = RecvQ->GetReadBufferPtr();
 				
-				auto bufferStream = std::make_shared<InputMemoryStream>(bufferPtr, length);
-				RecvQ->MoveReadPostion(length);
+				auto bufferStream = std::make_shared<OutputMemoryStream>();
+				bufferStream->ReallocBuffer(length + 1);
+
+				RecvQ->GetData(bufferStream->GetBufferPtr(), length);
+				bufferStream->MoveWritePosition(length);
 
 				EngineIO::OnRecived(linkPtr, std::dynamic_pointer_cast<MemoryStream>(bufferStream));
 			}

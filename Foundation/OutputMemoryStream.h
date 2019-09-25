@@ -29,7 +29,7 @@ namespace Util
 		virtual void Serialize(void* inData, uint32_t inByteCount) override;
 		virtual bool IsInput() override;
 
-	private:
+		void MoveWritePosition(uint32_t size);
 		void ReallocBuffer(uint32_t inNewLength);
 	};
 
@@ -70,6 +70,11 @@ namespace Util
 	inline bool OutputMemoryStream::IsInput()
 	{
 		return false;
+	}
+
+	inline void OutputMemoryStream::MoveWritePosition(uint32_t size)
+	{
+		_head += size;
 	}
 
 }
