@@ -8,8 +8,10 @@ namespace Network
 	enum IOType
 	{
 		IO_NONE,
+		IO_ACCEPT,  // Acceptor
 		IO_RECV,
 		IO_SEND,
+		IO_CONNECT,  // Connector
 	};
 
 	class IOContext
@@ -26,7 +28,8 @@ namespace Network
 			Type = IO_NONE;
 		}
 
-		~IOContext() = default;
+		virtual ~IOContext() = default;
+		virtual void IOComplete(DWORD TransfferedBytes, void* CompletionKey) = 0;
 	};
 
 	class SendContext : public IOContext
@@ -39,9 +42,9 @@ namespace Network
 		{
 			Type = IO_SEND;
 		}
-		~SendContext() = default;
+		virtual ~SendContext() = default;
 
-		void IOComplete(DWORD TransfferedBytes, void* CompletionKey);
+		void IOComplete(DWORD TransfferedBytes, void* CompletionKey) override;
 
 	};
 
@@ -55,9 +58,40 @@ namespace Network
 		{
 			Type = IO_RECV;
 		}
-		~RecvContext() = default;
+		virtual ~RecvContext() = default;
 
-		void IOComplete(DWORD TransfferedBytes, void* CompletionKey);
+		void IOComplete(DWORD TransfferedBytes, void* CompletionKey) override;
 	};
+
+	class AcceptContext : public IOContext
+	{
+	public:
+		static Util::TL::ObjectPool<AcceptContext> OverlappedPool;
+
+		AcceptContext(const std::shared_ptr<Link> link)
+			:IOContext(link)
+		{
+			Type = IO_ACCEPT;
+		}
+		virtual ~AcceptContext() = default;
+
+		void IOComplete(DWORD TransfferedBytes, void* CompletionKey) override;
+	};
+
+	class ConnectContext : public IOContext
+	{
+	public:
+		static Util::TL::ObjectPool<ConnectContext> OverlappedPool;
+
+		ConnectContext(const std::shared_ptr<Link> link)
+			:IOContext(link)
+		{
+			Type = IO_CONNECT;
+		}
+		virtual ~ConnectContext() = default;
+
+		void IOComplete(DWORD TransfferedBytes, void* CompletionKey) override;
+	};
+
 
 }

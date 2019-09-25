@@ -7,9 +7,10 @@
 using namespace Util;
 namespace Network
 {
-	Link::Link(std::shared_ptr<TcpSocket>& socket, ConnectPoint& endPoint)
-		:_socket(socket), _endPoint(endPoint)
+	Link::Link()
+		:_socket(AF_INET)
 	{
+
 		_RecvQ = CircularBuffer::Alloc();
 		_SendQ = CircularBuffer::Alloc();
 	}
@@ -28,7 +29,7 @@ namespace Network
 		bufcount = _RecvQ->GetWriteBufferAndLengths(wsabuf[0].buf, reinterpret_cast<size_t&>(wsabuf[0].len),
 			wsabuf[1].buf, reinterpret_cast<size_t &>(wsabuf[1].len));
 
-		_socket->OverlappedIORecv(wsabuf, bufcount, &Overlapped->Overlapped);
+		_socket.OverlappedIORecv(wsabuf, bufcount, &Overlapped->Overlapped);
 	}
 
 	void Link::SendPost()
@@ -45,7 +46,7 @@ namespace Network
 				wsabuf[1].buf, reinterpret_cast<size_t&>(wsabuf[1].len));
 		}
 
-		_socket->OverlappedIOSend(wsabuf, bufcount, &Overlapped->Overlapped);
+		_socket.OverlappedIOSend(wsabuf, bufcount, &Overlapped->Overlapped);
 
 	}
 

@@ -4,15 +4,10 @@
 
 namespace Network
 {
-	TcpSocket::TcpSocket()
-		:Socket(AF_INET)
+	TcpSocket::TcpSocket(ADDRESS_FAMILY f)
+		:Socket(f)
 	{
-		Init(AF_INET);
-	}
-
-	TcpSocket::TcpSocket(SOCKET socket)
-		: Socket(socket)
-	{
+		Init(f);
 	}
 
 
@@ -31,23 +26,7 @@ namespace Network
 		return bind(_handle, Point.GetSocketConnectPointPtr(), Point.GetSize());
 	}
 
-	int TcpSocket::Connect(ConnectPoint& ServerPoint)
-	{
-		return connect(_handle, ServerPoint.GetSocketConnectPointPtr(), ServerPoint.GetSize());
-	}
-
-	std::shared_ptr<TcpSocket> TcpSocket::Accept(ConnectPoint& OUT ClientPoint)
-	{
-		auto size = ClientPoint.GetSize();
-		auto socket = accept(_handle, ClientPoint.GetSocketConnectPointPtr(), &size);
-
-		if (socket == SOCKET_ERROR)
-			return nullptr;
-
-		return std::make_shared<TcpSocket>(socket);
-	}
-
-	int TcpSocket::SetNagle(bool bOption)
+	int TcpSocket::SetNagle(bool bOption) const
 	{
 		int opt = bOption;
 
@@ -69,27 +48,21 @@ namespace Network
 		return true;
 	}
 
-	int TcpSocket::SetConditionAccept(bool trigger)
+	int TcpSocket::SetConditionAccept(bool trigger) const
 	{
 		return setsockopt(_handle, SOL_SOCKET, SO_CONDITIONAL_ACCEPT,
 			reinterpret_cast<char*>(&trigger), sizeof(bool));
 	}
 
-	int TcpSocket::SetNoDelay(bool toggle)
+	int TcpSocket::SetNoDelay(bool toggle) const
 	{
 		return setsockopt(_handle, IPPROTO_TCP, TCP_NODELAY, reinterpret_cast<const char*>(& toggle), sizeof(bool));
 	}
 
-	int TcpSocket::SetUpdateAcceptContext(SOCKET listen)
+	int TcpSocket::SetUpdateAcceptContext(SOCKET listen) const
 	{
 		return setsockopt(_handle, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT,
 			reinterpret_cast<char*>(listen), sizeof(SOCKET));
-	}
-
-	int TcpSocket::SetUpdateConnectContext()
-	{
-		return setsockopt(_handle, SOL_SOCKET, SO_UPDATE_CONNECT_CONTEXT,
-			nullptr, 0);
 	}
 
 	int TcpSocket::Send(const void* inData, int inLen)

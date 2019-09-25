@@ -5,17 +5,13 @@
 #include "IOService.h"
 #include "LinkManager.h"
 #include "IOContext.h"
-#include "EngineIO.hpp"
 
 namespace Network
 {
-	bool Acceptor::Initialize(IOService& service, const std::string& ip, uint16_t port, std::size_t maxsession)
+	LPFN_ACCEPTEX Acceptor::AcceptEx = nullptr;
+
+	bool Acceptor::Initialize(IOService& service, const std::string& ip, uint16_t port)
 	{
-		if (_iswork)
-			return false;
-
-		_maxSession = maxsession;
-
 		_service = &service;
 		_bindPoint.SetConnectPoint(ip, port);
 
@@ -24,8 +20,15 @@ namespace Network
 		_listen = std::make_shared<TcpSocket>(AF_INET);
 		_listen->Bind(_bindPoint);
 
+		_service->RegisterHandle(_listen->native_handle(), 
+			&_listen);
+
 		GUID guidAcceptEx = WSAID_ACCEPTEX;
 		DWORD bytes = 0;
+
+		if (SOCKET_ERROR == WSAIoctl(_listen->socket_handle(), SIO_GET_EXTENSION_FUNCTION_POINTER,
+			&guidAcceptEx, sizeof(GUID), &AcceptEx, sizeof(LPFN_ACCEPTEX), &bytes, NULL, NULL))
+			flag = false;
 
 		return flag;
 	}
@@ -35,22 +38,15 @@ namespace Network
 		bool flag = true;
 
 		flag = _listen->Listen(0);
-
-		if (flag)
-			_iswork = true;
-
 		_acceptorThread = std::thread(std::bind(&Acceptor::PostAccept, this));
 
 		Util::ChangeThreadName(_acceptorThread.native_handle(), "Acceptor");
-
 
 		return flag;
 	}
 
 	void Acceptor::Stop()
 	{
-		_iswork = false;
-
 		_acceptorThread.join();
 	}
 
@@ -60,24 +56,25 @@ namespace Network
 		DWORD flags = 0;
 		BYTE AcceptBuf[256];
 
-		while(_iswork)
+		while(true)
 		{
-			if (LinkManager::UserSize() >= _maxSession)
+			if (LinkManager::UserSize() > 5000)
 				continue;
 
-			ConnectPoint Point;
-			auto socket = _listen->Accept(Point);
+			auto link = LinkManager::make_shared();
 
-			if (socket == nullptr)
-				continue;
+			const auto AcceptOverlapped = AcceptContext::OverlappedPool(link);
 
-			const auto LinkPtr = LinkManager::make_shared(socket, Point);
-			socket->SetNagle(true);
-
-			_service->RegisterHandle(socket->native_handle(), nullptr);
-
-			EngineIO::OnAccepted(LinkPtr);
+			if(FALSE == AcceptEx(_listen->socket_handle(), link->socket_handle(), AcceptBuf, 0,
+				sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, &bytes, reinterpret_cast<LPOVERLAPPED>(AcceptOverlapped)))
+			{
+				const auto error = WSAGetLastError();
+				if(error != WSA_IO_PENDING)
+				{
+					AcceptContext::OverlappedPool.Free(AcceptOverlapped);
+					// Logger
+				}
+			}
 		}
 	}
-
 }

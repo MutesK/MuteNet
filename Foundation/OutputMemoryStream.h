@@ -1,7 +1,6 @@
 #pragma once
 
 #include "MemoryStream.h"
-#include "ObjectPool.h"
 
 namespace Util
 {
@@ -12,13 +11,9 @@ namespace Util
 
 		uint32_t _head = 0;
 		uint32_t _capacity = 0;
-
-		static TL::ObjectPool<OutputMemoryStream> _objectPool;
 	public:
 		OutputMemoryStream();
 		virtual ~OutputMemoryStream();
-
-		static std::shared_ptr<OutputMemoryStream> GenerateStream();
 
 		char* GetBufferPtr();
 		virtual uint32_t GetLength() const;
@@ -52,10 +47,10 @@ namespace Util
 	template <typename Type>
 	void OutputMemoryStream::Write(const Type& inData)
 	{
-		const unsigned short length = sizeof(Type);
+		unsigned short length = sizeof(unsigned short);
 
-		Write(&length, sizeof(unsigned short));
-		Write(&inData, length);
+		Write(&length, sizeof(size_t));
+		Write(&inData, sizeof(unsigned short));
 	}
 
 	template <typename Type>

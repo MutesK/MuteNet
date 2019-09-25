@@ -1,7 +1,6 @@
 #pragma once
 #include "pch.h"
 #include "Link.h"
-#include "LinkManager.h"
 #include "IOContext.h"
 #include "Acceptor.h"
 #include "EngineIO.hpp"
@@ -12,6 +11,8 @@ namespace Network
 {
 	Util::TL::ObjectPool<SendContext> SendContext::OverlappedPool;
 	Util::TL::ObjectPool<RecvContext> RecvContext::OverlappedPool;
+	Util::TL::ObjectPool<AcceptContext> AcceptContext::OverlappedPool;
+	Util::TL::ObjectPool<ConnectContext> ConnectContext::OverlappedPool;
 
 	void SendContext::IOComplete(DWORD TransfferedBytes, void* CompletionKey)
 	{
@@ -33,8 +34,7 @@ namespace Network
 	{
 		if (TransfferedBytes <= 0)
 		{
-			linkPtr->get_socket()->Shutdown(ShutdownBlockMode::BothBlock);
-			LinkManager::disconnect_link(linkPtr);
+			linkPtr->get_socket().Shutdown(ShutdownBlockMode::BothBlock);
 		}
 		else
 		{
@@ -66,4 +66,26 @@ namespace Network
 		RecvContext::OverlappedPool.Free(this);
 	}
 
+	void AcceptContext::IOComplete(DWORD TransfferedBytes, void* CompletionKey)
+	{
+		auto ListenPtr = 
+			*static_cast<std::shared_ptr<TcpSocket>*>(CompletionKey);
+		
+		auto LinkSocket = linkPtr->get_socket();
+
+		LinkSocket.SetUpdateAcceptContext(ListenPtr->socket_handle());
+		LinkSocket.SetNagle(true);
+		ConnectPoint::Setter::SetConnectionPoint(LinkSocket, linkPtr->get_endPoint());
+
+		// Register Socket To IOCP
+
+		EngineIO::OnAccepted(linkPtr);
+		
+		AcceptContext::OverlappedPool.Free(this);
+	}
+
+	void ConnectContext::IOComplete(DWORD TransfferedBytes, void* CompletionKey)
+	{
+		
+	}
 }

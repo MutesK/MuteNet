@@ -11,11 +11,6 @@ namespace Network
 	{
 	}
 
-	Socket::Socket(SOCKET socket)
-		: _address_family(AF_INET), _handle(INVALID_SOCKET), _lastError(0)
-	{
-	}
-
 	Socket::~Socket()
 	{
 		closesocket(_handle);

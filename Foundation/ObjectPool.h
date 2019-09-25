@@ -19,17 +19,9 @@ namespace Util
 			std::stack<void*>					_unUsedIndexs;
 
 			std::function<void(Type* ptr)>		_customDeletor;
-
-			std::size_t							_allocPoolSize;
-			std::atomic_bool					_dynamicAllocFlag;
 		public:
 			ObjectPool(size_t PoolSize = 10000);
 			~ObjectPool();
-
-			void setDynamicAlloc(bool flag)
-			{
-				_dynamicAllocFlag = flag;
-			}
 
 			template <typename ...Args>
 			std::weak_ptr<Type> make_weak(Args&&... arguments);
@@ -55,36 +47,17 @@ namespace Util
 			{
 				return _elementPool.size() - _unUsedIndexs.size();
 			}
-		private:
-			void AllocNode()
-			{
-				if (!_dynamicAllocFlag)
-					return;
-
-				std::lock_guard<std::mutex> lock(_mutex);
-
-				for (size_t index = 0; index < _allocPoolSize; ++index)
-				{
-					auto object = std::malloc(sizeof(Type));
-					_elementPool[object] = object;
-
-					_unUsedIndexs.push(object);
-				}
-			}
 		};
 
 		template <typename Type>
 		ObjectPool<Type>::ObjectPool(size_t PoolSize)
-			:_allocPoolSize(PoolSize)
 		{
 			_customDeletor = [&](Type* ptr)
 			{
 				this->Free(ptr);
 			};
 
-			std::lock_guard<std::mutex> lock(_mutex);
-
-			for (size_t index = 0; index < _allocPoolSize; ++index)
+			for(size_t index = 0; index < PoolSize; ++index)
 			{
 				auto object = std::malloc(sizeof(Type));
 				_elementPool[object] = object;
@@ -135,14 +108,9 @@ namespace Util
 		template <typename ... Args>
 		Type* ObjectPool<Type>::Alloc(Args&&... arguments)
 		{
-			if(_unUsedIndexs.size() <= 0 && !_dynamicAllocFlag)
+			if(_unUsedIndexs.size() <= 0)
 			{
-				return nullptr;
-			}
-
-			if (_unUsedIndexs.size() <= 0 && _dynamicAllocFlag)
-			{
-				AllocNode();
+				return nullptr; // OR Realloc
 			}
 
 			void* ptr = nullptr;
