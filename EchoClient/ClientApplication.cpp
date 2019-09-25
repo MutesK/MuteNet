@@ -38,10 +38,10 @@ void ClientApplication::OnRecived(std::shared_ptr<Network::Link> link, std::shar
 	recvPacket->Serialize(buf, 6);
 	std::cout << "recv data : " << buf << std::endl;
 
-	auto packet = std::make_shared<Util::OutputMemoryStream>();
-	packet->Serialize(buf, 6);
+	auto Packet = std::make_shared<Util::OutputMemoryStream>();
+	Packet->Serialize(buf, 6);
 
-	link->SendPacket(packet);
+	link->SendPacket(Packet);
 }
 
 void ClientApplication::OnSended(std::shared_ptr<Network::Link> link, size_t SendedSize)

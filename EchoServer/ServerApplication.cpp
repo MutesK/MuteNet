@@ -38,7 +38,7 @@ void ServerApplication::OnAccepted(std::shared_ptr<Link> link)
 
 	char buf[]{ "hello" };
 	auto Packet = std::make_shared<Util::OutputMemoryStream>();
-	Packet->Serialize(buf, strlen(buf));
+	Packet->Serialize(buf, 6);
 
 	link->SendPacket(Packet);
 
@@ -53,10 +53,10 @@ void ServerApplication::OnRecived(std::shared_ptr<Link> link, std::shared_ptr<Ut
 	recvPacket->Serialize(buf, 6);
 	std::cout << "recv data : " << buf << std::endl;
 
-	auto packet = std::make_shared<Util::OutputMemoryStream>();
-	packet->Serialize(buf, 6);
+	auto Packet = std::make_shared<Util::OutputMemoryStream>();
+	Packet->Serialize(buf, 6);
 
-	link->SendPacket(packet);
+	link->SendPacket(Packet);
 }
 
 void ServerApplication::OnSended(std::shared_ptr<Link> link, size_t SendedSize)
