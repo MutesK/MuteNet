@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "IOService.h"
 #include "IOContext.h"
+#include "../Foundation/MiniDump.h"
 
 namespace Network
 {

@@ -32,6 +32,7 @@ void OutputMemoryStream::Write(const void* inData, const uint32_t inByteCount)
 
 void OutputMemoryStream::Serialize(void* inData, uint32_t inByteCount)
 {
+	Write(&inByteCount, sizeof(uint32_t));
 	Write(inData, inByteCount);
 }
 

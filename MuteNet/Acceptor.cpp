@@ -25,11 +25,8 @@ namespace Network
 		GUID guidAcceptEx = WSAID_ACCEPTEX;
 		DWORD bytes = 0;
 
-		if (SOCKET_ERROR == WSAIoctl(_listen->socket_handle(), SIO_GET_EXTENSION_FUNCTION_POINTER,
-			&guidAcceptEx, sizeof(GUID), &AcceptEx, sizeof(LPFN_ACCEPTEX), &bytes, NULL, NULL))
-			flag = false;
-
-		return flag;
+		return SocketDelgateInvoker::Invoke(WSAIoctl, _listen->socket_handle(), SIO_GET_EXTENSION_FUNCTION_POINTER,
+			&guidAcceptEx, sizeof(GUID), &AcceptEx, sizeof(LPFN_ACCEPTEX), &bytes, nullptr, nullptr);
 	}
 
 	bool Acceptor::Open()
@@ -60,6 +57,8 @@ namespace Network
 			{
 				AcceptContext::OverlappedPool.Free(AcceptOverlapped);
 				// Logger
+				
+				std::cout << "AcceptEx Error : " << WSAGetLastError() << std::endl;
 			}
 		}
 	}

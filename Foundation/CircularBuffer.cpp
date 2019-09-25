@@ -20,10 +20,10 @@ namespace Util
 		return BufferPool.make_unique();
 	}
 
-	uint32_t CircularBuffer::GetWriteBufferAndLengths(void* firstBuffer, size_t& firstLength,
-		void* secondBuffer, size_t& secondLength)
+	uint32_t CircularBuffer::GetWriteBufferAndLengths(void** firstBuffer, size_t& firstLength,
+		void** secondBuffer, size_t& secondLength)
 	{
-		firstBuffer = _buffer + _tail;
+		*firstBuffer = _buffer + _tail;
 
 		if (_head < _tail)
 			firstLength = _head - _tail;
@@ -33,7 +33,7 @@ namespace Util
 		
 		if (firstLength < GetFreeSize())
 		{
-			secondBuffer = _buffer;
+			*secondBuffer = _buffer;
 			secondLength = GetFreeSize() - firstLength;
 			return 2;
 		}
@@ -42,9 +42,9 @@ namespace Util
 
 	}
 
-	uint32_t CircularBuffer::GetReadBufferAndLengths(void* firstBuffer, size_t& firstLength, void* secondBuffer, size_t& secondLength)
+	uint32_t CircularBuffer::GetReadBufferAndLengths(void** firstBuffer, size_t& firstLength, void** secondBuffer, size_t& secondLength)
 	{
-		firstBuffer = _buffer + _head;
+		*firstBuffer = _buffer + _head;
 
 		if (_head <= _tail)
 		{
@@ -55,7 +55,7 @@ namespace Util
 
 		if (firstLength < GetUsedSize())
 		{
-			secondBuffer = _buffer;
+			*secondBuffer = _buffer;
 			secondLength = GetUsedSize() - firstLength;
 
 			return 2;

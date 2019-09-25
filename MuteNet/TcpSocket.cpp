@@ -56,7 +56,13 @@ namespace Network
 	int TcpSocket::SetUpdateAcceptContext(SOCKET listen) const
 	{
 		return SocketDelgateInvoker::Invoke(setsockopt, _handle, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT,
-			reinterpret_cast<char*>(listen), sizeof(SOCKET));
+			(const char *)&listen, sizeof(SOCKET));
+	}
+
+	int TcpSocket::SetUpdateConnectContext() const
+	{
+		return SocketDelgateInvoker::Invoke(setsockopt, _handle, SOL_SOCKET, SO_UPDATE_CONNECT_CONTEXT,
+			nullptr, 0);
 	}
 
 	int TcpSocket::Send(const void* inData, int inLen)
@@ -87,7 +93,7 @@ namespace Network
 		DWORD RecvSize = 0;
 		DWORD Flag = 0;
 
-		return SocketDelgateInvoker::Invoke(::WSARecv, _handle, pBufArr, Arrlen, &RecvSize, &Flag, static_cast<LPOVERLAPPED>(OverlappedIO), nullptr);
+		return SocketDelgateInvoker::Invoke(::WSARecv, _handle, pBufArr, Arrlen, &RecvSize, &Flag, (LPOVERLAPPED)OverlappedIO, nullptr);
 	}
 
 	int TcpSocket::OverlappedIOSend(WSABUF* pBufArr, int Arrlen, void* OverlappedIO)
@@ -95,6 +101,6 @@ namespace Network
 		DWORD SendSize = 0;
 		const DWORD Flag = 0;
 
-		return SocketDelgateInvoker::Invoke(::WSASend,_handle, pBufArr, Arrlen, &SendSize, Flag, static_cast<LPOVERLAPPED>(OverlappedIO), nullptr);
+		return SocketDelgateInvoker::Invoke(::WSASend,_handle, pBufArr, Arrlen, &SendSize, Flag, (LPOVERLAPPED)OverlappedIO, nullptr);
 	}
 }

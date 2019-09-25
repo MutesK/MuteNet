@@ -25,10 +25,10 @@ namespace Util
 		size_t GetFreeSize() const;
 		size_t GetUsedSize() const;
 
-		uint32_t GetWriteBufferAndLengths(void* firstBuffer, size_t& firstLength,
-			void* secondBuffer, size_t& secondLength);
-		uint32_t GetReadBufferAndLengths(void* firstBuffer, size_t& firstLength,
-			void* secondBuffer, size_t& secondLength);
+		uint32_t GetWriteBufferAndLengths(void** firstBuffer, size_t& firstLength,
+			void** secondBuffer, size_t& secondLength);
+		uint32_t GetReadBufferAndLengths(void** firstBuffer, size_t& firstLength,
+			void** secondBuffer, size_t& secondLength);
 
 		void MoveReadPostion(const size_t& position);
 		size_t Peek(void* outData, const size_t size);

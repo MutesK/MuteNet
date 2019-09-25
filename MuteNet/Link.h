@@ -14,7 +14,7 @@ namespace Network
 {
 	class IOContext;
 	
-	class Link final : std::enable_shared_from_this<Link>
+	class Link final : public std::enable_shared_from_this<Link>
 	{
 	private:
 		std::unique_ptr<TcpSocket>				_socket;

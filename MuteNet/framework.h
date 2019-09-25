@@ -21,6 +21,7 @@
 
 static const DWORD AddressLength = sizeof(SOCKADDR_IN) + 16;
 
+
 class SocketDelgateInvoker // Invoker
 {
 public:

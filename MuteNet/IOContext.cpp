@@ -47,10 +47,12 @@ namespace Network
 			while (true)
 			{
 				length = 0;
-				RecvQ->GetData(&length, sizeof(length));
+				RecvQ->Peek(&length, sizeof(uint32_t));
 
 				if (RecvQ->GetUsedSize() < length)
 					break;
+
+				RecvQ->MoveReadPostion(sizeof(uint32_t));
 
 				const auto bufferPtr = RecvQ->GetReadBufferPtr();
 				
@@ -85,6 +87,12 @@ namespace Network
 
 	void ConnectContext::IOComplete(DWORD TransfferedBytes, void* CompletionKey)
 	{
-		
+		auto socket = linkPtr->get_socket();
+
+		socket->SetUpdateConnectContext();
+		socket->SetNagle(true);
+
+		EngineIO::OnConnected(linkPtr);
+		ConnectContext::OverlappedPool.Free(this);
 	}
 }

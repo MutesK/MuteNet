@@ -18,6 +18,7 @@ namespace Network
 		int SetConditionAccept(bool trigger) const;
 		int SetNoDelay(bool toggle) const;
 		int SetUpdateAcceptContext(SOCKET listen) const;
+		int SetUpdateConnectContext() const;
 
 		// Not Use Socket IO Function
 		int Send(const void* inData, int inLen);

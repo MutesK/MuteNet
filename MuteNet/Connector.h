@@ -11,16 +11,15 @@ namespace Network
 	class Connector final
 	{
 	private:
-		std::shared_ptr<IOService> _service{ nullptr };
 		ConnectPoint _serverPoint;
+		IOService* _service;
 
 	public:
 		static LPFN_CONNECTEX Connectex;
 	public:
-		Connector(const std::shared_ptr<IOService>& service,
-			const std::string& ip, uint16_t port);
+		Connector(IOService* service);
 
-		bool Connect();
+		bool Connect(const std::string& ip, uint16_t port);
 	};
 }
 

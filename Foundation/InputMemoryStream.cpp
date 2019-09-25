@@ -33,7 +33,17 @@ void InputMemoryStream::Read(void* outData, uint32_t inByteCount)
 
 void InputMemoryStream::Serialize(void* outData, uint32_t inByteCount)
 {
-	Read(outData, inByteCount);
+	uint32_t Size = 0;
+
+	Read(&Size, sizeof(uint32_t));
+
+	if (Size >= inByteCount)
+	{
+		outData = nullptr;
+		return;
+	}
+
+	Read(outData, Size);
 }
 
 

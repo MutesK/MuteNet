@@ -26,8 +26,8 @@ namespace Network
 		WSABUF wsabuf[2];
 		int bufcount;
 
-		bufcount = _RecvQ->GetWriteBufferAndLengths(wsabuf[0].buf, reinterpret_cast<size_t&>(wsabuf[0].len),
-			wsabuf[1].buf, reinterpret_cast<size_t &>(wsabuf[1].len));
+		bufcount = _RecvQ->GetWriteBufferAndLengths((void**)&wsabuf[0].buf, (size_t&)wsabuf[0].len,
+			(void**)&wsabuf[1].buf, (size_t&)wsabuf[1].len);
 
 		_socket->OverlappedIORecv(wsabuf, bufcount, &Overlapped->Overlapped);
 	}
@@ -42,8 +42,8 @@ namespace Network
 		{
 			std::lock_guard<std::recursive_mutex> lock(_SendQ->_mutex);
 
-			bufcount = _SendQ->GetReadBufferAndLengths(wsabuf[0].buf, reinterpret_cast<size_t&>(wsabuf[0].len),
-				wsabuf[1].buf, reinterpret_cast<size_t&>(wsabuf[1].len));
+			bufcount = _SendQ->GetReadBufferAndLengths((void **)&wsabuf[0].buf, (size_t&)wsabuf[0].len,
+				(void **)&wsabuf[1].buf, (size_t&)wsabuf[1].len);
 		}
 
 		_socket->OverlappedIOSend(wsabuf, bufcount, &Overlapped->Overlapped);
@@ -57,6 +57,8 @@ namespace Network
 		uint32_t size = Packet->GetLength();
 		_SendQ->PutData(&size, sizeof(uint32_t));
 		_SendQ->PutData(Packet->GetBufferPtr(), Packet->GetLength());
+
+		SendPost();
 	}
 
 
