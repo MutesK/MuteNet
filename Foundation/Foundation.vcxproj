@@ -161,6 +161,7 @@
     <ClInclude Include="CircularBuffer.h" />
     <ClInclude Include="Exception.h" />
     <ClInclude Include="foundation.h" />
+    <ClInclude Include="HeapBlock.h" />
     <ClInclude Include="InputMemoryStream.h" />
     <ClInclude Include="MemoryStream.h" />
     <ClInclude Include="MiniDump.h" />
@@ -178,6 +179,7 @@
     <ClCompile Include="ASyncQueue.cpp" />
     <ClCompile Include="CircularBuffer.cpp" />
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="HeapBlock.cpp" />
     <ClCompile Include="InputMemoryStream.cpp" />
     <ClCompile Include="MiniDump.cpp" />
     <ClCompile Include="OutputMemoryStream.cpp" />

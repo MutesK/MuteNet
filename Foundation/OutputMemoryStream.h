@@ -1,16 +1,14 @@
 #pragma once
 
 #include "MemoryStream.h"
+#include "HeapBlock.h"
 
 namespace Util
 {
 	class OutputMemoryStream : public MemoryStream
 	{
 	protected:
-		char* _buffer = nullptr;
-
-		uint32_t _head = 0;
-		uint32_t _capacity = 0;
+		std::shared_ptr<HeapBlock> _heapBlock;
 	public:
 		OutputMemoryStream();
 		virtual ~OutputMemoryStream();
@@ -26,22 +24,26 @@ namespace Util
 		template <typename Type>
 		void Write(const std::vector<Type>& vector);
 
+		template <>
+		void Write(const std::string& inData);
+
 		virtual void Serialize(void* inData, uint32_t inByteCount) override;
 		virtual bool IsInput() override;
 
 		void MoveWritePosition(uint32_t size);
-		void ReallocBuffer(uint32_t inNewLength);
+
+		std::shared_ptr<HeapBlock> GetHeapBlock();
 	};
 
 
 	inline char* OutputMemoryStream::GetBufferPtr()
 	{
-		return _buffer;
+		return _heapBlock->_buffer;
 	}
 
 	inline uint32_t OutputMemoryStream::GetLength() const
 	{
-		return _head;
+		return _heapBlock->_tail;
 	}
 
 	template <typename Type>
@@ -49,8 +51,17 @@ namespace Util
 	{
 		unsigned short length = sizeof(unsigned short);
 
-		Write(&length, sizeof(size_t));
-		Write(&inData, sizeof(unsigned short));
+		Write(&length, sizeof(unsigned short));
+		Write(&inData, length);
+	}
+
+	template <>
+	void OutputMemoryStream::Write(const std::string& inData)
+	{
+		unsigned short length = inData.length();
+
+		Write(&length, sizeof(unsigned short));
+		Write(inData.c_str(), length);
 	}
 
 	template <typename Type>
@@ -74,7 +85,12 @@ namespace Util
 
 	inline void OutputMemoryStream::MoveWritePosition(uint32_t size)
 	{
-		_head += size;
+		_heapBlock->_tail += size;
+	}
+
+	inline std::shared_ptr<HeapBlock> OutputMemoryStream::GetHeapBlock()
+	{
+		return _heapBlock;
 	}
 
 }

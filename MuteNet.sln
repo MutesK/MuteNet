@@ -11,6 +11,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EchoServer", "EchoServer\Ec
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EchoClient", "EchoClient\EchoClient.vcxproj", "{EF334429-88BE-4F38-A3C9-8CD9B0DFC5A7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ModuleTest", "ModuleTest", "{EB6A9848-E64A-4B1B-B759-7836E9682A2C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MemoryStreamTEST", "MemoryStreamTEST\MemoryStreamTEST.vcxproj", "{03E97296-20E7-4899-A3A0-0A40A5BF2845}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,9 +55,20 @@ Global
 		{EF334429-88BE-4F38-A3C9-8CD9B0DFC5A7}.Release|x64.Build.0 = Release|x64
 		{EF334429-88BE-4F38-A3C9-8CD9B0DFC5A7}.Release|x86.ActiveCfg = Release|Win32
 		{EF334429-88BE-4F38-A3C9-8CD9B0DFC5A7}.Release|x86.Build.0 = Release|Win32
+		{03E97296-20E7-4899-A3A0-0A40A5BF2845}.Debug|x64.ActiveCfg = Debug|x64
+		{03E97296-20E7-4899-A3A0-0A40A5BF2845}.Debug|x64.Build.0 = Debug|x64
+		{03E97296-20E7-4899-A3A0-0A40A5BF2845}.Debug|x86.ActiveCfg = Debug|Win32
+		{03E97296-20E7-4899-A3A0-0A40A5BF2845}.Debug|x86.Build.0 = Debug|Win32
+		{03E97296-20E7-4899-A3A0-0A40A5BF2845}.Release|x64.ActiveCfg = Release|x64
+		{03E97296-20E7-4899-A3A0-0A40A5BF2845}.Release|x64.Build.0 = Release|x64
+		{03E97296-20E7-4899-A3A0-0A40A5BF2845}.Release|x86.ActiveCfg = Release|Win32
+		{03E97296-20E7-4899-A3A0-0A40A5BF2845}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{03E97296-20E7-4899-A3A0-0A40A5BF2845} = {EB6A9848-E64A-4B1B-B759-7836E9682A2C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {47041CDE-D284-4753-A3D2-FBA621AB23E1}
