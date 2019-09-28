@@ -1,4 +1,5 @@
 #include "ClientApplication.h"
+#include <chrono>
 
 int main()
 {
@@ -10,7 +11,9 @@ int main()
 
 	while (true)
 	{
+		Application.Monitoring();
 
+		std::this_thread::sleep_for(2s);
 	}
 
 	return 0;

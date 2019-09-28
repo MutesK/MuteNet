@@ -52,15 +52,15 @@ namespace Network
 				if (RecvQ->GetUsedSize() < (length + sizeof(uint32_t)))
 					break;
 
-				RecvQ->MoveReadPostion(sizeof(uint32_t));
-				
-				auto bufferStream = std::make_shared<OutputMemoryStream>();
-				bufferStream->ReallocBuffer(length + 1);
+				const auto packetSize = length + sizeof(uint32_t);
+				auto HeapBlock = HeapBlock::make_shared();
+				HeapBlock->ReallocBuffer(packetSize);
 
-				RecvQ->GetData(bufferStream->GetBufferPtr(), length);
-				bufferStream->MoveWritePosition(length);
+				RecvQ->GetData(HeapBlock->GetBufferPtr(), packetSize);
 
-				EngineIO::OnRecived(linkPtr, std::dynamic_pointer_cast<MemoryStream>(bufferStream));
+				auto InputStream = std::make_shared<InputMemoryStream>(HeapBlock);
+
+				EngineIO::OnRecived(linkPtr, InputStream);
 			}
 
 

@@ -7,10 +7,6 @@ InputMemoryStream::InputMemoryStream(std::shared_ptr<Util::HeapBlock>& heapBlock
 {
 }
 
-InputMemoryStream::~InputMemoryStream()
-{
-}
-
 // Heap Corruption À¯ÀÇ
 void InputMemoryStream::Read(void* outData, uint32_t inByteCount)
 {
@@ -18,7 +14,6 @@ void InputMemoryStream::Read(void* outData, uint32_t inByteCount)
 	_heapBlock->Read(outData, inByteCount);
 	_mutex.unlock();
 }
-
 
 void InputMemoryStream::Serialize(void* outData, uint32_t inByteCount)
 {

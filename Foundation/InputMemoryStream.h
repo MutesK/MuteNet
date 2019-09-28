@@ -11,9 +11,9 @@ namespace Util
 		std::shared_ptr<Util::HeapBlock> _heapBlock;
 	public:
 		InputMemoryStream(std::shared_ptr<Util::HeapBlock>& _heapBlock);
-		virtual ~InputMemoryStream();
+		virtual ~InputMemoryStream() = default;
 
-		virtual uint32_t GetRemainingDataSize() const;
+		virtual __int64 GetRemainingDataSize() const;
 
 		virtual void Read(void* outData, uint32_t inByteCount);
 
@@ -27,9 +27,9 @@ namespace Util
 		virtual void Serialize(void* outData, uint32_t inByteCount) override;
 	};
 
-	inline uint32_t InputMemoryStream::GetRemainingDataSize() const
+	inline __int64 InputMemoryStream::GetRemainingDataSize() const
 	{
-		return _heapBlock->_tail - _heapBlock->_head;
+		return _heapBlock->_head - _heapBlock->_tail;
 	}
 
 	template <typename Type>

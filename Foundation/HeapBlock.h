@@ -7,9 +7,9 @@ namespace Util
 	private:
 		char* _buffer;
 
-		uint32_t _head = 0;
-		uint32_t _tail = 0;
-		uint32_t _capacity = 0;
+		__int64 _head = 0;
+		__int64 _tail = 0;
+		__int64 _capacity = 0;
 
 		static TL::ObjectPool<HeapBlock> BlockPool;
 	public:
@@ -21,11 +21,15 @@ namespace Util
 		void Write(const void* inData, const uint32_t bytesize);
 		void Read(void* outData, const uint32_t bytesize);
 
+		char* GetBufferPtr();
+
+		void MoveWritePosition(const uint32_t length);
+
 		NON_COPYABLE(HeapBlock);
 
 		friend class InputMemoryStream;
 		friend class OutputMemoryStream;
-	private:
+
 		void ReallocBuffer(int buffer);
 	};
 

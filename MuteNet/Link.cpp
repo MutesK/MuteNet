@@ -55,8 +55,6 @@ namespace Network
 	{
 		std::lock_guard<std::recursive_mutex> lock(_SendQ->_mutex);
 
-		uint32_t size = Packet->GetLength();
-		_SendQ->PutData(&size, sizeof(uint32_t));
 		_SendQ->PutData(Packet->GetBufferPtr(), Packet->GetLength());
 
 		SendPost();

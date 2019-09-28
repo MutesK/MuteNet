@@ -20,7 +20,7 @@ void HeapBlock::Write(const void* inData, const uint32_t bytesize)
 	const uint32_t resultPosition = _tail + bytesize;
 
 	if (resultPosition > _capacity)
-		ReallocBuffer(std::max(_capacity * 2, resultPosition));
+		ReallocBuffer(std::max(static_cast<uint32_t>(_capacity * 2), resultPosition));
 
 	std::memcpy(_buffer + _tail, inData, bytesize);
 	_tail += bytesize;
@@ -36,6 +36,16 @@ void HeapBlock::Read(void* outData, const uint32_t bytesize)
 
 	memcpy(outData, _buffer + _head, bytesize);
 	_head += bytesize;
+}
+
+char* HeapBlock::GetBufferPtr()
+{
+	return _buffer;
+}
+
+void HeapBlock::MoveWritePosition(const uint32_t length)
+{
+	_tail += length;
 }
 
 void HeapBlock::ReallocBuffer(int bufferSize)

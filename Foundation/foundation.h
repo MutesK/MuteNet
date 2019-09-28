@@ -70,6 +70,7 @@ public:													\
 #define IN
 #define OUT
 
+using namespace std::chrono_literals;
 
 namespace Util
 {

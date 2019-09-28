@@ -14,9 +14,9 @@ namespace Util
 		virtual ~OutputMemoryStream();
 
 		char* GetBufferPtr();
-		virtual uint32_t GetLength() const;
+		virtual __int64 GetLength() const;
 
-		virtual void Write(const void* inData, uint32_t inByteCount);
+		virtual void Write(const void* inData, const uint32_t inByteCount);
 
 		template <typename Type>
 		void Write(const Type& inData);
@@ -30,7 +30,7 @@ namespace Util
 		virtual void Serialize(void* inData, uint32_t inByteCount) override;
 		virtual bool IsInput() override;
 
-		void MoveWritePosition(uint32_t size);
+		void MoveWritePosition(__int64 size);
 
 		std::shared_ptr<HeapBlock> GetHeapBlock();
 	};
@@ -41,7 +41,7 @@ namespace Util
 		return _heapBlock->_buffer;
 	}
 
-	inline uint32_t OutputMemoryStream::GetLength() const
+	inline __int64 OutputMemoryStream::GetLength() const
 	{
 		return _heapBlock->_tail;
 	}
@@ -83,7 +83,7 @@ namespace Util
 		return false;
 	}
 
-	inline void OutputMemoryStream::MoveWritePosition(uint32_t size)
+	inline void OutputMemoryStream::MoveWritePosition(__int64 size)
 	{
 		_heapBlock->_tail += size;
 	}
