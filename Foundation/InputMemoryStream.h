@@ -1,18 +1,16 @@
 #pragma once
 
 #include "MemoryStream.h"
+#include "HeapBlock.h"
 
 namespace Util
 {
 	class InputMemoryStream : public MemoryStream
 	{
 	protected:
-		char* _buffer = nullptr;
-
-		uint32_t _head = 0;
-		uint32_t _capacity = 0;
+		std::shared_ptr<Util::HeapBlock> _heapBlock;
 	public:
-		InputMemoryStream(char* buffer, uint32_t inByteCount);
+		InputMemoryStream(std::shared_ptr<Util::HeapBlock>& _heapBlock);
 		virtual ~InputMemoryStream();
 
 		virtual uint32_t GetRemainingDataSize() const;
@@ -31,7 +29,7 @@ namespace Util
 
 	inline uint32_t InputMemoryStream::GetRemainingDataSize() const
 	{
-		return _capacity - _head;
+		return _heapBlock->_tail - _heapBlock->_head;
 	}
 
 	template <typename Type>
