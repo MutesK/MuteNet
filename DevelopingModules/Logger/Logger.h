@@ -22,19 +22,16 @@ enum LogLevel
 class Logger final
 {
 private:
-	static const size_t LOG_LEN = 10000;
-
-	std::atomic_int		_loglevel = LogLevel::DEBUG;
+	int					_loglevel = LogLevel::DEBUG;
 	size_t				_logNo;
 	
-	LoggerWriter		_writer;
-	RotateLogger		_rotator;
+	std::unique_ptr<LoggerWriter>  _Writer;
+	std::unique_ptr<RotateLogger>  _Rotater;
 public:
-	Logger() = default;
-	~Logger() = default;
+	Logger(const std::string& AppName,
+		const std::string& directory);
 
 	void SetLogLevel(LogLevel level);
-	void SetLogDirectory(std::string directory);
 
 	void Log(LogLevel level, char* stringFormat, ...);
 };
@@ -43,7 +40,3 @@ inline void Logger::SetLogLevel(LogLevel level)
 {
 	_loglevel = level;
 }
-
-
-
-

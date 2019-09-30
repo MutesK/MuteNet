@@ -1,37 +1,29 @@
 #include "RotateLogger.h"
-#include <filesystem>
-#include <iomanip>
-#include <chrono>
-#include <sstream>
+#include "StringFormat.h"
 
 using namespace std::experimental::filesystem::v1;
 
 void RotateLogger::Initialize(const std::string& AppName, const std::string& OutputDirectoryFolder)
 {
-	_name = AppName;
+	_appName = AppName;
 	_directory = OutputDirectoryFolder;
-
-	_LogFileNum = 0;
+	_logFileNum = 0;
 
 	SetFileNumber();
 }
 
+std::string RotateLogger::GetFullPath()
+{
+	SetFileNumber();
+	return _directory + "//" + _LogFileName;
+}
+
+void RotateLogger::NextLogNumber()
+{
+	++_logFileNum;
+}
 
 void RotateLogger::SetFileNumber()
 {
-	std::string folder =
-		_directory + "//" + GetCurrentDate();
-
-	std::string filename = 
-}
-
-
-std::string RotateLogger::GetCurrentDate()
-{
-	auto now = std::chrono::system_clock::now();
-	auto in_time_t = std::chrono::system_clock::to_time_t(now);
-
-	std::stringstream ss;
-	ss << std::put_time(std::localtime(&in_time_t), "%Y-%m-%d");
-	return ss.str();
+	_LogFileName = StringFormat::SharpFormat("{0}_{1}_{2}.log", _appName, StringFormat::GetCurrentDate(), _logFileNum);
 }
