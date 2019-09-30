@@ -6,28 +6,23 @@
 
 using namespace std::experimental::filesystem::v1;
 
-RotateLogger::RotateLogger(const std::string& AppName,
-	const std::string& OutputDirectoryFolder)
+void RotateLogger::Initialize(const std::string& AppName, const std::string& OutputDirectoryFolder)
 {
-	_fileNum = 0;
-
 	_name = AppName;
 	_directory = OutputDirectoryFolder;
+
+	_LogFileNum = 0;
 
 	SetFileNumber();
 }
 
-std::string RotateLogger::GetOutputLogFolder()
-{
-	
-}
 
 void RotateLogger::SetFileNumber()
 {
 	std::string folder =
 		_directory + "//" + GetCurrentDate();
 
-
+	std::string filename = 
 }
 
 

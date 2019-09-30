@@ -15,9 +15,12 @@ private:
 	std::string _name;
 	std::string _directory;
 
-	size_t		_fileNum;
+	size_t		_LogFileNum;
 public:
-	RotateLogger(const std::string& AppName, 
+	RotateLogger() = default;
+	~RotateLogger() = default;
+
+	void Initialize(const std::string& AppName,
 		const std::string& OutputDirectoryFolder);
 
 	std::string GetOutputLogFolder();

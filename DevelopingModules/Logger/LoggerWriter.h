@@ -3,6 +3,9 @@
 #include "Logger.h"
 #include "RotateLogger.h"
 
+/*
+ * Console Print와 File Print를 담당한다.
+ */
 class LoggerWriter
 {
 private:

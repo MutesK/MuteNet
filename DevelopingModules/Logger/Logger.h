@@ -28,6 +28,7 @@ private:
 	size_t				_logNo;
 	
 	LoggerWriter		_writer;
+	RotateLogger		_rotator;
 public:
 	Logger() = default;
 	~Logger() = default;
@@ -37,7 +38,6 @@ public:
 
 	void Log(LogLevel level, char* stringFormat, ...);
 };
-
 
 inline void Logger::SetLogLevel(LogLevel level)
 {
