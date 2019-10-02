@@ -28,7 +28,7 @@ namespace Network
 		}
 		_service->RegisterHandle(socket->native_handle(), nullptr);
 
-		const auto ConnectOverlapped = ConnectContext::OverlappedPool(link);
+		const auto ConnectOverlapped = new ConnectContext(link);
 
 		GUID guidConnectEx = WSAID_CONNECTEX;
 		DWORD bytes = 0;
@@ -43,7 +43,6 @@ namespace Network
 			const auto error = WSAGetLastError();
 			if (error != WSA_IO_PENDING)
 			{
-				ConnectContext::OverlappedPool.Free(ConnectOverlapped);
 				// Logger
 				std::cout << "ConnectEx Error : " << WSAGetLastError() << std::endl;
 				return false;

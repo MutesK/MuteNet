@@ -17,8 +17,7 @@ namespace Network
 
 		if (_handle == INVALID_SOCKET)
 		{
-			// Exception
-			return false;
+			throw;
 		}
 
 		return true;

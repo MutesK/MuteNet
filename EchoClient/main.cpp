@@ -13,7 +13,7 @@ int main()
 	{
 		Application.Monitoring();
 
-		std::this_thread::sleep_for(2s);
+		std::this_thread::sleep_for(1s);
 	}
 
 	return 0;

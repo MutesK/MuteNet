@@ -39,7 +39,6 @@ namespace Util
 
 			const auto packetSize = length + sizeof(uint32_t);
 			auto HeapBlock = HeapBlock::make_shared();
-			HeapBlock->ReallocBuffer(packetSize);
 
 			_Buffer->GetData(HeapBlock->GetBufferPtr(), packetSize);
 

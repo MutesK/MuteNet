@@ -1,76 +1,73 @@
 #pragma once
 
+#include "SafeSharedLock.h"
+
 namespace Util
 {
-	class CircularBuffer final 
+	class CircularBuffer
 	{
-	public:
-		using Ptr = decltype(TL::UniqueCustomDeleter<CircularBuffer>::DeletorType);
-		std::recursive_mutex _mutex;
 	private:
-		const size_t BUFFER_SIZE = 25000;
+		static const size_t BUFFER_SIZE = 10000;
+		static const size_t BLANK_BUFFER = 1;
 
-		char* _buffer = nullptr;
+		std::atomic_bool    _isSending = false;
+		SafeSharedLock		_lock;
+		char*				_buffer;
+		int					_front;
+		int					_rear;
 
-		size_t _head = 0;
-		size_t _tail = 0;
+		int					_bufferSize;
 	public:
+		static std::unique_ptr<CircularBuffer> Alloc();
 		CircularBuffer();
+		CircularBuffer(int iSize);
+
 		~CircularBuffer();
 
-		static auto Alloc() ->Ptr;
+		int	GetBufferSize(void);
 
-		void Reset();
-		bool isEmpty() const;
-		size_t GetFreeSize() const;
-		size_t GetUsedSize() const;
+		int	GetUseSize(void);
+		int	GetFreeSize(void);
+	
+		int GetWriteBufferAndLengths(char** firstbuf, uint32_t& firstlength,
+			char** secondbuf, uint32_t& secondlength);
+		int GetReadBufferAndLengths(char** firstbuf, uint32_t& firstlength,
+			char** secondbuf, uint32_t& secondlength);
 
-		uint32_t GetWriteBufferAndLengths(void** firstBuffer, size_t& firstLength,
-			void** secondBuffer, size_t& secondLength);
-		uint32_t GetReadBufferAndLengths(void** firstBuffer, size_t& firstLength,
-			void** secondBuffer, size_t& secondLength);
+		int	PutData(void* chpData, int iSize);
+		int	GetData(void* chpDest, int iSize);
+		int	Peek(void* chpDest, int iSize);
 
-		void MoveReadPostion(const size_t& position);
-		size_t Peek(void* outData, const size_t size);
-		size_t GetData(void* outData, const size_t size);
-		
-		void MoveWritePostion(const size_t& position);
-		size_t PutData(void* inData, const size_t size);
+		void MoveReadPostion(int iSize);
+		void MoveWritePos(int iSize);
+	
+		char* GetBufferPtr(void);
+		char* GetReadBufferPtr(void);
+		char* GetWriteBufferPtr(void);
 
-		char* GetWriteBufferPtr();
-		char* GetReadBufferPtr();
+		SafeSharedLock& GetSharedLock();
 
-		NON_COPYABLE(CircularBuffer);
+		GET_SET_ATTRIBUTE(bool, isSending);
+	private:
+
+		int	GetNotBrokenGetSize(void);
+		int	GetNotBrokenPutSize(void);
 	};
 
-	inline void CircularBuffer::Reset()
+	inline char* CircularBuffer::GetBufferPtr(void)
 	{
-		_head = _tail = 0;
+		return _buffer;
 	}
-	inline bool CircularBuffer::isEmpty() const
+	inline char* CircularBuffer::GetReadBufferPtr(void)
 	{
-		return GetUsedSize() == 0;
+		return _buffer + _front;
 	}
-	inline size_t CircularBuffer::GetFreeSize() const
+	inline char* CircularBuffer::GetWriteBufferPtr(void)
 	{
-		return BUFFER_SIZE - GetUsedSize();
+		return _buffer + _rear;
 	}
-	inline size_t CircularBuffer::GetUsedSize() const
+	inline SafeSharedLock& CircularBuffer::GetSharedLock()
 	{
-		if (_tail >= _head)
-			return _tail - _head;
-
-		return BUFFER_SIZE - _head + _tail;
+		return _lock;
 	}
-
-	inline char* CircularBuffer::GetWriteBufferPtr()
-	{
-		return _buffer + _tail;
-	}
-
-	inline char* CircularBuffer::GetReadBufferPtr()
-	{
-		return _buffer + _head;
-	}
-
 }

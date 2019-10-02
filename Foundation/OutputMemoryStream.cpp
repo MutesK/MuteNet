@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "OutputMemoryStream.h"
+#include "InputMemoryStream.h"
 #include "HeapBlock.h"
 
 using namespace Util;

@@ -37,6 +37,7 @@ public:
 				return true;
 
 			std::cout << "Socket Error : " << getLastError << std::endl;
+
 			return false;
 		}
 

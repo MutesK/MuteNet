@@ -17,7 +17,7 @@ namespace Util
 			static std::unique_ptr<Type, std::function<void(Type*)>> DeletorType;
 		};
 
-		template <typename Type>
+		template <typename Type, bool CallCtor = true, bool DynamicAllocateMode = false>
 		class ObjectPool
 		{
 		private:
@@ -56,8 +56,8 @@ namespace Util
 			}
 		};
 
-		template <typename Type>
-		ObjectPool<Type>::ObjectPool(size_t PoolSize)
+		template <typename Type, bool CallCtor, bool DynamicAllocateMode>
+		ObjectPool<Type, CallCtor, DynamicAllocateMode>::ObjectPool(size_t PoolSize)
 		{
 			_customDeletor = [&](Type* ptr)
 			{
@@ -73,8 +73,8 @@ namespace Util
 			}
 		}
 
-		template <typename Type>
-		ObjectPool<Type>::~ObjectPool()
+		template <typename Type, bool CallCtor, bool DynamicAllocateMode>
+		ObjectPool<Type, CallCtor, DynamicAllocateMode>::~ObjectPool()
 		{
 			for(auto object : _elementPool)
 			{
@@ -84,36 +84,36 @@ namespace Util
 			_elementPool.clear();
 		}
 
-		template <typename Type>
+		template <typename Type, bool CallCtor, bool DynamicAllocateMode>
 		template <typename ... Args>
-		std::weak_ptr<Type> ObjectPool<Type>::make_weak(Args&&... arguments)
+		std::weak_ptr<Type> ObjectPool<Type, CallCtor, DynamicAllocateMode>::make_weak(Args&&... arguments)
 		{
 			auto rawPtr = Alloc(arguments...);
 
 			return std::weak_ptr<Type>(rawPtr, _customDeletor);
 		}
 
-		template <typename Type>
+		template <typename Type, bool CallCtor, bool DynamicAllocateMode>
 		template <typename ... Args>
-		std::shared_ptr<Type> ObjectPool<Type>::make_shared(Args&& ... arguments)
+		std::shared_ptr<Type> ObjectPool<Type, CallCtor, DynamicAllocateMode>::make_shared(Args&& ... arguments)
 		{
 			auto rawPtr = Alloc(arguments...);
 
 			return std::shared_ptr<Type>(rawPtr, _customDeletor);
 		}
 
-		template <typename Type>
+		template <typename Type, bool CallCtor, bool DynamicAllocateMode>
 		template <typename ... Args>
-		std::unique_ptr<Type, std::function<void(Type* ptr)>> ObjectPool<Type>::make_unique(Args&& ... arguments)
+		std::unique_ptr<Type, std::function<void(Type* ptr)>> ObjectPool<Type, CallCtor, DynamicAllocateMode>::make_unique(Args&& ... arguments)
 		{
 			auto rawPtr = Alloc(arguments...);
 
 			return std::unique_ptr<Type, std::function<void(Type * ptr)>>(rawPtr, _customDeletor);
 		}
 
-		template <typename Type>
+		template <typename Type, bool CallCtor, bool DynamicAllocateMode>
 		template <typename ... Args>
-		Type* ObjectPool<Type>::Alloc(Args&&... arguments)
+		Type* ObjectPool<Type, CallCtor, DynamicAllocateMode>::Alloc(Args&&... arguments)
 		{
 			if(_unUsedIndexs.size() <= 0)
 			{
@@ -129,13 +129,14 @@ namespace Util
 				_unUsedIndexs.pop();
 			}
 
-			new (ptr) Type(arguments...);
+			if(CallCtor)
+				new (ptr) Type(arguments...);
 
 			return reinterpret_cast<Type *>(ptr);
 		}
 
-		template <typename Type>
-		void ObjectPool<Type>::Free(Type* ptr)
+		template <typename Type, bool CallCtor, bool DynamicAllocateMode>
+		void ObjectPool<Type, CallCtor, DynamicAllocateMode>::Free(Type* ptr)
 		{
 			{
 				std::lock_guard<std::mutex> lock(_mutex);
@@ -147,7 +148,11 @@ namespace Util
 				_unUsedIndexs.push(ptr);
 			}
 
-			ptr->~Type();
+			if (CallCtor)
+			{
+				ptr->~Type();
+				memset(ptr, 0, sizeof(Type)); // TEST
+			}
 		}
 	}
 }

@@ -7,17 +7,22 @@ namespace Network
 {
 	TL::ObjectPool<Link>                   linkPool;
 	std::map<Link*, std::shared_ptr<Link>> linkMap;
+	std::mutex							   linkMutex;
 
 	std::shared_ptr<Link> LinkManager::make_shared()
 	{
 		auto Link = linkPool.make_shared();
-		linkMap[Link.get()] = Link;
-
+		{
+			std::lock_guard<std::mutex> lock(linkMutex);
+			linkMap[Link.get()] = Link;
+		}
 		return Link;
 	}
 
 	void LinkManager::removesession(const std::shared_ptr<Link>& link)
 	{
+		std::lock_guard<std::mutex> lock(linkMutex);
+
 		auto iter = linkMap.find(link.get());
 
 		if (iter == linkMap.end())
@@ -28,6 +33,8 @@ namespace Network
 
 	size_t LinkManager::usersize()
 	{
+		std::lock_guard<std::mutex> lock(linkMutex);
+
 		return linkMap.size();
 	}
 

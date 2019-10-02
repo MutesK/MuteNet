@@ -7,7 +7,7 @@ SafeSharedLock::OwnChecker::OwnChecker(ThreadOwnMutexMap& Mapping)
 {
 	_currentThreadID = std::this_thread::get_id();
 
-	if (true == _refOwnMap[_currentThreadID])
+	if (_refOwnMap[_currentThreadID])
 	{
 		std::abort();
 	}

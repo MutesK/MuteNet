@@ -3,11 +3,28 @@
 
 namespace Util
 {
-	TL::ObjectPool<CircularBuffer> BufferPool;
+	const size_t CircularBuffer::BUFFER_SIZE;
+	const size_t CircularBuffer::BLANK_BUFFER;
+
+
+	std::unique_ptr<CircularBuffer> CircularBuffer::Alloc()
+	{
+		return std::make_unique<CircularBuffer>();
+	}
 
 	CircularBuffer::CircularBuffer()
+		:_front(0), _rear(0), _bufferSize(BUFFER_SIZE)
 	{
 		_buffer = new char[BUFFER_SIZE];
+		memset(_buffer, 0, BUFFER_SIZE);
+
+	}
+
+	CircularBuffer::CircularBuffer(int iSize)
+		:_bufferSize(iSize), _front(0), _rear(0)
+	{
+		_buffer = new char[iSize];
+		memset(_buffer, 0, iSize);
 	}
 
 	CircularBuffer::~CircularBuffer()
@@ -15,193 +32,246 @@ namespace Util
 		delete[] _buffer;
 	}
 
-	auto CircularBuffer::Alloc() -> Ptr
+	int	CircularBuffer::GetBufferSize(void)
 	{
-		return BufferPool.make_unique();
+		return _bufferSize - BLANK_BUFFER;
 	}
 
-	uint32_t CircularBuffer::GetWriteBufferAndLengths(void** firstBuffer, size_t& firstLength,
-		void** secondBuffer, size_t& secondLength)
+	int	CircularBuffer::GetUseSize(void)
 	{
-		*firstBuffer = _buffer + _tail;
-
-		if (_head < _tail)
-			firstLength = _head - _tail;
+		if (_rear >= _front)
+			return _rear - _front;
 		else
-			firstLength = BUFFER_SIZE - _tail;
-			
-		
-		if (firstLength < GetFreeSize())
+			return _bufferSize - _front + _rear;
+	}
+
+	int	CircularBuffer::GetFreeSize(void)
+	{
+		return _bufferSize - GetUseSize();
+	}
+
+	int CircularBuffer::GetWriteBufferAndLengths(char** firstbuf, uint32_t& firstlength, char** secondbuf, uint32_t& secondlength)
+	{
+		int bufcount = 1;
+		*firstbuf = GetWriteBufferPtr();
+		firstlength = GetNotBrokenPutSize();
+
+		if (firstlength < GetFreeSize())
 		{
-			*secondBuffer = _buffer;
-			secondLength = GetFreeSize() - firstLength;
-			return 2;
+			bufcount++;
+			*secondbuf = GetBufferPtr();
+			secondlength = GetFreeSize() - firstlength;
 		}
-		
-		return 1;
+
+		return bufcount;
+	}
+
+	int CircularBuffer::GetReadBufferAndLengths(char** firstbuf, uint32_t& firstlength, char** secondbuf, uint32_t& secondlength)
+	{
+		int bufcount = 1;
+		*firstbuf = GetReadBufferPtr();
+		firstlength = GetNotBrokenGetSize();
+
+		if (firstlength < GetUseSize())
+		{
+			bufcount++;
+			*secondbuf = GetBufferPtr();
+			secondlength = GetUseSize() - firstlength;
+		}
+
+		return bufcount;
 
 	}
 
-	uint32_t CircularBuffer::GetReadBufferAndLengths(void** firstBuffer, size_t& firstLength, void** secondBuffer, size_t& secondLength)
+	int	CircularBuffer::GetNotBrokenGetSize(void)
 	{
-		*firstBuffer = _buffer + _head;
-
-		if (_head <= _tail)
+		if (_front <= _rear)
 		{
-			firstLength = _tail - _head;
+			return _rear - _front;
 		}
 		else
-			firstLength = BUFFER_SIZE - _head;
-
-		if (firstLength < GetUsedSize())
+			return _bufferSize - _front;
+	}
+	int	CircularBuffer::GetNotBrokenPutSize(void)
+	{
+		if (_rear < _front)
 		{
-			*secondBuffer = _buffer;
-			secondLength = GetUsedSize() - firstLength;
-
-			return 2;
+			return _front - _rear - BLANK_BUFFER;
 		}
-
-		return 1;
+		else
+		{
+			if (_front < BLANK_BUFFER)
+				return _bufferSize - _rear - BLANK_BUFFER + _front;
+			else
+				return _bufferSize - _rear;
+		}
 	}
 
-	void CircularBuffer::MoveReadPostion(const size_t& position)
+	int	CircularBuffer::PutData(void* chpData, int iSize)
 	{
-		const auto moveposition = std::min(position, GetUsedSize());
+		int inputSize = 0;
 
-		std::lock_guard<std::recursive_mutex> lock(_mutex);
+		if (iSize > GetFreeSize())
+			return 0;
 
-		if (isEmpty())
+		if (iSize <= 0)
+			return 0;
+
+		if (_front <= _rear)
 		{
-			return;
-		}
+			int WriteSize = _bufferSize - _rear;
 
-		if (_head <= _tail)
-		{
-			_head += moveposition;
-			return;
-		}
-
-		const auto brokenmoveposition = BUFFER_SIZE - _head;
-		if (brokenmoveposition >= moveposition)
-		{
-			_head += moveposition;
-			return;
-		}
-
-		_head = moveposition - brokenmoveposition;
-	}
-
-	size_t CircularBuffer::Peek(void* Data, const size_t size)
-	{
-		if (nullptr == Data)
-		{
-			return false;
-		}
-
-		std::lock_guard<std::recursive_mutex> lock(_mutex);
-
-		const auto copybytes = std::min(size, GetUsedSize());
-
-		if (isEmpty())
-		{
-			return false;
-		}
-
-		if (_head <= _tail)
-		{
-			memcpy(Data, _buffer + _head, copybytes);
-			return copybytes;
-		}
-
-		const auto brokencopybytes = BUFFER_SIZE - _head;
-		if (brokencopybytes >= copybytes)
-		{
-			memcpy(Data, _buffer + _head, copybytes);
-			return copybytes;
-		}
-
-		memcpy(Data, _buffer + _head, brokencopybytes);
-		memcpy(static_cast<char*>(Data) + brokencopybytes, _buffer, copybytes - brokencopybytes);
-
-		return copybytes;
-	}
-
-	size_t CircularBuffer::GetData(void* outData, const size_t size)
-	{
-		const auto bytes = Peek(outData, size);
-		MoveReadPostion(bytes);
-
-		return bytes;
-	}
-
-	void CircularBuffer::MoveWritePostion(const size_t& position)
-	{
-		if (position <= 0)
-			return;
-
-		std::lock_guard<std::recursive_mutex> lock(_mutex);
-
-		if (position > GetFreeSize())
-		{
-			return;
-		}
-
-		if (_head <= _tail)
-		{
-			const auto brokenputbytes = BUFFER_SIZE - _tail;
-
-			if (brokenputbytes >= position)
+			if (WriteSize >= iSize)
 			{
-				_tail += position;
-				return;
+				memcpy(_buffer + _rear, chpData, iSize);
+				_rear += iSize;
+			}
+			else
+			{
+				memcpy(_buffer + _rear, chpData, WriteSize);
+				memcpy(_buffer, reinterpret_cast<char *>(chpData) + WriteSize, static_cast<size_t>(iSize) - WriteSize);
+				_rear = iSize - WriteSize;
 			}
 
-			 _tail = position - brokenputbytes;
-			 return;
+		}
+		else
+		{
+			memcpy(_buffer + _rear, chpData, iSize);
+			_rear += iSize;
 		}
 
-		_tail += position;
-		return;
+		if (_rear == _bufferSize)
+			_rear = 0;
+
+		return iSize;
 	}
 
-	size_t CircularBuffer::PutData(void* inData, const size_t size)
+	int	CircularBuffer::GetData(void* chpDest, int iSize)
 	{
-		if (nullptr == inData)
+		if (iSize > GetUseSize())
+			return 0;
+
+		if (iSize <= 0)
+			return 0;
+
+		if (_front <= _rear)
 		{
-			return false;
+			memcpy(chpDest, _buffer + _front, iSize);
+			_front += iSize;
 		}
-
-		if (size <= 0)
-			return false;
-
-		std::lock_guard<std::recursive_mutex> lock(_mutex);
-
-		if (size > GetFreeSize())
+		else
 		{
-			return false;
-		}
-		
-		if (_head <= _tail)
-		{
-			const auto brokenputbytes = BUFFER_SIZE - _tail;
+			int ReadSize = _bufferSize - _front;
 
-			if (brokenputbytes >= size)
+			if (ReadSize >= iSize)
 			{
-				memcpy(_buffer + _tail, inData, size);
-				_tail += size;
-				return size;
+				memcpy(chpDest, _buffer + _front, iSize);
+				_front += iSize;
+			}
+			else
+			{
+				memcpy(chpDest, _buffer + _front, ReadSize);
+				memcpy(reinterpret_cast<char*>(chpDest) + ReadSize, _buffer, static_cast<size_t>(iSize) - ReadSize);
+				_front = iSize - ReadSize;
+			}
+		}
+
+		if (_rear == _front)
+			_rear = _front = 0;
+
+		return iSize;
+	}
+
+	int	CircularBuffer::Peek(void* chpDest, int iSize)
+	{
+		if (iSize > GetUseSize())
+			return 0;
+
+		if (iSize <= 0)
+			return 0;
+
+		if (_front <= _rear)
+		{
+			memcpy(chpDest, _buffer + _front, iSize);
+		}
+		else
+		{
+			int ReadSize = _bufferSize - _front;
+
+			if (ReadSize >= iSize)
+			{
+				memcpy(chpDest, _buffer + _front, iSize);
+			}
+			else
+			{
+				memcpy(chpDest, _buffer + _front, ReadSize);
+				memcpy(reinterpret_cast<char*>(chpDest) + ReadSize, _buffer, static_cast<size_t>(iSize) - ReadSize);
+			}
+		}
+
+		return iSize;
+	}
+
+	void CircularBuffer::MoveReadPostion(int iSize)
+	{
+		if (iSize > GetUseSize())
+			return;
+
+		if (iSize <= 0)
+			return;
+
+		if (_front <= _rear)
+		{
+			_front += iSize;
+		}
+		else
+		{
+			int ReadSize = _bufferSize - _front;
+
+			if (ReadSize >= iSize)
+			{
+				_front += iSize;
+			}
+			else
+			{
+				_front = iSize - ReadSize;
+			}
+		}
+		if (_front == _bufferSize)
+			_front = 0;
+	}
+
+	void CircularBuffer::MoveWritePos(int iSize)
+	{
+		int inputSize = 0;
+
+		if (iSize > GetFreeSize())
+			return;
+
+		if (iSize <= 0)
+			return;
+
+		if (_front <= _rear)
+		{
+			int WriteSize = _bufferSize - _rear;
+
+			if (WriteSize >= iSize)
+			{
+				_rear += iSize;
+			}
+			else
+			{
+				_rear = iSize - WriteSize;
 			}
 
-			memcpy(_buffer + _tail, inData, brokenputbytes);
-			memcpy(_buffer, static_cast<char*>(inData) + brokenputbytes, size - brokenputbytes);
-			_tail = size - brokenputbytes;
-			return size;
+		}
+		else
+		{
+			_rear += iSize;
 		}
 
-		memcpy(_buffer + _tail, inData, size);
-		_tail += size;
-		return size;
-		
+		if (_rear == _bufferSize)
+			_rear = 0;
 	}
 
 }

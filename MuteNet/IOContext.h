@@ -22,7 +22,7 @@ namespace Network
 		std::shared_ptr<Link> linkPtr;
 		IOType     Type;
 
-		IOContext(const std::shared_ptr<Link> link)
+		IOContext(std::shared_ptr<Link> link)
 			:linkPtr(link)
 		{
 			memset(&Overlapped, 0, sizeof(OVERLAPPED));
@@ -33,14 +33,12 @@ namespace Network
 	class SendContext : public IOContext
 	{
 	public:
-		static Util::TL::ObjectPool<SendContext> OverlappedPool;
 
-		SendContext(const std::shared_ptr<Link> link)
+		SendContext(std::shared_ptr<Link> link)
 			:IOContext(link)
 		{
 			Type = IO_SEND;
 		}
-		~SendContext() = default;
 
 		void IOComplete(DWORD TransfferedBytes, void* CompletionKey);
 
@@ -49,14 +47,12 @@ namespace Network
 	class RecvContext : public IOContext
 	{
 	public:
-		static Util::TL::ObjectPool<RecvContext> OverlappedPool;
 
-		RecvContext(const std::shared_ptr<Link> link)
+		RecvContext(std::shared_ptr<Link> link)
 			:IOContext(link)
 		{
 			Type = IO_RECV;
 		}
-		~RecvContext() = default;
 
 		void IOComplete(DWORD TransfferedBytes, void* CompletionKey);
 	};
@@ -64,14 +60,12 @@ namespace Network
 	class AcceptContext : public IOContext
 	{
 	public:
-		static Util::TL::ObjectPool<AcceptContext> OverlappedPool;
 
-		AcceptContext(const std::shared_ptr<Link> link)
+		AcceptContext(std::shared_ptr<Link> link)
 			:IOContext(link)
 		{
 			Type = IO_ACCEPT;
 		}
-		~AcceptContext() = default;
 
 		void IOComplete(DWORD TransfferedBytes, void* CompletionKey, IOService* Service);
 	};
@@ -79,14 +73,12 @@ namespace Network
 	class ConnectContext : public IOContext
 	{
 	public:
-		static Util::TL::ObjectPool<ConnectContext> OverlappedPool;
 
-		ConnectContext(const std::shared_ptr<Link> link)
+		ConnectContext(std::shared_ptr<Link> link)
 			:IOContext(link)
 		{
 			Type = IO_CONNECT;
 		}
-		~ConnectContext() = default;
 
 		void IOComplete(DWORD TransfferedBytes, void* CompletionKey);
 	};

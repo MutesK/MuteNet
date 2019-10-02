@@ -29,7 +29,7 @@ namespace Util
 
 	inline __int64 InputMemoryStream::GetRemainingDataSize() const
 	{
-		return _heapBlock->_head - _heapBlock->_tail;
+		return _heapBlock->_tail - _heapBlock->_head;
 	}
 
 	template <typename Type>

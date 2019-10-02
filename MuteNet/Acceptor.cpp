@@ -47,15 +47,14 @@ namespace Network
 
 		auto link = LinkManager::make_shared();
 
-		const auto AcceptOverlapped = AcceptContext::OverlappedPool(link);
+		const auto AcceptOverlapped = new AcceptContext(link);
 
 		if (FALSE == AcceptEx(_listen->socket_handle(), link->socket_handle(), AcceptBuf, 0,
-			sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, &bytes, reinterpret_cast<LPOVERLAPPED>(AcceptOverlapped)))
+			sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, &bytes, reinterpret_cast<LPOVERLAPPED>(&AcceptOverlapped->Overlapped)))
 		{
 			const auto error = WSAGetLastError();
 			if (error != WSA_IO_PENDING)
 			{
-				AcceptContext::OverlappedPool.Free(AcceptOverlapped);
 				// Logger
 				
 				std::cout << "AcceptEx Error : " << WSAGetLastError() << std::endl;

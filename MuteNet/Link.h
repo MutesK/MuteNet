@@ -14,23 +14,17 @@ namespace Network
 {
 	class IOContext;
 	
-	class Link final : public std::enable_shared_from_this<Link>
+	class Link final
 	{
 	private:
 		std::unique_ptr<TcpSocket>				_socket;
 		ConnectPoint							_endPoint;
 		
-		Util::CircularBuffer::Ptr _RecvQ;
-		Util::CircularBuffer::Ptr _SendQ;
+		std::unique_ptr<Util::CircularBuffer> _RecvQ;
+		std::unique_ptr<Util::CircularBuffer> _SendQ;
 	public:
 		Link();
 		virtual ~Link();
-
-		void RecvPost();
-		void SendPost();
-
-		void SendPacket(const std::shared_ptr<Util::OutputMemoryStream>& Packet);
-
 
 		TcpSocket* get_socket();
 		Util::CircularBuffer* get_RecvQ();

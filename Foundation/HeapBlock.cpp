@@ -3,30 +3,36 @@
 
 using namespace Util;
 
-TL::ObjectPool<HeapBlock> HeapBlock::BlockPool;
+
+const size_t HeapBlock::BUFFER_LENGTH;
 
 std::shared_ptr<HeapBlock> Util::HeapBlock::make_shared()
 {
-	return BlockPool.make_shared();
+	return std::make_shared<HeapBlock>();
+}
+
+Util::HeapBlock::HeapBlock()
+{
+	_buffer = new char[_capacity];
 }
 
 Util::HeapBlock::~HeapBlock()
 {
-	std::free(_buffer);
+	delete[] _buffer;
 }
 
-void HeapBlock::Write(const void* inData, const uint32_t bytesize)
+void HeapBlock::Write(const void* inData, const size_t bytesize)
 {
-	const uint32_t resultPosition = _tail + bytesize;
+	const uint64_t resultPosition = _tail + bytesize;
 
 	if (resultPosition > _capacity)
-		ReallocBuffer(std::max(static_cast<uint32_t>(_capacity * 2), resultPosition));
+		throw;
 
 	std::memcpy(_buffer + _tail, inData, bytesize);
 	_tail += bytesize;
 }
 
-void HeapBlock::Read(void* outData, const uint32_t bytesize)
+void HeapBlock::Read(void* outData, const size_t bytesize)
 {
 	if (outData == nullptr)
 		throw;
@@ -43,17 +49,7 @@ char* HeapBlock::GetBufferPtr()
 	return _buffer;
 }
 
-void HeapBlock::MoveWritePosition(const uint32_t length)
+void HeapBlock::MoveWritePosition(const size_t length)
 {
 	_tail += length;
-}
-
-void HeapBlock::ReallocBuffer(int bufferSize)
-{
-	_buffer = static_cast<char*>(std::realloc(_buffer, bufferSize));
-
-	if (_buffer == nullptr)
-		throw;
-
-	_capacity = bufferSize;
 }

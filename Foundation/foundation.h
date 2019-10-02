@@ -8,6 +8,7 @@
 #include <iostream>
 #include <atomic>
 #include <vector>
+#include <stdint.h>
 
 #include <map>
 #include <list>

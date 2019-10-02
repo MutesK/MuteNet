@@ -2,9 +2,9 @@
 
 #include "MemoryStream.h"
 #include "HeapBlock.h"
-
 namespace Util
 {
+	class InputMemoryStream;
 	class OutputMemoryStream : public MemoryStream
 	{
 	protected:
@@ -28,6 +28,7 @@ namespace Util
 		void Write(const std::string& inData);
 
 		virtual void Serialize(void* inData, uint32_t inByteCount) override;
+
 		virtual bool IsInput() override;
 
 		void MoveWritePosition(__int64 size);

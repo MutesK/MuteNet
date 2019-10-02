@@ -6,28 +6,26 @@
 #include "EngineIO.hpp"
 #include "IOService.h"
 #include "LinkManager.h"
+#include "ASyncWork.h"
 
 using namespace Util;
 
 namespace Network
 {
-	Util::TL::ObjectPool<SendContext> SendContext::OverlappedPool;
-	Util::TL::ObjectPool<RecvContext> RecvContext::OverlappedPool;
-	Util::TL::ObjectPool<AcceptContext> AcceptContext::OverlappedPool;
-	Util::TL::ObjectPool<ConnectContext> ConnectContext::OverlappedPool;
-
 	void SendContext::IOComplete(DWORD TransfferedBytes, void* CompletionKey)
 	{
 		auto SendQ = linkPtr->get_SendQ();
 
 		{
-			std::lock_guard<std::recursive_mutex> lock(SendQ->_mutex);
-
+			SAFE_UNIQUELOCK(SendQ->GetSharedLock());
+			
 			SendQ->MoveReadPostion(TransfferedBytes);
 		}
 
+		SendQ->set_isSending(false);
 		EngineIO::OnSended(linkPtr, TransfferedBytes);
-		SendContext::OverlappedPool.Free(this);
+		
+		delete this;
 	}
 
 	void RecvContext::IOComplete(DWORD TransfferedBytes, void* CompletionKey)
@@ -40,23 +38,26 @@ namespace Network
 		else
 		{
 			auto RecvQ = linkPtr->get_RecvQ();
-			RecvQ->MoveWritePostion(TransfferedBytes);
+			RecvQ->MoveWritePos(TransfferedBytes);
 			
 			uint32_t length = 0;
 
 			while (true)
 			{
 				length = 0;
+
+				if (RecvQ->GetUseSize() <= 0)
+					break;
+
 				RecvQ->Peek(&length, sizeof(uint32_t));
 
-				if (RecvQ->GetUsedSize() < (length + sizeof(uint32_t)))
+				if (RecvQ->GetUseSize() < (length + sizeof(uint32_t)))
 					break;
 
 				const auto packetSize = length + sizeof(uint32_t);
 				auto HeapBlock = HeapBlock::make_shared();
-				HeapBlock->ReallocBuffer(packetSize);
-
 				RecvQ->GetData(HeapBlock->GetBufferPtr(), packetSize);
+				HeapBlock->MoveWritePosition(packetSize);
 
 				auto InputStream = std::make_shared<InputMemoryStream>(HeapBlock);
 
@@ -64,10 +65,11 @@ namespace Network
 			}
 
 
-			linkPtr->RecvPost();
+			ASyncWork<RecvContext>::WorkRequest(linkPtr);
 		}
 
-		RecvContext::OverlappedPool.Free(this);
+		delete this;
+
 	}
 
 	void AcceptContext::IOComplete(DWORD TransfferedBytes, void* CompletionKey, IOService* Service)
@@ -81,10 +83,11 @@ namespace Network
 		Service->RegisterHandle(socket->native_handle(), nullptr);
 
 		EngineIO::OnAccepted(linkPtr);
-		AcceptContext::OverlappedPool.Free(this);
 
-		linkPtr->RecvPost();
+		ASyncWork<RecvContext>::WorkRequest(linkPtr);
 		acceptor->PostAccept();
+		delete this;
+
 	}
 
 	void ConnectContext::IOComplete(DWORD TransfferedBytes, void* CompletionKey)
@@ -95,8 +98,9 @@ namespace Network
 		socket->SetNagle(true);
 
 		EngineIO::OnConnected(linkPtr);
-		ConnectContext::OverlappedPool.Free(this);
 
-		linkPtr->RecvPost();
+		ASyncWork<RecvContext>::WorkRequest(linkPtr);
+
+		delete this;
 	}
 }

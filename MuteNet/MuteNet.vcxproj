@@ -163,6 +163,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Acceptor.h" />
+    <ClInclude Include="ASyncWork.h" />
     <ClInclude Include="Connector.h" />
     <ClInclude Include="ConnectPoint.h" />
     <ClInclude Include="EngineIO.h" />
