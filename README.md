@@ -8,6 +8,6 @@
 
 ## 성능 향상을 위한 TODO 리스트
 
-[ ] OVERLAPPED 관리 이슈
-[ ] Session(Link) 풀링 이슈와 최적화된 Reference Count 기능 개발. (STL 스마트포인터에서 덜어내기)
-[ ] MemoryStream 중간 매개체인 HeapBlock에 대한 풀링
+- [ ] OVERLAPPED 관리 이슈
+- [ ] Session(Link) 풀링 이슈와 최적화된 Reference Count 기능 개발. (STL 스마트포인터에서 덜어내기)
+- [ ] MemoryStream 중간 매개체인 HeapBlock에 대한 풀링
