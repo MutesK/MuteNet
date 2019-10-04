@@ -41,11 +41,19 @@ const std::string inputData =
 ClientApplication::ClientApplication()
 {
 	_Service = std::make_unique<Network::IOService>();
-	_Connector = std::make_unique<Network::Connector>(_Service.get());
+	_Connector = std::make_unique<Network::Connector>();
 	_timepoint = std::chrono::high_resolution_clock::now();
 
-	EngineIO::OnConnected = std::bind(&ClientApplication::OnConnected, this, std::placeholders::_1);
-	EngineIO::OnRecived = std::bind(&ClientApplication::OnRecived, this, std::placeholders::_1, std::placeholders::_2);
+	EngineIO::OnConnected = [&](const Network::LinkPtr& LinkPtr)
+	{
+		OnConnected(LinkPtr);
+	};
+
+	EngineIO::OnRecived = [&](const Network::LinkPtr& LinkPtr, std::shared_ptr<Util::InputMemoryStream>& Stream)
+	{
+		OnRecived(LinkPtr, Stream);
+	};
+
 	EngineIO::OnSended = std::bind(&ClientApplication::OnSended, this, std::placeholders::_1, std::placeholders::_2);
 }
 
@@ -54,7 +62,10 @@ bool ClientApplication::Open()
 	if (!_Service->Initialize(1, INFINITE))
 		return false;
 
-	if (!_Connector->Connect("127.0.0.1", 25000))
+	if (!_Connector->Initialize(_Service.get(), "127.0.0.1", 25000))
+		return false;
+
+	if (!_Connector->Connect())
 		return false;
 
 	return true;
@@ -68,12 +79,12 @@ void ClientApplication::Monitoring()
 	sendBytes = recvBytes = 0;
 }
 
-void ClientApplication::OnConnected(std::shared_ptr<Network::Link>& link)
+void ClientApplication::OnConnected(const Network::LinkPtr& link)
 {
 	std::cout << "Connected !!!! \n";
 }
 
-void ClientApplication::OnRecived(std::shared_ptr<Network::Link>& link, std::shared_ptr<Util::InputMemoryStream> recvPacket)
+void ClientApplication::OnRecived(std::shared_ptr<Network::Link>& link, std::shared_ptr<Util::InputMemoryStream>& recvPacket)
 {
 	recvBytes += recvPacket->GetRemainingDataSize();
 

@@ -21,8 +21,8 @@ public:
 	bool Open();
 	void Monitoring();
 private:
-	void OnAccepted(std::shared_ptr<Network::Link>&);
-	void OnRecived(std::shared_ptr<Network::Link>&, std::shared_ptr<Util::InputMemoryStream>);
-	void OnSended(std::shared_ptr<Network::Link>&, size_t SendedSize);
+	void OnAccepted(const Network::LinkPtr&);
+	void OnRecived(const Network::LinkPtr&, std::shared_ptr<Util::InputMemoryStream>&);
+	void OnSended(const Network::LinkPtr&, size_t SendedSize);
 };
 

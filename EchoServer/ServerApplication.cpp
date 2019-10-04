@@ -45,9 +45,20 @@ ServerApplication::ServerApplication()
 	_service = std::make_unique<Network::IOService>();
 	_timepoint = std::chrono::high_resolution_clock::now();
 
-	EngineIO::OnAccepted = std::bind(&ServerApplication::OnAccepted, this, std::placeholders::_1);
-	EngineIO::OnRecived = std::bind(&ServerApplication::OnRecived, this, std::placeholders::_1, std::placeholders::_2);
-	EngineIO::OnSended = std::bind(&ServerApplication::OnSended, this, std::placeholders::_1, std::placeholders::_2);
+	EngineIO::OnAccepted = [&](const Network::LinkPtr& Ptr)
+	{
+		OnAccepted(Ptr);
+	};
+
+	EngineIO::OnRecived = [&](const Network::LinkPtr& Ptr, std::shared_ptr<Util::InputMemoryStream> buffer)
+	{
+		OnRecived(Ptr, buffer);
+	};
+
+	EngineIO::OnSended = [&](const Network::LinkPtr& Ptr, size_t SendedSize)
+	{
+		OnSended(Ptr, SendedSize);
+	};
 }
 
 bool ServerApplication::Open()
@@ -68,15 +79,15 @@ bool ServerApplication::Open()
 	return true;
 }
 
-void ServerApplication::OnAccepted(std::shared_ptr<Link>& link)
+void ServerApplication::OnAccepted(const Network::LinkPtr& link)
 {
 	auto Packet = std::make_shared<Util::OutputMemoryStream>();
 	Packet->Serialize((void *)inputData.c_str(), inputData.length());
 
-	SendPacket(link, Packet);
+	link->SendPacket(Packet);
 }
 
-void ServerApplication::OnRecived(std::shared_ptr<Link>& link, std::shared_ptr<Util::InputMemoryStream> recvPacket)
+void ServerApplication::OnRecived(const Network::LinkPtr& link, std::shared_ptr<Util::InputMemoryStream>& recvPacket)
 {
 	char buf[1949];
 	
@@ -88,10 +99,10 @@ void ServerApplication::OnRecived(std::shared_ptr<Link>& link, std::shared_ptr<U
 
 	auto Packet = std::make_shared<Util::OutputMemoryStream>();
 	Packet->Serialize((void *)inputData.c_str(), inputData.length());
-	SendPacket(link, Packet);
+	link->SendPacket(Packet);
 }
 
-void ServerApplication::OnSended(std::shared_ptr<Link>& link, size_t SendedSize)
+void ServerApplication::OnSended(const Network::LinkPtr& link, size_t SendedSize)
 {
 	sendBytes += SendedSize;
 }
