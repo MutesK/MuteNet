@@ -7,11 +7,6 @@ namespace Util
 	const size_t CircularBuffer::BLANK_BUFFER;
 
 
-	std::unique_ptr<CircularBuffer> CircularBuffer::Alloc()
-	{
-		return std::make_unique<CircularBuffer>();
-	}
-
 	CircularBuffer::CircularBuffer()
 		:_front(0), _rear(0), _bufferSize(BUFFER_SIZE)
 	{
@@ -30,6 +25,11 @@ namespace Util
 	CircularBuffer::~CircularBuffer()
 	{
 		delete[] _buffer;
+	}
+
+	CircularBuffer& CircularBuffer::operator=(const CircularBuffer& RightBuffer)
+	{
+		return *this;
 	}
 
 	int	CircularBuffer::GetBufferSize(void)

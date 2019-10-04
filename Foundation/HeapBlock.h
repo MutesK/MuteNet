@@ -1,5 +1,7 @@
 #pragma once
 
+#include "TPtr.h"
+
 namespace Util
 {
 	class HeapBlock final
@@ -13,9 +15,9 @@ namespace Util
 		__int64 _tail = 0;
 		__int64 _capacity = BUFFER_LENGTH;
 
-		static TL::ObjectPool<HeapBlock> BlockPool;
 	public:
-		static std::shared_ptr<HeapBlock> make_shared();
+		static TL::ObjectPool<HeapBlock, true, true> BlockPool;
+		static std::shared_ptr<HeapBlock> Alloc();
 
 		HeapBlock();
 		~HeapBlock();

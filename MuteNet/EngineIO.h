@@ -1,8 +1,6 @@
 #pragma once
 
 #include "framework.h"
-#include "Link.h"
-#include "ASyncWork.h"
 
 namespace Network
 {
@@ -11,10 +9,10 @@ namespace Network
 	{
 	public:
 		// Network IO Function Delegate
-		static std::function<void(std::shared_ptr<Link>&)> OnAccepted;
-		static std::function<void(std::shared_ptr<Link>&)> OnConnected;
-		static std::function<void(std::shared_ptr<Link>&, std::shared_ptr<Util::InputMemoryStream>&)> OnRecived;
-		static std::function<void(std::shared_ptr<Link>&, size_t SendedSize)> OnSended;
+		static std::function<void(const LinkPtr&)> OnAccepted;
+		static std::function<void(const LinkPtr&)> OnConnected;
+		static std::function<void(const LinkPtr&, std::shared_ptr<Util::InputMemoryStream>&)> OnRecived;
+		static std::function<void(const LinkPtr&, size_t SendedSize)> OnSended;
 	};
 }
 

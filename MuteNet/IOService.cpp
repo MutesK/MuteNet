@@ -2,6 +2,9 @@
 #include "IOService.h"
 #include "IOContext.h"
 #include "../Foundation/MiniDump.h"
+#include "Link.h"
+#include "Acceptor.h"
+#include "EngineIO.h"
 
 namespace Network
 {
@@ -24,8 +27,9 @@ namespace Network
 		DWORD TransfferedBytes)
 	{
 		IOContext* pContext = reinterpret_cast<IOContext*>(Overlapped);
+		const auto LinkPtr = pContext->linkPtr;
 
-		if(nullptr == pContext)
+		if(nullptr == pContext || nullptr == LinkPtr)
 		{
 			// Logger
 			return;
@@ -35,19 +39,21 @@ namespace Network
 		switch (pContext->Type)
 		{
 		case IOType::IO_ACCEPT:
-			reinterpret_cast<AcceptContext*>(pContext)->IOComplete(TransfferedBytes, 
-				reinterpret_cast<void *>(CompletionKey), this);
+		{
+			auto acceptor = reinterpret_cast<Acceptor*>(CompletionKey);
+
+			acceptor->AcceptCompleteIO();
+		}
 			break;
 		case IOType::IO_CONNECT:
-			reinterpret_cast<ConnectContext*>(pContext)->IOComplete(TransfferedBytes,
-				reinterpret_cast<void*>(CompletionKey));
+			EngineIO::OnConnected(LinkPtr);
 			break;
 		case IOType::IO_RECV:
-			reinterpret_cast<RecvContext*>(pContext)->IOComplete(TransfferedBytes,
+			LinkPtr->RecvCompleteIO(TransfferedBytes,
 				reinterpret_cast<void*>(CompletionKey));
 			break;
 		case IOType::IO_SEND:
-			reinterpret_cast<SendContext*>(pContext)->IOComplete(TransfferedBytes,
+			LinkPtr->SendCompleteIO(TransfferedBytes,
 				reinterpret_cast<void*>(CompletionKey));
 			break;
 		default:

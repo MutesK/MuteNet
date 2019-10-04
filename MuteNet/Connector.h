@@ -11,15 +11,19 @@ namespace Network
 	class Connector final
 	{
 	private:
-		ConnectPoint _serverPoint;
-		IOService* _service;
-
+		ConnectPoint					_serverPoint;
+		ConnectPoint					_tempClientBindPoint;
+		IOService*						_service;
+		ConnectContext					_connectContext;
 	public:
 		static LPFN_CONNECTEX Connectex;
 	public:
-		Connector(IOService* service);
+		Connector();
 
-		bool Connect(const std::string& ip, uint16_t port);
+		bool Initialize(IOService* service,
+			const std::string& ip, uint16_t port);
+
+		bool Connect();
 	};
 }
 

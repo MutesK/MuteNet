@@ -2,7 +2,7 @@
 #pragma warning(disable : 6550)
 
 #include <mutex>
-#include <map>
+#include <set>
 #include <stack>
 #include <functional>
 
@@ -10,34 +10,19 @@ namespace Util
 {
 	namespace TL
 	{
-		template <typename Type>
-		class UniqueCustomDeleter
-		{
-		public:
-			static std::unique_ptr<Type, std::function<void(Type*)>> DeletorType;
-		};
-
 		template <typename Type, bool CallCtor = true, bool DynamicAllocateMode = false>
 		class ObjectPool
 		{
 		private:
 			std::mutex							_mutex;
-			std::map<void*, void*>				_elementPool;
+			std::set<void*>						_elementPool;
 			std::stack<void*>					_unUsedIndexs;
 
 			std::function<void(Type* ptr)>		_customDeletor;
+			std::size_t							_PoolSize;
 		public:
 			ObjectPool(size_t PoolSize = 10000);
 			~ObjectPool();
-
-			template <typename ...Args>
-			std::weak_ptr<Type> make_weak(Args&&... arguments);
-
-			template <typename ...Args>
-			std::shared_ptr<Type> make_shared(Args&& ... arguments);
-
-			template <typename ...Args>
-			std::unique_ptr<Type, std::function<void(Type* ptr)>> make_unique(Args&& ... arguments);
 
 			template <typename ...Args>
 			Type* operator()(Args&& ... arguments)
@@ -48,7 +33,7 @@ namespace Util
 			template <typename ...Args>
 			Type* Alloc(Args&&...arguments);
 
-			void Free(Type* ptr);
+			void Free(const Type* ptr);
 
 			size_t UseCount() const
 			{
@@ -58,6 +43,7 @@ namespace Util
 
 		template <typename Type, bool CallCtor, bool DynamicAllocateMode>
 		ObjectPool<Type, CallCtor, DynamicAllocateMode>::ObjectPool(size_t PoolSize)
+			:_PoolSize(PoolSize)
 		{
 			_customDeletor = [&](Type* ptr)
 			{
@@ -67,7 +53,7 @@ namespace Util
 			for(size_t index = 0; index < PoolSize; ++index)
 			{
 				auto object = std::malloc(sizeof(Type));
-				_elementPool[object] = object;
+				_elementPool.insert(object);
 
 				_unUsedIndexs.push(object);
 			}
@@ -78,37 +64,10 @@ namespace Util
 		{
 			for(auto object : _elementPool)
 			{
-				std::free(object.first);
+				std::free(object);
 			}
 
 			_elementPool.clear();
-		}
-
-		template <typename Type, bool CallCtor, bool DynamicAllocateMode>
-		template <typename ... Args>
-		std::weak_ptr<Type> ObjectPool<Type, CallCtor, DynamicAllocateMode>::make_weak(Args&&... arguments)
-		{
-			auto rawPtr = Alloc(arguments...);
-
-			return std::weak_ptr<Type>(rawPtr, _customDeletor);
-		}
-
-		template <typename Type, bool CallCtor, bool DynamicAllocateMode>
-		template <typename ... Args>
-		std::shared_ptr<Type> ObjectPool<Type, CallCtor, DynamicAllocateMode>::make_shared(Args&& ... arguments)
-		{
-			auto rawPtr = Alloc(arguments...);
-
-			return std::shared_ptr<Type>(rawPtr, _customDeletor);
-		}
-
-		template <typename Type, bool CallCtor, bool DynamicAllocateMode>
-		template <typename ... Args>
-		std::unique_ptr<Type, std::function<void(Type* ptr)>> ObjectPool<Type, CallCtor, DynamicAllocateMode>::make_unique(Args&& ... arguments)
-		{
-			auto rawPtr = Alloc(arguments...);
-
-			return std::unique_ptr<Type, std::function<void(Type * ptr)>>(rawPtr, _customDeletor);
 		}
 
 		template <typename Type, bool CallCtor, bool DynamicAllocateMode>
@@ -117,7 +76,17 @@ namespace Util
 		{
 			if(_unUsedIndexs.size() <= 0)
 			{
-				return nullptr; // OR Realloc
+				if (DynamicAllocateMode && _elementPool.size() < 50000) 
+				{
+					for (size_t index = 0; index < _PoolSize; ++index)
+					{
+						auto object = std::malloc(sizeof(Type));
+						_elementPool.insert(object);
+						_unUsedIndexs.push(object);
+					}
+				}
+				else
+					return nullptr;
 			}
 
 			void* ptr = nullptr;
@@ -136,22 +105,24 @@ namespace Util
 		}
 
 		template <typename Type, bool CallCtor, bool DynamicAllocateMode>
-		void ObjectPool<Type, CallCtor, DynamicAllocateMode>::Free(Type* ptr)
+		void ObjectPool<Type, CallCtor, DynamicAllocateMode>::Free(const Type* ptr)
 		{
+			auto pointer = const_cast<Type*>(ptr);
+
 			{
 				std::lock_guard<std::mutex> lock(_mutex);
 
-				auto iter = _elementPool.find(ptr);
+				auto iter = _elementPool.find(pointer);
 				if (iter == _elementPool.end())
 					throw;
 
-				_unUsedIndexs.push(ptr);
+				_unUsedIndexs.push(pointer);
 			}
 
 			if (CallCtor)
 			{
-				ptr->~Type();
-				memset(ptr, 0, sizeof(Type)); // TEST
+				pointer->~Type();
+				memset(pointer, 0, sizeof(Type)); // TEST
 			}
 		}
 	}

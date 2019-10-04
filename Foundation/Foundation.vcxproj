@@ -168,12 +168,14 @@
     <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="OutputMemoryStream.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="ReferenceCounter.h" />
     <ClInclude Include="SafeSharedLock.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskAgent.h" />
     <ClInclude Include="TaskManager.h" />
     <ClInclude Include="ThreadSafeQueue.h" />
+    <ClInclude Include="TPtr.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ASyncQueue.cpp" />

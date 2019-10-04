@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <map>
+#include <set>
 
 namespace Network
 {
@@ -9,12 +10,13 @@ namespace Network
 	class LinkManager
 	{
 	public:
-		static std::shared_ptr<Link> make_shared();
+		static Link* Alloc();
 		static size_t usersize();
-		static void removesession(const std::shared_ptr<Link>& link);
 
-		static std::map<Link*, std::shared_ptr<Link>>::iterator begin();
-		static std::map<Link*, std::shared_ptr<Link>>::iterator end();
+		static void removeSession(const Link* link);
+
+		static std::set<const Link*>::iterator unsafe_begin();
+		static std::set<const Link*>::iterator unsafe_end();
 	};
 }
 

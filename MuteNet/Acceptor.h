@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Link.h"
+#include "IOContext.h"
 
 namespace Network
 {
@@ -16,7 +17,8 @@ namespace Network
 		IOService*					_service{ nullptr };
 		std::unique_ptr<TcpSocket>  _listen {nullptr};
 
-		ConnectPoint _bindPoint;
+		ConnectPoint				_bindPoint;
+		AcceptContext				_acceptContext;
 	public:
 		static LPFN_ACCEPTEX AcceptEx;
 	public:
@@ -29,7 +31,12 @@ namespace Network
 		bool Open();
 
 		void PostAccept();
+	private:
 		TcpSocket* get_listen();
+
+		void AcceptCompleteIO();
+
+		friend class IOService;
 	};
 
 	inline TcpSocket* Acceptor::get_listen()

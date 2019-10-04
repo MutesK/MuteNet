@@ -7,7 +7,7 @@ using namespace Util;
 
 OutputMemoryStream::OutputMemoryStream()
 {
-	_heapBlock = HeapBlock::make_shared();
+	_heapBlock = HeapBlock::Alloc();
 }
 
 OutputMemoryStream::~OutputMemoryStream()

@@ -2,49 +2,51 @@
 #include "LinkManager.h"
 #include "Link.h"
 
+
 using namespace Util;
 namespace Network
 {
 	TL::ObjectPool<Link>                   linkPool;
-	std::map<Link*, std::shared_ptr<Link>> linkMap;
+	std::set<const Link*>				   linkSet;
 	std::mutex							   linkMutex;
 
-	std::shared_ptr<Link> LinkManager::make_shared()
+	Link* LinkManager::Alloc()
 	{
-		auto Link = linkPool.make_shared();
+		auto link = linkPool.Alloc();
 		{
 			std::lock_guard<std::mutex> lock(linkMutex);
-			linkMap[Link.get()] = Link;
+			linkSet.insert(link);
 		}
-		return Link;
-	}
-
-	void LinkManager::removesession(const std::shared_ptr<Link>& link)
-	{
-		std::lock_guard<std::mutex> lock(linkMutex);
-
-		auto iter = linkMap.find(link.get());
-
-		if (iter == linkMap.end())
-			return;
-
-		linkMap.erase(iter);
+		return link;
 	}
 
 	size_t LinkManager::usersize()
 	{
 		std::lock_guard<std::mutex> lock(linkMutex);
 
-		return linkMap.size();
+		return linkSet.size();
 	}
 
-	std::map<Link*, std::shared_ptr<Link>>::iterator LinkManager::begin()
+	void LinkManager::removeSession(const Link* link)
 	{
-		return linkMap.begin();
+		std::lock_guard<std::mutex> lock(linkMutex);
+
+		auto iter = linkSet.find(link);
+
+		if (iter == linkSet.end())
+			return;
+
+		linkSet.erase(iter);
+		linkPool.Free(link);
 	}
 
-	std::map<Link*, std::shared_ptr<Link>>::iterator LinkManager::end()
+	std::set<const Link*>::iterator LinkManager::unsafe_begin()
 	{
-		return linkMap.end();
+		return linkSet.begin();
+	}
+
+	std::set<const Link*>::iterator LinkManager::unsafe_end()
+	{
+		return linkSet.end();
 	}
 }

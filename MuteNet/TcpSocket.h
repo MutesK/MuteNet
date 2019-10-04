@@ -7,7 +7,7 @@ namespace Network
 	class TcpSocket final : public Socket
 	{
 	public:
-		TcpSocket(ADDRESS_FAMILY f);
+		TcpSocket(ADDRESS_FAMILY f = AF_INET);
 		virtual ~TcpSocket() = default;		
 
 		bool Init(ADDRESS_FAMILY f);

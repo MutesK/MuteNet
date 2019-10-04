@@ -72,9 +72,6 @@
     <ClInclude Include="IOService.h">
       <Filter>IOContextManage</Filter>
     </ClInclude>
-    <ClInclude Include="ASyncWork.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -100,9 +97,6 @@
     </ClCompile>
     <ClCompile Include="Connector.cpp">
       <Filter>Connector</Filter>
-    </ClCompile>
-    <ClCompile Include="IOContext.cpp">
-      <Filter>IOContextManage</Filter>
     </ClCompile>
     <ClCompile Include="IOService.cpp">
       <Filter>IOContextManage</Filter>

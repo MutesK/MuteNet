@@ -8,37 +8,41 @@ namespace Network
 {
 	LPFN_CONNECTEX Connector::Connectex = nullptr;
 
-	Connector::Connector(IOService* service)
-		:_service(service)
+	Connector::Connector()
+		:_service(nullptr)
 	{
 	}
 
-	bool Connector::Connect(const std::string& ip, uint16_t port)
+	bool Connector::Initialize(IOService* service, const std::string& ip, uint16_t port)
 	{
-		_serverPoint.SetConnectPoint(ip, port);
+		_service = service;
 
-		auto link = LinkManager::make_shared();
+		_serverPoint.SetConnectPoint(ip, port);
+		_tempClientBindPoint.SetConnectPoint();
+
+		return true;
+	}
+
+	bool Connector::Connect()
+	{
+		auto link = LinkManager::Alloc();
 		auto socket = link->get_socket();
 
-		{
-			ConnectPoint Point;
-			Point.SetConnectPoint();
+		socket.Bind(_tempClientBindPoint);
+		
+		_service->RegisterHandle(socket.native_handle(), nullptr);
 
-			socket->Bind(Point);
-		}
-		_service->RegisterHandle(socket->native_handle(), nullptr);
-
-		const auto ConnectOverlapped = new ConnectContext(link);
+		_connectContext.linkPtr = link;
 
 		GUID guidConnectEx = WSAID_CONNECTEX;
 		DWORD bytes = 0;
 
-		if (!SocketDelgateInvoker::Invoke(WSAIoctl, link->socket_handle(), SIO_GET_EXTENSION_FUNCTION_POINTER,
+		if (!SocketDelgateInvoker::Invoke(WSAIoctl, socket.socket_handle(), SIO_GET_EXTENSION_FUNCTION_POINTER,
 			&guidConnectEx, sizeof(GUID), &Connectex, sizeof(LPFN_CONNECTEX), &bytes, nullptr, nullptr))
 			return false;
 
-		if (!Connectex(socket->socket_handle(), _serverPoint.GetSocketConnectPointPtr(),
-			_serverPoint.GetSize(), nullptr, 0, nullptr, &ConnectOverlapped->Overlapped))
+		if (!Connectex(socket.socket_handle(), _serverPoint.GetSocketConnectPointPtr(),
+			_serverPoint.GetSize(), nullptr, 0, nullptr, &_connectContext.Overlapped))
 		{
 			const auto error = WSAGetLastError();
 			if (error != WSA_IO_PENDING)

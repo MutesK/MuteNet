@@ -4,7 +4,7 @@
 
 namespace Util
 {
-	class CircularBuffer
+	class CircularBuffer final
 	{
 	private:
 		static const size_t BUFFER_SIZE = 10000;
@@ -18,11 +18,11 @@ namespace Util
 
 		int					_bufferSize;
 	public:
-		static std::unique_ptr<CircularBuffer> Alloc();
 		CircularBuffer();
-		CircularBuffer(int iSize);
-
+		CircularBuffer(int);
 		~CircularBuffer();
+
+		CircularBuffer& operator=(const CircularBuffer& RightBuffer);
 
 		int	GetBufferSize(void);
 

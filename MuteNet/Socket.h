@@ -14,7 +14,7 @@ namespace Network
 	class Socket
 	{
 	protected:
-		Socket(ADDRESS_FAMILY);
+		Socket(ADDRESS_FAMILY f = AF_INET);
 	public:
 		virtual ~Socket();
 

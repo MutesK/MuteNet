@@ -3,12 +3,19 @@
 
 using namespace Util;
 
-
+TL::ObjectPool<HeapBlock, true, true> HeapBlock::BlockPool;
 const size_t HeapBlock::BUFFER_LENGTH;
 
-std::shared_ptr<HeapBlock> Util::HeapBlock::make_shared()
+const auto Deletor = [&](HeapBlock* pBlock)
 {
-	return std::make_shared<HeapBlock>();
+	HeapBlock::BlockPool.Free(pBlock);
+};
+
+std::shared_ptr<HeapBlock> Util::HeapBlock::Alloc()
+{
+	const auto Ptr = BlockPool.Alloc();
+
+	return std::shared_ptr<HeapBlock>(Ptr, Deletor);
 }
 
 Util::HeapBlock::HeapBlock()

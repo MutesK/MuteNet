@@ -5,35 +5,43 @@
 #include "ConnectPoint.h"
 #include "IOContext.h"
 
-namespace Util
-{
-	class CircularBuffer;
-};
-
 namespace Network
 {
 	class IOContext;
 	
-	class Link final
+	using LinkPtr = Link *;
+	class Link final : public Util::ReferenceCounter
 	{
 	private:
-		std::unique_ptr<TcpSocket>				_socket;
+		TcpSocket								_socket;
 		ConnectPoint							_endPoint;
 		
-		std::unique_ptr<Util::CircularBuffer> _RecvQ;
-		std::unique_ptr<Util::CircularBuffer> _SendQ;
+		// Buffer Pool °í¹Î
+		Util::CircularBuffer					_RecvQ;
+		Util::CircularBuffer					_SendQ;
+
+		SendContext							  _SendContext;
+		RecvContext							  _RecvContext;
 	public:
 		Link();
 		virtual ~Link();
 
-		TcpSocket* get_socket();
-		Util::CircularBuffer* get_RecvQ();
-		Util::CircularBuffer* get_SendQ();
+		void SendPost();
+		void RecvPost();
+
+		void SendPacket(const std::shared_ptr<Util::OutputMemoryStream>& Packet);
 
 		GET_SET_ATTRIBUTE(ConnectPoint&, endPoint);
 	private:
-		SOCKET		socket_handle() const;
+		void SendCompleteIO(DWORD TransfferedBytes, void* CompletionKey);
+		void RecvCompleteIO(DWORD TransfferedBytes, void* CompletionKey);
 
+		virtual void decRefCount();
+
+		GET_SET_ATTRIBUTE(TcpSocket&, socket);
+		GET_SET_ATTRIBUTE(Util::CircularBuffer&, RecvQ);
+		GET_SET_ATTRIBUTE(Util::CircularBuffer&, SendQ);
+	private:
 		friend class LinkManager;
 		friend class Acceptor;
 		friend class Connector;
@@ -41,22 +49,4 @@ namespace Network
 		friend class IOContext;
 	};
 
-	inline SOCKET Link::socket_handle() const 
-	{
-		return _socket->socket_handle();
-	}
-
-	inline TcpSocket* Link::get_socket()
-	{
-		return _socket.get();
-	}
-
-	inline Util::CircularBuffer* Link::get_RecvQ()
-	{
-		return _RecvQ.get();
-	}
-	inline Util::CircularBuffer* Link::get_SendQ()
-	{
-		return _SendQ.get();
-	}
 }

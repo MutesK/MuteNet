@@ -19,11 +19,10 @@ namespace Network
 	{
 	public:
 		OVERLAPPED Overlapped;
-		std::shared_ptr<Link> linkPtr;
+		Link* linkPtr;
 		IOType     Type;
 
-		IOContext(std::shared_ptr<Link> link)
-			:linkPtr(link)
+		IOContext()
 		{
 			memset(&Overlapped, 0, sizeof(OVERLAPPED));
 			Type = IO_NONE;
@@ -34,53 +33,38 @@ namespace Network
 	{
 	public:
 
-		SendContext(std::shared_ptr<Link> link)
-			:IOContext(link)
+		SendContext()
 		{
 			Type = IO_SEND;
 		}
-
-		void IOComplete(DWORD TransfferedBytes, void* CompletionKey);
-
 	};
 
 	class RecvContext : public IOContext
 	{
 	public:
 
-		RecvContext(std::shared_ptr<Link> link)
-			:IOContext(link)
+		RecvContext()
 		{
 			Type = IO_RECV;
 		}
-
-		void IOComplete(DWORD TransfferedBytes, void* CompletionKey);
 	};
 
 	class AcceptContext : public IOContext
 	{
 	public:
-
-		AcceptContext(std::shared_ptr<Link> link)
-			:IOContext(link)
+		AcceptContext()
 		{
 			Type = IO_ACCEPT;
 		}
-
-		void IOComplete(DWORD TransfferedBytes, void* CompletionKey, IOService* Service);
 	};
 
 	class ConnectContext : public IOContext
 	{
 	public:
-
-		ConnectContext(std::shared_ptr<Link> link)
-			:IOContext(link)
+		ConnectContext()
 		{
 			Type = IO_CONNECT;
 		}
-
-		void IOComplete(DWORD TransfferedBytes, void* CompletionKey);
 	};
 
 

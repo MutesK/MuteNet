@@ -5,6 +5,7 @@
 #include "IOService.h"
 #include "LinkManager.h"
 #include "IOContext.h"
+#include "EngineIO.h"
 
 namespace Network
 {
@@ -45,12 +46,12 @@ namespace Network
 		DWORD flags = 0;
 		BYTE AcceptBuf[256];
 
-		auto link = LinkManager::make_shared();
+		auto link = LinkManager::Alloc();
 
-		const auto AcceptOverlapped = new AcceptContext(link);
+		_acceptContext.linkPtr = link;
 
-		if (FALSE == AcceptEx(_listen->socket_handle(), link->socket_handle(), AcceptBuf, 0,
-			sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, &bytes, reinterpret_cast<LPOVERLAPPED>(&AcceptOverlapped->Overlapped)))
+		if (FALSE == AcceptEx(_listen->socket_handle(), link->get_socket().socket_handle(), AcceptBuf, 0,
+			sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, &bytes, reinterpret_cast<LPOVERLAPPED>(&_acceptContext.Overlapped)))
 		{
 			const auto error = WSAGetLastError();
 			if (error != WSA_IO_PENDING)
@@ -60,5 +61,21 @@ namespace Network
 				std::cout << "AcceptEx Error : " << WSAGetLastError() << std::endl;
 			}
 		}
+	}
+
+	void Acceptor::AcceptCompleteIO()
+	{
+		auto& Overlapped = _acceptContext;
+		const auto LinkPtr = Overlapped.linkPtr;
+		auto& socket = LinkPtr->get_socket();
+
+		socket.SetUpdateAcceptContext(_listen->socket_handle());
+		socket.SetNagle(true);
+
+		_service->RegisterHandle(socket.native_handle(), nullptr);
+
+		EngineIO::OnAccepted(LinkPtr);
+
+		PostAccept();
 	}
 }
