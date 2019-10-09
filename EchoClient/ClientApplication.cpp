@@ -84,16 +84,16 @@ void ClientApplication::OnConnected(const Network::LinkPtr& link)
 	std::cout << "Connected !!!! \n";
 }
 
-void ClientApplication::OnRecived(std::shared_ptr<Network::Link>& link, std::shared_ptr<Util::InputMemoryStream>& recvPacket)
+void ClientApplication::OnRecived(const Network::LinkPtr& link, std::shared_ptr<Util::InputMemoryStream>& recvPacket)
 {
 	recvBytes += recvPacket->GetRemainingDataSize();
 
 	auto Packet = std::make_shared<Util::OutputMemoryStream>();
 	Packet->Serialize((void*)inputData.c_str(), inputData.length());
-	SendPacket(link, Packet);
+	link->SendPacket(Packet);
 }
 
-void ClientApplication::OnSended(std::shared_ptr<Network::Link>& link, size_t SendedSize)
+void ClientApplication::OnSended(const Network::LinkPtr&, size_t SendedSize)
 {
 	sendBytes += SendedSize;
 }

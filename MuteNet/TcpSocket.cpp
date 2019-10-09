@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "TcpSocket.h"
-#include "ConnectPoint.h"
 
-namespace Network
+
+namespace MuteNet
 {
 	TcpSocket::TcpSocket(ADDRESS_FAMILY f)
 		:Socket(f)

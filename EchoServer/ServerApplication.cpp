@@ -1,6 +1,8 @@
 
 #include "ServerApplication.h"
 #include "../MuteNet/Link.h"
+#include "../MuteNet/EngineIO.h"
+
 
 const std::string inputData =
 "HELLO_UNITTEST000000000000000000000000000000000000000000000"

@@ -22,27 +22,3 @@
 
 static const DWORD AddressLength = sizeof(SOCKADDR_IN) + 16;
 
-
-class SocketDelgateInvoker // Invoker
-{
-public:
-	template <class Func,  typename ...Args >
-	static bool Invoke(Func&& func, Args ...args)
-	{
-		int ret = func((args)...);
-		if (ret == SOCKET_ERROR)
-		{
-			auto getLastError = WSAGetLastError();
-
-			if (getLastError == WSA_IO_PENDING)
-				return true;
-
-			std::cout << "Socket Error : " << getLastError << std::endl;
-			return false;
-		}
-
-		return true;
-	}
-};
-
-

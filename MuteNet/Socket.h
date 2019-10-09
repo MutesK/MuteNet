@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Network
+namespace MuteNet
 {
 	class ConnectPoint;
 

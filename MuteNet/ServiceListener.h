@@ -1,11 +1,11 @@
 #pragma once
 
-namespace Network
+namespace MuteNet
 {
-	class IOService : public Util::ASyncQueue
+	class ServiceListener : public Util::ASyncQueue
 	{
 	public:
-		IOService() = default;
+		ServiceListener() = default;
 		bool Initialize(const uint32_t numberOfWorkers, const uint32_t timeout) override;
 		void Stop() override;
 
@@ -15,7 +15,7 @@ namespace Network
 		void HandleTimeout(const uint32_t WorkerIndex, ULONG_PTR CompletionKey) override;
 	};
 
-	inline void IOService::RegisterHandle(void* handle, void* CompletionKey) const
+	inline void ServiceListener::RegisterHandle(void* handle, void* CompletionKey) const
 	{
 		CreateIoCompletionPort(handle, _iocpHandle, reinterpret_cast<ULONG64>(CompletionKey), 0);
 	}

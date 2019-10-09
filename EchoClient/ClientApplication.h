@@ -1,10 +1,10 @@
 #pragma once
 
 #include "../MuteNet/framework.h"
-#include "../MuteNet/EngineIO.h"
 #include "../MuteNet/Connector.h"
 #include "../MuteNet/IOService.h"
 #include <chrono>
+#include "../MuteNet/EngineIO.h"
 
 class ClientApplication
 {

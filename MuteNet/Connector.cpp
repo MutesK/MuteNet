@@ -4,7 +4,7 @@
 #include "LinkManager.h"
 #include "IOService.h"
 
-namespace Network
+namespace MuteNet
 {
 	LPFN_CONNECTEX Connector::Connectex = nullptr;
 
@@ -32,6 +32,7 @@ namespace Network
 		
 		_service->RegisterHandle(socket.native_handle(), nullptr);
 
+		ZeroMemory(&_connectContext.Overlapped, sizeof(OVERLAPPED));
 		_connectContext.linkPtr = link;
 
 		GUID guidConnectEx = WSAID_CONNECTEX;

@@ -3,7 +3,7 @@
 #include "IOContext.h"
 #include "Link.h"
 
-namespace Network
+namespace MuteNet
 {
 	class TcpSocket;
 	class IOService;
@@ -11,8 +11,6 @@ namespace Network
 	class Connector final
 	{
 	private:
-		ConnectPoint					_serverPoint;
-		ConnectPoint					_tempClientBindPoint;
 		IOService*						_service;
 		ConnectContext					_connectContext;
 	public:

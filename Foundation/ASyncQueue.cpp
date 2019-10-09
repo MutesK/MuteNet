@@ -95,7 +95,7 @@ void ASyncQueue::Run(const uint32_t workerIndex)
 			HandleTimeout(workerIndex, CompletionKey);
 			continue;
 		}
-
-		HandleCompletion(workerIndex, CompletionKey, lpOverlapped, byteTransferred);
+		else
+			HandleCompletion(workerIndex, CompletionKey, lpOverlapped, byteTransferred);
 	}
 }

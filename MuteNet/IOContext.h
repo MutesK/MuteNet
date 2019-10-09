@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Network
+namespace MuteNet
 {
 	struct IOConext;
 	class Link;

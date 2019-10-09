@@ -3,7 +3,7 @@
 #include "Link.h"
 #include "IOContext.h"
 
-namespace Network
+namespace MuteNet
 {
 	/*
 	 * IOService에 AcceptEx 함수를 통해 호출시키게 한다.

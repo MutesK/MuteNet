@@ -7,7 +7,7 @@
 #include "IOContext.h"
 #include "EngineIO.h"
 
-namespace Network
+namespace MuteNet
 {
 	LPFN_ACCEPTEX Acceptor::AcceptEx = nullptr;
 
@@ -49,6 +49,7 @@ namespace Network
 		auto link = LinkManager::Alloc();
 
 		_acceptContext.linkPtr = link;
+		ZeroMemory(&_acceptContext.Overlapped, sizeof(OVERLAPPED));
 
 		if (FALSE == AcceptEx(_listen->socket_handle(), link->get_socket().socket_handle(), AcceptBuf, 0,
 			sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, &bytes, reinterpret_cast<LPOVERLAPPED>(&_acceptContext.Overlapped)))
@@ -75,6 +76,7 @@ namespace Network
 		_service->RegisterHandle(socket.native_handle(), nullptr);
 
 		EngineIO::OnAccepted(LinkPtr);
+		LinkPtr->RecvPost();
 
 		PostAccept();
 	}

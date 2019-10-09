@@ -16,9 +16,6 @@
     <Filter Include="Acceptor">
       <UniqueIdentifier>{2beea835-7492-498f-a59c-12ab76a28b9e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ConnectionPoint">
-      <UniqueIdentifier>{dbe91ae4-e282-4e00-9335-411abe3014b7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Link">
       <UniqueIdentifier>{1984b906-a8d2-4bbc-95f0-e7e76a69bbff}</UniqueIdentifier>
     </Filter>
@@ -31,6 +28,15 @@
     <Filter Include="IOContextManage">
       <UniqueIdentifier>{7482c76f-03a2-4326-b39f-e4ef533da109}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Lookup">
+      <UniqueIdentifier>{b700ce6d-ad2e-4459-99af-083ce57c4328}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{1b773fdd-af48-402c-8a1e-a6a449c9a639}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server">
+      <UniqueIdentifier>{91d73d19-3147-4b91-ba58-d76fe4b81bbb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -39,20 +45,8 @@
     <ClInclude Include="pch.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="EngineIO.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="EngineIO.hpp">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Acceptor.h">
       <Filter>Acceptor</Filter>
-    </ClInclude>
-    <ClInclude Include="ConnectPoint.h">
-      <Filter>ConnectionPoint</Filter>
-    </ClInclude>
-    <ClInclude Include="Link.h">
-      <Filter>Link</Filter>
     </ClInclude>
     <ClInclude Include="LinkManager.h">
       <Filter>Link</Filter>
@@ -72,6 +66,27 @@
     <ClInclude Include="IOService.h">
       <Filter>IOContextManage</Filter>
     </ClInclude>
+    <ClInclude Include="HostNameLookup.h">
+      <Filter>Lookup</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkLookup.h">
+      <Filter>Lookup</Filter>
+    </ClInclude>
+    <ClInclude Include="SocketFunctionInvoker.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Network.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerHandle.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="LinkImpl.h">
+      <Filter>Link</Filter>
+    </ClInclude>
+    <ClInclude Include="Link.h">
+      <Filter>Link</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -79,12 +94,6 @@
     </ClCompile>
     <ClCompile Include="Acceptor.cpp">
       <Filter>Acceptor</Filter>
-    </ClCompile>
-    <ClCompile Include="ConnectPoint.cpp">
-      <Filter>ConnectionPoint</Filter>
-    </ClCompile>
-    <ClCompile Include="Link.cpp">
-      <Filter>Link</Filter>
     </ClCompile>
     <ClCompile Include="LinkManager.cpp">
       <Filter>Link</Filter>
@@ -100,6 +109,15 @@
     </ClCompile>
     <ClCompile Include="IOService.cpp">
       <Filter>IOContextManage</Filter>
+    </ClCompile>
+    <ClCompile Include="HostNameLookup.cpp">
+      <Filter>Lookup</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkLookup.cpp">
+      <Filter>Lookup</Filter>
+    </ClCompile>
+    <ClCompile Include="LinkImpl.cpp">
+      <Filter>Link</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

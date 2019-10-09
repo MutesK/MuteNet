@@ -1,7 +1,7 @@
 #pragma once
 #include "Socket.h"
 
-namespace Network
+namespace MuteNet
 {
 	class EndPoint;
 	class TcpSocket final : public Socket

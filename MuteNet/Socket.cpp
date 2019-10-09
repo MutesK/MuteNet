@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "Socket.h"
 #include "ConnectPoint.h"
-namespace Network
+namespace MuteNet
 {
 
 	Socket::Socket(ADDRESS_FAMILY family)

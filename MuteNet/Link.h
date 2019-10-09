@@ -2,51 +2,55 @@
 
 #include "Socket.h"
 #include "TcpSocket.h"
-#include "ConnectPoint.h"
 #include "IOContext.h"
+#include "Network.h"
 
-namespace Network
+namespace MuteNet
 {
-	class IOContext;
-	
-	using LinkPtr = Link *;
-	class Link final : public Util::ReferenceCounter
+	class Link
 	{
-	private:
-		TcpSocket								_socket;
-		ConnectPoint							_endPoint;
-		
-		// Buffer Pool °í¹Î
-		Util::CircularBuffer					_RecvQ;
-		Util::CircularBuffer					_SendQ;
-
-		SendContext							  _SendContext;
-		RecvContext							  _RecvContext;
+		friend class Network;
 	public:
-		Link();
+		class Callbacks
+		{
+		public:
+			virtual ~Callbacks() {}
+
+			virtual void OnCreated(LinkPtr Link) = 0;
+
+			virtual void OnReceivedData(const char* data, size_t Length) = 0;
+
+			virtual void OnRemoteClosed(void) = 0;
+
+			virtual void OnTLSHandShakeCompleted() = 0;
+
+			virtual void OnError(int ErrorCode, const std::string& ErrorMsg) = 0;
+		};
+
+		typedef std::shared_ptr<Callbacks> CallbacksPtr;
+	protected:
+		CallbacksPtr _Callback;
+
+		Link(CallbacksPtr callbacks)
+			:_Callback(callbacks)
+		{
+		}
+
+		Network::ConnectCallbacksPtr _ConnectCallbacks;
+	public:
 		virtual ~Link();
 
-		void SendPost();
-		void RecvPost();
+		virtual bool Send(const void* Data, size_t Length) = 0;
 
-		void SendPacket(const std::shared_ptr<Util::OutputMemoryStream>& Packet);
+		virtual std::string GetLocalIP(void) const = 0;
 
-		GET_SET_ATTRIBUTE(ConnectPoint&, endPoint);
-	private:
-		void SendCompleteIO(DWORD TransfferedBytes, void* CompletionKey);
-		void RecvCompleteIO(DWORD TransfferedBytes, void* CompletionKey);
+		virtual uint16_t GetLocalPort() const = 0;
 
-		virtual void decRefCount();
+		virtual std::string GetRemoteIP() const = 0;
 
-		GET_SET_ATTRIBUTE(TcpSocket&, socket);
-		GET_SET_ATTRIBUTE(Util::CircularBuffer&, RecvQ);
-		GET_SET_ATTRIBUTE(Util::CircularBuffer&, SendQ);
-	private:
-		friend class LinkManager;
-		friend class Acceptor;
-		friend class Connector;
-		friend class IOService;
-		friend class IOContext;
+		virtual uint16_t GetRemotePort() const = 0;
+
+		virtual void Shutdown() = 0;
+		virtual void Close() = 0;
 	};
-
 }

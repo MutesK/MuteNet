@@ -1,8 +1,6 @@
 #pragma once
 
 #include "../MuteNet/framework.h"
-#include "../MuteNet/EngineIO.h"
-
 #include "../MuteNet/Acceptor.h"
 #include "../MuteNet/IOService.h"
 
