@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "NetworkManager.h"
 #include "SocketFunctionInvoker.h"
+#include "Link.h"
 
 namespace MuteNet
 {
@@ -13,6 +14,23 @@ namespace MuteNet
 		{
 			int err = WSAGetLastError();
 			exit(1);
+		}
+	}
+
+	void NetworkManager::Terminate()
+	{
+		SAFE_UNIQUELOCK(_Lock);
+
+		auto Connections = _Links;
+		for(auto& Conn : Connections)
+		{
+			Conn->Close();
+		}
+
+		auto Servers = _Servers;
+		for(auto& Server : Servers)
+		{
+			Server->Close();
 		}
 	}
 
