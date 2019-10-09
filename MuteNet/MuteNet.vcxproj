@@ -167,10 +167,10 @@
     <ClInclude Include="framework.h" />
     <ClInclude Include="HostNameLookup.h" />
     <ClInclude Include="IOContext.h" />
-    <ClInclude Include="IOService.h" />
+    <ClInclude Include="NetworkManager.h" />
+    <ClInclude Include="ServiceListener.h" />
     <ClInclude Include="Link.h" />
     <ClInclude Include="LinkImpl.h" />
-    <ClInclude Include="LinkManager.h" />
     <ClInclude Include="Network.h" />
     <ClInclude Include="NetworkLookup.h" />
     <ClInclude Include="pch.h" />
@@ -183,9 +183,9 @@
     <ClCompile Include="Acceptor.cpp" />
     <ClCompile Include="Connector.cpp" />
     <ClCompile Include="HostNameLookup.cpp" />
-    <ClCompile Include="IOService.cpp" />
+    <ClCompile Include="NetworkManager.cpp" />
+    <ClCompile Include="ServiceListener.cpp" />
     <ClCompile Include="LinkImpl.cpp" />
-    <ClCompile Include="LinkManager.cpp" />
     <ClCompile Include="NetworkLookup.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

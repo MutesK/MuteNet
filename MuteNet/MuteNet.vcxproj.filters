@@ -37,6 +37,9 @@
     <Filter Include="Server">
       <UniqueIdentifier>{91d73d19-3147-4b91-ba58-d76fe4b81bbb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NetworkManager">
+      <UniqueIdentifier>{9c4010cc-8c0c-4ee0-a080-ff360a04426b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -48,9 +51,6 @@
     <ClInclude Include="Acceptor.h">
       <Filter>Acceptor</Filter>
     </ClInclude>
-    <ClInclude Include="LinkManager.h">
-      <Filter>Link</Filter>
-    </ClInclude>
     <ClInclude Include="Socket.h">
       <Filter>Socket</Filter>
     </ClInclude>
@@ -61,9 +61,6 @@
       <Filter>Connector</Filter>
     </ClInclude>
     <ClInclude Include="IOContext.h">
-      <Filter>IOContextManage</Filter>
-    </ClInclude>
-    <ClInclude Include="IOService.h">
       <Filter>IOContextManage</Filter>
     </ClInclude>
     <ClInclude Include="HostNameLookup.h">
@@ -87,6 +84,12 @@
     <ClInclude Include="Link.h">
       <Filter>Link</Filter>
     </ClInclude>
+    <ClInclude Include="ServiceListener.h">
+      <Filter>IOContextManage</Filter>
+    </ClInclude>
+    <ClInclude Include="NetworkManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -94,9 +97,6 @@
     </ClCompile>
     <ClCompile Include="Acceptor.cpp">
       <Filter>Acceptor</Filter>
-    </ClCompile>
-    <ClCompile Include="LinkManager.cpp">
-      <Filter>Link</Filter>
     </ClCompile>
     <ClCompile Include="Socket.cpp">
       <Filter>Socket</Filter>
@@ -107,9 +107,6 @@
     <ClCompile Include="Connector.cpp">
       <Filter>Connector</Filter>
     </ClCompile>
-    <ClCompile Include="IOService.cpp">
-      <Filter>IOContextManage</Filter>
-    </ClCompile>
     <ClCompile Include="HostNameLookup.cpp">
       <Filter>Lookup</Filter>
     </ClCompile>
@@ -118,6 +115,12 @@
     </ClCompile>
     <ClCompile Include="LinkImpl.cpp">
       <Filter>Link</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceListener.cpp">
+      <Filter>IOContextManage</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkManager.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
