@@ -40,6 +40,9 @@
     <Filter Include="NetworkManager">
       <UniqueIdentifier>{9c4010cc-8c0c-4ee0-a080-ff360a04426b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SocketUtil">
+      <UniqueIdentifier>{674b8933-7730-4695-bc89-41dc609f71b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -69,9 +72,6 @@
     <ClInclude Include="NetworkLookup.h">
       <Filter>Lookup</Filter>
     </ClInclude>
-    <ClInclude Include="SocketFunctionInvoker.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Network.h">
       <Filter>Network</Filter>
     </ClInclude>
@@ -88,7 +88,13 @@
       <Filter>IOContextManage</Filter>
     </ClInclude>
     <ClInclude Include="NetworkManager.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>NetworkManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SocketFunctionInvoker.h">
+      <Filter>SocketUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="SocketUtil.h">
+      <Filter>SocketUtil</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -119,11 +125,11 @@
     <ClCompile Include="ServiceListener.cpp">
       <Filter>IOContextManage</Filter>
     </ClCompile>
-    <ClCompile Include="NetworkManager.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Network.cpp">
       <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="NetworkManager.cpp">
+      <Filter>NetworkManager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

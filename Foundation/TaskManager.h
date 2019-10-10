@@ -50,28 +50,28 @@ namespace Util
 
 #define Enqueue_TASK(Dolambda)								\
 {															\
-	Task task(Dolambda, __FUNCTION__, __FILE__, __LINE__);	\
-	TaskManager::Instance()->AddTask(&task);				\
+	Util::Task task(Dolambda, __FUNCTION__, __FILE__, __LINE__);	\
+	Util::TaskManager::Instance()->AddTask(&task);				\
 }
 
 #define Enqueue_Agent_Task(Dolambda, agentid)				\
 {															\
-	Task task(Dolambda, __FUNCTION__, __FILE__, __LINE__);	\
-	TaskManager::Instance()->AddTaskAgentid(&task, agentid); \
+	Util::Task task(Dolambda, __FUNCTION__, __FILE__, __LINE__);	\
+	Util::TaskManager::Instance()->AddTaskAgentid(&task, agentid); \
 }
 
 #define Enqueue_COMPLETE_TASK(Dolamdba, CompleteLambda)		\
 {															\
-	Task task(Dolamdba, CompleteLambda, __FUNCTION__,		\
+	Util::Task task(Dolamdba, CompleteLambda, __FUNCTION__,		\
 	__FILE__, __LINE__);									\
-	TaskManager::Instance()->AddTask(&task);				\
+	Util::TaskManager::Instance()->AddTask(&task);				\
 }
 
 #define Enqueue_Agent_COMPLETE_TASK(Dolamdba, CompleteLambda, agentid)		\
 {																			\
-	Task task(Dolamdba, CompleteLambda, __FUNCTION__,						\
+	Util::Task task(Dolamdba, CompleteLambda, __FUNCTION__,						\
 	__FILE__, __LINE__);													\
-	TaskManager::Instance()->AddTaskAgentid(&task, agentid);				\
+	Util::TaskManager::Instance()->AddTaskAgentid(&task, agentid);				\
 }
 
 }
