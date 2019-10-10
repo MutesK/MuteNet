@@ -24,10 +24,14 @@ namespace MuteNet
 			Link::CallbacksPtr LinkCallbacks, Network::ConnectCallbacksPtr ConnectCallbacks);
 
 		bool Send(const void* Data, size_t Length) override;
+
 		std::string GetLocalIP() const override;
 		uint16_t GetLocalPort() const override;
 		std::string GetRemoteIP() const override;
 		uint16_t GetRemotePort() const override;
+
+		CallbacksPtr GetCallbacks();
+
 		void Shutdown() override;
 		void Close() override;
 	};

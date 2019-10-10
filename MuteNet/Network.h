@@ -3,6 +3,7 @@
 #include "framework.h"
 #include "Link.h"
 #include "ServerHandle.h"
+#include "LinkImpl.h"
 
 namespace MuteNet
 {
@@ -24,6 +25,7 @@ namespace MuteNet
 
 		class ListenCallbacks
 		{
+		public:
 			virtual ~ListenCallbacks() {}
 
 			virtual Link::CallbacksPtr OnInComingConnection(const std::string& RemoteIPAddress,
@@ -37,6 +39,7 @@ namespace MuteNet
 
 		class ResolveDomainNameCallbacks
 		{
+		public:
 			virtual ~ResolveDomainNameCallbacks() {}
 
 			virtual void OnNameResolved(const std::string& Name, const std::string& IP) = 0;
@@ -51,13 +54,16 @@ namespace MuteNet
 		};
 		typedef std::shared_ptr<ResolveDomainNameCallbacks> ResolveDomainNameCallbacksPtr;
 
-		static bool Connect(const std::string& host,
+		static LinkImplPtr Connect(const std::string& host,
 			uint16_t port,
 			ConnectCallbacksPtr connectCallbacks,
 			Link::CallbacksPtr LinkCallbacks);
 
 		static ServerHandlePtr Listen(uint16_t Port,
 			ListenCallbacksPtr listenCallbacks);
+
+		static bool HostnameToIP(const std::string& hostName, 
+			ResolveDomainNameCallbacksPtr callbacks);
 
 
 	};

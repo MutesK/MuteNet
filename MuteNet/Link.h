@@ -16,7 +16,7 @@ namespace MuteNet
 		public:
 			virtual ~Callbacks() {}
 
-			virtual void OnCreated(LinkPtr Link) = 0;
+			virtual void OnCreated(Link* Link) = 0;
 
 			virtual void OnReceivedData(const char* data, size_t Length) = 0;
 
