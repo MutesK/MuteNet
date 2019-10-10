@@ -183,6 +183,7 @@
     <ClCompile Include="Acceptor.cpp" />
     <ClCompile Include="Connector.cpp" />
     <ClCompile Include="HostNameLookup.cpp" />
+    <ClCompile Include="Network.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
     <ClCompile Include="ServiceListener.cpp" />
     <ClCompile Include="LinkImpl.cpp" />
