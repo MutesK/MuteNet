@@ -9,7 +9,7 @@ namespace Util
 		TaskAgent(const std::string& agentName);
 		~TaskAgent();
 
-		void AddTask(Task t);
+		void AddTask(const Task& t);
 		Task DequeCompletedTask();
 
 		void CheckHang(bool& OUT hang);

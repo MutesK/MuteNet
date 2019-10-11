@@ -62,4 +62,12 @@ namespace MuteNet
 			}
 		}
 	}
+
+	inline int listen_socket_reuseable(intptr_t socket)
+	{
+		int one = 1;
+
+		return setsockopt(socket, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<const char*>(&one),
+			static_cast<int>(sizeof(int)));
+	}
 }

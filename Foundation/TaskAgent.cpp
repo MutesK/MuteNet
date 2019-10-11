@@ -20,7 +20,7 @@ namespace Util
 		_thread->join();
 	}
 
-	void TaskAgent::AddTask(Task t)
+	void TaskAgent::AddTask(const Task& t)
 	{
 		_requestQueue.push(t);
 	}

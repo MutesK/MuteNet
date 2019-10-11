@@ -6,14 +6,9 @@
 >
 > 해당 라이브러리는 자가개발(개발 능력 향상)을 위해 계속 손대고 있는 실험적 (Experience) Level 입니다.
 
-## 성능 향상을 위한 TODO 리스트
-
-- [ ] OVERLAPPED 관리 이슈
-- [ ] Session(Link) 풀링 이슈와 최적화된 Reference Count 기능 개발. (STL 스마트포인터에서 덜어내기)
-- [ ] MemoryStream 중간 매개체인 HeapBlock에 대한 풀링
-
-## 차후 추가
-
-- [ ] 암호화 TLS
-- [ ] 패킷 압축 및 암호화, 특수하게 바이트 삽입가능하게 변경.
-- [ ] 리팩토링 작업.
+## To-Do
+- [ ] TcpSocket, Socket 클래스 존속 고민
+- [ ] AcceptEx, ConnectEx, GetAcceptExSockAddrs 에 대해 해당 함수포인터를 Init할때 사용할 소켓(Service Provider에 종속적인 소켓)에 대한 처리 방법 연구
+- [ ] THREAD_SHUTDOWN_FLAG() 를 사용하는 모든 클래스에 대해 Event로 처리하도록 변경. (해당 이벤트는 condition_variable로 생성.)
+- [ ] TaskManager에서 사용하는 Task 전달에 대해 Non-Copy로 변경.
+- [ ] File 클래스 생성.
