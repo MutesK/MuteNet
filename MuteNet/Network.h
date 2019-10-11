@@ -10,6 +10,8 @@ namespace MuteNet
 	typedef std::shared_ptr<Link> LinkPtr;
 	typedef std::shared_ptr<ServerHandle> ServerHandlePtr;
 
+	typedef std::vector<LinkImplPtr> LinkImplPtrs;
+
 	class Network
 	{
 	public:

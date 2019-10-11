@@ -69,9 +69,6 @@
     <ClInclude Include="HostNameLookup.h">
       <Filter>Lookup</Filter>
     </ClInclude>
-    <ClInclude Include="NetworkLookup.h">
-      <Filter>Lookup</Filter>
-    </ClInclude>
     <ClInclude Include="Network.h">
       <Filter>Network</Filter>
     </ClInclude>
@@ -96,6 +93,9 @@
     <ClInclude Include="SocketUtil.h">
       <Filter>SocketUtil</Filter>
     </ClInclude>
+    <ClInclude Include="ServerHandleImpl.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -116,9 +116,6 @@
     <ClCompile Include="HostNameLookup.cpp">
       <Filter>Lookup</Filter>
     </ClCompile>
-    <ClCompile Include="NetworkLookup.cpp">
-      <Filter>Lookup</Filter>
-    </ClCompile>
     <ClCompile Include="LinkImpl.cpp">
       <Filter>Link</Filter>
     </ClCompile>
@@ -130,6 +127,9 @@
     </ClCompile>
     <ClCompile Include="NetworkManager.cpp">
       <Filter>NetworkManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerHandleImpl.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

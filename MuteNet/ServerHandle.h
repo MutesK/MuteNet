@@ -10,7 +10,7 @@ namespace MuteNet
 
 		virtual void Close() = 0;
 
-		virtual void IsListening() const = 0;
+		virtual bool IsListening() const = 0;
 	};
 }
 

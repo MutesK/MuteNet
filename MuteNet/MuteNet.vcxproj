@@ -168,11 +168,11 @@
     <ClInclude Include="HostNameLookup.h" />
     <ClInclude Include="IOContext.h" />
     <ClInclude Include="NetworkManager.h" />
+    <ClInclude Include="ServerHandleImpl.h" />
     <ClInclude Include="ServiceListener.h" />
     <ClInclude Include="Link.h" />
     <ClInclude Include="LinkImpl.h" />
     <ClInclude Include="Network.h" />
-    <ClInclude Include="NetworkLookup.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="ServerHandle.h" />
     <ClInclude Include="Socket.h" />
@@ -186,9 +186,9 @@
     <ClCompile Include="HostNameLookup.cpp" />
     <ClCompile Include="Network.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
+    <ClCompile Include="ServerHandleImpl.cpp" />
     <ClCompile Include="ServiceListener.cpp" />
     <ClCompile Include="LinkImpl.cpp" />
-    <ClCompile Include="NetworkLookup.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
