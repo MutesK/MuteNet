@@ -74,6 +74,7 @@ namespace MuteNet
 
 	bool Network::HostnameToIP(const std::string& hostName, ResolveDomainNameCallbacksPtr callbacks)
 	{
-
+		HostNameLookup::Lookup(hostName, std::move(callbacks));
+		return true;
 	}
 }

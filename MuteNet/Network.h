@@ -65,6 +65,7 @@ namespace MuteNet
 		static bool HostnameToIP(const std::string& hostName, 
 			ResolveDomainNameCallbacksPtr callbacks);
 
-
+		static bool IPToHostName(const std::string& Ip,
+			ResolveDomainNameCallbacksPtr callbacks);
 	};
 }

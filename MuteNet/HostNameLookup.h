@@ -5,7 +5,6 @@ namespace MuteNet
 {
 	class HostNameLookup
 	{
-		static const 
 	public:
 		static void Lookup(const std::string& hostName, Network::ResolveDomainNameCallbacksPtr Callbacks);
 

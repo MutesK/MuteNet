@@ -11,3 +11,9 @@
 - [ ] OVERLAPPED 관리 이슈
 - [ ] Session(Link) 풀링 이슈와 최적화된 Reference Count 기능 개발. (STL 스마트포인터에서 덜어내기)
 - [ ] MemoryStream 중간 매개체인 HeapBlock에 대한 풀링
+
+## 차후 추가
+
+- [ ] 암호화 TLS
+- [ ] 패킷 압축 및 암호화, 특수하게 바이트 삽입가능하게 변경.
+- [ ] 리팩토링 작업.
