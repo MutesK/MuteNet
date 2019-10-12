@@ -11,8 +11,9 @@ namespace MuteNet
 		virtual ~TcpSocket() = default;		
 
 		bool Init(ADDRESS_FAMILY f);
-		int  Bind(ConnectPoint& Point) const;
+		
 		int SetNagle(bool bOption) const;
+		int SetNonblock();
 		bool Listen(int backlog);
 
 		int SetConditionAccept(bool trigger) const;

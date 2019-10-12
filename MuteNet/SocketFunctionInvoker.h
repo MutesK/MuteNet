@@ -4,7 +4,7 @@
 
 namespace MuteNet
 {
-	class SocketDelgateInvoker // Invoker
+	class SocketDelegateInvoker // Invoker
 	{
 	public:
 		template <class Func, typename ...Args >

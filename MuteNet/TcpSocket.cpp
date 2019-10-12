@@ -24,44 +24,46 @@ namespace MuteNet
 		return true;
 	}
 
-	int TcpSocket::Bind(ConnectPoint& Point) const
-	{
-		return SocketDelgateInvoker::Invoke(::bind, _handle, Point.GetSocketConnectPointPtr(), Point.GetSize());
-	}
-
 	int TcpSocket::SetNagle(bool bOption) const
 	{
 		int opt = bOption;
 
-		return SocketDelgateInvoker::Invoke(::setsockopt, _handle, IPPROTO_TCP, TCP_NODELAY,
+		return SocketDelegateInvoker::Invoke(::setsockopt, _handle, IPPROTO_TCP, TCP_NODELAY,
 			reinterpret_cast<const char*>(&opt), sizeof(int));
+	}
+
+	int TcpSocket::SetNonblock()
+	{
+		unsigned int nonblocking = 1;
+
+		return SocketDelegateInvoker::Invoke(ioctlsocket, FIONBIO, &nonblocking);
 	}
 
 	bool TcpSocket::Listen(int backlog)
 	{
-		return SocketDelgateInvoker::Invoke(listen,_handle, backlog);
+		return SocketDelegateInvoker::Invoke(listen,_handle, backlog);
 	}
 
 	int TcpSocket::SetConditionAccept(bool trigger) const
 	{
-		return SocketDelgateInvoker::Invoke(setsockopt, _handle, SOL_SOCKET, SO_CONDITIONAL_ACCEPT,
+		return SocketDelegateInvoker::Invoke(setsockopt, _handle, SOL_SOCKET, SO_CONDITIONAL_ACCEPT,
 			reinterpret_cast<char*>(&trigger), sizeof(bool));
 	}
 
 	int TcpSocket::SetNoDelay(bool toggle) const
 	{
-		return SocketDelgateInvoker::Invoke(setsockopt, _handle, IPPROTO_TCP, TCP_NODELAY, reinterpret_cast<const char*>(&toggle), sizeof(bool));
+		return SocketDelegateInvoker::Invoke(setsockopt, _handle, IPPROTO_TCP, TCP_NODELAY, reinterpret_cast<const char*>(&toggle), sizeof(bool));
 	}
 
 	int TcpSocket::SetUpdateAcceptContext(SOCKET listen) const
 	{
-		return SocketDelgateInvoker::Invoke(setsockopt, _handle, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT,
+		return SocketDelegateInvoker::Invoke(setsockopt, _handle, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT,
 			(const char *)&listen, sizeof(SOCKET));
 	}
 
 	int TcpSocket::SetUpdateConnectContext() const
 	{
-		return SocketDelgateInvoker::Invoke(setsockopt, _handle, SOL_SOCKET, SO_UPDATE_CONNECT_CONTEXT,
+		return SocketDelegateInvoker::Invoke(setsockopt, _handle, SOL_SOCKET, SO_UPDATE_CONNECT_CONTEXT,
 			nullptr, 0);
 	}
 

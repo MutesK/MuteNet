@@ -36,15 +36,12 @@ namespace MuteNet
 
 		int Shutdown(ShutdownBlockMode Mode);
 
-		SOCKET socket_handle() const;
-		void set_socket_handle(SOCKET handle);
-
-		HANDLE native_handle() const;
-		void set_native_handle(HANDLE handle);
+		intptr_t socket_handle() const;
+		void set_socket_handle(intptr_t handle);
 
 		friend class Link;
 	protected:
-		SOCKET			_handle;
+		intptr_t		_handle;
 		DWORD			_lastError;
 		ADDRESS_FAMILY	_address_family;
 	};
@@ -84,23 +81,13 @@ namespace MuteNet
 		return setsockopt(_handle, SOL_SOCKET, SO_KEEPALIVE, reinterpret_cast<const char*>(&toggle), sizeof(bool));
 	}
 
-	inline SOCKET Socket::socket_handle() const
+	inline intptr_t Socket::socket_handle() const
 	{
 		return _handle;
 	}
 
-	inline void Socket::set_socket_handle(SOCKET handle)
+	inline void Socket::set_socket_handle(intptr_t handle)
 	{
 		_handle = handle;
 	}
-
-	inline HANDLE Socket::native_handle() const
-	{
-		return reinterpret_cast<HANDLE>(_handle);
-	}
-	inline void Socket::set_native_handle(HANDLE handle)
-	{
-		_handle = reinterpret_cast<SOCKET>(handle);
-	}
-
 }

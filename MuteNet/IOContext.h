@@ -1,71 +1,61 @@
 #pragma once
 
+#include "Socket.h"
+#include "SocketFunctionInvoker.h"
+
 namespace MuteNet
 {
-	struct IOConext;
-	class Link;
-	class IOService;
+	typedef LPFN_ACCEPTEX						AcceptExPtr;
+	typedef LPFN_CONNECTEX						ConnectExPtr;
+	typedef LPFN_GETACCEPTEXSOCKADDRS			GetAcceptExSockAddrsPtr;
 
-	enum IOType
+	typedef void(*IOCPCallbackPtr)(struct Overlapped*, uintptr_t, int, int success);
+
+	struct ExtensionFunctions
 	{
-		IO_NONE,
-		IO_ACCEPT,  // Acceptor
-		IO_RECV,
-		IO_SEND,
-		IO_CONNECT,  // Connector
+		AcceptExPtr					_AcceptEx;
+		ConnectExPtr				_ConnectEx;
+		GetAcceptExSockAddrsPtr		_GetAcceptExSockaddrs;
 	};
 
-	class IOContext
+	struct Overlapped
 	{
-	public:
-		OVERLAPPED Overlapped;
-		Link* linkPtr;
-		IOType     Type;
-
-		IOContext()
-		{
-			memset(&Overlapped, 0, sizeof(OVERLAPPED));
-			Type = IO_NONE;
-		}
+		OVERLAPPED				_Overlapped;
+		IOCPCallbackPtr			_CallbackPtr;
 	};
 
-	class SendContext : public IOContext
+	inline void* GetExtensionFunction(SOCKET s, const GUID* fn)
 	{
-	public:
+		void* ptr = nullptr;
+		DWORD bytes = 0;
 
-		SendContext()
-		{
-			Type = IO_SEND;
-		}
-	};
+		SocketDelegateInvoker::Invoke(WSAIoctl, SIO_GET_EXTENSION_FUNCTION_POINTER,
+			(GUID*)fn, sizeof(*fn), &ptr, sizeof(ptr), &bytes, nullptr, nullptr);
 
-	class RecvContext : public IOContext
+		return ptr;
+	}
+
+	inline void InitExtensionFunctions(struct ExtensionFunctions* ext)
 	{
-	public:
+		const GUID acceptex = WSAID_ACCEPTEX;
+		const GUID connectex = WSAID_CONNECTEX;
+		const GUID getaccpetexsockaddrs = WSAID_GETACCEPTEXSOCKADDRS;
 
-		RecvContext()
-		{
-			Type = IO_RECV;
-		}
-	};
+		SOCKET serviceProvider = socket(AF_INET, SOCK_STREAM, 0);
 
-	class AcceptContext : public IOContext
-	{
-	public:
-		AcceptContext()
-		{
-			Type = IO_ACCEPT;
-		}
-	};
+		if (serviceProvider == INVALID_SOCKET)
+			return;
 
-	class ConnectContext : public IOContext
-	{
-	public:
-		ConnectContext()
-		{
-			Type = IO_CONNECT;
-		}
-	};
+		ext->_AcceptEx = 
+			reinterpret_cast<AcceptExPtr>(GetExtensionFunction(serviceProvider, &acceptex));
+		ext->_ConnectEx =
+			reinterpret_cast<ConnectExPtr>(GetExtensionFunction(serviceProvider, &connectex));
+		ext->_GetAcceptExSockaddrs =
+			reinterpret_cast<GetAcceptExSockAddrsPtr>(GetExtensionFunction(serviceProvider, &getaccpetexsockaddrs));
 
 
+		closesocket(serviceProvider);
+
+
+	}
 }

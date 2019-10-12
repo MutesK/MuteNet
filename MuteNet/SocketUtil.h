@@ -63,11 +63,19 @@ namespace MuteNet
 		}
 	}
 
-	inline int listen_socket_reuseable(intptr_t socket)
+	inline bool listen_socket_reuseable(intptr_t socket)
 	{
 		int one = 1;
 
-		return setsockopt(socket, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<const char*>(&one),
+		return SocketDelegateInvoker::Invoke(setsockopt, socket, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<const char*>(&one),
 			static_cast<int>(sizeof(int)));
+	}
+
+	inline bool make_socket_nonblocking(intptr_t socket)
+	{
+		unsigned int nonblocking = 1;
+
+		return SocketDelegateInvoker::Invoke(ioctlsocket, FIONBIO, &nonblocking);
+	}
 	}
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -162,11 +162,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Acceptor.h" />
-    <ClInclude Include="Connector.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="HostNameLookup.h" />
     <ClInclude Include="IOContext.h" />
+    <ClInclude Include="Acceptor.h" />
     <ClInclude Include="NetworkManager.h" />
     <ClInclude Include="ServerHandleImpl.h" />
     <ClInclude Include="ServiceListener.h" />
@@ -181,9 +180,8 @@
     <ClInclude Include="TcpSocket.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Acceptor.cpp" />
-    <ClCompile Include="Connector.cpp" />
     <ClCompile Include="HostNameLookup.cpp" />
+    <ClCompile Include="Acceptor.cpp" />
     <ClCompile Include="Network.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
     <ClCompile Include="ServerHandleImpl.cpp" />
