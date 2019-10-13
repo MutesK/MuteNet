@@ -63,7 +63,7 @@ namespace MuteNet
 		}
 	}
 
-	inline bool listen_socket_reuseable(intptr_t socket)
+	inline int listen_socket_reuseable(intptr_t socket)
 	{
 		int one = 1;
 
@@ -71,7 +71,7 @@ namespace MuteNet
 			static_cast<int>(sizeof(int)));
 	}
 
-	inline bool make_socket_nonblocking(intptr_t socket)
+	inline int make_socket_nonblocking(intptr_t socket)
 	{
 		unsigned int nonblocking = 1;
 

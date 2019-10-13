@@ -5,51 +5,61 @@
 
 namespace MuteNet
 {
-	Acceptor::Acceptor(const ServiceListener* Port, const listener_callback& Callback)
-		:_port(const_cast<ServiceListener*>(Port)), _listen(INVALID_SOCKET), _callback(Callback)
+	AcceptorPtr Acceptor::Listen(ServiceListener* Port, listener_callback& Callback, listener_errorcallback& ErrorCallback,
+		SOCKADDR_IN* Ip, int Backlog)
 	{
-		_extension = _port->GetExtension();
+		if (Port == nullptr)
+			return nullptr;
+
+		const auto FuncExt = Port->GetExtension();
+		if (FuncExt == nullptr || FuncExt->_AcceptEx == nullptr 
+			|| FuncExt->_GetAcceptExSockaddrs == nullptr)
+			return nullptr;
+
+		AcceptorPtr Ptr{new Acceptor(const_cast<ServiceListener *>(Port), Callback, ErrorCallback, Ip, Backlog)};
+
+		Ptr->InitializeListenSocket();
+
+		return Ptr;
 	}
 
-	bool Acceptor::Listen(int family, int backlog, uint8_t Port)
+	Acceptor::Acceptor(ServiceListener* Port, listener_callback& Callback, listener_errorcallback& ErrorCallback,
+		SOCKADDR_IN* Ip, int Backlog)
+		:_port(Port), _callback(std::move(Callback)), _address(Ip), _listen(INVALID_SOCKET),
+		_backlog(Backlog), _errorcallback(ErrorCallback)
 	{
-		if (_extension == nullptr || _port == nullptr)
-			return false;
+	}
 
-		if (_extension->_AcceptEx == nullptr || _extension->_GetAcceptExSockaddrs == nullptr)
-			return false;
+	void Acceptor::InitializeListenSocket()
+	{
+		int error;
 
-		_listen = socket(family, SOCK_STREAM, IPPROTO_TCP);
-
+		_listen = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 		if (_listen == INVALID_SOCKET)
-			return false;
-
-		bool on = true;
-		if (!SocketDelegateInvoker::Invoke(setsockopt, _listen, SOL_SOCKET, SO_CONDITIONAL_ACCEPT,
-			reinterpret_cast<char*>(&on), sizeof(on)))
-			return false;
-
-		if (!listen_socket_reuseable(_listen))
-			return false;
-
 		{
-			sockaddr_in name;
-			ZeroMemory(&name, sizeof(name));
-			name.sin_family = AF_INET;
-			name.sin_port = ntohs(Port);
+			error = WSAGetLastError();
 
-			if (!SocketDelegateInvoker::Invoke(bind, reinterpret_cast<const sockaddr*>(&name), sizeof(name)))
-				return false;
+			_errorcallback(_listen, error, ErrorString(error));
+			return;
 		}
 
-		if (!make_socket_nonblocking(_listen))
-			return false;
+		_port->RegisterHandle((void *)_listen, nullptr);
 
-		if (listen(_listen, backlog) != 0)
-			return false;
+		error = SocketDelegateInvoker::Invoke(bind, _listen,
+			reinterpret_cast<sockaddr*>(_address), sizeof(SOCKADDR_IN));
+		if (error != ERROR_SUCCESS)
+		{
+			_errorcallback(_listen, error, ErrorString(error));
+			return;
+		}
 
+		error = SocketDelegateInvoker::Invoke(::listen, _listen, _backlog);
+		if (error != ERROR_SUCCESS)
+		{
+			_errorcallback(_listen, error, ErrorString(error));
+			return;
+		}
 
-
-		return true;
 	}
+
 }

@@ -5,19 +5,39 @@ namespace MuteNet
 	class ServiceListener;
 	struct ExtensionFunctions;
 
-	typedef void (*listener_callback)(intptr_t, struct sockaddr*, int socklen, void*);
+	class Acceptor;
+	typedef std::shared_ptr<Acceptor> AcceptorPtr;
 
+	typedef void (*listener_callback)(intptr_t s, struct sockaddr* address, int socklen, void*);
+	typedef void (*listener_errorcallback)(intptr_t s, int errorCode, std::string errorString);
 
-	class Acceptor final
+	struct AcceptorTask
+	{
+		SOCKET			_socket;
+		OVERLAPPED		_overlapped;
+		char			_addrbuf[1];
+		int				_buflen;
+	};
+
+	class Acceptor
 	{
 		ServiceListener*			_port;
 		SOCKET						_listen;
-		ExtensionFunctions*			_extension;
+		SOCKADDR_IN*				_address;
+		int							_backlog;
 		listener_callback			_callback;
+		listener_errorcallback		_errorcallback;
 	public:
-		Acceptor(const ServiceListener* Port, const listener_callback& Callback);
-		bool Listen(int Family, int Backlog, uint8_t Port);
+		AcceptorPtr Listen(ServiceListener* Port, 
+			listener_callback& Callback, listener_errorcallback& ErrorCallback, 
+			SOCKADDR_IN* Ip, int Backlog = 0);
 
+	private:
+		Acceptor(ServiceListener* Port, listener_callback& Callback, listener_errorcallback& ErrorCallback,
+			SOCKADDR_IN* Ip, int Backlog);
+
+		void InitializeListenSocket();
 	};
+
 }
 

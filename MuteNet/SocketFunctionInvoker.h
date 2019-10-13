@@ -8,7 +8,7 @@ namespace MuteNet
 	{
 	public:
 		template <class Func, typename ...Args >
-		static inline bool Invoke(Func&& func, Args ...args)
+		static inline int Invoke(Func&& func, Args ...args)
 		{
 			int ret = func((args)...);
 			if (ret == SOCKET_ERROR)
@@ -16,13 +16,12 @@ namespace MuteNet
 				auto getLastError = WSAGetLastError();
 
 				if (getLastError == WSA_IO_PENDING)
-					return true;
+					return ERROR_SUCCESS;
 
-				std::cout << ErrorString(getLastError) << std::endl;
-				return false;
+				return getLastError;
 			}
 
-			return true;
+			return ERROR_SUCCESS;
 		}
 	};
 
