@@ -5,10 +5,10 @@
 
 namespace MuteNet
 {
-	AcceptorPtr Acceptor::Listen(ServiceListener* Port, listener_callback& Callback, listener_errorcallback& ErrorCallback,
-		SOCKADDR_IN* Ip, int Backlog)
+	AcceptorPtr Acceptor::Listen(ServiceListener* Port, ListenerCallback Callback, ListenerErrorCallback ErrorCallback,
+		SOCKADDR_IN* Ip, void* key, int Backlog)
 	{
-		if (Port == nullptr)
+		if (Port == nullptr || Callback == nullptr)
 			return nullptr;
 
 		const auto FuncExt = Port->GetExtension();
@@ -16,17 +16,17 @@ namespace MuteNet
 			|| FuncExt->_GetAcceptExSockaddrs == nullptr)
 			return nullptr;
 
-		AcceptorPtr Ptr{new Acceptor(const_cast<ServiceListener *>(Port), Callback, ErrorCallback, Ip, Backlog)};
+		AcceptorPtr Ptr{new Acceptor(const_cast<ServiceListener *>(Port), Callback, ErrorCallback, Ip, key ,Backlog)};
 
 		Ptr->InitializeListenSocket();
 
 		return Ptr;
 	}
 
-	Acceptor::Acceptor(ServiceListener* Port, listener_callback& Callback, listener_errorcallback& ErrorCallback,
-		SOCKADDR_IN* Ip, int Backlog)
+	Acceptor::Acceptor(ServiceListener* Port, ListenerCallback& Callback, ListenerErrorCallback& ErrorCallback,
+		SOCKADDR_IN* Ip, void* key, int Backlog)
 		:_port(Port), _callback(std::move(Callback)), _address(Ip), _listen(INVALID_SOCKET),
-		_backlog(Backlog), _errorcallback(ErrorCallback)
+		_backlog(Backlog), _errorcallback(ErrorCallback), _key(key)
 	{
 	}
 
@@ -59,7 +59,6 @@ namespace MuteNet
 			_errorcallback(_listen, error, ErrorString(error));
 			return;
 		}
-
 	}
 
 }

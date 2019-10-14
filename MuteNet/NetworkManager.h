@@ -14,12 +14,16 @@ namespace MuteNet
 	typedef std::shared_ptr<ServerHandle> ServerHandlePtr;
 	typedef std::vector<ServerHandlePtr>  ServerHandlePtrs;
 
+	class ServiceListener;
+	typedef std::unique_ptr<ServiceListener> ServiceListenerPtr;
+
 	class NetworkManager : public Util::TL::Singleton<NetworkManager>
 	{
 	private:
 		SafeSharedLock				_Lock;
 		ServerHandlePtrs			_Servers;
 		LinkPtrs					_Links;
+		ServiceListenerPtr			_IOEvent;
 	public:
 		void Initialize(void);
 
@@ -32,6 +36,8 @@ namespace MuteNet
 		void AddServer(ServerHandlePtr Server);
 
 		void RemoveServer(const ServerHandle* Server);
+
+		ServiceListener* GetIOEvent();
 	};
 
 }

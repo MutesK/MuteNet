@@ -4,6 +4,7 @@
 
 namespace MuteNet
 {
+
 	class ServiceListener : public Util::ASyncQueue
 	{
 	protected:

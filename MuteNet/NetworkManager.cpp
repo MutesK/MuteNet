@@ -2,6 +2,7 @@
 #include "NetworkManager.h"
 #include "SocketFunctionInvoker.h"
 #include "Link.h"
+#include "ServiceListener.h"
 
 namespace MuteNet
 {
@@ -15,6 +16,9 @@ namespace MuteNet
 			int err = WSAGetLastError();
 			exit(1);
 		}
+
+		_IOEvent = std::make_unique<ServiceListener>();
+		_IOEvent->Initialize(std::thread::hardware_concurrency(), INFINITE);
 	}
 
 	void NetworkManager::Terminate()
@@ -74,5 +78,9 @@ namespace MuteNet
 				return;
 			}
 		}
+	}
+	ServiceListener* NetworkManager::GetIOEvent()
+	{
+		return _IOEvent.get();
 	}
 }
