@@ -60,9 +60,6 @@
     <ClInclude Include="TcpSocket.h">
       <Filter>Socket</Filter>
     </ClInclude>
-    <ClInclude Include="Connector.h">
-      <Filter>Connector</Filter>
-    </ClInclude>
     <ClInclude Include="IOContext.h">
       <Filter>IOContextManage</Filter>
     </ClInclude>
@@ -94,7 +91,7 @@
       <Filter>SocketUtil</Filter>
     </ClInclude>
     <ClInclude Include="ServerHandleImpl.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Server</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -109,9 +106,6 @@
     </ClCompile>
     <ClCompile Include="TcpSocket.cpp">
       <Filter>Socket</Filter>
-    </ClCompile>
-    <ClCompile Include="Connector.cpp">
-      <Filter>Connector</Filter>
     </ClCompile>
     <ClCompile Include="HostNameLookup.cpp">
       <Filter>Lookup</Filter>
@@ -129,7 +123,7 @@
       <Filter>NetworkManager</Filter>
     </ClCompile>
     <ClCompile Include="ServerHandleImpl.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Server</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
