@@ -4,6 +4,7 @@
 #include "Acceptor.h"
 #include "SocketFunctionInvoker.h"
 #include "SocketUtil.h"
+#include "LinkImpl.h"
 
 namespace MuteNet
 {
@@ -35,7 +36,7 @@ namespace MuteNet
 		_Acceptor = Acceptor::Listen(NetworkManager::Get().GetIOEvent(),
 			Callback, nullptr, &name, this);
 
-		if(nullptr == _Acceptor)
+		if (nullptr == _Acceptor)
 			return false;
 
 		return true;
@@ -43,7 +44,7 @@ namespace MuteNet
 
 	void ServerHandleImpl::Callback(intptr_t socket, sockaddr* address, int socklen, void* key)
 	{
-		ServerHandleImpl* Self = reinterpret_cast<ServerHandleImpl*>(key);
+		ServerHandleImpl* Self = reinterpret_cast<ServerHandleImpl *>(key);
 
 		char IpAddress[128];
 		uint16_t port;
@@ -56,19 +57,34 @@ namespace MuteNet
 			MuteNet::inet_ntop(AF_INET, &sock_in->sin_addr, IpAddress, 128);
 			port = htons(sock_in->sin_port);
 		}
-			break;
+		break;
 		case AF_INET6:
-			break;
+		{
+			sockaddr_in6* sock_in6 = reinterpret_cast<sockaddr_in6*>(address);
+			MuteNet::inet_ntop(AF_INET6, &sock_in6->sin6_addr, IpAddress, 128);
+			port = htons(sock_in6->sin6_port);
+		}
+		break;
 		}
 
-		auto linkCallback = Self->_listenCallbacks->OnInComingConnection(IpAddress, port);
+		auto LinkCallbacks = Self->_listenCallbacks->OnInComingConnection(IpAddress, port);
+		if (LinkCallbacks == nullptr)
+		{
+			// Drop the connection:
+			return;
+		}
 
-		// Join Socket Ã³¸®
-		Self->_errorCode = SocketDelegateInvoker::Invoke(setsockopt, socket, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT,
-			(const char*)&listen, sizeof(SOCKET));
+		LinkImplPtr Link = std::make_shared<LinkImpl>(socket, LinkCallbacks,
+			Self->_selfPtr, address, socklen);
+		
+		{
+			Self->_Connections.emplace_back(Link);
+		}
+
+		LinkCallbacks->OnCreated(*Link);
+		// Enable Link
+
+		Self->_listenCallbacks->OnAccepted(*Link);
+
 	}
-
-	}
-
-
 }

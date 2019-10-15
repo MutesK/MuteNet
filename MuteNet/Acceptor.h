@@ -34,6 +34,8 @@ namespace MuteNet
 			ListenerCallback Callback, ListenerErrorCallback ErrorCallback,
 			SOCKADDR_IN* Ip, void* AdditionalKey, int Backlog = 0);
 
+		void Enable();
+		void Unenable();
 	private:
 		Acceptor(ServiceListener* Port, ListenerCallback& Callback, ListenerErrorCallback& ErrorCallback,
 			SOCKADDR_IN* Ip, void* key, int Backlog);
