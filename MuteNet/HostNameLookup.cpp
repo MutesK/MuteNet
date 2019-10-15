@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "HostNameLookup.h"
 #include "../Foundation/TaskManager.h"
-#include "SocketFunctionInvoker.h"
 #include "SocketUtil.h"
 
 namespace MuteNet

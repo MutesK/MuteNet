@@ -18,6 +18,8 @@ namespace MuteNet
 	class LinkImpl : public Link
 	{
 		typedef Link super;
+
+		Network::ConnectCallbacksPtr _ConnectCallbacks;
 	public:
 		LinkImpl(const CallbacksPtr LinkCallback);
 		LinkImpl(intptr_t socket, const CallbacksPtr LinkCallback,
@@ -39,6 +41,8 @@ namespace MuteNet
 
 		void Shutdown() override;
 		void Close() override;
+	private:
+		friend class Network;
 	};
 
 }

@@ -18,7 +18,5 @@
 #include "../Foundation/InputMemoryStream.h"
 #include "../Foundation/OutputMemoryStream.h"
 #include "../Foundation/CircularBuffer.h"
-#include "../Foundation/ReferenceCounter.h"
 
 static const DWORD AddressLength = sizeof(SOCKADDR_IN) + 16;
-

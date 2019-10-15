@@ -16,15 +16,14 @@ namespace MuteNet
 		link->_ConnectCallbacks = ConnectCallbacks;
 
 		// 임시 Callback class 정의
-		class DomainCallback :
+		class DomainCallbacks :
 			public Network::ResolveDomainNameCallbacks
 		{
 			LinkImplPtr _link;
 			uint16_t	_port;
 			bool		_isConnecting;
 		public:
-
-			DomainCallback(LinkImplPtr Link, uint16_t Port)
+			DomainCallbacks(LinkImplPtr Link, uint16_t Port)
 				:_link(std::move(Link)), _port(Port), _isConnecting(false)
 			{
 			}
@@ -63,10 +62,15 @@ namespace MuteNet
 				// Not to Work
 			}
 
+			void OnFinished(void)
+			{
+
+			}
 		};
 
+		Network::HostnameToIP(Host, 
+			std::make_shared<DomainCallbacks>(link, Port));
 
-		Network::HostnameToIP(Host, std::make_shared<DomainCallback>());
 		return link;
 	}
 

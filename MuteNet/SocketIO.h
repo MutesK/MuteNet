@@ -29,7 +29,7 @@ namespace MuteNet
 		void* ptr = nullptr;
 		DWORD bytes = 0;
 
-		SocketDelegateInvoker::Invoke(WSAIoctl, SIO_GET_EXTENSION_FUNCTION_POINTER,
+		SocketDelegateInvoker::Invoke(WSAIoctl, s, SIO_GET_EXTENSION_FUNCTION_POINTER,
 			(GUID*)fn, sizeof(*fn), &ptr, sizeof(ptr), &bytes, nullptr, nullptr);
 
 		return ptr;

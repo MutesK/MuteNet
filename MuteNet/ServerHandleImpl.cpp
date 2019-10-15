@@ -2,7 +2,6 @@
 #include "ServerHandleImpl.h"
 #include "NetworkManager.h"
 #include "Acceptor.h"
-#include "SocketFunctionInvoker.h"
 #include "SocketUtil.h"
 #include "LinkImpl.h"
 
@@ -46,8 +45,8 @@ namespace MuteNet
 	{
 		ServerHandleImpl* Self = reinterpret_cast<ServerHandleImpl *>(key);
 
-		char IpAddress[128];
-		uint16_t port;
+		char IpAddress[128]{0};
+		uint16_t port = 0;
 
 		switch (address->sa_family)
 		{
@@ -81,7 +80,7 @@ namespace MuteNet
 			Self->_Connections.emplace_back(Link);
 		}
 
-		LinkCallbacks->OnCreated(*Link);
+		LinkCallbacks->OnCreated(Link.get());
 		// Enable Link
 
 		Self->_listenCallbacks->OnAccepted(*Link);

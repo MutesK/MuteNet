@@ -1,9 +1,6 @@
 #pragma once
 
-#include "Socket.h"
-#include "TcpSocket.h"
-#include "IOContext.h"
-#include "Network.h"
+#include "framework.h"
 
 namespace MuteNet
 {
@@ -36,7 +33,6 @@ namespace MuteNet
 		{
 		}
 
-		Network::ConnectCallbacksPtr _ConnectCallbacks;
 	public:
 		virtual ~Link();
 

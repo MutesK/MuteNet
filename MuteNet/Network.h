@@ -2,14 +2,17 @@
 
 #include "framework.h"
 #include "Link.h"
-#include "ServerHandle.h"
-#include "LinkImpl.h"
 
 namespace MuteNet
 {
+	class Link;
 	typedef std::shared_ptr<Link> LinkPtr;
+
+	class ServerHandle;
 	typedef std::shared_ptr<ServerHandle> ServerHandlePtr;
 
+	class LinkImpl;
+	typedef std::shared_ptr<LinkImpl> LinkImplPtr;
 	typedef std::vector<LinkImplPtr> LinkImplPtrs;
 
 	class Network

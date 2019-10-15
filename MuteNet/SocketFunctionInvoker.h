@@ -10,7 +10,7 @@ namespace MuteNet
 		template <class Func, typename ...Args >
 		static inline int Invoke(Func&& func, Args ...args)
 		{
-			int ret = func((args)...);
+			int ret = func(std::forward<Args>(args)...);
 			if (ret == SOCKET_ERROR)
 			{
 				auto getLastError = WSAGetLastError();

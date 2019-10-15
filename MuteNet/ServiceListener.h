@@ -1,5 +1,6 @@
 #pragma once
 
+#include "framework.h"
 #include "SocketIO.h"
 
 namespace MuteNet
@@ -27,4 +28,9 @@ namespace MuteNet
 		CreateIoCompletionPort(handle, _iocpHandle, reinterpret_cast<ULONG64>(CompletionKey), 0);
 	}
 
+
+	inline ExtensionFunctions* ServiceListener::GetExtension()
+	{
+		return &_extension;
+	}
 }

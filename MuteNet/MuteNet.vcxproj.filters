@@ -19,9 +19,6 @@
     <Filter Include="Link">
       <UniqueIdentifier>{1984b906-a8d2-4bbc-95f0-e7e76a69bbff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Socket">
-      <UniqueIdentifier>{2b7b3706-031d-4445-83ba-ac1af02fecc3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Connector">
       <UniqueIdentifier>{263a0d51-24ee-43b6-a12c-126f8e6b6036}</UniqueIdentifier>
     </Filter>
@@ -53,12 +50,6 @@
     </ClInclude>
     <ClInclude Include="Acceptor.h">
       <Filter>Acceptor</Filter>
-    </ClInclude>
-    <ClInclude Include="Socket.h">
-      <Filter>Socket</Filter>
-    </ClInclude>
-    <ClInclude Include="TcpSocket.h">
-      <Filter>Socket</Filter>
     </ClInclude>
     <ClInclude Include="HostNameLookup.h">
       <Filter>Lookup</Filter>
@@ -100,12 +91,6 @@
     </ClCompile>
     <ClCompile Include="Acceptor.cpp">
       <Filter>Acceptor</Filter>
-    </ClCompile>
-    <ClCompile Include="Socket.cpp">
-      <Filter>Socket</Filter>
-    </ClCompile>
-    <ClCompile Include="TcpSocket.cpp">
-      <Filter>Socket</Filter>
     </ClCompile>
     <ClCompile Include="HostNameLookup.cpp">
       <Filter>Lookup</Filter>

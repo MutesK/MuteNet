@@ -2,7 +2,7 @@
 
 #include "pch.h"
 #include "../Foundation/Singleton.h"
-
+#include "ServiceListener.h"
 
 namespace MuteNet
 {
@@ -14,7 +14,6 @@ namespace MuteNet
 	typedef std::shared_ptr<ServerHandle> ServerHandlePtr;
 	typedef std::vector<ServerHandlePtr>  ServerHandlePtrs;
 
-	class ServiceListener;
 	typedef std::unique_ptr<ServiceListener> ServiceListenerPtr;
 
 	class NetworkManager : public Util::TL::Singleton<NetworkManager>
@@ -25,6 +24,8 @@ namespace MuteNet
 		LinkPtrs					_Links;
 		ServiceListenerPtr			_IOEvent;
 	public:
+		NetworkManager() = default;
+
 		void Initialize(void);
 
 		void Terminate(void);

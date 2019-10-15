@@ -174,7 +174,6 @@
     <ClInclude Include="TaskAgent.h" />
     <ClInclude Include="TaskManager.h" />
     <ClInclude Include="ThreadSafeQueue.h" />
-    <ClInclude Include="TPtr.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ASyncQueue.cpp" />

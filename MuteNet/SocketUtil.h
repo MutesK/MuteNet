@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pch.h"
+#include "SocketFunctionInvoker.h"
 
 namespace MuteNet
 {
@@ -25,7 +26,6 @@ namespace MuteNet
 		{
 			const auto* addr = reinterpret_cast<const struct in6_addr*>(source);
 			char buf[64];
-			char* cp;
 
 			int longestGapLen = 0, longestGapPos = -1, curGapPos = -1, curGapLen = 0;
 
@@ -67,15 +67,14 @@ namespace MuteNet
 	{
 		int one = 1;
 
-		return SocketDelegateInvoker::Invoke(setsockopt, socket, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<const char*>(&one),
-			static_cast<int>(sizeof(int)));
+		return SocketDelegateInvoker::Invoke(setsockopt, socket, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<const char*>(&one), static_cast<int>(sizeof(int)));
 	}
 
 	inline int make_socket_nonblocking(intptr_t socket)
 	{
 		unsigned int nonblocking = 1;
 
-		return SocketDelegateInvoker::Invoke(ioctlsocket, FIONBIO, &nonblocking);
-	}
+		return SocketDelegateInvoker::Invoke(ioctlsocket, socket, FIONBIO, 
+			reinterpret_cast<u_long *>(&nonblocking));
 	}
 }

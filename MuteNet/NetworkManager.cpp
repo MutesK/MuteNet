@@ -1,8 +1,7 @@
 #include "pch.h"
 #include "NetworkManager.h"
-#include "SocketFunctionInvoker.h"
 #include "Link.h"
-#include "ServiceListener.h"
+#include "ServerHandle.h"
 
 namespace MuteNet
 {
@@ -17,7 +16,7 @@ namespace MuteNet
 			exit(1);
 		}
 
-		_IOEvent = std::make_unique<ServiceListener>();
+		_IOEvent = ServiceListenerPtr{ new ServiceListener() };
 		_IOEvent->Initialize(std::thread::hardware_concurrency(), INFINITE);
 	}
 

@@ -15,8 +15,6 @@ namespace Util
 				static Type StaticObject;
 				return StaticObject;
 			}
-
-			NON_COPYABLE(Singleton);
 		};
 	}
 }

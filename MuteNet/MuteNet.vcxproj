@@ -174,10 +174,8 @@
     <ClInclude Include="Network.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="ServerHandle.h" />
-    <ClInclude Include="Socket.h" />
     <ClInclude Include="SocketFunctionInvoker.h" />
     <ClInclude Include="SocketUtil.h" />
-    <ClInclude Include="TcpSocket.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="HostNameLookup.cpp" />
@@ -193,8 +191,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Socket.cpp" />
-    <ClCompile Include="TcpSocket.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Foundation\Foundation.vcxproj">
