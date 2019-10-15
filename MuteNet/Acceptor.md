@@ -5,15 +5,20 @@
 3. 소켓 풀의 고민. 단순히 reactor -> proactor로 전환하여 사용할것인지. 일정 수 Socket Pool 생성후, 그 Socket Pool Size 만큼만 사용하게 할것인지?
 
 > 2,3 번은 Flag Option 처리로 빼게 한다.
+
 > Acceptor::Listen 함수에  Work Mechanism Flag (MANUAL_MODE, AUTOMATIC_MODE), Socket Pool Size
+
 > AUTOMATIC Mode의 경우엔 Socket Pool Size 정의는 필수로 하자.
+
 > 매뉴얼 모드는 Server Handle로 부터 요청이 오지 않은 한은, 계속 AcceptEx 호출을 하게 하고, Socket Pool은 없다.
 
 
 # TIME_WAIT 
 
-> 보통 TIME_WAIT 상태는, Active Close Side에서 발생한다. lingeroption으로 임시로 TIME_WAIT 풀수는 있지만, 안전하지 않음.
+> 보통 TIME_WAIT 상태는, Active Close Side에서 발생한다. lingeroption으로 임시로 TIME_WAIT 풀수는 있지만, 안전하지 않음
+
 > 내 기억으로는 예전에 이걸 처리하기 위해서, Session의 IOCount가 0보다 크고, Recv Size 를 0을 받았을때, Shutdown 처리를 해준뒤, IO Completion이 해당 Session 으로 오면서, IOCount가 점점 줄고 == 0이 되면 날렸었음.
+
 > Recv를 받아서 종료되는식이 된다면, Active Close Side가 Client가 된다. 이후 TIME_WAIT 상태에서 클라이언트가 정상적으로 패킷을 전송해준다고 해도, 이는 이미 서버에서는 무시한다. -> (이미 Shutdown을 통해 IO는 막혀있고 남아있는 Send Buffer는 알아서 다 보낸다.)
 
 -> Shutdown을 통해 소켓 참조 카운터를 무시하고 TCP 종료 프로세스를 먼저 타게 하고, 나중에 closesocket을 할때 TIME_WAIT이 안남게 하면될듯.
