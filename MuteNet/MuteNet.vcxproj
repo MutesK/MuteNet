@@ -164,7 +164,7 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="HostNameLookup.h" />
-    <ClInclude Include="IOContext.h" />
+    <ClInclude Include="SocketIO.h" />
     <ClInclude Include="Acceptor.h" />
     <ClInclude Include="NetworkManager.h" />
     <ClInclude Include="ServerHandleImpl.h" />

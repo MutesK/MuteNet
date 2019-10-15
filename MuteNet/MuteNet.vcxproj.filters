@@ -60,9 +60,6 @@
     <ClInclude Include="TcpSocket.h">
       <Filter>Socket</Filter>
     </ClInclude>
-    <ClInclude Include="IOContext.h">
-      <Filter>IOContextManage</Filter>
-    </ClInclude>
     <ClInclude Include="HostNameLookup.h">
       <Filter>Lookup</Filter>
     </ClInclude>
@@ -88,6 +85,9 @@
       <Filter>SocketUtil</Filter>
     </ClInclude>
     <ClInclude Include="SocketUtil.h">
+      <Filter>SocketUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="SocketIO.h">
       <Filter>SocketUtil</Filter>
     </ClInclude>
     <ClInclude Include="ServerHandleImpl.h">
