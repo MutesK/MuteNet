@@ -6,23 +6,34 @@
 
 > 2,3 번은 Flag Option 처리로 빼게 한다.
 
-> Acceptor::Listen 함수에  Work Mechanism Flag (MANUAL_MODE, AUTOMATIC_MODE), Using Receive Packet Mode Flag (RECEIVE_PACKET, NORMAL ), Socket Array Size, void* AdditionalKey
+```cpp
+/*
+  Work Mechanism Flag (MANUAL_MODE, AUTOMATIC_MODE),
+  Using Receive Packet Mode Flag (RECEIVE_PACKET, NORMAL )
+*/
+Accpetor::Listen(..., uint flag, size_t arraylength, void* key)  
+```
 
 ## Work Mechanism Flag
 
 > AUTOMATIC Mode의 경우엔 Socket Array Size 정의는 필수로 하자. Automatic 모드는, 예전에 내가 작업한 IOCP 서버처럼 Array Session 처럼 Accept 동작
 하도록 한다. Automatic Mode의 경우, 소켓 재사용성이 불가능하도록 설계.
 
-> 매뉴얼 모드는 Server Handle로 부터 요청이 오지 않은 한은, 계속 AcceptEx 호출을 하게 하고, 이때에는 소켓 재사용성을 사용한다. 
+```
+매뉴얼 모드는 Server Handle로 부터 요청이 오지 않은 한은, 계속 AcceptEx 호출을 하게 하고, 이때에는 소켓 재사용성을 사용한다. 
 최대한  TIME_WAIT이 발생하지 않도록 만들어야됨 !!.
+```
 
 ## Using Receive Packet Mode Flag
 
 > AcceptEx에서는 수신과 동시에, Packet을 Recv할수 있음. 
 
+
 > NORMAL 모드에서는, 해당 패킷을 받지 않는다. RECEIVE_PACKET에서는 해당 패킷을 받아서 처리한다.
 
+
 > RECEIVE_PACKET에서 처리할려면 Accept OVERLAPPED 구조체를 확장하고, 안에 Buffer를 만들어야됨. -> Callback은 Link::Callback::OnReceivedData로 하도록 하자.
+
 
 # TIME_WAIT 
 
