@@ -11,6 +11,7 @@ namespace MuteNet
 	typedef void (*ListenerCallback)(intptr_t s, struct sockaddr* address, int socklen, void*);
 	typedef void (*ListenerErrorCallback)(intptr_t s, int errorCode, std::string errorString);
 
+
 	struct AcceptorTask
 	{
 		OVERLAPPED		_overlapped;
@@ -22,6 +23,12 @@ namespace MuteNet
 
 	class Acceptor
 	{
+		enum SocketWorkType
+		{
+			SocketPool = 0,
+			Fixed = 1,
+		};
+
 		ServiceListener*			_port;
 		SOCKET						_listen;
 		SOCKADDR_IN*				_address;
@@ -34,13 +41,17 @@ namespace MuteNet
 			ListenerCallback Callback, ListenerErrorCallback ErrorCallback,
 			SOCKADDR_IN* Ip, void* AdditionalKey, int Backlog = 0);
 
-		void Enable();
-		void Unenable();
+		void Start(int PoolSize = 0);
+		void Stop();
 	private:
 		Acceptor(ServiceListener* Port, ListenerCallback& Callback, ListenerErrorCallback& ErrorCallback,
 			SOCKADDR_IN* Ip, void* key, int Backlog);
 
 		void InitializeListenSocket();
+
+
+		void StartAcceptFixedMode(int PoolSize);
+		void StartAcceptSocketPool();
 	};
 
 }

@@ -97,4 +97,9 @@ namespace Util
 
 		return true;
 	}
+
+	inline bool GetBitUInt16(const uint16_t& Flag, int Position)
+	{
+		return (Flag >> (Position - 1)) & 1;
+	}
 }
