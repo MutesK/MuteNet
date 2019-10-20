@@ -72,9 +72,6 @@
     <ClInclude Include="NetworkManager.h">
       <Filter>NetworkManager</Filter>
     </ClInclude>
-    <ClInclude Include="SocketFunctionInvoker.h">
-      <Filter>SocketUtil</Filter>
-    </ClInclude>
     <ClInclude Include="SocketUtil.h">
       <Filter>SocketUtil</Filter>
     </ClInclude>

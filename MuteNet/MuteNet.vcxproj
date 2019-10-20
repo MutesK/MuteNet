@@ -174,7 +174,6 @@
     <ClInclude Include="Network.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="ServerHandle.h" />
-    <ClInclude Include="SocketFunctionInvoker.h" />
     <ClInclude Include="SocketUtil.h" />
   </ItemGroup>
   <ItemGroup>

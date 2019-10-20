@@ -1,7 +1,6 @@
 #pragma once
 
 #include "pch.h"
-#include "SocketFunctionInvoker.h"
 
 namespace MuteNet
 {
@@ -67,14 +66,37 @@ namespace MuteNet
 	{
 		int one = 1;
 
-		return SocketDelegateInvoker::Invoke(setsockopt, socket, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<const char*>(&one), static_cast<int>(sizeof(int)));
+		return std::invoke(setsockopt, socket, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<const char*>(&one), static_cast<int>(sizeof(int)));
 	}
 
 	inline int make_socket_nonblocking(intptr_t socket)
 	{
 		unsigned int nonblocking = 1;
 
-		return SocketDelegateInvoker::Invoke(ioctlsocket, socket, FIONBIO, 
+		return std::invoke(ioctlsocket, socket, FIONBIO,
 			reinterpret_cast<u_long *>(&nonblocking));
 	}
+
+	inline std::string ErrorString(int ErrorCode)
+	{
+		// Note gai_strerror is not threadsafe on windows
+
+		char ErrorStr[GAI_STRERROR_BUFFER_SIZE + 1];
+
+		int MsgLen = FormatMessageA(
+			FORMAT_MESSAGE_FROM_SYSTEM |
+			FORMAT_MESSAGE_IGNORE_INSERTS |
+			FORMAT_MESSAGE_MAX_WIDTH_MASK,
+			nullptr,
+			ErrorCode,
+			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+			ErrorStr,
+			sizeof(ErrorStr) - 1,
+			nullptr
+		);
+
+		return std::string(ErrorStr, MsgLen);
+	}
+
+
 }

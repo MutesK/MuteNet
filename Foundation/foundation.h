@@ -26,6 +26,7 @@
 #include <concurrent_queue.h>
 
 #include <signal.h>
+#include <cassert>
 
 #include "ObjectPool.h"
 

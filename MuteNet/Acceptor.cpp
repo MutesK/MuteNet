@@ -8,38 +8,22 @@ using namespace Util;
 namespace MuteNet
 {
 	AcceptorPtr Acceptor::Listen(ServiceListener* Port, ListenerCallback Callback, ListenerErrorCallback ErrorCallback,
-		SOCKADDR_IN* Ip, uint16_t flag, void* key, int Backlog)
+		SOCKADDR_IN* Ip, void* key, int Backlog)
 	{
-		if (Port == nullptr || Callback == nullptr)
-			return nullptr;
+		assert(Callback);
+		assert(Port);
 
 		const auto FuncExt = Port->GetExtension();
-		if (FuncExt == nullptr || FuncExt->_AcceptEx == nullptr 
-			|| FuncExt->_GetAcceptExSockaddrs == nullptr)
-			return nullptr;
 
+		assert(FuncExt);
+		assert(FuncExt->_AcceptEx);
+		assert(FuncExt->_GetAcceptExSockaddrs);
 
 		AcceptorPtr Ptr{new Acceptor(const_cast<ServiceListener *>(Port), Callback, ErrorCallback, Ip, key ,Backlog)};
 
 		Ptr->InitializeListenSocket();
 
 		return Ptr;
-	}
-
-	void Acceptor::Start(int PoolSize)
-	{
-		if(PoolSize > 0)
-		{
-			StartAcceptFixedMode(PoolSize);
-		}
-		else
-		{
-			StartAcceptSocketPool();
-		}
-	}
-
-	void Acceptor::Stop()
-	{
 	}
 
 	Acceptor::Acceptor(ServiceListener* Port, ListenerCallback& Callback, ListenerErrorCallback& ErrorCallback,
@@ -63,9 +47,9 @@ namespace MuteNet
 			return;
 		}
 
-		_port->RegisterHandle((void *)_listen, nullptr);
+		_port->RegisterHandle((void *)_listen, this);
 
-		error = SocketDelegateInvoker::Invoke(bind, _listen,
+		error = std::invoke(bind, _listen,
 			reinterpret_cast<sockaddr*>(_address), sizeof(SOCKADDR_IN));
 		if (error != ERROR_SUCCESS)
 		{
@@ -73,32 +57,24 @@ namespace MuteNet
 			return;
 		}
 
-		error = SocketDelegateInvoker::Invoke(::listen, _listen, _backlog);
+		make_socket_nonblocking(_listen);
+
+		error = std::invoke(::listen, _listen, _backlog);
 		if (error != ERROR_SUCCESS)
 		{
 			_errorcallback(_listen, error, ErrorString(error));
 			return;
 		}
-
-		make_socket_nonblocking(_listen);
 	}
 
-	void Acceptor::StartAcceptFixedMode(int PoolSize)
-	{
-
-	}
-
-	void Acceptor::StartAcceptSocketPool()
+	void Acceptor::StartAccept()
 	{
 		const auto FuncExt = _port->GetExtension();
 
-		AcceptorTask* pTask = new AcceptorTask();
+		auto pTask = new AcceptorTask(this, _port);
 		int error = 0;
 		DWORD Pending;
 
-		pTask->_acceptor = this;
-		pTask->_buflen = 1;
-		pTask->_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 		if (pTask->_socket == INVALID_SOCKET)
 		{
 			error = WSAGetLastError();
@@ -106,18 +82,61 @@ namespace MuteNet
 			_errorcallback(pTask->_socket, error, ErrorString(error));
 			return;
 		}
-
+			
 		setsockopt(pTask->_socket, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT,
-			reinterpret_cast<char*>(&_listen), sizeof(_listen));
+				reinterpret_cast<char*>(&_listen), sizeof(_listen));
 
 		make_socket_nonblocking(pTask->_socket);
 
+		pTask->_AcceptOverlapped._CallbackPtr = OnAccepted;
 		_port->RegisterHandle(reinterpret_cast<char*>(pTask->_socket), nullptr);
 
-		if(FuncExt->_AcceptEx(_listen, pTask->_socket, pTask->_addrbuf, 0, pTask->_buflen / 2, 
-			pTask->_buflen / 2, &Pending, &pTask->_overlapped))
+		if (!FuncExt->_AcceptEx(_listen, pTask->_socket, pTask->_addrbuf, 0, pTask->_buflen / 2,
+			pTask->_buflen / 2, &Pending, &pTask->_AcceptOverlapped._Overlapped))
 		{
-			
+			error = WSAGetLastError();
+
+			_errorcallback(pTask->_socket, error, ErrorString(error));
+			return;
+		}
+		
+	}
+
+	void Acceptor::OnAccepted(Overlapped* pOverlapped, uintptr_t socket, int transferredBytes, int Success)
+	{
+		auto acceptorTask = reinterpret_cast<AcceptorTask*>(pOverlapped);
+		auto acceptor = acceptorTask->_acceptor;
+		auto port = acceptor->_port;
+
+		const auto FuncExt = port->GetExtension();
+
+		SOCKADDR* LocalSockaddr = nullptr, * RemoteSockaddr = nullptr;
+		int LocalSocketLength = 0, RemoteSocketLength = 0;
+
+		FuncExt->_GetAcceptExSockaddrs(acceptorTask->_addrbuf, 0,
+			acceptorTask->_buflen / 2, acceptorTask->_buflen / 2, &LocalSockaddr, &LocalSocketLength, &RemoteSockaddr,
+			&RemoteSocketLength);
+
+		acceptor->_callback(acceptorTask->_socket, LocalSockaddr, LocalSocketLength, acceptor->_key);
+		delete acceptorTask;
+
+		if (!acceptor->_stopTrigger)
+			acceptor->StartAccept();
+	}
+
+	void Acceptor::Start()
+	{
+		_stopTrigger = false;
+
+		for (int i = 0; i < 4; i++)
+		{
+			StartAccept();
 		}
 	}
+
+	void Acceptor::Stop()
+	{
+		_stopTrigger = true;
+	}
+
 }

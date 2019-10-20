@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Socket.h"
-#include "SocketFunctionInvoker.h"
 
 namespace MuteNet
 {
@@ -9,7 +8,7 @@ namespace MuteNet
 	typedef LPFN_CONNECTEX						ConnectExPtr;
 	typedef LPFN_GETACCEPTEXSOCKADDRS			GetAcceptExSockAddrsPtr;
 
-	typedef void(*IOCPCallbackPtr)(struct Overlapped*, uintptr_t, int, int success);
+	typedef void(*IOCPCallbackPtr)(struct Overlapped*, uintptr_t socket, int transfferedBytes, int success);
 
 	struct ExtensionFunctions
 	{
@@ -29,7 +28,7 @@ namespace MuteNet
 		void* ptr = nullptr;
 		DWORD bytes = 0;
 
-		SocketDelegateInvoker::Invoke(WSAIoctl, s, SIO_GET_EXTENSION_FUNCTION_POINTER,
+		std::invoke(WSAIoctl, s, SIO_GET_EXTENSION_FUNCTION_POINTER,
 			(GUID*)fn, sizeof(*fn), &ptr, sizeof(ptr), &bytes, nullptr, nullptr);
 
 		return ptr;
@@ -55,7 +54,5 @@ namespace MuteNet
 
 
 		closesocket(serviceProvider);
-
-
 	}
 }

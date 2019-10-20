@@ -18,11 +18,11 @@ namespace MuteNet
 	protected:
 		Network::ListenCallbacksPtr _listenCallbacks;
 		AcceptorPtr					_Acceptor;
-		bool	_isListening;
-		LinkImplPtrs  _Connections;
-		int		_errorCode;
-		std::string _errorMsg;
-		ServerHandleImplPtr _selfPtr;
+		bool						_isListening;
+		LinkImplPtrs				_Connections;
+		int							_errorCode;
+		std::string					_errorMsg;
+		ServerHandleImplPtr			_selfPtr;
 
 		// Acceptor
 	public :
@@ -33,10 +33,13 @@ namespace MuteNet
 
 		void Close() override;
 		
-		bool IsListening() const override;
+		bool IsListening() const override
+		{
+			return _isListening;
+		}
 
 	protected:
-		ServerHandleImpl(Network::ListenCallbacksPtr& ListenCallback);
+		ServerHandleImpl(Network::ListenCallbacksPtr ListenCallback);
 
 		bool Listen(uint16_t Port);
 

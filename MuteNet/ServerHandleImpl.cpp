@@ -7,6 +7,16 @@
 
 namespace MuteNet
 {
+	ServerHandleImpl::~ServerHandleImpl()
+	{
+	}
+
+	ServerHandleImpl::ServerHandleImpl(Network::ListenCallbacksPtr ListenCallback)
+		:_listenCallbacks(ListenCallback),
+		_Acceptor(nullptr), _isListening(false), _errorCode(0)
+	{
+	}
+
 	ServerHandleImplPtr ServerHandleImpl::Listen(uint16_t Port, Network::ListenCallbacksPtr& ListenCallbacks)
 	{
 		ServerHandleImplPtr res = ServerHandleImplPtr
@@ -38,7 +48,20 @@ namespace MuteNet
 		if (nullptr == _Acceptor)
 			return false;
 
+		_isListening = true;
 		return true;
+	}
+
+	void ServerHandleImpl::RemoveLink(const LinkImpl* Link)  // 개선필요
+	{
+		for (auto itr = _Connections.begin(), end = _Connections.end(); itr != end; ++itr)
+		{
+			if (itr->get() == Link)
+			{
+				_Connections.erase(itr);
+				return;
+			}
+		}  // for itr - m_Connections[]
 	}
 
 	void ServerHandleImpl::Callback(intptr_t socket, sockaddr* address, int socklen, void* key)
