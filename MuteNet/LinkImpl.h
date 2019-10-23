@@ -15,11 +15,23 @@ namespace MuteNet
 	class ServerHandleImpl;
 	typedef std::shared_ptr<ServerHandleImpl> ServerHandleImplPtr;
 
-	class LinkImpl : public Link
+	class SessionInfo;
+
+	class LinkImpl final : public Link
 	{
 		typedef Link super;
 
 		Network::ConnectCallbacksPtr _ConnectCallbacks;
+
+		SessionInfo*				 _Info;
+		LinkImplPtr					 _Self;
+		ServerHandleImplPtr			 _Server;
+		bool						 _isShutdown = false;
+
+		std::string					 _LocalIP;
+		uint16_t					 _LocalPort;
+		std::string					 _RemoteIP;
+		uint16_t					 _RemotePort;
 	public:
 		LinkImpl(const CallbacksPtr LinkCallback);
 		LinkImpl(intptr_t socket, const CallbacksPtr LinkCallback,
@@ -30,6 +42,7 @@ namespace MuteNet
 		static LinkImplPtr Connect(std::string& Host, uint16_t Port,
 			Link::CallbacksPtr LinkCallbacks, Network::ConnectCallbacksPtr ConnectCallbacks);
 
+		void Enable(LinkImplPtr Self);
 		bool Send(const void* Data, size_t Length) override;
 
 		std::string GetLocalIP() const override;
@@ -45,4 +58,27 @@ namespace MuteNet
 		friend class Network;
 	};
 
+	inline std::string LinkImpl::GetLocalIP() const
+	{
+		return _LocalIP;
+	}
+
+	inline uint16_t LinkImpl::GetLocalPort() const
+	{
+		return _LocalPort;
+	}
+
+	inline std::string LinkImpl::GetRemoteIP() const
+	{
+		return _RemoteIP;
+	}
+
+	inline uint16_t LinkImpl::GetRemotePort() const
+	{
+		return _RemotePort;
+	}
+	inline Link::CallbacksPtr LinkImpl::GetCallbacks()
+	{
+		return _Callback;
+	}
 }

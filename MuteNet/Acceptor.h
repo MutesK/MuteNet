@@ -1,6 +1,9 @@
 #pragma once
 #include "SocketIO.h"
 
+/*
+	리팩토링 필수.
+*/
 namespace MuteNet
 {
 	class ServiceListener;

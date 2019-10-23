@@ -1,12 +1,34 @@
 #include "pch.h"
 #include "LinkImpl.h"
 #include "NetworkManager.h"
+#include "Session.h"
+#include "SocketUtil.h"
+#include "ServerHandleImpl.h"
 
 namespace MuteNet
 {
 	LinkImpl::LinkImpl(const CallbacksPtr LinkCallback)
 		:super(LinkCallback)
+		,_Info(SessionInfo::NewSessionInfo(NetworkManager::Get().GetIOEvent(), INVALID_SOCKET))
+		,_LocalPort(0)
+		,_RemotePort(0)
+		,_isShutdown(false)
 	{
+	}
+
+	LinkImpl::LinkImpl(intptr_t socket, const CallbacksPtr LinkCallback, const ServerHandleImplPtr ServerHandlePtr, const sockaddr* Addr, size_t socketLen)
+		:super(LinkCallback)
+		, _Info(SessionInfo::NewSessionInfo(NetworkManager::Get().GetIOEvent(), socket))
+		, _Server(ServerHandlePtr)
+		, _LocalPort(0)
+		, _RemotePort(0)
+		, _isShutdown(false)
+	{
+	}
+
+	LinkImpl::~LinkImpl()
+	{
+		SessionInfo::Free(_Info);
 	}
 
 	LinkImplPtr LinkImpl::Connect(std::string& Host, uint16_t Port, Link::CallbacksPtr LinkCallbacks,
@@ -48,7 +70,18 @@ namespace MuteNet
 
 			void Connect(const sockaddr* Ip, int size)
 			{
-				// using Connector
+				if (!_isConnecting)
+				{
+					int ErrCode = _link->_Info->Connect(Ip, size);
+					if (ErrCode == 0)
+					{
+						_isConnecting = true;
+					}
+					else
+					{
+						_link->GetCallbacks()->OnError(ErrCode, ErrorString(ErrCode));
+					}
+				}
 			}
 
 			void OnError(int ErrorCode, const std::string& ErrorMsg) override
@@ -59,12 +92,10 @@ namespace MuteNet
 
 			void OnNameResolved(const std::string& Name, const std::string& IP) override
 			{
-				// Not to Work
 			}
 
 			void OnFinished(void)
 			{
-
 			}
 		};
 
@@ -72,6 +103,47 @@ namespace MuteNet
 			std::make_shared<DomainCallbacks>(link, Port));
 
 		return link;
+	}
+
+	// Iocp Recv, Send, Event Callback
+	void LinkImpl::Enable(LinkImplPtr Self)
+	{
+		_Self = Self;
+		_Info->Enable();
+	}
+
+	bool LinkImpl::Send(const void* Data, size_t Length)
+	{
+		if (_isShutdown)
+		{
+			return false;
+		}
+
+		_Info->Send(Data, Length);
+	}
+
+	void LinkImpl::Shutdown()
+	{
+		// _isShutdown = true;
+		
+		// Send Buffer Use Length Size is Zero then Shutdown.
+
+	}
+
+	void LinkImpl::Close()
+	{
+		_Info->Disable();
+
+		if (_Server == nullptr)
+		{
+			NetworkManager::Get().RemoveLink(this);
+		}
+		else
+		{
+			_Server->RemoveLink(this);
+		}
+
+		_Self.reset();
 	}
 
 }

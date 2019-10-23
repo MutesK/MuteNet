@@ -98,5 +98,4 @@ namespace MuteNet
 		return std::string(ErrorStr, MsgLen);
 	}
 
-
 }
