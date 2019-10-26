@@ -53,6 +53,8 @@ namespace MuteNet
 		void RecvPost();
 		static void OnSend(DWORD TransfferredBytes, void* SessionInfo);
 		static void OnRecv(DWORD TransfferredBytes, void* SessionInfo);
+
+		int RecvProcess(char* bufferPos, int length);
 	};
 
 	inline SOCKET SessionInfo::GetFD()

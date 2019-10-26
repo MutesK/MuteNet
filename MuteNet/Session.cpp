@@ -61,7 +61,19 @@ void SessionInfo::Send(const void* Data, size_t Length)
 			&wsabuf[1].buf, (uint32_t&)wsabuf[1].len);
 	}
 
-	// WSASend()
+	DWORD SendBytes = 0;
+	auto ret = ::WSASend(_Socket, wsabuf, bufcount, &SendBytes,
+		0, &_Send._OverlappedIO, nullptr);
+	if (ret == SOCKET_ERROR)
+	{
+		int errorCode = WSAGetLastError();
+		
+		if (errorCode != WSA_IO_PENDING)
+		{
+			// Event Callback
+			return;
+		}
+	}
 }
 
 int SessionInfo::Connect(const sockaddr* Ip, int Size)
@@ -77,13 +89,21 @@ SessionInfo::SessionInfo(ServiceListener* Listener, SOCKET Fd)
 
 void SessionInfo::RecvPost()
 {
-	WSABUF wsabuf[2];
-	int bufcount;
+	// Copy-Zero-bytes (Non Pagelocking)
+	DWORD RecvBytes = 0;
 
-	bufcount = _RecvBuffer.GetWriteBufferAndLengths(&wsabuf[0].buf, (uint32_t&)wsabuf[0].len,
-		&wsabuf[1].buf, (uint32_t&)wsabuf[1].len);
+	int ret = WSARecv(_Socket, nullptr, 0, &RecvBytes, nullptr, &_Recv._OverlappedIO,
+		nullptr);
+	if (ret == SOCKET_ERROR)
+	{
+		int errorCode = WSAGetLastError();
 
-	// WSARecv()
+		if (errorCode != WSA_IO_PENDING)
+		{
+			// Event Callback
+			return;
+		}
+	}
 }
 
 void SessionInfo::OnSend(DWORD TransfferredBytes, void* InfoPtr)
@@ -102,10 +122,34 @@ void SessionInfo::OnRecv(DWORD TransfferredBytes, void* InfoPtr)
 	auto Info = reinterpret_cast<SessionInfo*>(InfoPtr);
 	auto& Buffer = Info->_RecvBuffer;
 
-	Buffer.MoveWritePos(TransfferredBytes);
-	Info->_RecvCb(Info, Info->_CompletionKey);
+	WSABUF wsabuf[2];
+	int bufcount;
+	bufcount = Buffer.GetWriteBufferAndLengths(&wsabuf[0].buf, (uint32_t&)wsabuf[0].len,
+		&wsabuf[1].buf, (uint32_t&)wsabuf[1].len);
 
+	// ::recv Ã³¸®
+	auto bufsize = Info->RecvProcess(wsabuf[0].buf, wsabuf[0].len);
+	bufsize += Info->RecvProcess(wsabuf[1].buf, wsabuf[1].len);
+
+	Info->_RecvCb(Info, Info->_CompletionKey);
 	Info->RecvPost();
+
+}
+
+int MuteNet::SessionInfo::RecvProcess(char* bufferPos, int length)
+{
+	if (length <= 0)
+		return;
+
+	int result = ::recv(_Socket, bufferPos, length, 0);
+	if (result == SOCKET_ERROR)
+	{
+		// Event Callback
+		return;
+	}
+
+	_RecvBuffer.MoveWritePos(result);
+	return result;
 }
 
 
