@@ -48,7 +48,7 @@ namespace MuteNet
 		static void Callback(intptr_t socket, struct sockaddr* address,
 			int socklen, void* key);
 
-		// static void ErrorCallback(intptr_t socket, int errorCode, std::string errorString);
+		static void ErrorCallback(intptr_t socket, int errorCode, std::string errorString);
 	};
 }
 

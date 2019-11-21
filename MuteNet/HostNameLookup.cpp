@@ -39,7 +39,7 @@ namespace MuteNet
 	{
 		if (ErrorCode != 0)
 		{
-			_Callbacks->OnError(ErrorCode, ErrorString(ErrorCode));
+			_Callbacks->OnError(ErrorCode, SocketUtil::ErrorString(ErrorCode));
 			return;
 		}
 
@@ -59,7 +59,7 @@ namespace MuteNet
 					HasResolved = true;
 					continue;
 				}
-				MuteNet::inet_ntop(AF_INET, &(sin->sin_addr), IP, sizeof(IP));
+				SocketUtil::inet_ntop(AF_INET, &(sin->sin_addr), IP, sizeof(IP));
 				break;
 			}
 			case AF_INET6:  // IPv6
@@ -70,10 +70,10 @@ namespace MuteNet
 					HasResolved = true;
 					continue;
 				}
-				MuteNet::inet_ntop(AF_INET6, &(sin->sin6_addr), IP, sizeof(IP));
+				SocketUtil::inet_ntop(AF_INET6, &(sin->sin6_addr), IP, sizeof(IP));
 				break;
 			}
-			default:
+			default:  // need to develop
 			{
 				continue;
 			}
@@ -85,7 +85,7 @@ namespace MuteNet
 		// 지원되지 않은 Address Family
 		if (!HasResolved)
 		{
-			_Callbacks->OnError(EAI_NONAME, ErrorString(EAI_NONAME));
+			_Callbacks->OnError(EAI_NONAME, SocketUtil::ErrorString(EAI_NONAME));
 		}
 		else
 		{

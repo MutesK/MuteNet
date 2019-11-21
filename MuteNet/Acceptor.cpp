@@ -10,14 +10,14 @@ namespace MuteNet
 	AcceptorPtr Acceptor::Listen(ServiceListener* Port, ListenerCallback Callback, ListenerErrorCallback ErrorCallback,
 		SOCKADDR_IN* Ip, void* key, int Backlog)
 	{
-		assert(Callback);
-		assert(Port);
+		assert(Callback != nullptr);
+		assert(Port != nullptr);
 
 		const auto FuncExt = Port->GetExtension();
 
-		assert(FuncExt);
-		assert(FuncExt->_AcceptEx);
-		assert(FuncExt->_GetAcceptExSockaddrs);
+		assert(FuncExt != nullptr);
+		assert(FuncExt->_AcceptEx != nullptr);
+		assert(FuncExt->_GetAcceptExSockaddrs != nullptr);
 
 		AcceptorPtr Ptr{new Acceptor(const_cast<ServiceListener *>(Port), Callback, ErrorCallback, Ip, key ,Backlog)};
 
@@ -43,7 +43,7 @@ namespace MuteNet
 		{
 			error = WSAGetLastError();
 
-			_errorcallback(_listen, error, ErrorString(error));
+			_errorcallback(_listen, error, SocketUtil::ErrorString(error));
 			return;
 		}
 
@@ -53,16 +53,16 @@ namespace MuteNet
 			reinterpret_cast<sockaddr*>(_address), sizeof(SOCKADDR_IN));
 		if (error != ERROR_SUCCESS)
 		{
-			_errorcallback(_listen, error, ErrorString(error));
+			_errorcallback(_listen, error, SocketUtil::ErrorString(error));
 			return;
 		}
 
-		make_socket_nonblocking(_listen);
+		SocketUtil::NonBlockSocket(_listen);
 
 		error = std::invoke(::listen, _listen, _backlog);
 		if (error != ERROR_SUCCESS)
 		{
-			_errorcallback(_listen, error, ErrorString(error));
+			_errorcallback(_listen, error, SocketUtil::ErrorString(error));
 			return;
 		}
 	}
@@ -79,14 +79,14 @@ namespace MuteNet
 		{
 			error = WSAGetLastError();
 
-			_errorcallback(pTask->_socket, error, ErrorString(error));
+			_errorcallback(pTask->_socket, error, SocketUtil::ErrorString(error));
 			return;
 		}
 			
 		setsockopt(pTask->_socket, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT,
 				reinterpret_cast<char*>(&_listen), sizeof(_listen));
 
-		make_socket_nonblocking(pTask->_socket);
+		SocketUtil::NonBlockSocket(pTask->_socket);
 
 		pTask->_AcceptOverlapped._CallbackPtr = OnAccepted;
 		_port->RegisterHandle(reinterpret_cast<char*>(pTask->_socket), nullptr);
@@ -96,7 +96,7 @@ namespace MuteNet
 		{
 			error = WSAGetLastError();
 
-			_errorcallback(pTask->_socket, error, ErrorString(error));
+			_errorcallback(pTask->_socket, error, SocketUtil::ErrorString(error));
 			return;
 		}
 		

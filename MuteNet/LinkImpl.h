@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Socket.h"
-#include "TcpSocket.h"
 #include "Network.h"
 #include "Link.h"
 
@@ -23,10 +21,15 @@ namespace MuteNet
 
 		Network::ConnectCallbacksPtr _ConnectCallbacks;
 
-		SessionInfo*				 _Info;
 		LinkImplPtr					 _Self;
 		ServerHandleImplPtr			 _Server;
 		bool						 _isShutdown = false;
+
+		SOCKET						_Socket;
+
+		// 버퍼 관리 고민
+		Util::CircularBuffer		_SendBuffer;
+		Util::CircularBuffer		_RecvBuffer;
 
 		std::string					 _LocalIP;
 		uint16_t					 _LocalPort;
@@ -56,6 +59,10 @@ namespace MuteNet
 		void Close() override;
 	private:
 		friend class Network;
+		friend class SocketUtil;
+		friend class ASyncSendRequest;
+		friend class ASyncRecvRequest;
+
 	};
 
 	inline std::string LinkImpl::GetLocalIP() const

@@ -17,12 +17,6 @@ namespace MuteNet
 
 	class Acceptor
 	{
-		enum SocketWorkType
-		{
-			SocketPool = 0,
-			Fixed = 1,
-		};
-
 		struct AcceptorTask
 		{
 			Overlapped		_AcceptOverlapped;

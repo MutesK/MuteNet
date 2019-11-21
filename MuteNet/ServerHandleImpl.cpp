@@ -35,6 +35,11 @@ namespace MuteNet
 		}
 	}
 
+	void ServerHandleImpl::Close()
+	{
+		_Acceptor->Stop();
+	}
+
 	bool ServerHandleImpl::Listen(uint16_t Port)
 	{
 		sockaddr_in name;
@@ -54,14 +59,14 @@ namespace MuteNet
 
 	void ServerHandleImpl::RemoveLink(const LinkImpl* Link)  // 개선필요
 	{
-		for (auto itr = _Connections.begin(), end = _Connections.end(); itr != end; ++itr)
-		{
-			if (itr->get() == Link)
+		std::for_each(_Connections.begin(), _Connections.end(), [&](const auto& Iter)
 			{
-				_Connections.erase(itr);
-				return;
-			}
-		}  // for itr - m_Connections[]
+				if (Iter->get() == Link)
+				{
+					_Connections.erase(itr);
+					return;
+				}
+			});
 	}
 
 	void ServerHandleImpl::Callback(intptr_t socket, sockaddr* address, int socklen, void* key)
@@ -76,14 +81,14 @@ namespace MuteNet
 		case AF_INET:
 		{
 			sockaddr_in* sock_in = reinterpret_cast<sockaddr_in*>(address);
-			MuteNet::inet_ntop(AF_INET, &sock_in->sin_addr, IpAddress, 128);
+			SocketUtil::inet_ntop(AF_INET, &sock_in->sin_addr, IpAddress, 128);
 			port = htons(sock_in->sin_port);
 		}
 		break;
 		case AF_INET6:
 		{
 			sockaddr_in6* sock_in6 = reinterpret_cast<sockaddr_in6*>(address);
-			MuteNet::inet_ntop(AF_INET6, &sock_in6->sin6_addr, IpAddress, 128);
+			SocketUtil::inet_ntop(AF_INET6, &sock_in6->sin6_addr, IpAddress, 128);
 			port = htons(sock_in6->sin6_port);
 		}
 		break;
@@ -92,7 +97,7 @@ namespace MuteNet
 		auto LinkCallbacks = Self->_listenCallbacks->OnInComingConnection(IpAddress, port);
 		if (LinkCallbacks == nullptr)
 		{
-			// Drop the connection:
+			closesocket(socket);
 			return;
 		}
 
@@ -104,8 +109,7 @@ namespace MuteNet
 		}
 
 		LinkCallbacks->OnCreated(Link.get());
-		// Enable Link
-
+		Link->Enable(Link);
 		Self->_listenCallbacks->OnAccepted(*Link);
 
 	}

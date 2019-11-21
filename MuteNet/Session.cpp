@@ -4,16 +4,6 @@
 
 using namespace MuteNet;
 
-SessionInfo* SessionInfo::NewSessionInfo(ServiceListener* Listener, intptr_t Fd)
-{
-	assert(Listener != nullptr);
-	assert(Fd != INVALID_SOCKET);
-
-	auto Info = new SessionInfo(Listener, Fd);
-	return Info;
-}
-
-
 void SessionInfo::Enable()
 {
 	_EventBase->RegisterHandle(

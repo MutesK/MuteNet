@@ -19,9 +19,6 @@
     <Filter Include="Link">
       <UniqueIdentifier>{1984b906-a8d2-4bbc-95f0-e7e76a69bbff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Connector">
-      <UniqueIdentifier>{263a0d51-24ee-43b6-a12c-126f8e6b6036}</UniqueIdentifier>
-    </Filter>
     <Filter Include="IOContextManage">
       <UniqueIdentifier>{7482c76f-03a2-4326-b39f-e4ef533da109}</UniqueIdentifier>
     </Filter>
@@ -81,6 +78,18 @@
     <ClInclude Include="ServerHandleImpl.h">
       <Filter>Server</Filter>
     </ClInclude>
+    <ClInclude Include="Session.h">
+      <Filter>Link</Filter>
+    </ClInclude>
+    <ClInclude Include="ASyncRequest.h">
+      <Filter>IOContextManage</Filter>
+    </ClInclude>
+    <ClInclude Include="ASyncSendRequest.h">
+      <Filter>IOContextManage</Filter>
+    </ClInclude>
+    <ClInclude Include="ASyncRecvRequest.h">
+      <Filter>IOContextManage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -106,6 +115,9 @@
     </ClCompile>
     <ClCompile Include="ServerHandleImpl.cpp">
       <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="Session.cpp">
+      <Filter>Link</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

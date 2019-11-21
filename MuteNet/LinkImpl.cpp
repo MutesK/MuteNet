@@ -4,12 +4,12 @@
 #include "Session.h"
 #include "SocketUtil.h"
 #include "ServerHandleImpl.h"
+#include "ASyncSendRequest.h"
 
 namespace MuteNet
 {
 	LinkImpl::LinkImpl(const CallbacksPtr LinkCallback)
 		:super(LinkCallback)
-		,_Info(SessionInfo::NewSessionInfo(NetworkManager::Get().GetIOEvent(), INVALID_SOCKET))
 		,_LocalPort(0)
 		,_RemotePort(0)
 		,_isShutdown(false)
@@ -18,17 +18,17 @@ namespace MuteNet
 
 	LinkImpl::LinkImpl(intptr_t socket, const CallbacksPtr LinkCallback, const ServerHandleImplPtr ServerHandlePtr, const sockaddr* Addr, size_t socketLen)
 		:super(LinkCallback)
-		, _Info(SessionInfo::NewSessionInfo(NetworkManager::Get().GetIOEvent(), socket))
 		, _Server(ServerHandlePtr)
 		, _LocalPort(0)
 		, _RemotePort(0)
 		, _isShutdown(false)
+		, _Socket(socket)
 	{
 	}
 
 	LinkImpl::~LinkImpl()
 	{
-		SessionInfo::Free(_Info);
+		
 	}
 
 	LinkImplPtr LinkImpl::Connect(std::string& Host, uint16_t Port, Link::CallbacksPtr LinkCallbacks,
@@ -72,14 +72,14 @@ namespace MuteNet
 			{
 				if (!_isConnecting)
 				{
-					int ErrCode = _link->_Info->Connect(Ip, size);
+					int ErrCode = SocketUtil::Connect(_link, Ip, size);
 					if (ErrCode == 0)
 					{
 						_isConnecting = true;
 					}
 					else
 					{
-						_link->GetCallbacks()->OnError(ErrCode, ErrorString(ErrCode));
+						_link->GetCallbacks()->OnError(ErrCode, SocketUtil::ErrorString(ErrCode));
 					}
 				}
 			}
@@ -109,30 +109,34 @@ namespace MuteNet
 	void LinkImpl::Enable(LinkImplPtr Self)
 	{
 		_Self = Self;
-		_Info->Enable();
+
+		const auto Event = NetworkManager::Get().GetIOEvent();
+		Event->RegisterHandle(reinterpret_cast<void *>(_Socket), nullptr);
+
+
 	}
 
+	// SendASyncRequest Idea Àû¿ë
 	bool LinkImpl::Send(const void* Data, size_t Length)
 	{
-		if (_isShutdown)
+		if (_isShutdown || _SendBuffer.get_isSending())
 		{
 			return false;
 		}
 
-		_Info->Send(Data, Length);
+		auto SendRequest = std::make_shared<ASyncSendRequest>(_Self, Data, Length);
+
+		SendRequest->Process();
 	}
 
 	void LinkImpl::Shutdown()
 	{
-		// _isShutdown = true;
-		
-		// Send Buffer Use Length Size is Zero then Shutdown.
-
+		::shutdown(_Socket, SD_SEND);
 	}
-
+	
 	void LinkImpl::Close()
 	{
-		_Info->Disable();
+		::closesocket(_Socket);
 
 		if (_Server == nullptr)
 		{
@@ -145,5 +149,4 @@ namespace MuteNet
 
 		_Self.reset();
 	}
-
 }
