@@ -161,6 +161,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="ServerApplication.cpp" />
   </ItemGroup>
   <ItemGroup>

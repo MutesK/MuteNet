@@ -17,7 +17,7 @@ namespace MuteNet
 	{
 	}
 
-	ServerHandleImplPtr ServerHandleImpl::Listen(uint16_t Port, Network::ListenCallbacksPtr& ListenCallbacks)
+	ServerHandleImplPtr ServerHandleImpl::Listen(uint16_t Port, Network::ListenCallbacksPtr ListenCallbacks)
 	{
 		ServerHandleImplPtr res = ServerHandleImplPtr
 		{ new ServerHandleImpl(ListenCallbacks) };
@@ -33,6 +33,8 @@ namespace MuteNet
 			res->_selfPtr.reset();
 			return nullptr;
 		}
+
+		return res;
 	}
 
 	void ServerHandleImpl::Close()
@@ -59,19 +61,20 @@ namespace MuteNet
 
 	void ServerHandleImpl::RemoveLink(const LinkImpl* Link)  // 개선필요
 	{
-		std::for_each(_Connections.begin(), _Connections.end(), [&](const auto& Iter)
+		auto Iterator = std::find_if(_Connections.begin(), _Connections.end(), [&](const LinkImplPtr Ptr)
 			{
-				if (Iter->get() == Link)
-				{
-					_Connections.erase(itr);
-					return;
-				}
+				return Ptr.get() == Link;
 			});
+
+		if (Iterator == _Connections.end())
+			return;
+
+		_Connections.erase(Iterator);
 	}
 
 	void ServerHandleImpl::Callback(intptr_t socket, sockaddr* address, int socklen, void* key)
 	{
-		ServerHandleImpl* Self = reinterpret_cast<ServerHandleImpl *>(key);
+		auto Self = reinterpret_cast<ServerHandleImpl *>(key);
 
 		char IpAddress[128]{0};
 		uint16_t port = 0;
@@ -80,14 +83,14 @@ namespace MuteNet
 		{
 		case AF_INET:
 		{
-			sockaddr_in* sock_in = reinterpret_cast<sockaddr_in*>(address);
+			auto sock_in = reinterpret_cast<sockaddr_in*>(address);
 			SocketUtil::inet_ntop(AF_INET, &sock_in->sin_addr, IpAddress, 128);
 			port = htons(sock_in->sin_port);
 		}
 		break;
 		case AF_INET6:
 		{
-			sockaddr_in6* sock_in6 = reinterpret_cast<sockaddr_in6*>(address);
+			auto sock_in6 = reinterpret_cast<sockaddr_in6*>(address);
 			SocketUtil::inet_ntop(AF_INET6, &sock_in6->sin6_addr, IpAddress, 128);
 			port = htons(sock_in6->sin6_port);
 		}

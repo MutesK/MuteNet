@@ -129,6 +129,7 @@ namespace MuteNet
 		auto SendRequest = new ASyncSendRequest(_Self, reinterpret_cast<const char *>(Data), Length);
 
 		SendRequest->Process();
+		return true;
 	}
 
 	void LinkImpl::RecvPost()

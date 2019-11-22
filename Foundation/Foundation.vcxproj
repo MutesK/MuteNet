@@ -178,7 +178,6 @@
   <ItemGroup>
     <ClCompile Include="ASyncQueue.cpp" />
     <ClCompile Include="CircularBuffer.cpp" />
-    <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="HeapBlock.cpp" />
     <ClCompile Include="InputMemoryStream.cpp" />
     <ClCompile Include="MiniDump.cpp" />

@@ -18,7 +18,7 @@ namespace MuteNet
 		{
 		}
 
-		virtual void Process() override
+		virtual bool Process() override
 		{
 			DWORD RecvBytes = 0;
 
@@ -33,11 +33,12 @@ namespace MuteNet
 				if (errorCode != WSA_IO_PENDING)
 				{
 					CallbackPtr->OnError(errorCode, SocketUtil::ErrorString(errorCode));
-					return;
+					return false;
 				}
 			}
 
-			linkPtr->_ASyncIORequestCounter++;
+			++linkPtr->_ASyncIORequestCounter;
+			return true;
 		}
 
 		virtual void IOCompletion(DWORD TransfferredBytes) override
@@ -46,6 +47,12 @@ namespace MuteNet
 
 			Byte* TempRecvBuffer = new Byte[OnceRecvBytes];
 			auto ReceivcedBytes = RecvProcess(TempRecvBuffer, OnceRecvBytes);
+
+			if(ReceivcedBytes == SOCKET_ERROR)
+			{
+				delete this;
+				return;
+			}
 
 			CallbackPtr->OnReceivedData(reinterpret_cast<char *>(TempRecvBuffer), ReceivcedBytes);
 			delete[] TempRecvBuffer;
@@ -70,7 +77,7 @@ namespace MuteNet
 			if (result == SOCKET_ERROR)
 			{
 				CallbackPtr->OnError(result, SocketUtil::ErrorString(result));
-				return;
+				return SOCKET_ERROR;
 			}
 
 			return result;

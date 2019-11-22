@@ -5,6 +5,16 @@
 
 namespace MuteNet
 {
+	NetworkManager::NetworkManager()
+	{
+		Initialize();
+	}
+
+	NetworkManager::~NetworkManager()
+	{
+		WSACleanup();
+	}
+
 	void NetworkManager::Initialize()
 	{
 		WSADATA wsaData;
@@ -78,7 +88,7 @@ namespace MuteNet
 			}
 		}
 	}
-	ServiceListener* NetworkManager::GetIOEvent()
+	ServiceListener* NetworkManager::GetIOEvent() const
 	{
 		return _IOEvent.get();
 	}

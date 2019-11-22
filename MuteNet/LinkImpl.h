@@ -51,7 +51,7 @@ namespace MuteNet
 		std::string GetRemoteIP() const override;
 		uint16_t GetRemotePort() const override;
 
-		CallbacksPtr GetCallbacks();
+		CallbacksPtr GetCallbacks() const;
 
 		void Shutdown() override;
 		void Close() override;
@@ -84,7 +84,7 @@ namespace MuteNet
 	{
 		return _RemotePort;
 	}
-	inline Link::CallbacksPtr LinkImpl::GetCallbacks()
+	inline Link::CallbacksPtr LinkImpl::GetCallbacks() const
 	{
 		return _Callback;
 	}

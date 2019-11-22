@@ -19,7 +19,7 @@ namespace MuteNet
 		{
 		}
 
-		virtual void Process() override
+		virtual bool Process() override
 		{
 			WSABUF Buf;
 			Buf.buf = const_cast<char *>(inData);
@@ -32,16 +32,17 @@ namespace MuteNet
 
 			if (ret == SOCKET_ERROR)
 			{
-				int errorCode = WSAGetLastError();
+				auto errorCode = WSAGetLastError();
 
 				if (errorCode != WSA_IO_PENDING)
 				{
 					CallbackPtr->OnError(errorCode, SocketUtil::ErrorString(errorCode));
-					return;
+					return false;
 				}
 			}
 
-			linkPtr->_ASyncIORequestCounter++;
+			++linkPtr->_ASyncIORequestCounter;
+			return true;
 		}
 
 		virtual void IOCompletion(DWORD TransfferredBytes) override

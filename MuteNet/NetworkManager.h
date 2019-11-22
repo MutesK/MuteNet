@@ -24,7 +24,8 @@ namespace MuteNet
 		LinkPtrs					_Links;
 		ServiceListenerPtr			_IOEvent;
 	public:
-		NetworkManager() = default;
+		NetworkManager();
+		~NetworkManager();
 
 		void Initialize(void);
 
@@ -38,7 +39,7 @@ namespace MuteNet
 
 		void RemoveServer(const ServerHandle* Server);
 
-		ServiceListener* GetIOEvent();
+		ServiceListener* GetIOEvent() const;
 	};
 
 }

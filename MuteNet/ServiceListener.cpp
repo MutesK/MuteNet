@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ServiceListener.h"
 #include "Link.h"
+#include "ASyncRequest.h"
 
 
 namespace MuteNet
@@ -23,7 +24,9 @@ namespace MuteNet
 	void ServiceListener::HandleCompletion(const uint32_t workerIndex, ULONG_PTR CompletionKey, LPOVERLAPPED Overlapped,
 		DWORD TransfferedBytes)
 	{
-		
+		auto Request = reinterpret_cast<ASyncRequest*>(Overlapped);
+
+		Request->IOCompletion(TransfferedBytes);
 	}
 
 	void ServiceListener::HandleTimeout(const uint32_t WorkerIndex, ULONG_PTR CompletionKey)

@@ -4,6 +4,7 @@
 #include "NetworkManager.h"
 #include "HostNameLookup.h"
 #include "ServerHandleImpl.h"
+#include "LinkImpl.h"
 
 namespace MuteNet
 {

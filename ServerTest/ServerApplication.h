@@ -11,6 +11,7 @@ class ClientHandle : public Link::Callbacks
 private:
 	Link* _link;
 public:
+	ClientHandle() = default;
 	virtual ~ClientHandle() {}
 
 	virtual void OnCreated(Link* Link) override
@@ -40,16 +41,16 @@ public:
 
 	virtual void OnError(int ErrorCode, const std::string& ErrorMsg) override
 	{
+		std::cout << "Error : " << ErrorCode << " " << ErrorMsg << std::endl;
 
+		_link->Shutdown();
 	}
 };
 
 class ListenCallback : public Network::ListenCallbacks
 {
 public:
-	ListenCallback()
-	{
-	}
+	ListenCallback() = default;
 
 	virtual Link::CallbacksPtr OnInComingConnection(const std::string& RemoteIPAddress, uint16_t RemotePort) override
 	{
@@ -65,7 +66,7 @@ public:
 
 	virtual void OnError(int ErrorCode, const std::string ErrorMsg) override
 	{
-
+		std::cout << "Error : " << ErrorCode << " " << ErrorMsg << std::endl;
 	}
 
 };
@@ -77,7 +78,7 @@ class ServerApplication
 {
 private:
 	ListenCallbackPtr		_ListenCallback;
-	ServerHandleImplPtr		_ServerHandlePtr;
+	ServerHandlePtr			_ServerHandlePtr;
 
 public:
 	ServerApplication();
