@@ -78,9 +78,6 @@
     <ClInclude Include="ServerHandleImpl.h">
       <Filter>Server</Filter>
     </ClInclude>
-    <ClInclude Include="Session.h">
-      <Filter>Link</Filter>
-    </ClInclude>
     <ClInclude Include="ASyncRequest.h">
       <Filter>IOContextManage</Filter>
     </ClInclude>
@@ -115,9 +112,6 @@
     </ClCompile>
     <ClCompile Include="ServerHandleImpl.cpp">
       <Filter>Server</Filter>
-    </ClCompile>
-    <ClCompile Include="Session.cpp">
-      <Filter>Link</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

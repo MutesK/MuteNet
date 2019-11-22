@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "LinkImpl.h"
 #include "NetworkManager.h"
-#include "Session.h"
 #include "SocketUtil.h"
 #include "ServerHandleImpl.h"
 #include "ASyncSendRequest.h"
+#include "ASyncRecvRequest.h"
 
 namespace MuteNet
 {
@@ -12,6 +12,7 @@ namespace MuteNet
 		:super(LinkCallback)
 		,_LocalPort(0)
 		,_RemotePort(0)
+		, _ASyncIORequestCounter(0)
 		,_isShutdown(false)
 	{
 	}
@@ -23,6 +24,7 @@ namespace MuteNet
 		, _RemotePort(0)
 		, _isShutdown(false)
 		, _Socket(socket)
+		, _ASyncIORequestCounter(0)
 	{
 	}
 
@@ -113,25 +115,39 @@ namespace MuteNet
 		const auto Event = NetworkManager::Get().GetIOEvent();
 		Event->RegisterHandle(reinterpret_cast<void *>(_Socket), nullptr);
 
-
+		RecvPost();
 	}
 
 	// SendASyncRequest Idea Àû¿ë
 	bool LinkImpl::Send(const void* Data, size_t Length)
 	{
-		if (_isShutdown || _SendBuffer.get_isSending())
+		if (_isShutdown)
 		{
 			return false;
 		}
 
-		auto SendRequest = std::make_shared<ASyncSendRequest>(_Self, Data, Length);
+		auto SendRequest = new ASyncSendRequest(_Self, reinterpret_cast<const char *>(Data), Length);
 
 		SendRequest->Process();
+	}
+
+	void LinkImpl::RecvPost()
+	{
+		if (_isShutdown)
+		{
+			return;
+		}
+
+		auto RecvRequest = new ASyncRecvRequest(_Self);
+
+		RecvRequest->Process();
 	}
 
 	void LinkImpl::Shutdown()
 	{
 		::shutdown(_Socket, SD_SEND);
+
+		_isShutdown = true;
 	}
 	
 	void LinkImpl::Close()
@@ -149,4 +165,5 @@ namespace MuteNet
 
 		_Self.reset();
 	}
+
 }

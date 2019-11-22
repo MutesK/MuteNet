@@ -34,7 +34,9 @@ namespace MuteNet
 		}
 
 	public:
-		virtual ~Link();
+		virtual ~Link()
+		{
+		}
 
 		virtual bool Send(const void* Data, size_t Length) = 0;
 

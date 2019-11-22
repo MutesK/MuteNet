@@ -20,3 +20,4 @@
 #include "../Foundation/CircularBuffer.h"
 
 static const DWORD AddressLength = sizeof(SOCKADDR_IN) + 16;
+typedef char* Byte;

@@ -27,14 +27,12 @@ namespace MuteNet
 
 		SOCKET						_Socket;
 
-		// 버퍼 관리 고민
-		Util::CircularBuffer		_SendBuffer;
-		Util::CircularBuffer		_RecvBuffer;
-
 		std::string					 _LocalIP;
 		uint16_t					 _LocalPort;
 		std::string					 _RemoteIP;
 		uint16_t					 _RemotePort;
+
+		std::atomic_int64_t			 _ASyncIORequestCounter;
 	public:
 		LinkImpl(const CallbacksPtr LinkCallback);
 		LinkImpl(intptr_t socket, const CallbacksPtr LinkCallback,
@@ -57,6 +55,8 @@ namespace MuteNet
 
 		void Shutdown() override;
 		void Close() override;
+	private:
+		void RecvPost();
 	private:
 		friend class Network;
 		friend class SocketUtil;

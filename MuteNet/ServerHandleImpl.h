@@ -29,7 +29,7 @@ namespace MuteNet
 		virtual ~ServerHandleImpl() override;
 
 		static ServerHandleImplPtr Listen(uint16_t Port,
-			Network::ListenCallbacksPtr& ListenCallback);
+			Network::ListenCallbacksPtr ListenCallback);
 
 		void Close() override;
 		

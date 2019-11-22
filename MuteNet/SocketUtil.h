@@ -101,5 +101,10 @@ namespace MuteNet
 
 			return std::string(ErrorStr, MsgLen);
 		}
+
+		static inline int Connect(const LinkImplPtr& linkPtr, const sockaddr* Ip, int size)
+		{
+			return ::connect(linkPtr->_Socket, Ip, size);
+		}
 	};
 }
