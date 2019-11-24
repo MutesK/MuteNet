@@ -119,7 +119,14 @@ namespace MuteNet
 
 		virtual void IOError(DWORD Error) override
 		{
+			linkPtr->Shutdown();
 
+			if (--linkPtr->_ASyncIORequestCounter == 0)
+			{
+				linkPtr->Close();
+			}
+
+			FreeRecvRequest(reinterpret_cast<ASyncRecvRequest*>(Overlapped.SelfPtr));
 		}
 
 	private:

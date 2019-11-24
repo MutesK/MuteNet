@@ -33,11 +33,14 @@ namespace MuteNet
 
 	void ServiceListener::HandleTimeout(const uint32_t WorkerIndex, ULONG_PTR CompletionKey)
 	{
-
 	}
 
 	void ServiceListener::HandleError(const uint32_t workerIndex, DWORD Error, ULONG_PTR CompletionKey, LPOVERLAPPED Overlapped, DWORD TransfferedBytes)
 	{
+		const auto ExtOverlappedPtr = reinterpret_cast<ExtentedOverlapped*>(Overlapped);
+		ASyncRequest* RequestPtr = reinterpret_cast<ASyncRequest*>(ExtOverlappedPtr->SelfPtr);
 
+		if (RequestPtr)
+			RequestPtr->IOCompletion(Error);
 	}
 }

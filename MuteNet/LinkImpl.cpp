@@ -127,6 +127,8 @@ namespace MuteNet
 		const auto Event = NetworkManager::Get().GetIOEvent();
 		Event->RegisterHandle(reinterpret_cast<void *>(_Socket), nullptr);
 
+		++_ASyncIORequestCounter;
+
 		RecvPost();
 
 		if (--_ASyncIORequestCounter == 0)
