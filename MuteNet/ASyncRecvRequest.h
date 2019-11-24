@@ -9,22 +9,54 @@ namespace MuteNet
 	// Zero Byte Recv Àû¿ë ( IOCP )
 	class ASyncRecvRequest : public ASyncRequest
 	{
+		typedef ASyncRequest super;
+
+		static Util::TL::ObjectPool<ASyncRecvRequest, true, true> OverlappedPool;
 	private:
 		LinkImplPtr			  linkPtr;
 		const Link::CallbacksPtr& CallbackPtr;
-	public:
+
+		friend class Util::TL::ObjectPool<ASyncRecvRequest, true, true>;
+
+	private:
 		ASyncRecvRequest(const LinkImplPtr& linkPtr)
 			:linkPtr(linkPtr), CallbackPtr(linkPtr->_Callback)
 		{
 		}
+	public:
+		virtual ~ASyncRecvRequest()
+		{
+		}
+
+		static ASyncRecvRequest* GetRecvRequest(const LinkImplPtr linkPtr)
+		{
+			return new ASyncRecvRequest(linkPtr);
+		}
+
+		static void FreeRecvRequest(ASyncRecvRequest* Ptr)
+		{
+			delete Ptr;
+		}
 
 		virtual bool Process() override
 		{
+			super::Process();
+
 			DWORD RecvBytes = 0;
+			DWORD Flag = 0;
 
 			auto& Socket = linkPtr->_Socket;
 
-			int ret = WSARecv(Socket, nullptr, 0, &RecvBytes, nullptr, this, nullptr);
+			char temp[5];
+			WSABUF buf;
+			buf.buf = nullptr;
+			buf.len = 0;
+
+			if (Socket == INVALID_SOCKET)
+				return false;
+			
+			++linkPtr->_ASyncIORequestCounter;
+			int ret = WSARecv(Socket, &buf, 1, &RecvBytes, &Flag, &Overlapped.Overlapped, nullptr);
 
 			if (ret == SOCKET_ERROR)
 			{
@@ -33,11 +65,16 @@ namespace MuteNet
 				if (errorCode != WSA_IO_PENDING)
 				{
 					CallbackPtr->OnError(errorCode, SocketUtil::ErrorString(errorCode));
-					return false;
+
+					if (--linkPtr->_ASyncIORequestCounter == 0)
+					{
+						linkPtr->Close();
+					}
+
+					linkPtr->Shutdown();
 				}
 			}
 
-			++linkPtr->_ASyncIORequestCounter;
 			return true;
 		}
 
@@ -48,21 +85,41 @@ namespace MuteNet
 			Byte* TempRecvBuffer = new Byte[OnceRecvBytes];
 			auto ReceivcedBytes = RecvProcess(TempRecvBuffer, OnceRecvBytes);
 
-			if(ReceivcedBytes == SOCKET_ERROR)
+			if(ReceivcedBytes == 0 || ReceivcedBytes == SOCKET_ERROR)
 			{
-				delete this;
+				linkPtr->Shutdown();
+
+				if (--linkPtr->_ASyncIORequestCounter == 0)
+				{
+					linkPtr->Close();
+				}
+
+				delete[] TempRecvBuffer;
+				FreeRecvRequest(reinterpret_cast<ASyncRecvRequest*>(Overlapped.SelfPtr));
 				return;
 			}
 
-			CallbackPtr->OnReceivedData(reinterpret_cast<char *>(TempRecvBuffer), ReceivcedBytes);
+			CallbackPtr->OnReceivedData(reinterpret_cast<char*>(TempRecvBuffer), ReceivcedBytes);
 			delete[] TempRecvBuffer;
+
+			if (linkPtr->AcquireLink())
+			{
+				linkPtr->RecvPost();
+				linkPtr->FreeLink();
+			}
 
 			if (--linkPtr->_ASyncIORequestCounter == 0)
 			{
 				linkPtr->Close();
 			}
 
-			delete this;
+			FreeRecvRequest(reinterpret_cast<ASyncRecvRequest *>(Overlapped.SelfPtr));
+		}
+
+
+		virtual void IOError(DWORD Error) override
+		{
+
 		}
 
 	private:
@@ -76,7 +133,8 @@ namespace MuteNet
 				reinterpret_cast<char *>(buffer), length, 0);
 			if (result == SOCKET_ERROR)
 			{
-				CallbackPtr->OnError(result, SocketUtil::ErrorString(result));
+				auto error = WSAGetLastError();
+
 				return SOCKET_ERROR;
 			}
 

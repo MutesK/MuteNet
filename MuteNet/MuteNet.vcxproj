@@ -162,6 +162,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ASyncAcceptRequest.h" />
     <ClInclude Include="ASyncRecvRequest.h" />
     <ClInclude Include="ASyncRequest.h" />
     <ClInclude Include="ASyncSendRequest.h" />

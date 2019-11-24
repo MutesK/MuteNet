@@ -24,12 +24,20 @@ namespace MuteNet
 	void ServiceListener::HandleCompletion(const uint32_t workerIndex, ULONG_PTR CompletionKey, LPOVERLAPPED Overlapped,
 		DWORD TransfferedBytes)
 	{
-		auto Request = reinterpret_cast<ASyncRequest*>(Overlapped);
+		const auto ExtOverlappedPtr = reinterpret_cast<ExtentedOverlapped *>(Overlapped);
+		ASyncRequest* RequestPtr = reinterpret_cast<ASyncRequest*>(ExtOverlappedPtr->SelfPtr);
 
-		Request->IOCompletion(TransfferedBytes);
+		if(RequestPtr)
+			RequestPtr->IOCompletion(TransfferedBytes);
 	}
 
 	void ServiceListener::HandleTimeout(const uint32_t WorkerIndex, ULONG_PTR CompletionKey)
 	{
+
+	}
+
+	void ServiceListener::HandleError(const uint32_t workerIndex, DWORD Error, ULONG_PTR CompletionKey, LPOVERLAPPED Overlapped, DWORD TransfferedBytes)
+	{
+
 	}
 }

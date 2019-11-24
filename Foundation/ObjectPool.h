@@ -4,6 +4,7 @@
 #include <mutex>
 #include <set>
 #include <stack>
+#include <queue>
 #include <functional>
 
 namespace Util
@@ -16,7 +17,7 @@ namespace Util
 		private:
 			std::mutex							_mutex;
 			std::set<void*>						_elementPool;
-			std::stack<void*>					_unUsedIndexs;
+			std::queue<void*>					_unUsedIndexs;
 
 			std::function<void(Type* ptr)>		_customDeletor;
 			std::size_t							_PoolSize;
@@ -27,7 +28,7 @@ namespace Util
 			template <typename ...Args>
 			Type* operator()(Args&& ... arguments)
 			{
-				return Alloc(arguments...);
+				return Alloc(std::forward<Args>(arguments)...);
 			}
 
 			template <typename ...Args>
@@ -53,8 +54,9 @@ namespace Util
 			for(size_t index = 0; index < PoolSize; ++index)
 			{
 				auto object = std::malloc(sizeof(Type));
-				_elementPool.insert(object);
+				assert(object != nullptr);
 
+				_elementPool.insert(object);
 				_unUsedIndexs.push(object);
 			}
 		}
@@ -81,8 +83,14 @@ namespace Util
 					for (size_t index = 0; index < _PoolSize; ++index)
 					{
 						auto object = std::malloc(sizeof(Type));
-						_elementPool.insert(object);
-						_unUsedIndexs.push(object);
+						assert(object != nullptr);
+
+						{
+							std::lock_guard<std::mutex> lock(_mutex);
+
+							_elementPool.insert(object);
+							_unUsedIndexs.push(object);
+						}
 					}
 				}
 				else
@@ -94,12 +102,12 @@ namespace Util
 			{
 				std::lock_guard<std::mutex> lock(_mutex);
 
-				ptr = _unUsedIndexs.top();
+				ptr = _unUsedIndexs.front();
 				_unUsedIndexs.pop();
 			}
 
 			if(CallCtor)
-				new (ptr) Type(arguments...);
+				new (ptr) Type(std::forward<Args>(arguments)...);
 
 			return reinterpret_cast<Type *>(ptr);
 		}
@@ -122,7 +130,7 @@ namespace Util
 			if (CallCtor)
 			{
 				pointer->~Type();
-				memset(pointer, 0, sizeof(Type)); // TEST
+				// memset(pointer, 0, sizeof(Type)); // TEST
 			}
 		}
 	}

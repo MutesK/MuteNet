@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ASyncQueue.h"
+#include "../MuteNet/SocketUtil.h"
 
 
 using namespace Util;
@@ -85,17 +86,26 @@ void ASyncQueue::Run(const uint32_t workerIndex)
 		if (GetQueuedCompletionStatus(_iocpHandle, &byteTransferred,
 			&CompletionKey, &lpOverlapped, _timeout) == false)
 		{
-			const auto lastError = GetLastError();
+			const auto lastError = WSAGetLastError();
 			
 			if (WAIT_TIMEOUT != lastError)
 			{
-				break;
-			}
+				HandleError(workerIndex, lastError, CompletionKey, lpOverlapped, byteTransferred);
+				continue;
+			} 
 
 			HandleTimeout(workerIndex, CompletionKey);
 			continue;
 		}
 		else
+		{
+			if (byteTransferred == 0 && CompletionKey == 0 && lpOverlapped == nullptr)
+			{
+				PostQueue(0);
+				return;
+			}
+
 			HandleCompletion(workerIndex, CompletionKey, lpOverlapped, byteTransferred);
+		}
 	}
 }

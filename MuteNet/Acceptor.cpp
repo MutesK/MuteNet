@@ -2,11 +2,14 @@
 #include "Acceptor.h"
 #include "ServiceListener.h"
 #include "SocketUtil.h"
+#include "ASyncAcceptRequest.h"
 
 using namespace Util;
 
 namespace MuteNet
 {
+	Util::TL::ObjectPool<ASyncAcceptRequest, true, true> ASyncAcceptRequest::OverlappedPool(400);
+
 	AcceptorPtr Acceptor::Listen(ServiceListener* Port, ListenerCallback Callback, ListenerErrorCallback ErrorCallback,
 		SOCKADDR_IN* Ip, void* key, int Backlog)
 	{
@@ -21,122 +24,81 @@ namespace MuteNet
 
 		AcceptorPtr Ptr{new Acceptor(const_cast<ServiceListener *>(Port), Callback, ErrorCallback, Ip, key ,Backlog)};
 
+		Ptr->_Self = Ptr;
 		Ptr->InitializeListenSocket();
+		Ptr->Start();
 
 		return Ptr;
 	}
 
 	Acceptor::Acceptor(ServiceListener* Port, ListenerCallback& Callback, ListenerErrorCallback& ErrorCallback,
 		SOCKADDR_IN* Ip, void* key, int Backlog)
-		:_port(Port), _callback(std::move(Callback)), _address(Ip), _listen(INVALID_SOCKET),
-		_backlog(Backlog), _errorcallback(ErrorCallback), _key(key)
+		:_Port(Port), _Callback(std::move(Callback)), _Address(Ip), _Listen(INVALID_SOCKET),
+		_Backlog(Backlog), _ErrorCallback(ErrorCallback), _Key(key)
 	{
-
+		_StopTrigger = false;
 	}
 
 	void Acceptor::InitializeListenSocket()
 	{
 		int error;
 
-		_listen = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-		if (_listen == INVALID_SOCKET)
+		_Listen = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+		if (_Listen == INVALID_SOCKET)
 		{
 			error = WSAGetLastError();
 
-			_errorcallback(_listen, error, SocketUtil::ErrorString(error));
+			_ErrorCallback(_Listen, error, SocketUtil::ErrorString(error));
 			return;
 		}
 
-		_port->RegisterHandle((void *)_listen, this);
+		_Port->RegisterHandle(reinterpret_cast<void *>(_Listen), reinterpret_cast<void*>(1));
 
-		error = std::invoke(bind, _listen,
-			reinterpret_cast<sockaddr*>(_address), sizeof(SOCKADDR_IN));
+		error = std::invoke(bind, _Listen,
+			reinterpret_cast<sockaddr*>(_Address), sizeof(SOCKADDR_IN));
 		if (error != ERROR_SUCCESS)
 		{
-			_errorcallback(_listen, error, SocketUtil::ErrorString(error));
+			_ErrorCallback(_Listen, error, SocketUtil::ErrorString(error));
 			return;
 		}
 
-		SocketUtil::NonBlockSocket(_listen);
+		SocketUtil::NonBlockSocket(_Listen);
 
-		error = std::invoke(::listen, _listen, _backlog);
+		error = std::invoke(::listen, _Listen, _Backlog);
 		if (error != ERROR_SUCCESS)
 		{
-			_errorcallback(_listen, error, SocketUtil::ErrorString(error));
+			_ErrorCallback(_Listen, error, SocketUtil::ErrorString(error));
 			return;
 		}
 	}
 
-	void Acceptor::StartAccept()
+	void Acceptor::StartAccept() const
 	{
-		const auto FuncExt = _port->GetExtension();
-
-		auto pTask = new AcceptorTask(this, _port);
-		int error = 0;
-		DWORD Pending;
-
-		if (pTask->_socket == INVALID_SOCKET)
-		{
-			error = WSAGetLastError();
-
-			_errorcallback(pTask->_socket, error, SocketUtil::ErrorString(error));
+		if (_StopTrigger)
 			return;
-		}
-			
-		setsockopt(pTask->_socket, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT,
-				reinterpret_cast<char*>(&_listen), sizeof(_listen));
 
-		SocketUtil::NonBlockSocket(pTask->_socket);
+		const auto FuncExt = _Port->GetExtension();
 
-		pTask->_AcceptOverlapped._CallbackPtr = OnAccepted;
-		_port->RegisterHandle(reinterpret_cast<char*>(pTask->_socket), nullptr);
+		auto AcceptTask = ASyncAcceptRequest::GetAcceptRequest(_Self, FuncExt->_AcceptEx);
 
-		if (!FuncExt->_AcceptEx(_listen, pTask->_socket, pTask->_addrbuf, 0, pTask->_buflen / 2,
-			pTask->_buflen / 2, &Pending, &pTask->_AcceptOverlapped._Overlapped))
-		{
-			error = WSAGetLastError();
+		AcceptTask->Overlapped.SelfPtr = AcceptTask;
 
-			_errorcallback(pTask->_socket, error, SocketUtil::ErrorString(error));
-			return;
-		}
-		
-	}
-
-	void Acceptor::OnAccepted(Overlapped* pOverlapped, uintptr_t socket, int transferredBytes, int Success)
-	{
-		auto acceptorTask = reinterpret_cast<AcceptorTask*>(pOverlapped);
-		auto acceptor = acceptorTask->_acceptor;
-		auto port = acceptor->_port;
-
-		const auto FuncExt = port->GetExtension();
-
-		SOCKADDR* LocalSockaddr = nullptr, * RemoteSockaddr = nullptr;
-		int LocalSocketLength = 0, RemoteSocketLength = 0;
-
-		FuncExt->_GetAcceptExSockaddrs(acceptorTask->_addrbuf, 0,
-			acceptorTask->_buflen / 2, acceptorTask->_buflen / 2, &LocalSockaddr, &LocalSocketLength, &RemoteSockaddr,
-			&RemoteSocketLength);
-
-		acceptor->_callback(acceptorTask->_socket, LocalSockaddr, LocalSocketLength, acceptor->_key);
-		delete acceptorTask;
-
-		if (!acceptor->_stopTrigger)
-			acceptor->StartAccept();
+		if (!AcceptTask->Process())
+			ASyncAcceptRequest::FreeAcceptRequest(AcceptTask);
 	}
 
 	void Acceptor::Start()
 	{
-		_stopTrigger = false;
+		_StopTrigger = false;
 
-		for (int i = 0; i < 4; i++)
-		{
+		// for(int i=0; i<std::thread::hardware_concurrency(); i++)
 			StartAccept();
-		}
+
 	}
 
 	void Acceptor::Stop()
 	{
-		_stopTrigger = true;
+		_StopTrigger = true;
 	}
 
 }

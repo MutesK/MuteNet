@@ -9,10 +9,10 @@ using namespace MuteNet;
 class ClientHandle : public Link::Callbacks
 {
 private:
-	Link* _link;
+	Link* _link = nullptr;
 public:
 	ClientHandle() = default;
-	virtual ~ClientHandle() {}
+	virtual ~ClientHandle() = default;
 
 	virtual void OnCreated(Link* Link) override
 	{
@@ -21,17 +21,12 @@ public:
 
 	virtual void OnReceivedData(const char* data, size_t Length) override
 	{
-		if (Length <= 0)
-		{
-			_link->Shutdown();
-		}
-
 		_link->Send(data, Length);
 	}
 
 	virtual void OnRemoteClosed(void) override
 	{
-
+		std::cout << "OnRemoteClosed\n";
 	}
 
 	virtual void OnTLSHandShakeCompleted() override
@@ -41,7 +36,7 @@ public:
 
 	virtual void OnError(int ErrorCode, const std::string& ErrorMsg) override
 	{
-		std::cout << "Error : " << ErrorCode << " " << ErrorMsg << std::endl;
+		std::cout << "Error : " << ErrorCode << " " << ErrorMsg << "["<< __FUNCTION__ << "]" <<  std::endl;
 
 		_link->Shutdown();
 	}
@@ -54,9 +49,9 @@ public:
 
 	virtual Link::CallbacksPtr OnInComingConnection(const std::string& RemoteIPAddress, uint16_t RemotePort) override
 	{
-		printf("InComingConnection (%s:%d)", RemoteIPAddress.c_str(), RemotePort);
-
-		return std::shared_ptr<ClientHandle>();
+		printf("InComingConnection (%s:%d)\n", RemoteIPAddress.c_str(), RemotePort);
+;
+		return std::make_shared<ClientHandle>();
 	}
 
 	virtual void OnAccepted(Link& link) override
@@ -66,7 +61,6 @@ public:
 
 	virtual void OnError(int ErrorCode, const std::string ErrorMsg) override
 	{
-		std::cout << "Error : " << ErrorCode << " " << ErrorMsg << std::endl;
 	}
 
 };

@@ -8,12 +8,18 @@
 
 namespace MuteNet
 {
+	Util::TL::ObjectPool<ASyncSendRequest, true, true> ASyncSendRequest::OverlappedPool(5000);
+	Util::TL::ObjectPool<ASyncRecvRequest, true, true> ASyncRecvRequest::OverlappedPool(5000);
+
+
 	LinkImpl::LinkImpl(const CallbacksPtr LinkCallback)
 		:super(LinkCallback)
-		,_LocalPort(0)
-		,_RemotePort(0)
+		, _LocalPort(0)
+		, _RemotePort(0)
 		, _ASyncIORequestCounter(0)
-		,_isShutdown(false)
+		, _isShutdown(false)
+		, _Socket(INVALID_SOCKET)
+
 	{
 	}
 
@@ -31,6 +37,10 @@ namespace MuteNet
 	LinkImpl::~LinkImpl()
 	{
 		
+		if(_ASyncIORequestCounter > 0)
+		{
+			throw;
+		}
 	}
 
 	LinkImplPtr LinkImpl::Connect(std::string& Host, uint16_t Port, Link::CallbacksPtr LinkCallbacks,
@@ -110,12 +120,19 @@ namespace MuteNet
 	// Iocp Recv, Send, Event Callback
 	void LinkImpl::Enable(LinkImplPtr Self)
 	{
+		assert(Self != nullptr);
+
 		_Self = Self;
 
 		const auto Event = NetworkManager::Get().GetIOEvent();
 		Event->RegisterHandle(reinterpret_cast<void *>(_Socket), nullptr);
 
 		RecvPost();
+
+		if (--_ASyncIORequestCounter == 0)
+		{
+			Close();
+		}
 	}
 
 	// SendASyncRequest Idea Àû¿ë
@@ -126,34 +143,48 @@ namespace MuteNet
 			return false;
 		}
 
-		auto SendRequest = new ASyncSendRequest(_Self, reinterpret_cast<const char *>(Data), Length);
+		auto Request = ASyncSendRequest::GetSendRequest(_Self, reinterpret_cast<char*>(const_cast<void*>(Data)), Length);
+		Request->Overlapped.SelfPtr = Request;
 
-		SendRequest->Process();
+		if (!Request->Process())
+			ASyncSendRequest::FreeSendRequest(Request);
+
 		return true;
 	}
 
-	void LinkImpl::RecvPost()
+	void LinkImpl::RecvPost() const
 	{
-		if (_isShutdown)
+		assert(_Self != nullptr);
+
+		if (_isShutdown || _Socket == INVALID_SOCKET)
 		{
 			return;
 		}
 
-		auto RecvRequest = new ASyncRecvRequest(_Self);
+		auto Request = ASyncRecvRequest::GetRecvRequest(_Self);
+		assert(Request != nullptr);
 
-		RecvRequest->Process();
+		Request->Overlapped.SelfPtr = Request;
+
+		if (!Request->Process())
+			ASyncRecvRequest::FreeRecvRequest(Request);
 	}
 
 	void LinkImpl::Shutdown()
 	{
-		::shutdown(_Socket, SD_SEND);
+		::shutdown(_Socket, SD_BOTH);
 
 		_isShutdown = true;
 	}
 	
 	void LinkImpl::Close()
 	{
+		_isShutdown = true;
+
+		GetCallbacks()->OnRemoteClosed();
+
 		::closesocket(_Socket);
+		_Socket = INVALID_SOCKET;
 
 		if (_Server == nullptr)
 		{
@@ -165,6 +196,32 @@ namespace MuteNet
 		}
 
 		_Self.reset();
+	}
+
+	bool LinkImpl::AcquireLink()
+	{
+		++_ASyncIORequestCounter;
+
+		if (_ASyncIORequestCounter == 1)
+		{
+			if (--_ASyncIORequestCounter == 0)
+			{
+				Close();
+
+				return false;
+			}
+		}
+
+		return true;
+
+	}
+
+	void LinkImpl::FreeLink()
+	{
+		if (--_ASyncIORequestCounter == 0)
+		{
+			Close();
+		}
 	}
 
 }

@@ -17,34 +17,19 @@ namespace MuteNet
 
 	class Acceptor
 	{
-		struct AcceptorTask
-		{
-			Overlapped		_AcceptOverlapped;
-			Acceptor*		_acceptor;
-			SOCKET			_socket;
-			char			_addrbuf[30];
-			int				_buflen;
-
-			AcceptorTask(Acceptor* acceptor, ServiceListener* Port)
-			{
-				_acceptor = acceptor;
-				_buflen = 30;
-				_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-			}
-		};
-
 		friend class ServiceListener;
-
+		friend class ASyncAcceptRequest;
 	private:
-		ServiceListener*			_port;
-		SOCKET						_listen;
-		SOCKADDR_IN*				_address;
-		int							_backlog;
-		ListenerCallback			_callback;
-		ListenerErrorCallback		_errorcallback;
-		void*						_key;
+		ServiceListener*			_Port;
+		SOCKET						_Listen;
+		SOCKADDR_IN*				_Address;
+		int							_Backlog;
+		ListenerCallback			_Callback;
+		ListenerErrorCallback		_ErrorCallback;
+		void*						_Key;
+		AcceptorPtr					_Self;
 
-		bool						_stopTrigger = false;
+		bool						_StopTrigger = false;
 	public:
 		static AcceptorPtr Listen(ServiceListener* Port, 
 			ListenerCallback Callback, ListenerErrorCallback ErrorCallback,
@@ -58,9 +43,7 @@ namespace MuteNet
 
 		void InitializeListenSocket();
 
-		void StartAccept();
-		static void OnAccepted(Overlapped* pOverlapped, uintptr_t socket, 
-			int transferredBytes, int Success);
+		void StartAccept() const;
 	};
 
 }

@@ -19,6 +19,8 @@ namespace MuteNet
 
 		void HandleCompletion(const uint32_t workerIndex, ULONG_PTR CompletionKey, LPOVERLAPPED Overlapped, DWORD TransfferedBytes) override;
 		void HandleTimeout(const uint32_t WorkerIndex, ULONG_PTR CompletionKey) override;
+		void HandleError(const uint32_t workerIndex, DWORD Error, ULONG_PTR CompletionKey, LPOVERLAPPED Overlapped, DWORD TransfferedBytes) override;
+
 
 		ExtensionFunctions* GetExtension();
 	};

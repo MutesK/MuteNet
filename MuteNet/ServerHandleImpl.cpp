@@ -50,7 +50,7 @@ namespace MuteNet
 		name.sin_port = ntohs(Port);
 
 		_Acceptor = Acceptor::Listen(NetworkManager::Get().GetIOEvent(),
-			Callback, nullptr, &name, this);
+			Callback, ErrorCallback, &name, this);
 
 		if (nullptr == _Acceptor)
 			return false;
@@ -61,6 +61,8 @@ namespace MuteNet
 
 	void ServerHandleImpl::RemoveLink(const LinkImpl* Link)  // 개선필요
 	{
+		SAFE_UNIQUELOCK(_ConnectionsLock)
+
 		auto Iterator = std::find_if(_Connections.begin(), _Connections.end(), [&](const LinkImplPtr Ptr)
 			{
 				return Ptr.get() == Link;
@@ -108,12 +110,19 @@ namespace MuteNet
 			Self->_selfPtr, address, socklen);
 		
 		{
+			SAFE_UNIQUELOCK(Self->_ConnectionsLock);
+
 			Self->_Connections.emplace_back(Link);
 		}
 
-		LinkCallbacks->OnCreated(Link.get());
+		Link->GetCallbacks()->OnCreated(Link.get());
 		Link->Enable(Link);
 		Self->_listenCallbacks->OnAccepted(*Link);
 
+	}
+
+	void ServerHandleImpl::ErrorCallback(intptr_t socket, int errorCode, std::string errorString)
+	{
+		std::cout << "Error : " << errorCode << " ," << errorString << "[" << __FUNCTION__ << "]" << std::endl;
 	}
 }

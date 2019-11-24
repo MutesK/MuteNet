@@ -24,6 +24,7 @@ namespace MuteNet
 		std::string					_errorMsg;
 		ServerHandleImplPtr			_selfPtr;
 
+		SafeSharedLock				_ConnectionsLock;
 		// Acceptor
 	public :
 		virtual ~ServerHandleImpl() override;

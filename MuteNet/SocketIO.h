@@ -7,8 +7,6 @@ namespace MuteNet
 	typedef LPFN_CONNECTEX						ConnectExPtr;
 	typedef LPFN_GETACCEPTEXSOCKADDRS			GetAcceptExSockAddrsPtr;
 
-	typedef void(*IOCPCallbackPtr)(struct Overlapped*, uintptr_t socket, int transfferedBytes, int success);
-
 	struct ExtensionFunctions
 	{
 		AcceptExPtr					_AcceptEx;
@@ -16,19 +14,15 @@ namespace MuteNet
 		GetAcceptExSockAddrsPtr		_GetAcceptExSockaddrs;
 	};
 
-	struct Overlapped
-	{
-		OVERLAPPED				_Overlapped;
-		IOCPCallbackPtr			_CallbackPtr;
-	};
-
 	inline void* GetExtensionFunction(SOCKET s, const GUID* fn)
 	{
 		void* ptr = nullptr;
 		DWORD bytes = 0;
 
-		std::invoke(WSAIoctl, s, SIO_GET_EXTENSION_FUNCTION_POINTER,
+		auto ret = std::invoke(WSAIoctl, s, SIO_GET_EXTENSION_FUNCTION_POINTER,
 			(GUID*)fn, sizeof(*fn), &ptr, sizeof(ptr), &bytes, nullptr, nullptr);
+
+		assert(ret != SOCKET_ERROR);
 
 		return ptr;
 	}
@@ -39,7 +33,7 @@ namespace MuteNet
 		const GUID connectex = WSAID_CONNECTEX;
 		const GUID getaccpetexsockaddrs = WSAID_GETACCEPTEXSOCKADDRS;
 
-		SOCKET serviceProvider = socket(AF_INET, SOCK_STREAM, 0);
+		SOCKET serviceProvider = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
 		if (serviceProvider == INVALID_SOCKET)
 			return;
@@ -52,6 +46,6 @@ namespace MuteNet
 			reinterpret_cast<GetAcceptExSockAddrsPtr>(GetExtensionFunction(serviceProvider, &getaccpetexsockaddrs));
 
 
-		closesocket(serviceProvider);
+		// closesocket(serviceProvider);
 	}
 }

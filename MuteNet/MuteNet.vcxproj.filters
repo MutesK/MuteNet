@@ -87,6 +87,9 @@
     <ClInclude Include="ASyncRecvRequest.h">
       <Filter>IOContextManage</Filter>
     </ClInclude>
+    <ClInclude Include="ASyncAcceptRequest.h">
+      <Filter>IOContextManage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">

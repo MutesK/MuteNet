@@ -15,6 +15,7 @@ namespace MuteNet
 
 	class SessionInfo;
 
+
 	class LinkImpl final : public Link
 	{
 		typedef Link super;
@@ -36,8 +37,7 @@ namespace MuteNet
 	public:
 		LinkImpl(const CallbacksPtr LinkCallback);
 		LinkImpl(intptr_t socket, const CallbacksPtr LinkCallback,
-			const ServerHandleImplPtr ServerHandlePtr, const sockaddr* Addr,
-			size_t socketLen);
+			const ServerHandleImplPtr ServerHandlePtr, const sockaddr* Addr, size_t socketLen);
 		~LinkImpl() override;
 
 		static LinkImplPtr Connect(std::string& Host, uint16_t Port,
@@ -55,8 +55,11 @@ namespace MuteNet
 
 		void Shutdown() override;
 		void Close() override;
-	private:
-		void RecvPost();
+
+		bool AcquireLink();
+		void FreeLink();
+	private:  // Temp
+		void RecvPost() const;
 	private:
 		friend class Network;
 		friend class SocketUtil;
