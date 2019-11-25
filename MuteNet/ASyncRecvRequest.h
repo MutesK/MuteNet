@@ -72,6 +72,7 @@ namespace MuteNet
 					}
 
 					linkPtr->Shutdown();
+					return false;
 				}
 			}
 

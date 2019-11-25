@@ -79,7 +79,7 @@ namespace MuteNet
 
 		const auto FuncExt = _Port->GetExtension();
 
-		auto AcceptTask = ASyncAcceptRequest::GetAcceptRequest(_Self, FuncExt->_AcceptEx);
+		auto AcceptTask = ASyncAcceptRequest::GetAcceptRequest(_Self, FuncExt->_AcceptEx, FuncExt->_GetAcceptExSockaddrs);
 
 		AcceptTask->Overlapped.SelfPtr = AcceptTask;
 
@@ -91,7 +91,7 @@ namespace MuteNet
 	{
 		_StopTrigger = false;
 
-		// for(int i=0; i<std::thread::hardware_concurrency(); i++)
+		for(int i=0; i<std::thread::hardware_concurrency(); i++)
 			StartAccept();
 
 	}

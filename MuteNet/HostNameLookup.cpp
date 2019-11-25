@@ -10,7 +10,7 @@ namespace MuteNet
 	{
 		auto DoLamdba = [hostName, Callbacks]()
 		{
-			HostNameLookupPtr Lookup{ new HostNameLookup(hostName, std::move(Callbacks)) };
+			HostNameLookupPtr Lookup{ new HostNameLookup(hostName, Callbacks) };
 
 			addrinfo hints;
 			ZeroMemory(&hints, sizeof(addrinfo));

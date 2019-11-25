@@ -16,6 +16,7 @@ namespace MuteNet
 	private:
 		const AcceptorPtr& _Acceptor;
 		const AcceptExPtr& _AcceptExFunctionPtr;
+		const GetAcceptExSockAddrsPtr& _GetAcceptExSockAddrPtr;
 
 		SOCKET				_ClientSocket;
 		char				_AddressBuffer[1024]{ 0 };
@@ -23,16 +24,16 @@ namespace MuteNet
 
 		friend class Util::TL::ObjectPool<ASyncAcceptRequest, true, true>;
 	private:
-		ASyncAcceptRequest(const AcceptorPtr& Ptr, const AcceptExPtr& AcceptFuctPtr)
-			:_Acceptor(Ptr), _AcceptExFunctionPtr(AcceptFuctPtr), _BufferLength(1024)
+		ASyncAcceptRequest(const AcceptorPtr& Ptr, const AcceptExPtr& AcceptFuctPtr, const GetAcceptExSockAddrsPtr& AddrPtr)
+			:_Acceptor(Ptr), _AcceptExFunctionPtr(AcceptFuctPtr), _BufferLength(1024), _GetAcceptExSockAddrPtr(AddrPtr)
 		{
 		}
 	public:
 		virtual ~ASyncAcceptRequest() = default;
 
-		static ASyncAcceptRequest* GetAcceptRequest(const AcceptorPtr& Ptr, const AcceptExPtr& AcceptFuctPtr)
+		static ASyncAcceptRequest* GetAcceptRequest(const AcceptorPtr& Ptr, const AcceptExPtr& AcceptFuctPtr, const GetAcceptExSockAddrsPtr& AddrPtr)
 		{
-			return new ASyncAcceptRequest(Ptr, AcceptFuctPtr);
+			return new ASyncAcceptRequest(Ptr, AcceptFuctPtr, AddrPtr);
 		}
 
 		static void FreeAcceptRequest(ASyncAcceptRequest* Ptr)
@@ -58,7 +59,7 @@ namespace MuteNet
 
 			DWORD Pending = 0;
 
-			if(!_AcceptExFunctionPtr(ListenSocket, _ClientSocket, _AddressBuffer, _BufferLength - ((sizeof(SOCKADDR_IN) + 16) * 2),
+			if(!_AcceptExFunctionPtr(ListenSocket, _ClientSocket, _AddressBuffer, 0,
 				sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, &Pending, &Overlapped.Overlapped))
 			{
 				const auto error = WSAGetLastError();
@@ -87,12 +88,13 @@ namespace MuteNet
 				_Acceptor->StartAccept();
 			}
 
-			SOCKADDR_IN RemoteSockAddr;
-			int RemoteSocketLength = sizeof(struct sockaddr_in);
+			SOCKADDR* RemoteSockAddr = nullptr, *LocalSockAddr = nullptr;
+			int RemoteAddrLength = 0, LocalAddrLength = 0;
 
-			getpeername(_ClientSocket, reinterpret_cast<SOCKADDR*>(&RemoteSockAddr), &RemoteSocketLength);
+			_GetAcceptExSockAddrPtr(_AddressBuffer, TransfferredBytes, sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16,
+				&LocalSockAddr, &RemoteAddrLength, &RemoteSockAddr, &RemoteAddrLength);
 
-			_Acceptor->_Callback(_ClientSocket, reinterpret_cast<SOCKADDR *>(&RemoteSockAddr), RemoteSocketLength, _Acceptor->_Key);
+			_Acceptor->_Callback(_ClientSocket, RemoteSockAddr, RemoteAddrLength, _Acceptor->_Key);
 			_Acceptor->StartAccept();
 
 			FreeAcceptRequest(reinterpret_cast<ASyncAcceptRequest *>(Overlapped.SelfPtr));
