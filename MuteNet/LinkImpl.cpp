@@ -36,11 +36,6 @@ namespace MuteNet
 
 	LinkImpl::~LinkImpl()
 	{
-		
-		if(_ASyncIORequestCounter > 0)
-		{
-			throw;
-		}
 	}
 
 	LinkImplPtr LinkImpl::Connect(std::string& Host, uint16_t Port, Link::CallbacksPtr LinkCallbacks,

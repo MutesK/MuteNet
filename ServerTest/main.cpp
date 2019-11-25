@@ -1,5 +1,6 @@
 #include "ServerApplication.h"
 
+
 int main()
 {
 	ServerApplication App;
@@ -7,7 +8,7 @@ int main()
 	
 	while(true)
 	{
-		
+		std::this_thread::yield();
 	}
 
 	return 0;

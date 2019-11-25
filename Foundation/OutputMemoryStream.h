@@ -59,7 +59,7 @@ namespace Util
 	template <>
 	void OutputMemoryStream::Write(const std::string& inData)
 	{
-		unsigned short length = inData.length();
+		unsigned short length = static_cast<unsigned short>(inData.length());
 
 		Write(&length, sizeof(unsigned short));
 		Write(inData.c_str(), length);

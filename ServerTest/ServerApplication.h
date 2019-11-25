@@ -3,6 +3,7 @@
 #include "Network.h"
 #include "NetworkManager.h"
 #include "ServerHandleImpl.h"
+#include "MiniDump.h"
 
 using namespace MuteNet;
 
@@ -36,7 +37,7 @@ public:
 
 	virtual void OnError(int ErrorCode, const std::string& ErrorMsg) override
 	{
-		std::cout << "Error : " << ErrorCode << " " << ErrorMsg << "["<< __FUNCTION__ << "]" <<  std::endl;
+		std::cout << "Error : " << ErrorCode << " " << ErrorMsg << "[" << __FUNCTION__ << "]" << std::endl;
 
 		_link->Shutdown();
 	}
@@ -50,7 +51,7 @@ public:
 	virtual Link::CallbacksPtr OnInComingConnection(const std::string& RemoteIPAddress, uint16_t RemotePort) override
 	{
 		printf("InComingConnection (%s:%d)\n", RemoteIPAddress.c_str(), RemotePort);
-;
+		;
 		return std::make_shared<ClientHandle>();
 	}
 
@@ -61,6 +62,7 @@ public:
 
 	virtual void OnError(int ErrorCode, const std::string ErrorMsg) override
 	{
+		throw new std::exception(ErrorMsg.c_str());
 	}
 
 };
@@ -74,6 +76,7 @@ private:
 	ListenCallbackPtr		_ListenCallback;
 	ServerHandlePtr			_ServerHandlePtr;
 
+	Util::MiniDump			_Dump;
 public:
 	ServerApplication();
 

@@ -32,7 +32,7 @@ void HeapBlock::Write(const void* inData, const size_t bytesize)
 {
 	const uint64_t resultPosition = _tail + bytesize;
 
-	if (resultPosition > _capacity)
+	if (resultPosition > static_cast<const uint64_t>(_capacity))
 		throw;
 
 	std::memcpy(_buffer + _tail, inData, bytesize);
@@ -44,7 +44,7 @@ void HeapBlock::Read(void* outData, const size_t bytesize)
 	if (outData == nullptr)
 		throw;
 
-	if (_head + bytesize > _capacity)
+	if (_head + bytesize > static_cast<const uint64_t>(_capacity))
 		throw;
 
 	memcpy(outData, _buffer + _head, bytesize);

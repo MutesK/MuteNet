@@ -130,7 +130,6 @@ namespace Util
 			if (CallCtor)
 			{
 				pointer->~Type();
-				// memset(pointer, 0, sizeof(Type)); // TEST
 			}
 		}
 	}

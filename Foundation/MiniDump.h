@@ -18,10 +18,14 @@ namespace Util
 
 	class MiniDump final
 	{
+	public:
 		MiniDump();
 		~MiniDump() = default;
 		static LONG WINAPI exceptionFilter(ExceptionPoint exceptionInfo);
 		static void Crash();
+
+		static void SignalHandler(int Error);
+		static void VirtualCallErrorHandler();
 	};
 
 }

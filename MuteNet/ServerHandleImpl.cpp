@@ -115,6 +115,8 @@ namespace MuteNet
 			Self->_Connections.emplace_back(Link);
 		}
 
+		NetworkManager::Get().AddLink(Link);
+
 		Link->GetCallbacks()->OnCreated(Link.get());
 		Link->Enable(Link);
 		Self->_listenCallbacks->OnAccepted(*Link);

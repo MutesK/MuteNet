@@ -47,7 +47,6 @@ namespace MuteNet
 
 			auto& Socket = linkPtr->_Socket;
 
-			char temp[5];
 			WSABUF buf;
 			buf.buf = nullptr;
 			buf.len = 0;

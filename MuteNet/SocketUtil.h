@@ -64,6 +64,8 @@ namespace MuteNet
 					return dest;
 				}
 			}
+
+			return nullptr;
 		}
 
 		static int ReUseable(intptr_t socket)

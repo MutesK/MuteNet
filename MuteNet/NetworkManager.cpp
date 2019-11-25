@@ -27,7 +27,7 @@ namespace MuteNet
 		}
 
 		_IOEvent = ServiceListenerPtr{ new ServiceListener() };
-		_IOEvent->Initialize(std::thread::hardware_concurrency(), INFINITE);
+		_IOEvent->Initialize(std::thread::hardware_concurrency() * 4, INFINITE);
 	}
 
 	void NetworkManager::Terminate()

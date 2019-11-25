@@ -91,7 +91,7 @@ namespace MuteNet
 	{
 		_StopTrigger = false;
 
-		for(int i=0; i<std::thread::hardware_concurrency(); i++)
+		for(uint32_t i=0; i<std::thread::hardware_concurrency(); ++i)
 			StartAccept();
 
 	}

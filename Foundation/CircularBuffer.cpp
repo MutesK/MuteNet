@@ -56,7 +56,7 @@ namespace Util
 		*firstbuf = GetWriteBufferPtr();
 		firstlength = GetNotBrokenPutSize();
 
-		if (firstlength < GetFreeSize())
+		if (firstlength < static_cast<uint32_t>(GetFreeSize()))
 		{
 			bufcount++;
 			*secondbuf = GetBufferPtr();
@@ -72,7 +72,7 @@ namespace Util
 		*firstbuf = GetReadBufferPtr();
 		firstlength = GetNotBrokenGetSize();
 
-		if (firstlength < GetUseSize())
+		if (firstlength < static_cast<uint32_t>(GetUseSize()))
 		{
 			bufcount++;
 			*secondbuf = GetBufferPtr();

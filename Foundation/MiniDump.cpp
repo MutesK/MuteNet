@@ -4,13 +4,28 @@
 namespace Util
 {
 	MiniDump::MiniDump()
-	{
+	{ 
+		_CrtSetReportMode(_CRT_WARN, 0);
+		_CrtSetReportMode(_CRT_ASSERT, 0);
+		_CrtSetReportMode(_CRT_ERROR, 0);
+	
+		_set_abort_behavior(0, _WRITE_ABORT_MSG | _CALL_REPORTFAULT);
+
+		signal(SIGABRT, SignalHandler);
+		signal(SIGINT, SignalHandler);
+		signal(SIGILL, SignalHandler);
+		signal(SIGFPE, SignalHandler);
+		signal(SIGSEGV, SignalHandler);
+		signal(SIGTERM, SignalHandler);
+
 		::SetUnhandledExceptionFilter(exceptionFilter);
 	}
 
 	LONG MiniDump::exceptionFilter(ExceptionPoint exceptionInfo)
 	{
 		_CrtMemDumpAllObjectsSince(nullptr);
+
+		std::cout << "Create Dump File \n";
 
 		const HMODULE dumpDll = LoadLibrary("DBGHELP.DLL");
 		if (dumpDll == nullptr)
@@ -36,7 +51,7 @@ namespace Util
 
 
 		const auto dump_func = reinterpret_cast<WriteDump>(GetProcAddress(dumpDll, "MiniDumpWriteDump"));
-		if (!static_cast<bool>(dump_func(GetCurrentProcess(), GetCurrentProcessId(), hFile, MiniDumpNormal, &info,
+		if (!static_cast<bool>(dump_func(GetCurrentProcess(), GetCurrentProcessId(), hFile, MiniDumpWithFullMemory, &info,
 		                                nullptr, nullptr)))
 		{
 			return 0;
@@ -50,5 +65,14 @@ namespace Util
 	void MiniDump::Crash()
 	{
 		raise(SIGSEGV);
+	}
+	void MiniDump::SignalHandler(int Error)
+	{
+		Crash();
+	}
+
+	void MiniDump::VirtualCallErrorHandler()
+	{
+		Crash();
 	}
 }
