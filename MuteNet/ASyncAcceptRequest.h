@@ -82,6 +82,7 @@ namespace MuteNet
 			if (setsockopt(_ClientSocket, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT,
 				reinterpret_cast<char*>(&ListenSocket), sizeof(ListenSocket)) == SOCKET_ERROR)
 			{
+				closesocket(_ClientSocket);
 				const auto error = WSAGetLastError();
 
 				_Acceptor->_ErrorCallback(_ClientSocket, error, SocketUtil::ErrorString(error));

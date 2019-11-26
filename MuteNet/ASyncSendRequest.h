@@ -63,12 +63,11 @@ namespace MuteNet
 				{
 					CallbackPtr->OnError(errorCode, SocketUtil::ErrorString(errorCode));
 
-					if (--linkPtr->_ASyncIORequestCounter == 0)
+					if (--linkPtr->_ASyncIORequestCounter <= 0)
 					{
+						linkPtr->Shutdown();
 						linkPtr->Close();
 					}
-
-					linkPtr->Shutdown();
 
 					return false;
 				}
@@ -79,8 +78,9 @@ namespace MuteNet
 
 		virtual void IOCompletion(DWORD TransfferredBytes) override
 		{
-			if (--linkPtr->_ASyncIORequestCounter == 0)
+			if (--linkPtr->_ASyncIORequestCounter <= 0)
 			{
+				linkPtr->Shutdown();
 				linkPtr->Close();
 			}
 
@@ -92,8 +92,9 @@ namespace MuteNet
 		{
 			CallbackPtr->OnError(Error, SocketUtil::ErrorString(Error));
 
-			if (--linkPtr->_ASyncIORequestCounter == 0)
+			if (--linkPtr->_ASyncIORequestCounter <= 0)
 			{
+				linkPtr->Shutdown();
 				linkPtr->Close();
 			}
 

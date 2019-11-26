@@ -60,3 +60,8 @@ void HeapBlock::MoveWritePosition(const size_t length)
 {
 	_tail += length;
 }
+
+int64_t HeapBlock::GetRemainingDataSize() const
+{
+	return _tail - _head;
+}

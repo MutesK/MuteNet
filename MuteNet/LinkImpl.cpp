@@ -8,8 +8,8 @@
 
 namespace MuteNet
 {
-	Util::TL::ObjectPool<ASyncSendRequest, true, true> ASyncSendRequest::OverlappedPool(5000);
-	Util::TL::ObjectPool<ASyncRecvRequest, true, true> ASyncRecvRequest::OverlappedPool(5000);
+	Util::TL::ObjectPool<ASyncSendRequest, true, true> ASyncSendRequest::OverlappedPool(20000);
+	Util::TL::ObjectPool<ASyncRecvRequest, true, true> ASyncRecvRequest::OverlappedPool(20000);
 
 
 	LinkImpl::LinkImpl(const CallbacksPtr LinkCallback)
@@ -158,7 +158,6 @@ namespace MuteNet
 			return;
 		}
 
-		
 		auto Request = ASyncRecvRequest::GetRecvRequest(_Self);
 		assert(Request != nullptr);
 

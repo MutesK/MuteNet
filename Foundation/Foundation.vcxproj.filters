@@ -82,7 +82,7 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="HeapBlock.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>BufferStream</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -117,7 +117,7 @@
       <Filter>SafeSharedLock</Filter>
     </ClCompile>
     <ClCompile Include="HeapBlock.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>BufferStream</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -4,7 +4,7 @@
 int main()
 {
 	ServerApplication App;
-	App.Listen(25000);
+	App.Listen(6000);
 	
 	while(true)
 	{
