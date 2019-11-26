@@ -82,34 +82,25 @@ namespace MuteNet
 		{
 			static constexpr int OnceRecvBytes = 5000;
 
-			while (true)
+			Byte* TempRecvBuffer = new Byte[OnceRecvBytes];
+			auto ReceivcedBytes = RecvProcess(TempRecvBuffer, OnceRecvBytes);
+
+			if(ReceivcedBytes == 0 || ReceivcedBytes == SOCKET_ERROR)
 			{
-				Byte* TempRecvBuffer = new Byte[OnceRecvBytes];
-				auto ReceivcedBytes = RecvProcess(TempRecvBuffer, OnceRecvBytes);
+				linkPtr->Shutdown();
 
-				if (ReceivcedBytes == 0 || ReceivcedBytes == SOCKET_ERROR)
+				if (--linkPtr->_ASyncIORequestCounter == 0)
 				{
-					linkPtr->Shutdown();
-
-					if (--linkPtr->_ASyncIORequestCounter == 0)
-					{
-						linkPtr->Close();
-					}
-
-					delete[] TempRecvBuffer;
-					FreeRecvRequest(reinterpret_cast<ASyncRecvRequest*>(Overlapped.SelfPtr));
-					return;
+					linkPtr->Close();
 				}
 
-				if (ReceivcedBytes == WSAEWOULDBLOCK)
-				{
-					delete[] TempRecvBuffer;
-					break;
-				}
-
-				CallbackPtr->OnReceivedData(reinterpret_cast<char*>(TempRecvBuffer), ReceivcedBytes);
 				delete[] TempRecvBuffer;
+				FreeRecvRequest(reinterpret_cast<ASyncRecvRequest*>(Overlapped.SelfPtr));
+				return;
 			}
+
+			CallbackPtr->OnReceivedData(reinterpret_cast<char*>(TempRecvBuffer), ReceivcedBytes);
+			delete[] TempRecvBuffer;
 
 			if (linkPtr->AcquireLink())
 			{
@@ -150,9 +141,6 @@ namespace MuteNet
 			if (result == SOCKET_ERROR)
 			{
 				auto error = WSAGetLastError();
-
-				if (error == WSAEWOULDBLOCK)
-					return WSAEWOULDBLOCK;
 
 				return SOCKET_ERROR;
 			}
