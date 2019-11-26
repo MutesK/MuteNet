@@ -29,12 +29,12 @@ namespace MuteNet
 
 		static ASyncSendRequest* GetSendRequest(const LinkImplPtr& linkPtr, char* inbuffer, size_t length)
 		{
-			return OverlappedPool(linkPtr, inbuffer, length);
+			return new ASyncSendRequest(linkPtr, inbuffer, length);
 		}
 
 		static void FreeSendRequest(ASyncSendRequest* Ptr)
 		{
-			OverlappedPool.Free(Ptr);
+			delete Ptr;
 		}
 
 		virtual bool Process() override

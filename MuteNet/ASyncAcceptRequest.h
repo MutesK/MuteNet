@@ -33,12 +33,12 @@ namespace MuteNet
 
 		static ASyncAcceptRequest* GetAcceptRequest(const AcceptorPtr& Ptr, const AcceptExPtr& AcceptFuctPtr, const GetAcceptExSockAddrsPtr& AddrPtr)
 		{
-			return OverlappedPool(Ptr, AcceptFuctPtr, AddrPtr);
+			return new ASyncAcceptRequest(Ptr, AcceptFuctPtr, AddrPtr);
 		}
 
 		static void FreeAcceptRequest(ASyncAcceptRequest* Ptr)
 		{
-			OverlappedPool.Free(Ptr);
+			delete Ptr;
 		}
 
 		virtual bool Process() override

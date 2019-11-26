@@ -30,12 +30,12 @@ namespace MuteNet
 
 		static ASyncRecvRequest* GetRecvRequest(const LinkImplPtr linkPtr)
 		{
-			return OverlappedPool(linkPtr);
+			return new ASyncRecvRequest(linkPtr);
 		}
 
 		static void FreeRecvRequest(ASyncRecvRequest* Ptr)
 		{
-			OverlappedPool.Free(Ptr);
+			delete Ptr;
 		}
 
 		virtual bool Process() override
