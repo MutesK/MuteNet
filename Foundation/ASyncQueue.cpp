@@ -80,7 +80,6 @@ void ASyncQueue::Run(const uint32_t workerIndex)
 	ULONG_PTR CompletionKey = 0;
 	LPOVERLAPPED lpOverlapped = nullptr;
 
-
 	while (true)
 	{
 		if (GetQueuedCompletionStatus(_iocpHandle, &byteTransferred,
@@ -101,7 +100,6 @@ void ASyncQueue::Run(const uint32_t workerIndex)
 		{
 			if (byteTransferred == 0 && CompletionKey == 0 && lpOverlapped == nullptr)
 			{
-				PostQueue(0);
 				return;
 			}
 
