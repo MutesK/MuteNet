@@ -1,5 +1,7 @@
 #pragma once
 
+#include "foundation.h"
+
 namespace Util
 {
 	class HeapBlock final
@@ -24,6 +26,7 @@ namespace Util
 		void Read(void* outData, const size_t bytesize);
 
 		char* GetBufferPtr();
+		int64_t GetRemainingDataSize() const;
 
 		void MoveWritePosition(const size_t length);
 

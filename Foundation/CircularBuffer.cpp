@@ -112,10 +112,10 @@ namespace Util
 		int inputSize = 0;
 
 		if (iSize > GetFreeSize())
-			return 0;
+			throw;
 
 		if (iSize <= 0)
-			return 0;
+			throw;
 
 		if (_front <= _rear)
 		{
@@ -149,10 +149,10 @@ namespace Util
 	int	CircularBuffer::GetData(void* chpDest, int iSize)
 	{
 		if (iSize > GetUseSize())
-			return 0;
+			throw;
 
 		if (iSize <= 0)
-			return 0;
+			throw;
 
 		if (_front <= _rear)
 		{
@@ -215,10 +215,10 @@ namespace Util
 	void CircularBuffer::MoveReadPostion(int iSize)
 	{
 		if (iSize > GetUseSize())
-			return;
+			throw;
 
 		if (iSize <= 0)
-			return;
+			throw;
 
 		if (_front <= _rear)
 		{
@@ -246,10 +246,10 @@ namespace Util
 		int inputSize = 0;
 
 		if (iSize > GetFreeSize())
-			return;
+			throw;
 
 		if (iSize <= 0)
-			return;
+			throw;
 
 		if (_front <= _rear)
 		{

@@ -29,12 +29,12 @@ namespace MuteNet
 
 		static ASyncSendRequest* GetSendRequest(const LinkImplPtr& linkPtr, char* inbuffer, size_t length)
 		{
-			return OverlappedPool(linkPtr, inbuffer, length);
+			return new ASyncSendRequest(linkPtr, inbuffer, length);
 		}
 
 		static void FreeSendRequest(ASyncSendRequest* Ptr)
 		{
-			OverlappedPool.Free(Ptr);
+			delete Ptr;
 		}
 
 		virtual bool Process() override
@@ -63,12 +63,11 @@ namespace MuteNet
 				{
 					CallbackPtr->OnError(errorCode, SocketUtil::ErrorString(errorCode));
 
-					if (--linkPtr->_ASyncIORequestCounter == 0)
+					if (--linkPtr->_ASyncIORequestCounter <= 0)
 					{
+						linkPtr->Shutdown();
 						linkPtr->Close();
 					}
-
-					linkPtr->Shutdown();
 
 					return false;
 				}
@@ -79,8 +78,9 @@ namespace MuteNet
 
 		virtual void IOCompletion(DWORD TransfferredBytes) override
 		{
-			if (--linkPtr->_ASyncIORequestCounter == 0)
+			if (--linkPtr->_ASyncIORequestCounter <= 0)
 			{
+				linkPtr->Shutdown();
 				linkPtr->Close();
 			}
 
@@ -92,8 +92,9 @@ namespace MuteNet
 		{
 			CallbackPtr->OnError(Error, SocketUtil::ErrorString(Error));
 
-			if (--linkPtr->_ASyncIORequestCounter == 0)
+			if (--linkPtr->_ASyncIORequestCounter <= 0)
 			{
+				linkPtr->Shutdown();
 				linkPtr->Close();
 			}
 

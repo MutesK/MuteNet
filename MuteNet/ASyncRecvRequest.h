@@ -30,12 +30,12 @@ namespace MuteNet
 
 		static ASyncRecvRequest* GetRecvRequest(const LinkImplPtr linkPtr)
 		{
-			return OverlappedPool(linkPtr);
+			return new ASyncRecvRequest(linkPtr);
 		}
 
 		static void FreeRecvRequest(ASyncRecvRequest* Ptr)
 		{
-			OverlappedPool.Free(Ptr);
+			delete Ptr;
 		}
 
 		virtual bool Process() override
@@ -65,12 +65,13 @@ namespace MuteNet
 				{
 					CallbackPtr->OnError(errorCode, SocketUtil::ErrorString(errorCode));
 
-					if (--linkPtr->_ASyncIORequestCounter == 0)
+					linkPtr->Shutdown();
+
+					if (--linkPtr->_ASyncIORequestCounter <= 0)
 					{
 						linkPtr->Close();
 					}
 
-					linkPtr->Shutdown();
 					return false;
 				}
 			}
@@ -80,36 +81,31 @@ namespace MuteNet
 
 		virtual void IOCompletion(DWORD TransfferredBytes) override
 		{
-			static constexpr int OnceRecvBytes = 5000;
+			Util::CircularBuffer Buffer;
 
 			while (true)
 			{
-				Byte* TempRecvBuffer = new Byte[OnceRecvBytes];
-				auto ReceivcedBytes = RecvProcess(TempRecvBuffer, OnceRecvBytes);
+				auto ReceivcedBytes = RecvProcess(Buffer.GetWriteBufferPtr(), Buffer.GetFreeSize());
+
+				if (ReceivcedBytes == WSAEWOULDBLOCK)
+					break;
 
 				if (ReceivcedBytes == 0 || ReceivcedBytes == SOCKET_ERROR)
 				{
-					linkPtr->Shutdown();
-
-					if (--linkPtr->_ASyncIORequestCounter == 0)
+					if (--linkPtr->_ASyncIORequestCounter <= 0)
 					{
+						linkPtr->Shutdown();
 						linkPtr->Close();
 					}
 
-					delete[] TempRecvBuffer;
 					FreeRecvRequest(reinterpret_cast<ASyncRecvRequest*>(Overlapped.SelfPtr));
 					return;
 				}
 
-				if (ReceivcedBytes == WSAEWOULDBLOCK)
-				{
-					delete[] TempRecvBuffer;
-					break;
-				}
-
-				CallbackPtr->OnReceivedData(reinterpret_cast<char*>(TempRecvBuffer), ReceivcedBytes);
-				delete[] TempRecvBuffer;
+				Buffer.MoveWritePos(ReceivcedBytes);
 			}
+
+			CallbackPtr->OnReceivedData(Buffer.GetReadBufferPtr(), Buffer.GetUseSize());
 
 			if (linkPtr->AcquireLink())
 			{
@@ -117,8 +113,9 @@ namespace MuteNet
 				linkPtr->FreeLink();
 			}
 
-			if (--linkPtr->_ASyncIORequestCounter == 0)
+			if (--linkPtr->_ASyncIORequestCounter <= 0)
 			{
+				linkPtr->Shutdown();
 				linkPtr->Close();
 			}
 
@@ -130,7 +127,7 @@ namespace MuteNet
 		{
 			linkPtr->Shutdown();
 
-			if (--linkPtr->_ASyncIORequestCounter == 0)
+			if (--linkPtr->_ASyncIORequestCounter <= 0)
 			{
 				linkPtr->Close();
 			}
@@ -139,7 +136,7 @@ namespace MuteNet
 		}
 
 	private:
-		int RecvProcess(Byte* buffer, int length)
+		int RecvProcess(char* buffer, int length)
 		{
 			assert(length > 0);
 				

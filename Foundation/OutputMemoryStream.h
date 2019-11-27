@@ -14,6 +14,7 @@ namespace Util
 		virtual ~OutputMemoryStream();
 
 		char* GetBufferPtr();
+
 		virtual __int64 GetLength() const;
 
 		virtual void Write(const void* inData, const uint32_t inByteCount);
