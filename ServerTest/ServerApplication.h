@@ -4,8 +4,10 @@
 #include "NetworkManager.h"
 #include "ServerHandleImpl.h"
 #include "MiniDump.h"
+#include "LogHelper.h"
 
 using namespace MuteNet;
+using namespace Util;
 
 class ClientHandle : public Link::Callbacks
 {
@@ -27,7 +29,7 @@ public:
 
 	virtual void OnRemoteClosed(void) override
 	{
-		std::cout << "OnRemoteClosed\n";
+		LogHelper::Log(LogLevel::Debug, "OnRemoteClosed");
 	}
 
 	virtual void OnTLSHandShakeCompleted() override
@@ -37,7 +39,7 @@ public:
 
 	virtual void OnError(int ErrorCode, const std::string& ErrorMsg) override
 	{
-		std::cout << "Error : " << ErrorCode << " " << ErrorMsg << "[" << __FUNCTION__ << "]" << std::endl;
+		LogHelper::Log(LogLevel::Fatal, "Error {0} {1} [{2}]", ErrorCode, ErrorMsg, __FUNCTION__);
 
 		_link->Shutdown();
 	}
@@ -49,9 +51,9 @@ public:
 	ListenCallback() = default;
 
 	virtual Link::CallbacksPtr OnInComingConnection(const std::string& RemoteIPAddress, uint16_t RemotePort) override
-	{
-		printf("InComingConnection (%s:%d)\n", RemoteIPAddress.c_str(), RemotePort);
-		;
+	{		
+		LogHelper::Log(LogLevel::Debug, "InComingConnection({0}:{1})", RemoteIPAddress, RemotePort);
+
 		return std::make_shared<ClientHandle>();
 	}
 
@@ -68,7 +70,6 @@ public:
 };
 
 typedef std::shared_ptr<ListenCallback> ListenCallbackPtr;
-
 
 class ServerApplication
 {

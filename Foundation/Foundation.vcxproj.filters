@@ -31,6 +31,12 @@
     <Filter Include="Template">
       <UniqueIdentifier>{84db6f12-c7af-464b-86fa-037c450ef39f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Logger">
+      <UniqueIdentifier>{a70cdf87-fbdb-4bd9-aade-50f23a4b5749}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="StringHelper">
+      <UniqueIdentifier>{7418ddb5-fde6-4703-8aa2-8a2492e8b624}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -82,7 +88,16 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="HeapBlock.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>BufferStream</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="StringHelper.h">
+      <Filter>StringHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="LogHelper.h">
+      <Filter>Logger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -117,7 +132,10 @@
       <Filter>SafeSharedLock</Filter>
     </ClCompile>
     <ClCompile Include="HeapBlock.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>BufferStream</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>Logger</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
