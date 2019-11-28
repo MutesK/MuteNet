@@ -11,6 +11,7 @@ public:
 	}
 };
 
+
 ServerApplication::ServerApplication()
 	:_ListenCallback(std::make_shared<ListenCallback>())
 {

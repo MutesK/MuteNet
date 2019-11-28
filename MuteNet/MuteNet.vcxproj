@@ -168,6 +168,7 @@
     <ClInclude Include="ASyncSendRequest.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="HostNameLookup.h" />
+    <ClInclude Include="IPLookUp.h" />
     <ClInclude Include="SocketIO.h" />
     <ClInclude Include="Acceptor.h" />
     <ClInclude Include="NetworkManager.h" />
@@ -183,6 +184,7 @@
   <ItemGroup>
     <ClCompile Include="HostNameLookup.cpp" />
     <ClCompile Include="Acceptor.cpp" />
+    <ClCompile Include="IPLookUp.cpp" />
     <ClCompile Include="Network.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
     <ClCompile Include="ServerHandleImpl.cpp" />

@@ -1,25 +1,19 @@
 #include "pch.h"
 #include "OutputMemoryStream.h"
 #include "InputMemoryStream.h"
-#include "HeapBlock.h"
 
 using namespace Util;
 
-OutputMemoryStream::OutputMemoryStream()
-{
-	_heapBlock = HeapBlock::Alloc();
-}
-
-OutputMemoryStream::~OutputMemoryStream()
-{
-	
-}
 
 void OutputMemoryStream::Write(const void* inData, const uint32_t inByteCount)
 {
-	_mutex.lock();
-	_heapBlock->Write(inData, inByteCount);
-	_mutex.unlock();
+	const uint64_t resultPosition = _tail + inByteCount;
+
+	if (resultPosition > static_cast<const uint64_t>(_capacity))
+		throw;
+
+	std::memcpy(_buffer + _tail, inData, inByteCount);
+	_tail += inByteCount;
 }
 
 

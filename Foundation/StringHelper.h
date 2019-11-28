@@ -1,5 +1,7 @@
 #pragma once
 
+#pragma warning(disable: 4717)  // StringFormatter Recursive Unpacking
+
 #include "foundation.h"
 
 namespace Util
@@ -50,6 +52,12 @@ namespace Util
 	public:
 		template <typename... Args>
 		static std::string Format(const std::string fmt, Args... args);
+
+		template <typename... Args>
+		static std::string FormatUsingSpecfiler(const std::string fmt, Args... args);
+
+		template <typename Type>
+		static std::string ToString(const Type type);
 	};
 
 
@@ -79,4 +87,23 @@ namespace Util
 
 		return ret;
 	}
+
+	template<typename ...Args>
+	inline std::string StringHelper::FormatUsingSpecfiler(const std::string fmt, Args ...args)
+	{
+		char buffer[10000]{0};
+
+		sprintf_s(buffer, fmt.c_str(), std::forward<Args>(args)...);
+		return std::string(buffer);
+	}
+
+	template<typename Type>
+	inline std::string StringHelper::ToString(const Type type)
+	{
+		static_assert(std::is_arithmetic_v<type>, "ToString is must Arithmertic Type.");
+
+		return std::to_string(type);
+	}
+
+
 }

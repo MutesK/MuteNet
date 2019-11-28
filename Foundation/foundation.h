@@ -29,6 +29,8 @@
 #include <cassert>
 #include <sstream>
 
+#include <cstdio>
+
 #include "ObjectPool.h"
 
 #define WIN32_LEAN_AND_MEAN

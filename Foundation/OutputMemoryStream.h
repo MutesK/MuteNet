@@ -1,19 +1,14 @@
 #pragma once
 
 #include "MemoryStream.h"
-#include "HeapBlock.h"
+
 namespace Util
 {
-	class InputMemoryStream;
 	class OutputMemoryStream : public MemoryStream
 	{
-	protected:
-		std::shared_ptr<HeapBlock> _heapBlock;
 	public:
-		OutputMemoryStream();
-		virtual ~OutputMemoryStream();
-
-		char* GetBufferPtr();
+		OutputMemoryStream() = delete;
+		virtual ~OutputMemoryStream() = default;
 
 		virtual __int64 GetLength() const;
 
@@ -30,22 +25,12 @@ namespace Util
 
 		virtual void Serialize(void* inData, uint32_t inByteCount) override;
 
-		virtual bool IsInput() override;
-
 		void MoveWritePosition(__int64 size);
-
-		std::shared_ptr<HeapBlock> GetHeapBlock();
 	};
-
-
-	inline char* OutputMemoryStream::GetBufferPtr()
-	{
-		return _heapBlock->_buffer;
-	}
 
 	inline __int64 OutputMemoryStream::GetLength() const
 	{
-		return _heapBlock->_tail;
+		return _tail;
 	}
 
 	template <typename Type>
@@ -80,19 +65,9 @@ namespace Util
 
 	}
 
-	inline bool OutputMemoryStream::IsInput()
-	{
-		return false;
-	}
-
 	inline void OutputMemoryStream::MoveWritePosition(__int64 size)
 	{
-		_heapBlock->_tail += size;
-	}
-
-	inline std::shared_ptr<HeapBlock> OutputMemoryStream::GetHeapBlock()
-	{
-		return _heapBlock;
+		_tail += size;
 	}
 
 }

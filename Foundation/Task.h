@@ -20,6 +20,15 @@ namespace Util
 
 	class Task final
 	{
+	private:
+		DoLambda _lambda;
+		CompleteNotifyDoLambda _completeLambda;
+
+		bool _isCheckedCompleteLambda{};
+
+		std::string _callerFunction;
+		std::string _callerFile;
+		size_t _callerFileLine{};
 	public:
 		Task(DoLambda doLambda, const char* callerFunction,
 			const char* callerFilename, const size_t& callerFileLine);
@@ -40,15 +49,6 @@ namespace Util
 
 		void Do() const;
 		void CompleteDo() const;
-	private:
-		DoLambda _lambda;
-		CompleteNotifyDoLambda _completeLambda;
-
-		bool _isCheckedCompleteLambda{};
-
-		std::string _callerFunction;
-		std::string _callerFile;
-		size_t _callerFileLine{};
 	};
 
 }

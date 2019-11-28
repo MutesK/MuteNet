@@ -87,10 +87,6 @@
     <ClInclude Include="ThreadSafeQueue.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="HeapBlock.h">
-      <Filter>BufferStream</Filter>
-<<<<<<< HEAD
-    </ClInclude>
     <ClInclude Include="Logger.h">
       <Filter>Logger</Filter>
     </ClInclude>
@@ -99,8 +95,6 @@
     </ClInclude>
     <ClInclude Include="LogHelper.h">
       <Filter>Logger</Filter>
-=======
->>>>>>> c088f01ed6f1314e8de077d24c9199ee6af9c556
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -134,14 +128,11 @@
     <ClCompile Include="SafeSharedLock.cpp">
       <Filter>SafeSharedLock</Filter>
     </ClCompile>
-    <ClCompile Include="HeapBlock.cpp">
-      <Filter>BufferStream</Filter>
-<<<<<<< HEAD
-    </ClCompile>
     <ClCompile Include="Logger.cpp">
       <Filter>Logger</Filter>
-=======
->>>>>>> c088f01ed6f1314e8de077d24c9199ee6af9c556
+    </ClCompile>
+    <ClCompile Include="MemoryStream.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

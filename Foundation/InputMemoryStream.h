@@ -1,16 +1,13 @@
 #pragma once
 
 #include "MemoryStream.h"
-#include "HeapBlock.h"
 
 namespace Util
 {
 	class InputMemoryStream : public MemoryStream
 	{
-	protected:
-		std::shared_ptr<Util::HeapBlock> _heapBlock;
 	public:
-		InputMemoryStream(std::shared_ptr<Util::HeapBlock>& _heapBlock);
+		InputMemoryStream() = delete;
 		virtual ~InputMemoryStream() = default;
 
 		virtual __int64 GetRemainingDataSize() const;
@@ -23,13 +20,12 @@ namespace Util
 		template <typename Type>
 		void Read(std::vector<Type>& vector);
 
-		virtual bool IsInput() override;
 		virtual void Serialize(void* outData, uint32_t inByteCount) override;
 	};
 
 	inline __int64 InputMemoryStream::GetRemainingDataSize() const
 	{
-		return _heapBlock->_tail - _heapBlock->_head;
+		return _tail - _head;
 	}
 
 	template <typename Type>
@@ -49,11 +45,6 @@ namespace Util
 		{
 			Read(elem);
 		}
-	}
-
-	inline bool InputMemoryStream::IsInput()
-	{
-		return true;
 	}
 
 }

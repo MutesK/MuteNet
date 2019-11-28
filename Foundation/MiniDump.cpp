@@ -23,6 +23,13 @@ namespace Util
 
 	LONG MiniDump::exceptionFilter(ExceptionPoint exceptionInfo)
 	{
+		static std::atomic_bool isAlreadyWritedDump = false;
+
+		if (isAlreadyWritedDump)
+			return 0;
+
+		isAlreadyWritedDump = true;
+
 		_CrtMemDumpAllObjectsSince(nullptr);
 
 		std::cout << "Create Dump File \n";

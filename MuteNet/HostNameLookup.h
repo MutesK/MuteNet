@@ -1,4 +1,7 @@
 #pragma once
+
+// hostname을 통해 Ip를 얻어온다.
+
 #include "Network.h"
 
 namespace MuteNet

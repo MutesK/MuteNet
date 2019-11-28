@@ -7,17 +7,20 @@
 
 #pragma comment(lib,"ws2_32.lib")
 #pragma comment(lib,"mswsock.lib")
-
+#pragma comment(lib, "iphlpapi.lib")
 
 #include <WinSock2.h>
 #include <ws2tcpip.h>
 #include <mswsock.h>
+
 
 #include "../Foundation/foundation.h"
 #include "../Foundation/ASyncQueue.h"
 #include "../Foundation/InputMemoryStream.h"
 #include "../Foundation/OutputMemoryStream.h"
 #include "../Foundation/CircularBuffer.h"
+#include "../Foundation/StringHelper.h"
+#include "../Foundation/LogHelper.h"
 
 static const DWORD AddressLength = sizeof(SOCKADDR_IN) + 16;
 typedef char* Byte;

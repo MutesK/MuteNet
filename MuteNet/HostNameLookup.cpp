@@ -8,7 +8,7 @@ namespace MuteNet
 
 	void HostNameLookup::Lookup(const std::string& hostName, Network::ResolveDomainNameCallbacksPtr Callbacks)
 	{
-		auto DoLamdba = [hostName, Callbacks]()
+		auto ASyncTask = [hostName, Callbacks]()
 		{
 			HostNameLookupPtr Lookup{ new HostNameLookup(hostName, Callbacks) };
 
@@ -27,7 +27,7 @@ namespace MuteNet
 
 		};
 
-		Enqueue_TASK(DoLamdba);
+		Enqueue_TASK(ASyncTask);
 	}
 
 	HostNameLookup::HostNameLookup(const std::string& hostName, Network::ResolveDomainNameCallbacksPtr Callbacks)

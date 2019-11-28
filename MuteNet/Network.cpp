@@ -3,8 +3,10 @@
 #include "LinkImpl.h"
 #include "NetworkManager.h"
 #include "HostNameLookup.h"
+#include "IPLookup.h"
 #include "ServerHandleImpl.h"
 #include "LinkImpl.h"
+
 
 namespace MuteNet
 {
@@ -83,6 +85,12 @@ namespace MuteNet
 	{
 		HostNameLookup::Lookup(hostName, std::move(callbacks));
 		return true;
+	}
+	bool Network::IPToHostName(const std::string& Ip, ResolveDomainNameCallbacksPtr callbacks)
+	{
+		IPLookUp::Lookup(Ip, std::move(callbacks));
+		return true;
+		
 	}
 }
 

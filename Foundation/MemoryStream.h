@@ -3,23 +3,29 @@
 
 namespace Util
 {
-	class MemoryStream abstract
+	using Byte = char;
+
+	class MemoryStream
 	{
 	protected:
-		virtual void Serialize(void* inData, uint32_t inByteCount) = 0;
+		static const size_t BUFFER_LENGTH = 20000;
 
-		template <typename Type>
-		void Serialize(Type& Data);
+		Byte* _buffer;
 
-		virtual bool IsInput() = 0;
+		__int64 _head = 0;
+		__int64 _tail = 0;
+		__int64 _capacity = BUFFER_LENGTH;
+	public:
+		MemoryStream();
+		virtual ~MemoryStream();
 
-		std::recursive_mutex   _mutex;
+		virtual void Serialize(void* Data, uint32_t ByteCount) = 0;
+		const char* GetBufferPtr() const;
 	};
 
-	template <typename Type>
-	void MemoryStream::Serialize(Type& Data)
-	{
-		Serialize(&Data, sizeof(Type));
-	}
 
+	inline const char* MemoryStream::GetBufferPtr() const
+	{
+		return _buffer;
+	}
 }

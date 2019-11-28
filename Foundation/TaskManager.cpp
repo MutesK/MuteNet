@@ -5,8 +5,6 @@
 using namespace Util;
 using namespace std;
 
-unique_ptr<TaskManager> TaskManager::_instance;
-once_flag TaskManager::_flag;
 
 TaskManager::TaskManager()
 {
@@ -15,32 +13,16 @@ TaskManager::TaskManager()
 	CreateAgent();
 }
 
+// TO DO
 TaskManager::~TaskManager()
 {
-	for(const auto taskpair : _tasklist)
-	{
-		taskpair.second->SetShutdownThreadSignal(true);
-	}
-
 	_tasklist.clear();
 }
 
-TaskManager* TaskManager::Instance()
-{
-	std::call_once(_flag,
-	               [&]()
-	               {
-		               _instance = std::make_unique<TaskManager>();
-	               });
-
-	return _instance.get();
-}
 
 void TaskManager::CreateAgent()
 {
-	// 64개의 에이전트 생성
-
-	for (auto i = 0; i < 20; i++)
+	for (uint32_t i = 0; i < std::thread::hardware_concurrency() * 4; i++)
 	{
 		auto agent = CreateAgent(i);
 	}

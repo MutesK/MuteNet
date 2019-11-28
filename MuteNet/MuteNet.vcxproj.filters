@@ -90,6 +90,9 @@
     <ClInclude Include="ASyncAcceptRequest.h">
       <Filter>IOContextManage</Filter>
     </ClInclude>
+    <ClInclude Include="IPLookUp.h">
+      <Filter>Lookup</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -115,6 +118,9 @@
     </ClCompile>
     <ClCompile Include="ServerHandleImpl.cpp">
       <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="IPLookUp.cpp">
+      <Filter>Lookup</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

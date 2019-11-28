@@ -16,7 +16,6 @@ namespace Util
 
 	TaskAgent::~TaskAgent()
 	{
-		SetShutdownThreadSignal(true);
 		_thread->join();
 	}
 
@@ -55,7 +54,7 @@ namespace Util
 	{
 		Task task;
 
-		while (!GetShutdownThreadSignal())
+		while (true)
 		{
 			while (_requestQueue.try_pop(task))
 			{

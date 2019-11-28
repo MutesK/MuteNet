@@ -2,17 +2,17 @@
 #include "InputMemoryStream.h"
 using namespace Util;
 
-InputMemoryStream::InputMemoryStream(std::shared_ptr<Util::HeapBlock>& heapBlock)
-	:_heapBlock(heapBlock)
-{
-}
-
 // Heap Corruption À¯ÀÇ
 void InputMemoryStream::Read(void* outData, uint32_t inByteCount)
 {
-	_mutex.lock();
-	_heapBlock->Read(outData, inByteCount);
-	_mutex.unlock();
+	if (outData == nullptr)
+		throw;
+
+	if (_head + inByteCount > static_cast<const uint64_t>(_capacity))
+		throw;
+
+	memcpy(outData, _buffer + _head, inByteCount);
+	_head += inByteCount;
 }
 
 void InputMemoryStream::Serialize(void* outData, uint32_t inByteCount)
