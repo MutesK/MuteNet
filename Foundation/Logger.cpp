@@ -39,6 +39,9 @@ namespace Util
 	{
 		SAFE_UNIQUELOCK(_SwapQueueMutex);
 
+		if (_InputQueue.empty())
+			std::this_thread::yield();
+
 		_InputQueue.swap(_WriterQueue);
 	}
 
@@ -47,7 +50,7 @@ namespace Util
 		while (true) // 차후 이벤트 처리
 		{
 			if (_WriterQueue.empty())
-			{
+			{				
 				SwapQueue();
 				continue;
 			}

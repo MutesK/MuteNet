@@ -7,7 +7,7 @@ namespace Util
 	TaskAgent::TaskAgent(const std::string& agentName)
 		: _TimeoutSec(0), _CurrentHangCheck(0), _PrevHangCheck(0)
 	{
-		_Thread = std::make_unique<std::thread>(std::bind(&TaskAgent::DoWork, this));
+		_Thread = std::make_unique<std::thread>(std::mem_fn(&TaskAgent::DoWork), this);
 
 		const auto threadhandle = _Thread->native_handle();
 
