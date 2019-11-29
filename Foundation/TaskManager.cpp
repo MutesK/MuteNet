@@ -16,7 +16,7 @@ TaskManager::TaskManager()
 // TO DO
 TaskManager::~TaskManager()
 {
-	_tasklist.clear();
+	_Tasklist.clear();
 }
 
 
@@ -37,8 +37,8 @@ bool TaskManager::AddTaskAgentid(Task* t, uint64_t agentNum)
 
 bool TaskManager::AddTaskAgentid(Task* t, std::string agentName)
 {
-	const auto result = _tasklist.find(agentName);
-	if (result == _tasklist.end())
+	const auto result = _Tasklist.find(agentName);
+	if (result == _Tasklist.end())
 		return false;
 
 	auto agent = result->second;
@@ -48,12 +48,12 @@ bool TaskManager::AddTaskAgentid(Task* t, std::string agentName)
 
 bool TaskManager::AddTask(Task* t)
 {
-	auto tasksize = _tasklist.size();
+	auto tasksize = _Tasklist.size();
 
 	random_device rn;
 	mt19937_64 rnd(rn());
 
-	const uniform_int_distribution<int> range(0, static_cast<int>(_tasklist.size()));
+	const uniform_int_distribution<int> range(0, static_cast<int>(_Tasklist.size()));
 	return AddTaskAgentid(t, range(rnd));
 }
 
@@ -68,6 +68,6 @@ std::shared_ptr<TaskAgent> TaskManager::CreateAgent(std::string agentName)
 {
 	auto Agent = make_shared<TaskAgent>(agentName);
 
-	_tasklist[agentName] = Agent;
+	_Tasklist[agentName] = Agent;
 	return Agent;
 }

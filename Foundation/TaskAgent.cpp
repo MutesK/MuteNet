@@ -5,30 +5,30 @@
 namespace Util
 {
 	TaskAgent::TaskAgent(const std::string& agentName)
-		: _timeoutSec(0), _currentHangCheck(0), _prevHangCheck(0)
+		: _TimeoutSec(0), _CurrentHangCheck(0), _PrevHangCheck(0)
 	{
-		_thread = std::make_unique<std::thread>(std::bind(&TaskAgent::DoWork, this));
+		_Thread = std::make_unique<std::thread>(std::bind(&TaskAgent::DoWork, this));
 
-		const auto threadhandle = _thread->native_handle();
+		const auto threadhandle = _Thread->native_handle();
 
 		ChangeThreadName(threadhandle, agentName);
 	}
 
 	TaskAgent::~TaskAgent()
 	{
-		_thread->join();
+		_Thread->join();
 	}
 
 	void TaskAgent::AddTask(const Task& t)
 	{
-		_requestQueue.push(t);
+		_RequestQueue.push(t);
 	}
 
 	Task TaskAgent::DequeCompletedTask()
 	{
 		Task t;
 
-		while (!_resultQueue.try_pop(t))
+		while (!_ResultQueue.try_pop(t))
 		{ }
 
 		return t;
@@ -38,16 +38,16 @@ namespace Util
 	{
 		hang = false;
 
-		if (_currentHangCheck != _prevHangCheck)
+		if (_CurrentHangCheck != _PrevHangCheck)
 			hang = true;
 
-		_prevHangCheck = _currentHangCheck;
+		_PrevHangCheck = _CurrentHangCheck;
 	}
 
 	void TaskAgent::Flush()
 	{
-		_requestQueue.clear();
-		_resultQueue.clear();
+		_RequestQueue.clear();
+		_ResultQueue.clear();
 	}
 
 	void TaskAgent::DoWork()
@@ -56,9 +56,9 @@ namespace Util
 
 		while (true)
 		{
-			while (_requestQueue.try_pop(task))
+			while (_RequestQueue.try_pop(task))
 			{
-				++_currentHangCheck;
+				++_CurrentHangCheck;
 
 				task.Do();
 
@@ -67,7 +67,7 @@ namespace Util
 					task.CompleteDo();
 				}
 
-				++_prevHangCheck;
+				++_PrevHangCheck;
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#define WIN32_LEAN_AND_MEAN             // 거의 사용되지 않는 내용을 Windows 헤더에서 제외합니다.
+#define WIN32_LEAN_AND_MEAN             
 
 #define NOMINMAX
 
@@ -32,48 +32,7 @@
 #include <cstdio>
 
 #include "ObjectPool.h"
-
-#define WIN32_LEAN_AND_MEAN
-
-#define NON_COPYABLE(name)					\
-name(const name&) = delete;					\
-name(const name&&) = delete;				\
-name& operator=(const name&) = delete;		\
-name& operator=(const name&&) = delete;
-
-
-#define THREAD_SHUTDOWN_FLAG()							\
-private:												\
-	std::atomic<bool>		_shutdownflag = false;		\
-public:													\
-	inline bool	GetShutdownThreadSignal() const			\
-	{													\
-		return _shutdownflag.load();					\
-	}													\
-	inline void SetShutdownThreadSignal(bool flag)		\
-	{													\
-		_shutdownflag.store(flag);						\
-	}
-
-
-#define GET_SET_ATTRIBUTE(TYPE, VALUE) \
-	TYPE get_##VALUE()				   \
-	{								   \
-		return _##VALUE;			   \
-	}								   \
-	void set_##VALUE(##TYPE value)     \
-	{								   \
-		_##VALUE = value;		       \
-	}
-
-#define GET_CONST_ATTRIBUTE(TYPE, VALUE) \
-	TYPE get_##VALUE() const	       \
-	{								   \
-		return _##VALUE;			   \
-	}	
-
-#define IN
-#define OUT
+#include "MacroFunction.h"
 
 using namespace std::chrono_literals;
 
@@ -107,3 +66,6 @@ namespace Util
 		return (Flag >> (Position - 1)) & 1;
 	}
 }
+
+
+const size_t BUFFER_LENGTH = 20000;

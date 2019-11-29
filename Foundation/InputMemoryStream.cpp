@@ -8,11 +8,11 @@ void InputMemoryStream::Read(void* outData, uint32_t inByteCount)
 	if (outData == nullptr)
 		throw;
 
-	if (_head + inByteCount > static_cast<const uint64_t>(_capacity))
+	if (_Head + inByteCount > static_cast<const uint64_t>(_Capacity))
 		throw;
 
-	memcpy(outData, _buffer + _head, inByteCount);
-	_head += inByteCount;
+	memcpy(outData, _Buffer + _Head, inByteCount);
+	_Head += inByteCount;
 }
 
 void InputMemoryStream::Serialize(void* outData, uint32_t inByteCount)

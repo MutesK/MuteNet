@@ -7,7 +7,7 @@ using namespace Util;
 
 
 ASyncQueue::ASyncQueue()
-	:_iocpHandle(nullptr), _workerIndex(0), _timeout(INFINITE)
+	:_IocpHandle(nullptr), _WorkerIndex(0), _Timeout(INFINITE)
 {
 }
 
@@ -25,18 +25,18 @@ bool ASyncQueue::Initialize(const uint32_t numberOfWorkers, const uint32_t timeo
 	}
 
 
-	_iocpHandle = ::CreateIoCompletionPort(INVALID_HANDLE_VALUE, nullptr, 0, 0);
-	if (_iocpHandle == nullptr)
+	_IocpHandle = ::CreateIoCompletionPort(INVALID_HANDLE_VALUE, nullptr, 0, 0);
+	if (_IocpHandle == nullptr)
 	{
 		return false;
 	}
 
-	_timeout = timeout;
+	_Timeout = timeout;
 
 	for (uint32_t i = 0; i < numberOfWorkers; ++i)
 	{
-		_workers.push_back(new std::thread(std::bind(&ASyncQueue::Run, this, i)));
-		ChangeThreadName(_workers[i]->native_handle(), "WorkerThread");
+		_Workers.push_back(new std::thread(std::bind(&ASyncQueue::Run, this, i)));
+		ChangeThreadName(_Workers[i]->native_handle(), "WorkerThread");
 	}
 
 	return true;
@@ -44,29 +44,29 @@ bool ASyncQueue::Initialize(const uint32_t numberOfWorkers, const uint32_t timeo
 
 void ASyncQueue::Stop()
 {
-	if (_iocpHandle == nullptr)
+	if (_IocpHandle == nullptr)
 		return;
 
-	for (auto thread : _workers)
+	for (auto thread : _Workers)
 	{
 		PostQueue(0);
 	}
 
-	for (auto worker : _workers)
+	for (auto worker : _Workers)
 	{
 		worker->join();
 
 		delete worker;
 	}
 
-	_workers.clear();
-	CloseHandle(_iocpHandle);
+	_Workers.clear();
+	CloseHandle(_IocpHandle);
 	_iocpHandle = nullptr;
 }
 
 bool ASyncQueue::PostQueue(ULONG_PTR Pointer)
 {
-	if (PostQueuedCompletionStatus(_iocpHandle, 0, Pointer, nullptr) == false)
+	if (PostQueuedCompletionStatus(_IocpHandle, 0, Pointer, nullptr) == false)
 	{
 		return false;
 	}
@@ -83,8 +83,8 @@ void ASyncQueue::Run(const uint32_t workerIndex)
 
 	while (true)
 	{
-		if (GetQueuedCompletionStatus(_iocpHandle, &byteTransferred,
-			&CompletionKey, &lpOverlapped, _timeout) == false)
+		if (GetQueuedCompletionStatus(_IocpHandle, &byteTransferred,
+			&CompletionKey, &lpOverlapped, _Timeout) == false)
 		{
 			const auto lastError = WSAGetLastError();
 			

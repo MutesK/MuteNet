@@ -21,14 +21,14 @@ namespace Util
 	class Task final
 	{
 	private:
-		DoLambda _lambda;
-		CompleteNotifyDoLambda _completeLambda;
+		DoLambda _DoLambda;
+		CompleteNotifyDoLambda _CompleteLambda;
 
-		bool _isCheckedCompleteLambda{};
+		bool _IsCheckedCompleteLambda{};
 
-		std::string _callerFunction;
-		std::string _callerFile;
-		size_t _callerFileLine{};
+		std::string _CallerFunction;
+		std::string _CallerFile;
+		size_t		_CallerFileLine{};
 	public:
 		Task(DoLambda doLambda, const char* callerFunction,
 			const char* callerFilename, const size_t& callerFileLine);

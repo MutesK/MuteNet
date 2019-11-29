@@ -23,7 +23,7 @@ namespace Util
 	class TaskManager final : public TL::Singleton<TaskManager>
 	{
 	private:
-		Concurrency::concurrent_unordered_map<std::string, std::shared_ptr<TaskAgent>> _tasklist;
+		Concurrency::concurrent_unordered_map<std::string, std::shared_ptr<TaskAgent>> _Tasklist;
 
 		friend class TL::Singleton<TaskManager>;
 	public:

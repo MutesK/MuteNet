@@ -6,8 +6,8 @@ using namespace Util;
 
 Task::Task(DoLambda _dolamda, const char* callerfunction,
            const char* callerfilename, const size_t& callerfileline)
-	: _lambda(_dolamda), _callerFunction(callerfunction),
-	_callerFile(callerfilename), _callerFileLine(callerfileline)
+	: _DoLambda(_dolamda), _CallerFunction(callerfunction),
+	_CallerFile(callerfilename), _CallerFileLine(callerfileline)
 
 {
 	SetLambda(_dolamda, callerfunction, callerfilename, callerfileline);
@@ -24,38 +24,38 @@ Task::Task(DoLambda _dolamda, CompleteNotifyDoLambda completelambda,
 void Task::SetLambda(DoLambda _dolamda, const char* callerfunction,
                      const char* callerfilename, const size_t& callerfileline)
 {
-	_isCheckedCompleteLambda = false;
+	_IsCheckedCompleteLambda = false;
 
-	_lambda = _dolamda;
-	_callerFunction = callerfunction;
-	_callerFile = callerfilename;
-	_callerFileLine = callerfileline;
+	_DoLambda = _dolamda;
+	_CallerFunction = callerfunction;
+	_CallerFile = callerfilename;
+	_CallerFileLine = callerfileline;
 }
 
 void Task::SetCompleteLambda(DoLambda _dolamda, CompleteNotifyDoLambda completelambda,
                              const char* callerfunction, const char* callerfilename,
                              const size_t& callerfileline)
 {
-	_isCheckedCompleteLambda = true;
+	_IsCheckedCompleteLambda = true;
 
-	_lambda = _dolamda;
-	_completeLambda = completelambda;
-	_callerFunction = callerfunction;
-	_callerFile = callerfilename;
-	_callerFileLine = callerfileline;
+	_DoLambda = _dolamda;
+	_CompleteLambda = completelambda;
+	_CallerFunction = callerfunction;
+	_CallerFile = callerfilename;
+	_CallerFileLine = callerfileline;
 }
 
 bool Task::IsEmptyCompleteLambda() const
 {
-	return _isCheckedCompleteLambda;
+	return _IsCheckedCompleteLambda;
 }
 
 void Task::Do() const
 {
-	_lambda();
+	_DoLambda();
 }
 
 void Task::CompleteDo() const
 {
-	_completeLambda();
+	_CompleteLambda();
 }

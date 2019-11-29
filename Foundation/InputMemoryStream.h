@@ -25,7 +25,7 @@ namespace Util
 
 	inline __int64 InputMemoryStream::GetRemainingDataSize() const
 	{
-		return _tail - _head;
+		return _Tail - _Head;
 	}
 
 	template <typename Type>

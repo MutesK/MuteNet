@@ -30,7 +30,7 @@ namespace Util
 
 	inline __int64 OutputMemoryStream::GetLength() const
 	{
-		return _tail;
+		return _Tail;
 	}
 
 	template <typename Type>
@@ -67,7 +67,7 @@ namespace Util
 
 	inline void OutputMemoryStream::MoveWritePosition(__int64 size)
 	{
-		_tail += size;
+		_Tail += size;
 	}
 
 }

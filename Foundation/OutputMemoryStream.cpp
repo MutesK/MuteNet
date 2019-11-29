@@ -7,13 +7,13 @@ using namespace Util;
 
 void OutputMemoryStream::Write(const void* inData, const uint32_t inByteCount)
 {
-	const uint64_t resultPosition = _tail + inByteCount;
+	const uint64_t resultPosition = _Tail + inByteCount;
 
-	if (resultPosition > static_cast<const uint64_t>(_capacity))
+	if (resultPosition > static_cast<const uint64_t>(_Capacity))
 		throw;
 
-	std::memcpy(_buffer + _tail, inData, inByteCount);
-	_tail += inByteCount;
+	std::memcpy(_Buffer + _Tail, inData, inByteCount);
+	_Tail += inByteCount;
 }
 
 

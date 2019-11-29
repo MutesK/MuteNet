@@ -4,11 +4,17 @@
 
 /*
 	순환대기 방지
+	
+	차후, 점유 및 대기까지 감지 하는 기능 추가할 예정.
 */
 using ThreadOwnMutexMap = concurrency::concurrent_unordered_map<std::thread::id, bool>;
 
 class SafeSharedLock final
 {
+public:
+	ThreadOwnMutexMap _ownMap;
+	std::shared_mutex _lock;
+
 public:
 	SafeSharedLock() = default;
 	~SafeSharedLock() = default;
@@ -24,9 +30,6 @@ public:
 	};
 
 	NON_COPYABLE(SafeSharedLock);
-
-	ThreadOwnMutexMap _ownMap;
-	std::shared_mutex _lock;
 };
 
 	#define SAFE_SHAREDLOCK(mutex)									\

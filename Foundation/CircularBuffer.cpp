@@ -8,23 +8,23 @@ namespace Util
 
 
 	CircularBuffer::CircularBuffer()
-		:_front(0), _rear(0), _bufferSize(BUFFER_SIZE)
+		:_Front(0), _Rear(0), _BufferSize(BUFFER_SIZE)
 	{
-		_buffer = new char[BUFFER_SIZE];
-		memset(_buffer, 0, BUFFER_SIZE);
+		_Buffer = new char[BUFFER_SIZE];
+		memset(_Buffer, 0, BUFFER_SIZE);
 
 	}
 
 	CircularBuffer::CircularBuffer(int iSize)
-		:_bufferSize(iSize), _front(0), _rear(0)
+		:_BufferSize(iSize), _Front(0), _Rear(0)
 	{
-		_buffer = new char[iSize];
-		memset(_buffer, 0, iSize);
+		_Buffer = new char[iSize];
+		memset(_Buffer, 0, iSize);
 	}
 
 	CircularBuffer::~CircularBuffer()
 	{
-		delete[] _buffer;
+		delete[] _Buffer;
 	}
 
 	CircularBuffer& CircularBuffer::operator=(const CircularBuffer& RightBuffer)
@@ -34,20 +34,20 @@ namespace Util
 
 	int	CircularBuffer::GetBufferSize(void)
 	{
-		return _bufferSize - BLANK_BUFFER;
+		return _BufferSize - BLANK_BUFFER;
 	}
 
 	int	CircularBuffer::GetUseSize(void)
 	{
-		if (_rear >= _front)
-			return _rear - _front;
+		if (_Rear >= _Front)
+			return _Rear - _Front;
 		else
-			return _bufferSize - _front + _rear;
+			return _BufferSize - _Front + _Rear;
 	}
 
 	int	CircularBuffer::GetFreeSize(void)
 	{
-		return _bufferSize - GetUseSize();
+		return _BufferSize - GetUseSize();
 	}
 
 	int CircularBuffer::GetWriteBufferAndLengths(char** firstbuf, uint32_t& firstlength, char** secondbuf, uint32_t& secondlength)
@@ -85,25 +85,25 @@ namespace Util
 
 	int	CircularBuffer::GetNotBrokenGetSize(void)
 	{
-		if (_front <= _rear)
+		if (_Front <= _Rear)
 		{
-			return _rear - _front;
+			return _Rear - _Front;
 		}
 		else
-			return _bufferSize - _front;
+			return _BufferSize - _Front;
 	}
 	int	CircularBuffer::GetNotBrokenPutSize(void)
 	{
-		if (_rear < _front)
+		if (_Rear < _Front)
 		{
-			return _front - _rear - BLANK_BUFFER;
+			return _Front - _Rear - BLANK_BUFFER;
 		}
 		else
 		{
-			if (_front < BLANK_BUFFER)
-				return _bufferSize - _rear - BLANK_BUFFER + _front;
+			if (_Front < BLANK_BUFFER)
+				return _BufferSize - _Rear - BLANK_BUFFER + _Front;
 			else
-				return _bufferSize - _rear;
+				return _BufferSize - _Rear;
 		}
 	}
 
@@ -117,31 +117,28 @@ namespace Util
 		if (iSize <= 0)
 			throw;
 
-		if (_front <= _rear)
+		if (_Front <= _Rear)
 		{
-			int WriteSize = _bufferSize - _rear;
+			int WriteSize = _BufferSize - _Rear;
 
 			if (WriteSize >= iSize)
 			{
-				memcpy(_buffer + _rear, chpData, iSize);
-				_rear += iSize;
+				memcpy(_Buffer + _Rear, chpData, iSize);
+				_Rear += iSize;
 			}
 			else
 			{
-				memcpy(_buffer + _rear, chpData, WriteSize);
-				memcpy(_buffer, reinterpret_cast<char *>(chpData) + WriteSize, static_cast<size_t>(iSize) - WriteSize);
-				_rear = iSize - WriteSize;
+				memcpy(_Buffer + _Rear, chpData, WriteSize);
+				memcpy(_Buffer, reinterpret_cast<char *>(chpData) + WriteSize, static_cast<size_t>(iSize) - WriteSize);
+				_Rear = iSize - WriteSize;
 			}
 
 		}
 		else
 		{
-			memcpy(_buffer + _rear, chpData, iSize);
-			_rear += iSize;
+			memcpy(_Buffer + _Rear, chpData, iSize);
+			_Rear += iSize;
 		}
-
-		if (_rear == _bufferSize)
-			_rear = 0;
 
 		return iSize;
 	}
@@ -154,30 +151,27 @@ namespace Util
 		if (iSize <= 0)
 			throw;
 
-		if (_front <= _rear)
+		if (_Front <= _Rear)
 		{
-			memcpy(chpDest, _buffer + _front, iSize);
-			_front += iSize;
+			memcpy(chpDest, _Buffer + _Front, iSize);
+			_Front += iSize;
 		}
 		else
 		{
-			int ReadSize = _bufferSize - _front;
+			int ReadSize = _BufferSize - _Front;
 
 			if (ReadSize >= iSize)
 			{
-				memcpy(chpDest, _buffer + _front, iSize);
-				_front += iSize;
+				memcpy(chpDest, _Buffer + _Front, iSize);
+				_Front += iSize;
 			}
 			else
 			{
-				memcpy(chpDest, _buffer + _front, ReadSize);
-				memcpy(reinterpret_cast<char*>(chpDest) + ReadSize, _buffer, static_cast<size_t>(iSize) - ReadSize);
-				_front = iSize - ReadSize;
+				memcpy(chpDest, _Buffer + _Front, ReadSize);
+				memcpy(reinterpret_cast<char*>(chpDest) + ReadSize, _Buffer, static_cast<size_t>(iSize) - ReadSize);
+				_Front = iSize - ReadSize;
 			}
 		}
-
-		if (_rear == _front)
-			_rear = _front = 0;
 
 		return iSize;
 	}
@@ -190,22 +184,22 @@ namespace Util
 		if (iSize <= 0)
 			return 0;
 
-		if (_front <= _rear)
+		if (_Front <= _Rear)
 		{
-			memcpy(chpDest, _buffer + _front, iSize);
+			memcpy(chpDest, _Buffer + _Front, iSize);
 		}
 		else
 		{
-			int ReadSize = _bufferSize - _front;
+			int ReadSize = _BufferSize - _Front;
 
 			if (ReadSize >= iSize)
 			{
-				memcpy(chpDest, _buffer + _front, iSize);
+				memcpy(chpDest, _Buffer + _Front, iSize);
 			}
 			else
 			{
-				memcpy(chpDest, _buffer + _front, ReadSize);
-				memcpy(reinterpret_cast<char*>(chpDest) + ReadSize, _buffer, static_cast<size_t>(iSize) - ReadSize);
+				memcpy(chpDest, _Buffer + _Front, ReadSize);
+				memcpy(reinterpret_cast<char*>(chpDest) + ReadSize, _Buffer, static_cast<size_t>(iSize) - ReadSize);
 			}
 		}
 
@@ -220,25 +214,25 @@ namespace Util
 		if (iSize <= 0)
 			throw;
 
-		if (_front <= _rear)
+		if (_Front <= _Rear)
 		{
-			_front += iSize;
+			_Front += iSize;
 		}
 		else
 		{
-			int ReadSize = _bufferSize - _front;
+			int ReadSize = _BufferSize - _Front;
 
 			if (ReadSize >= iSize)
 			{
-				_front += iSize;
+				_Front += iSize;
 			}
 			else
 			{
-				_front = iSize - ReadSize;
+				_Front = iSize - ReadSize;
 			}
 		}
-		if (_front == _bufferSize)
-			_front = 0;
+		if (_Front == _BufferSize)
+			_Front = 0;
 	}
 
 	void CircularBuffer::MoveWritePos(int iSize)
@@ -251,27 +245,24 @@ namespace Util
 		if (iSize <= 0)
 			throw;
 
-		if (_front <= _rear)
+		if (_Front <= _Rear)
 		{
-			int WriteSize = _bufferSize - _rear;
+			int WriteSize = _BufferSize - _Rear;
 
 			if (WriteSize >= iSize)
 			{
-				_rear += iSize;
+				_Rear += iSize;
 			}
 			else
 			{
-				_rear = iSize - WriteSize;
+				_Rear = iSize - WriteSize;
 			}
 
 		}
 		else
 		{
-			_rear += iSize;
+			_Rear += iSize;
 		}
-
-		if (_rear == _bufferSize)
-			_rear = 0;
 	}
 
 }

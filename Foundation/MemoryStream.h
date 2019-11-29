@@ -8,13 +8,11 @@ namespace Util
 	class MemoryStream
 	{
 	protected:
-		static const size_t BUFFER_LENGTH = 20000;
+		Byte* _Buffer;
 
-		Byte* _buffer;
-
-		__int64 _head = 0;
-		__int64 _tail = 0;
-		__int64 _capacity = BUFFER_LENGTH;
+		__int64 _Head = 0;
+		__int64 _Tail = 0;
+		__int64 _Capacity = BUFFER_LENGTH;
 	public:
 		MemoryStream();
 		virtual ~MemoryStream();
@@ -26,6 +24,6 @@ namespace Util
 
 	inline const char* MemoryStream::GetBufferPtr() const
 	{
-		return _buffer;
+		return _Buffer;
 	}
 }

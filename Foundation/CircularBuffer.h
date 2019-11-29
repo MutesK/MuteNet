@@ -7,16 +7,15 @@ namespace Util
 	class CircularBuffer final
 	{
 	private:
-		static const size_t BUFFER_SIZE = 10000;
 		static const size_t BLANK_BUFFER = 1;
 
-		std::atomic_bool    _isSending = false;
-		SafeSharedLock		_lock;
-		char*				_buffer;
-		int					_front;
-		int					_rear;
+		std::atomic_bool    _IsSending = false;
+		SafeSharedLock		_Lock;
+		char*				_Buffer;
+		int					_Front;
+		int					_Rear;
 
-		int					_bufferSize;
+		int					_BufferSize;
 	public:
 		CircularBuffer();
 		CircularBuffer(int);
@@ -56,18 +55,18 @@ namespace Util
 
 	inline char* CircularBuffer::GetBufferPtr(void)
 	{
-		return _buffer;
+		return _Buffer;
 	}
 	inline char* CircularBuffer::GetReadBufferPtr(void)
 	{
-		return _buffer + _front;
+		return _Buffer + _Front;
 	}
 	inline char* CircularBuffer::GetWriteBufferPtr(void)
 	{
-		return _buffer + _rear;
+		return _Buffer + _Rear;
 	}
 	inline SafeSharedLock& CircularBuffer::GetSharedLock()
 	{
-		return _lock;
+		return _Lock;
 	}
 }

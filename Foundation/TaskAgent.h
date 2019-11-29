@@ -5,15 +5,15 @@ namespace Util
 	class Task;
 	class TaskAgent final
 	{
-		size_t _timeoutSec;
+		size_t _TimeoutSec;
 
-		size_t _currentHangCheck;
-		size_t _prevHangCheck;
+		size_t _CurrentHangCheck;
+		size_t _PrevHangCheck;
 
-		std::unique_ptr<std::thread>		_thread;
+		std::unique_ptr<std::thread>		_Thread;
 
-		Concurrency::concurrent_queue<Task> _resultQueue;
-		Concurrency::concurrent_queue<Task> _requestQueue;
+		Concurrency::concurrent_queue<Task> _ResultQueue;
+		Concurrency::concurrent_queue<Task> _RequestQueue;
 	public:
 		TaskAgent(const std::string& agentName);
 		~TaskAgent();

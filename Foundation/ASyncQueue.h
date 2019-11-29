@@ -4,6 +4,11 @@ namespace Util
 {
 	class ASyncQueue abstract
 	{
+	protected:
+		HANDLE						_IocpHandle;
+		std::atomic<uint32_t>		_WorkerIndex;
+		std::vector<std::thread*>	_Workers;
+		uint32_t					_Timeout;
 	public:
 		ASyncQueue();
 		virtual ~ASyncQueue();
@@ -18,12 +23,6 @@ namespace Util
 		virtual void HandleCompletion(const uint32_t workerIndex, ULONG_PTR CompletionKey, LPOVERLAPPED Overlapped, DWORD TransfferedBytes) = 0;
 		virtual void HandleTimeout(const uint32_t WorkerIndex, ULONG_PTR CompletionKey) =0;
 		virtual void HandleError(const uint32_t workerIndex, DWORD Error, ULONG_PTR CompletionKey, LPOVERLAPPED Overlapped, DWORD TransfferedBytes) = 0;
-
-	protected:
-		HANDLE				  _iocpHandle;
-		std::atomic<uint32_t> _workerIndex;
-		std::vector<std::thread*> _workers;
-		uint32_t				  _timeout;
 	};
 
 }
