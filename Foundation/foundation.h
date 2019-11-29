@@ -40,9 +40,10 @@ namespace Util
 {
 	using Timestamp = std::chrono::steady_clock::time_point;
 
-
 	inline bool ChangeThreadName(void* nativeHandle, const std::string& threadName)
 	{
+		static const DWORD MS_VC_EXCEPTION = 0x406D1388;
+
 		typedef struct tagTHREADNAME_INFO
 		{
 			DWORD dwType;        // must be 0x1000
@@ -56,6 +57,14 @@ namespace Util
 		info.szName = threadName.c_str();
 		info.dwThreadID = GetThreadId(static_cast<HANDLE>(nativeHandle));
 		info.dwFlags = 0;
+
+		__try
+		{
+			RaiseException(MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(ULONG_PTR), (ULONG_PTR*)&info);
+		}
+		__except (EXCEPTION_EXECUTE_HANDLER)
+		{
+		}
 
 
 		return true;

@@ -8,7 +8,7 @@ using namespace std;
 
 TaskManager::TaskManager()
 {
-	_tasklist.clear();
+	_Tasklist.clear();
 
 	CreateAgent();
 }

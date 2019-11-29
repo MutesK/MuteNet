@@ -27,7 +27,7 @@ namespace MuteNet
 
 	inline void ServiceListener::RegisterHandle(void* handle, void* CompletionKey) const
 	{
-		CreateIoCompletionPort(handle, _iocpHandle, reinterpret_cast<ULONG64>(CompletionKey), 0);
+		CreateIoCompletionPort(handle, _IocpHandle, reinterpret_cast<ULONG64>(CompletionKey), 0);
 	}
 
 

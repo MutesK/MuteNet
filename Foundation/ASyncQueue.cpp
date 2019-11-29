@@ -61,7 +61,7 @@ void ASyncQueue::Stop()
 
 	_Workers.clear();
 	CloseHandle(_IocpHandle);
-	_iocpHandle = nullptr;
+	_IocpHandle = nullptr;
 }
 
 bool ASyncQueue::PostQueue(ULONG_PTR Pointer)

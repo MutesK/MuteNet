@@ -164,6 +164,7 @@
     <ClInclude Include="InputMemoryStream.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="LogHelper.h" />
+    <ClInclude Include="MacroFunction.h" />
     <ClInclude Include="MemoryStream.h" />
     <ClInclude Include="MiniDump.h" />
     <ClInclude Include="ObjectPool.h" />

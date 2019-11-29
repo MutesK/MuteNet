@@ -3,15 +3,14 @@
 
 namespace Util
 {
-	const size_t CircularBuffer::BUFFER_SIZE;
 	const size_t CircularBuffer::BLANK_BUFFER;
 
 
 	CircularBuffer::CircularBuffer()
-		:_Front(0), _Rear(0), _BufferSize(BUFFER_SIZE)
+		:_Front(0), _Rear(0), _BufferSize(BUFFER_LENGTH)
 	{
-		_Buffer = new char[BUFFER_SIZE];
-		memset(_Buffer, 0, BUFFER_SIZE);
+		_Buffer = new char[BUFFER_LENGTH];
+		memset(_Buffer, 0, BUFFER_LENGTH);
 
 	}
 

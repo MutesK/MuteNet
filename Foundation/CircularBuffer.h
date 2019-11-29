@@ -45,10 +45,7 @@ namespace Util
 		char* GetWriteBufferPtr(void);
 
 		SafeSharedLock& GetSharedLock();
-
-		GET_SET_ATTRIBUTE(bool, isSending);
 	private:
-
 		int	GetNotBrokenGetSize(void);
 		int	GetNotBrokenPutSize(void);
 	};

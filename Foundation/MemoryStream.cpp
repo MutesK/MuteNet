@@ -5,11 +5,11 @@ namespace Util
 {
 	MemoryStream::MemoryStream()
 	{
-		_buffer = new Byte[_capacity];
+		_Buffer = new Byte[_Capacity];
 	}
 
 	MemoryStream::~MemoryStream()
 	{
-		delete[] _buffer;
+		delete[] _Buffer;
 	}
 }

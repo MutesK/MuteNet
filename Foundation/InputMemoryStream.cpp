@@ -8,7 +8,7 @@ void InputMemoryStream::Read(void* outData, uint32_t inByteCount)
 	if (outData == nullptr)
 		throw;
 
-	if (_Head + inByteCount > static_cast<const uint64_t>(_Capacity))
+	if (static_cast<uint64_t>(_Head) + inByteCount > static_cast<const uint64_t>(_Capacity))
 		throw;
 
 	memcpy(outData, _Buffer + _Head, inByteCount);
