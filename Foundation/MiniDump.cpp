@@ -71,7 +71,7 @@ namespace Util
 
 	void MiniDump::Crash()
 	{
-		raise(SIGSEGV);
+		throw;
 	}
 	void MiniDump::SignalHandler(int Error)
 	{
