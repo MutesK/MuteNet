@@ -69,6 +69,8 @@ namespace Util
 
 				++_PrevHangCheck;
 			}
+
+			std::this_thread::yield();
 		}
 	}
 }

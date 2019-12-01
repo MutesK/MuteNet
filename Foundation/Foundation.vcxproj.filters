@@ -37,6 +37,9 @@
     <Filter Include="StringHelper">
       <UniqueIdentifier>{7418ddb5-fde6-4703-8aa2-8a2492e8b624}</UniqueIdentifier>
     </Filter>
+    <Filter Include="File">
+      <UniqueIdentifier>{10209c5c-ed44-4b02-bd8e-ac892e1fc41b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">

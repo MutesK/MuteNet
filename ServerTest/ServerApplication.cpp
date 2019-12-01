@@ -11,11 +11,11 @@ public:
 	}
 };
 
-
 ServerApplication::ServerApplication()
 	:_ListenCallback(std::make_shared<ListenCallback>())
 {
 	Util::Logger::Get().AttachListener(new ConsoleLogListener());
+
 	Util::Logger::Get().StartRun();
 	Util::TaskManager::Get(); // Just Called Constructor
 }
