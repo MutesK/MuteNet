@@ -78,3 +78,19 @@ namespace Util
 
 
 const size_t BUFFER_LENGTH = 20000;
+
+template <typename Type, Type DefaultParameter>
+class Property
+{
+	std::atomic<Type> _type = DefaultParameter;
+public:
+	void Setter(const Type& value)
+	{
+		_type = value;
+	}
+
+	Type Getter() const
+	{
+		return _type;
+	}
+};

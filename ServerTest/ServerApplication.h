@@ -29,7 +29,7 @@ public:
 
 	virtual void OnRemoteClosed(void) override
 	{
-		LogHelper::Log(LogLevel::Debug, "OnRemoteClosed");
+		LogHelper::Log(ELogLevel::Debug, "OnRemoteClosed");
 	}
 
 	virtual void OnTLSHandShakeCompleted() override
@@ -39,7 +39,7 @@ public:
 
 	virtual void OnError(int ErrorCode, const std::string& ErrorMsg) override
 	{
-		LogHelper::Log(LogLevel::Fatal, "Error {0} {1} [{2}]", ErrorCode, ErrorMsg, __FUNCTION__);
+		LogHelper::Log(ELogLevel::Fatal, "Error {0} {1} [{2}]", ErrorCode, ErrorMsg, __FUNCTION__);
 
 		_link->Shutdown();
 	}
@@ -52,7 +52,7 @@ public:
 
 	virtual Link::CallbacksPtr OnInComingConnection(const std::string& RemoteIPAddress, uint16_t RemotePort) override
 	{		
-		LogHelper::Log(LogLevel::Debug, "InComingConnection({0}:{1})", RemoteIPAddress, RemotePort);
+		LogHelper::Log(ELogLevel::Debug, "InComingConnection({0}:{1})", RemoteIPAddress, RemotePort);
 
 		return std::make_shared<ClientHandle>();
 	}

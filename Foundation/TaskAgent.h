@@ -1,16 +1,19 @@
 #pragma once
 
+#include "ThreadHolder.h"
+
 namespace Util
 {
 	class Task;
-	class TaskAgent final
+	class ThreadHolder;
+	class TaskAgent final : public ThreadHolder
 	{
+		typedef ThreadHolder super;
+	private:
 		size_t _TimeoutSec;
 
 		size_t _CurrentHangCheck;
 		size_t _PrevHangCheck;
-
-		std::unique_ptr<std::thread>		_Thread;
 
 		Concurrency::concurrent_queue<Task> _ResultQueue;
 		Concurrency::concurrent_queue<Task> _RequestQueue;
@@ -24,7 +27,7 @@ namespace Util
 		void CheckHang(bool& OUT hang);
 		void Flush();
 	protected:
-		void DoWork();
+		virtual void DoWork() override;
 	private:
 		NON_COPYABLE(TaskAgent);
 	};

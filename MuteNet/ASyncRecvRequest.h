@@ -9,8 +9,6 @@ namespace MuteNet
 	// Zero Byte Recv Àû¿ë ( IOCP )
 	class ASyncRecvRequest : public ASyncRequest
 	{
-		typedef ASyncRequest super;
-
 		static Util::TL::ObjectPool<ASyncRecvRequest, true, true> OverlappedPool;
 	private:
 		LinkImplPtr			  linkPtr;
@@ -40,7 +38,7 @@ namespace MuteNet
 
 		virtual bool Process() override
 		{
-			super::Process();
+			__super::Process();
 
 			DWORD RecvBytes = 0;
 			DWORD Flag = 0;

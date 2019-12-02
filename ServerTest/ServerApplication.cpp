@@ -5,7 +5,7 @@
 class ConsoleLogListener : public Logger::Listener
 {
 public:
-	virtual void Log(const std::string logFmt, LogLevel level) override
+	virtual void Log(const std::string logFmt, ELogLevel level) override
 	{
 		std::cout << logFmt << std::endl;
 	}

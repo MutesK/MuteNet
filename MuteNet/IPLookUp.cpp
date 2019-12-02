@@ -29,7 +29,7 @@ namespace MuteNet
 
 			if (err != 0)
 			{
-				LogHelper::Log(LogLevel::Debug, "Failed to Parse IP Address {0}.", Lookup->_IP);
+				LogHelper::Log(ELogLevel::Debug, "Failed to Parse IP Address {0}.", Lookup->_IP);
 				Lookup->Callback(err, std::string());
 			}
 

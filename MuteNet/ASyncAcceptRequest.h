@@ -10,8 +10,6 @@ namespace MuteNet
 {
 	class ASyncAcceptRequest : public ASyncRequest
 	{
-		typedef ASyncRequest super;
-
 		static Util::TL::ObjectPool<ASyncAcceptRequest, true, true> OverlappedPool;
 	private:
 		const AcceptorPtr& _Acceptor;
@@ -43,7 +41,7 @@ namespace MuteNet
 
 		virtual bool Process() override
 		{
-			super::Process();
+			__super::Process();
 
 			auto ListenSocket = _Acceptor->_Listen;
 

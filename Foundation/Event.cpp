@@ -39,7 +39,7 @@ namespace Util
 		_condVar.notify_all();
 	}
 
-	bool Event::Wait(unsigned TimeoutMsec)
+	bool Event::Wait(uint32_t TimeoutMsec)
 	{
 		auto dst = std::chrono::system_clock::now() + std::chrono::milliseconds(TimeoutMsec);
 

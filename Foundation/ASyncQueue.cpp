@@ -2,9 +2,7 @@
 #include "ASyncQueue.h"
 #include "../MuteNet/SocketUtil.h"
 
-
 using namespace Util;
-
 
 ASyncQueue::ASyncQueue()
 	:_IocpHandle(nullptr), _WorkerIndex(0), _Timeout(INFINITE)
@@ -100,10 +98,7 @@ void ASyncQueue::Run(const uint32_t workerIndex)
 		else
 		{
 			if (byteTransferred == 0 && CompletionKey == 0 && lpOverlapped == nullptr)
-			{
-				PostQueue(0);
 				return;
-			}
 
 			HandleCompletion(workerIndex, CompletionKey, lpOverlapped, byteTransferred);
 		}

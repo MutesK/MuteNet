@@ -8,8 +8,6 @@ namespace MuteNet
 {
 	class ASyncSendRequest : public ASyncRequest
 	{
-		typedef ASyncRequest super;
-
 		static Util::TL::ObjectPool<ASyncSendRequest, true, true> OverlappedPool;
 
 	private:
@@ -39,7 +37,7 @@ namespace MuteNet
 
 		virtual bool Process() override
 		{
-			super::Process();
+			__super::Process();
 
 			++linkPtr->_ASyncIORequestCounter;
 

@@ -2,10 +2,11 @@
 
 #include "Singleton.h"
 #include "SafeSharedLock.h"
+#include "ThreadHolder.h"
 
 namespace Util
 {
-	enum class LogLevel
+	enum class ELogLevel
 	{
 		Debug,
 		Warning,
@@ -14,41 +15,41 @@ namespace Util
 		Info,
 	};
 
-	class Logger : public TL::Singleton<Logger>
+	class Logger : public TL::Singleton<Logger>, ThreadHolder
 	{
+		typedef ThreadHolder super;
 	public:
-
 		class Listener abstract
 		{
 		public:
-			virtual void Log(const std::string logFmt, LogLevel level) = 0;
+			virtual void Log(const std::string logFmt, ELogLevel level) = 0;
 		};
 
 		friend class LogHelper;
 		friend class TL::Singleton<Logger>;
 	private:
 		SafeSharedLock	_SwapQueueMutex;
-		std::thread _LogWriter;
 			
-		std::queue<std::tuple<const std::string, LogLevel>> _InputQueue;
-		std::queue<std::tuple<const std::string, LogLevel>> _WriterQueue;
+		std::queue<std::tuple<const std::string, ELogLevel>> _InputQueue;
+		std::queue<std::tuple<const std::string, ELogLevel>> _WriterQueue;
 
 		std::list<std::unique_ptr<Listener>>    _Listeners;
+
 	protected:
-		Logger() = default;
+		Logger();
 
 	public:
 		virtual ~Logger();
 
 		void AttachListener(const Listener* listener);
 
-		void EnqueueLog(const std::string Fmt, LogLevel level);
+		void EnqueueLog(const std::string Fmt, ELogLevel level);
 		void StartRun();
 		void EndRun();
 	private:
 		void SwapQueue();
 
-		void DoWork();
+		virtual void DoWork() override;
 	};
 }
 

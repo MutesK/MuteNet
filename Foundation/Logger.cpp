@@ -3,6 +3,11 @@
 
 namespace Util
 {
+	Logger::Logger()
+		:super("LoggerThread")
+	{
+	}
+
 	Logger::~Logger()
 	{
 		EndRun();
@@ -16,23 +21,25 @@ namespace Util
 			std::default_delete<Listener>()));
 	}
 
-	void Logger::EnqueueLog(const std::string Fmt, LogLevel Level)
+	void Logger::EnqueueLog(const std::string Fmt, ELogLevel Level)
 	{
 		SAFE_UNIQUELOCK(_SwapQueueMutex);
 
-		_InputQueue.emplace(std::tuple<const std::string, LogLevel>(Fmt, Level));
+		_InputQueue.emplace(std::tuple<const std::string, ELogLevel>(Fmt, Level));
+
+		SetEvent();
 	}
 
 	void Logger::StartRun()
 	{
 		assert(_Listeners.size() >= 0);
 
-		_LogWriter = std::thread(std::mem_fn(&Logger::DoWork), this);
+		SetEvent();
 	}
 
 	void Logger::EndRun()
 	{
-		_LogWriter.join();
+		Finalize();
 	}
 
 	void Logger::SwapQueue()
@@ -47,16 +54,15 @@ namespace Util
 
 	void Logger::DoWork()
 	{
-		while (true) // 차후 이벤트 처리
+		if (_WriterQueue.empty())
+		{				
+			SwapQueue();
+			return;
+		}
+
+		while (!_WriterQueue.empty())
 		{
-			if (_WriterQueue.empty())
-			{				
-				SwapQueue();
-				continue;
-			}
-
 			const auto& tuple = _WriterQueue.front();
-
 			for (const auto& listener : _Listeners)
 			{
 				listener->Log(std::get<0>(tuple), std::get<1>(tuple));

@@ -9,7 +9,7 @@ namespace Util
 	{
 	public:
 		template <typename ...Args>
-		static void Log(LogLevel level, const std::string& format, Args... args)
+		static void Log(ELogLevel level, const std::string& format, Args... args)
 		{
 			if (sizeof...(args) <= 0)
 				Log(level, format);
@@ -19,7 +19,7 @@ namespace Util
 			Logger::Get().EnqueueLog(result, level);
 		}
 
-		static void Log(LogLevel level, const std::string& fmt)
+		static void Log(ELogLevel level, const std::string& fmt)
 		{
 			Logger::Get().EnqueueLog(fmt, level);
 		}

@@ -157,8 +157,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ASyncIOTask.h" />
     <ClInclude Include="ASyncQueue.h" />
     <ClInclude Include="CircularBuffer.h" />
+    <ClInclude Include="Event.h" />
     <ClInclude Include="Exception.h" />
     <ClInclude Include="foundation.h" />
     <ClInclude Include="InputMemoryStream.h" />
@@ -176,11 +178,13 @@
     <ClInclude Include="Task.h" />
     <ClInclude Include="TaskAgent.h" />
     <ClInclude Include="TaskManager.h" />
+    <ClInclude Include="ThreadHolder.h" />
     <ClInclude Include="ThreadSafeQueue.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ASyncQueue.cpp" />
     <ClCompile Include="CircularBuffer.cpp" />
+    <ClCompile Include="Event.cpp" />
     <ClCompile Include="InputMemoryStream.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="MemoryStream.cpp" />
@@ -196,6 +200,7 @@
     <ClCompile Include="Task.cpp" />
     <ClCompile Include="TaskAgent.cpp" />
     <ClCompile Include="TaskManager.cpp" />
+    <ClCompile Include="ThreadHolder.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

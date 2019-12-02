@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pch.h"
+#include "../Foundation/ASyncIOTask.h"
 
 namespace MuteNet
 {
@@ -10,29 +11,31 @@ namespace MuteNet
 		void* SelfPtr;
 	};
 
-	class ASyncRequest abstract
+	class ASyncRequest : public Util::ASyncIOTask
 	{
 	public:
 		ExtentedOverlapped Overlapped;
 	protected:
-		ASyncRequest()
-			:Overlapped{0}
-		{
-		}
-		virtual ~ASyncRequest()
-		{
-		}
+		ASyncRequest() = default;
+		virtual ~ASyncRequest() = default;
 
-		virtual bool Process()
+		virtual bool Process() override
 		{
 			ZeroMemory(&Overlapped.Overlapped, sizeof(OVERLAPPED));
 
 			return true;
 		}
-	public:
-		virtual void IOCompletion(DWORD TransfferredBytes) = 0;
 
-		virtual void IOError(DWORD Error) = 0;
+	public:
+		virtual void IOCompletion(DWORD TransfferredBytes) override
+		{
+
+		}
+
+		virtual void IOError(DWORD Error) override
+		{
+
+		}
 
 	};
 }

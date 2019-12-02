@@ -40,6 +40,9 @@
     <Filter Include="File">
       <UniqueIdentifier>{10209c5c-ed44-4b02-bd8e-ac892e1fc41b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Event">
+      <UniqueIdentifier>{925cffe2-81dd-48b1-a2ae-d62329bd1a2d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -102,6 +105,15 @@
     <ClInclude Include="MacroFunction.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="ASyncIOTask.h">
+      <Filter>ASyncQueue</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadHolder.h">
+      <Filter>Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -139,6 +151,12 @@
     </ClCompile>
     <ClCompile Include="MemoryStream.cpp">
       <Filter>BufferStream</Filter>
+    </ClCompile>
+    <ClCompile Include="Event.cpp">
+      <Filter>Event</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadHolder.cpp">
+      <Filter>Event</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

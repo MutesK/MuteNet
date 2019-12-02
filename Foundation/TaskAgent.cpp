@@ -2,26 +2,24 @@
 #include "Task.h"
 #include "TaskAgent.h"
 
+
 namespace Util
 {
 	TaskAgent::TaskAgent(const std::string& agentName)
-		: _TimeoutSec(0), _CurrentHangCheck(0), _PrevHangCheck(0)
+		: _TimeoutSec(0), _CurrentHangCheck(0), _PrevHangCheck(0), super(agentName)
 	{
-		_Thread = std::make_unique<std::thread>(std::mem_fn(&TaskAgent::DoWork), this);
-
-		const auto threadhandle = _Thread->native_handle();
-
-		ChangeThreadName(threadhandle, agentName);
 	}
 
 	TaskAgent::~TaskAgent()
 	{
-		_Thread->join();
+		Finalize();
 	}
 
 	void TaskAgent::AddTask(const Task& t)
 	{
 		_RequestQueue.push(t);
+
+		SetEvent();
 	}
 
 	Task TaskAgent::DequeCompletedTask()
@@ -54,23 +52,18 @@ namespace Util
 	{
 		Task task;
 
-		while (true)
+		while (_RequestQueue.try_pop(task))
 		{
-			while (_RequestQueue.try_pop(task))
+			++_CurrentHangCheck;
+
+			task.Do();
+
+			if (!task.IsEmptyCompleteLambda())
 			{
-				++_CurrentHangCheck;
-
-				task.Do();
-
-				if (!task.IsEmptyCompleteLambda())
-				{
-					task.CompleteDo();
-				}
-
-				++_PrevHangCheck;
+				task.CompleteDo();
 			}
 
-			std::this_thread::yield();
+			++_PrevHangCheck;
 		}
 	}
 }

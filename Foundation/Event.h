@@ -1,12 +1,12 @@
 #pragma once
-#include "SafeSharedLock.h"
+
 
 namespace Util
 {
 	class Event
 	{
-		bool _shouldContinue;
-		std::mutex _mutex;
+		bool					_shouldContinue;
+		std::mutex				 _mutex;
 		std::condition_variable  _condVar;
 	public:
 		Event();
@@ -14,7 +14,8 @@ namespace Util
 		void Wait();
 		void Set();
 		void SetAll();
-		bool Wait(unsigned int TimeoutMsec);
+		bool Wait(uint32_t TimeoutMsec);
 	};
 }
+
 
