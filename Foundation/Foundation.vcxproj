@@ -162,6 +162,7 @@
     <ClInclude Include="CircularBuffer.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Exception.h" />
+    <ClInclude Include="File.h" />
     <ClInclude Include="foundation.h" />
     <ClInclude Include="InputMemoryStream.h" />
     <ClInclude Include="Logger.h" />

@@ -58,7 +58,7 @@ namespace Util
 
 			task.Do();
 
-			if (!task.IsEmptyCompleteLambda())
+			if (task.IsEmptyCompleteLambda())
 			{
 				task.CompleteDo();
 			}

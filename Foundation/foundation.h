@@ -30,6 +30,7 @@
 #include <sstream>
 
 #include <cstdio>
+#include <fstream>
 
 #include "ObjectPool.h"
 #include "MacroFunction.h"

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Logger.h"
+#include "TaskManager.h"
 
 namespace Util
 {
@@ -23,6 +24,8 @@ namespace Util
 
 	void Logger::EnqueueLog(const std::string Fmt, ELogLevel Level)
 	{
+		SetEvent();
+
 		SAFE_UNIQUELOCK(_SwapQueueMutex);
 
 		_InputQueue.emplace(std::tuple<const std::string, ELogLevel>(Fmt, Level));
@@ -55,9 +58,8 @@ namespace Util
 	void Logger::DoWork()
 	{
 		if (_WriterQueue.empty())
-		{				
+		{
 			SwapQueue();
-			return;
 		}
 
 		while (!_WriterQueue.empty())
@@ -69,6 +71,11 @@ namespace Util
 			}
 
 			_WriterQueue.pop();
+
+			if (_WriterQueue.empty())
+			{
+				SwapQueue();
+			}
 		}
 	}
 }

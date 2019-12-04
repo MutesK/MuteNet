@@ -75,10 +75,10 @@ namespace Util
 
 			for (std::size_t index = 0; index < formatter._ArgumentList.size(); index++)
 			{
-				sprintf_s(bracket, 100, "{%I64u}", index);
+				sprintf_s(bracket, 100, "{%llu}", index);
 
 				const auto findIndex = ret.find(bracket, strlen(bracket));
-				if (index == std::string::npos)
+				if (findIndex == std::string::npos)
 					break;
 
 				ret.replace(findIndex, strlen(bracket), formatter._ArgumentList[index]);
