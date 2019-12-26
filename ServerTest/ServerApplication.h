@@ -9,13 +9,13 @@
 using namespace MuteNet;
 using namespace Util;
 
-class ClientHandle : public Link::Callbacks
+class ClientInfo : public Link::Callbacks
 {
 private:
 	Link* _link = nullptr;
 public:
-	ClientHandle() = default;
-	virtual ~ClientHandle() = default;
+	ClientInfo() = default;
+	virtual ~ClientInfo() = default;
 
 	virtual void OnCreated(Link* Link) override
 	{
@@ -54,7 +54,7 @@ public:
 	{		
 		LogHelper::Log(ELogLevel::Debug, "InComingConnection({0}:{1})", RemoteIPAddress, RemotePort);
 
-		return std::make_shared<ClientHandle>();
+		return std::make_shared<ClientInfo>();
 	}
 
 	virtual void OnAccepted(Link& link) override

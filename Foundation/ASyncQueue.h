@@ -1,5 +1,7 @@
 #pragma once
 
+#include "foundation.h"
+
 namespace Util
 {
 	class ASyncQueue abstract
@@ -16,7 +18,7 @@ namespace Util
 	protected:
 		virtual bool Initialize(const uint32_t numberOfWorkers, const uint32_t timeout);
 		virtual void Stop();
-		bool PostQueue(ULONG_PTR Pointer);
+		virtual bool PostQueue(ULONG_PTR Pointer);
 
 		void Run(const uint32_t workerIndex);
 

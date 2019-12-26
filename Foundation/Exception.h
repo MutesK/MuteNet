@@ -5,8 +5,9 @@
 
 namespace Util
 {
-	class Exception final : public std::exception
+	class Exception : public std::exception
 	{
+	public:
 		explicit Exception(char const* const message) noexcept
 			:std::exception(message)
 		{	
@@ -17,4 +18,5 @@ namespace Util
 		{
 		}
 	};
+
 }
