@@ -9,13 +9,13 @@ namespace Util
 		class DBConnection;
 		class DBCommandPool final
 		{
-			std::vector<DBCommand*> _Dictionary;
+			std::vector<std::shared_ptr<DBCommand>> _Dictionary;
 
 		public:
 			DBCommandPool(const uint32_t numOfCommand);
 			~DBCommandPool();
 
-			DBCommand* FindOutDBCommand(const DBTask* const pTask, DBConnection* const pConnection);
+			std::shared_ptr<DBCommand> FindOutDBCommand(const DBTask* const pTask, DBConnection* const pConnection);
 		};
 	}
 }

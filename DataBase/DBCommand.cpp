@@ -6,7 +6,7 @@ namespace Util
 {
 	namespace DB
 	{
-		DBCommand::DBCommand(DBConnection* const pConnection, const std::string& Query)
+		DBCommand::DBCommand(const std::shared_ptr<DBConnection>& pConnection, const std::string& Query)
 			:_pResultSet(nullptr),
 			_pConnection(pConnection),
 			_Query(Query)
@@ -14,14 +14,13 @@ namespace Util
 		}
 		DBCommand::~DBCommand()
 		{
-			delete _pResultSet;
 		}
 
 		void DBCommand::Prepare()
 		{
 			PrepareImpl();
 
-			_pResultSet = NewResultSetImpl();
+			_pResultSet = std::shared_ptr<DBResultSet>(NewResultSetImpl());
 		}
 
 		void DBCommand::Reset()

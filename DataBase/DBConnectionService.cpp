@@ -13,7 +13,7 @@ namespace Util
 		{
 		}
 
-		DBConnection* DBConnectionService::AcquireConnection()
+		std::shared_ptr<DBConnection> DBConnectionService::AcquireConnection()
 		{
 			auto pConnection = AcquireConnectionImpl();
 
@@ -25,14 +25,9 @@ namespace Util
 			return pConnection;
 		}
 
-		void DBConnectionService::ReleaseConnection(DBConnection* const pConnection)
+		std::shared_ptr<DBConnection> DBConnectionService::AcquireConnectionImpl()
 		{
-			delete pConnection;
-		}
-
-		DBConnection* DBConnectionService::AcquireConnectionImpl()
-		{
-			const auto pConnection = NewConnection();
+			const auto pConnection = std::shared_ptr<DBConnection>(NewConnection());
 
 			if (pConnection == nullptr)
 			{

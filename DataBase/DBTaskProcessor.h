@@ -10,7 +10,7 @@ namespace Util
 		class DBTaskProcessor final
 		{
 			std::string _DBName;
-			std::vector<DBConnection*> _DBConnections;
+			std::vector<std::shared_ptr<DBConnection>> _DBConnections;
 		public:
 			DBTaskProcessor(const std::string& DBName);
 
@@ -21,7 +21,7 @@ namespace Util
 			void Timeout(const uint32_t WorkerIndex);
 		private:
 			void ProcessImpl(const uint32_t WorkerIndex,
-				DBConnection* const pConnection,
+				const std::shared_ptr<DBConnection>& pConnection,
 				DBTask* const pTask);
 
 		};

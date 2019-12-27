@@ -21,7 +21,7 @@ namespace Util
 
 			for (uint32_t index = 0; index < numOfGroup; ++index)
 			{
-				const auto pConnection = pService->AcquireConnection();
+				const auto pConnection = pService->AcquireConnection();  // Factory·Î ÀüÈ¯
 
 				if (nullptr == pConnection)
 				{
@@ -39,8 +39,6 @@ namespace Util
 			for (const auto pConnection : _DBConnections)
 			{
 				pConnection->Close();
-
-				delete pConnection;
 			}
 
 			_DBConnections.clear();
@@ -71,7 +69,7 @@ namespace Util
 			}
 		}
 
-		void DBTaskProcessor::ProcessImpl(const uint32_t WorkerIndex, DBConnection* const pConnection, DBTask* const pTask)
+		void DBTaskProcessor::ProcessImpl(const uint32_t WorkerIndex, const std::shared_ptr<DBConnection>& pConnection, DBTask* const pTask)
 		{
 			DBCommand* pCommand = nullptr;
 

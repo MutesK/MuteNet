@@ -10,12 +10,11 @@ namespace Util
 		DBConnection::DBConnection(DBConnectionService* const pService)
 			:_pService(pService)
 		{
-			_pDBCommandPool = new DBCommandPool(pService->GetNumOfCommand());
+			_pDBCommandPool = std::make_shared<DBCommandPool>(pService->GetNumOfCommand());
 		}
 
 		DBConnection::~DBConnection()
 		{
-			delete _pDBCommandPool;
 		}
 
 		bool DBConnection::IsConnected()
@@ -55,7 +54,7 @@ namespace Util
 			CloseImpl();
 		}
 
-		DBCommand* DBConnection::FindOutDBCommand(const DBTask* const pDBTask)
+		std::shared_ptr<DBCommand> DBConnection::FindOutDBCommand(const DBTask* const pDBTask)
 		{
 			return _pDBCommandPool->FindOutDBCommand(pDBTask, this);
 		}

@@ -17,18 +17,12 @@ namespace Util
 		{
 			super::Stop();
 
-			for (auto pDBTaskProcessor : _DBTaskProcessor)
-			{
-				delete pDBTaskProcessor;
-			}
-
 			_DBTaskProcessor.clear();
 		}
 
 		bool DBTaskQueue::AddDBProcessor(DBConnectionService* pService)
 		{
-
-			auto pDBProcessor = new DBTaskProcessor(pService->GetDBName());
+			auto pDBProcessor = std::make_shared<DBTaskProcessor>(pService->GetDBName());
 
 			if (nullptr == pDBProcessor)
 			{
@@ -37,7 +31,6 @@ namespace Util
 
 			if (false == pDBProcessor->Init(pService, static_cast<uint32_t>(_Workers.size())))
 			{
-				delete pDBProcessor;
 				return false;
 			}
 
@@ -45,7 +38,7 @@ namespace Util
 
 			if (_DBTaskProcessor.size() <= dbNameIndex)
 			{
-				_DBTaskProcessor.resize(dbNameIndex + 1, nullptr);
+				_DBTaskProcessor.resize(static_cast<size_t>(dbNameIndex) + 1, nullptr);
 			}
 
 			_DBTaskProcessor[dbNameIndex] = pDBProcessor;

@@ -20,11 +20,13 @@ namespace Util
 			std::string GetDBName() const;
 			uint32_t GetDBNameIndex() const;
 
-			DBConnection* AcquireConnection();
-			void ReleaseConnection(DBConnection* const pConnection);
+			std::shared_ptr<DBConnection> AcquireConnection();
 
 		protected:
-			DBConnection* AcquireConnectionImpl();
+			std::shared_ptr<DBConnection> AcquireConnectionImpl();
+
+			// Automatically Managed Point
+			// Don't Call Delete DBConnection
 			virtual DBConnection* NewConnection() = 0;
 		};
 

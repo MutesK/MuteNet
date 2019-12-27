@@ -17,7 +17,7 @@ namespace Util
 			_Dictionary.clear();
 		}
 
-		DBCommand* DBCommandPool::FindOutDBCommand(const DBTask* const pTask,
+		std::shared_ptr<DBCommand> DBCommandPool::FindOutDBCommand(const DBTask* const pTask,
 			DBConnection* const pConnection)
 		{
 			auto taskid = pTask->get_id();
@@ -31,7 +31,7 @@ namespace Util
 
 			if (nullptr == pCommand)
 			{
-				pCommand = pConnection->Prepare(pTask);
+				pCommand = std::shared_ptr<DBCommand>(pConnection->Prepare(pTask));
 
 				_Dictionary[taskid] = pCommand;
 			}

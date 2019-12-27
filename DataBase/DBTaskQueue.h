@@ -16,7 +16,7 @@ namespace Util
 		{
 			typedef ASyncQueue super;
 
-			std::vector<DBTaskProcessor*> _DBTaskProcessor;
+			std::vector<std::shared_ptr<DBTaskProcessor>> _DBTaskProcessor;
 		public:
 			virtual bool Initialize(const uint32_t numOfWorker, const uint32_t KeepAlivePeriod);
 			void Stop();

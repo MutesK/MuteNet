@@ -7,11 +7,11 @@ namespace Util
 		class DBResultSet;
 		class DBCommand abstract
 		{
-			DBConnection*	_pConnection;
+			std::shared_ptr<DBConnection> _pConnection;
 			std::string		_Query;
-			DBResultSet*	_pResultSet;
+			std::shared_ptr<DBResultSet> _pResultSet;
 		public:
-			DBCommand(DBConnection* const pConnection, const std::string& Query);
+			DBCommand(const std::shared_ptr<DBConnection>& pConnection, const std::string& Query);
 			virtual ~DBCommand();
 
 			void Prepare();

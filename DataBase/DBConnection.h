@@ -11,7 +11,7 @@ namespace Util
 		class DBConnection abstract
 		{
 			DBConnectionService* _pService;
-			DBCommandPool* _pDBCommandPool;
+			std::shared_ptr<DBCommandPool> _pDBCommandPool;
 		public:
 			DBConnection(DBConnectionService* const pService);
 			virtual ~DBConnection();
@@ -21,7 +21,10 @@ namespace Util
 			bool KeepAlive();
 			void Close();
 
-			virtual DBCommand* FindOutDBCommand(const DBTask* const pDBTask);
+			virtual std::shared_ptr<DBCommand> FindOutDBCommand(const DBTask* const pDBTask);
+
+			// Automatically Managed Raw Pointer,
+			// Don't Delete it
 			virtual DBCommand* Prepare(const DBTask* const pDBTask) = 0;
 
 		protected:
