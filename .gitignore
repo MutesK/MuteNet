@@ -14,7 +14,6 @@
 # Compiled Dynamic libraries
 *.so
 *.dylib
-*.dll
 
 # Fortran module files
 *.mod
@@ -24,7 +23,6 @@
 *.lai
 *.la
 *.a
-*.lib
 
 # Executables
 *.exe
@@ -35,7 +33,6 @@
 *.db
 *.log
 *.idb
-*.pdb
 *.tlog
 *.ipch
 *.ilk
@@ -49,4 +46,3 @@
 
 x64/
 .vs/
-*.h
