@@ -27,7 +27,8 @@ namespace Util
 			virtual void Bind(int16_t& OUT value) = 0;
 			virtual void Bind(int32_t& OUT value) = 0;
 			virtual void Bind(int64_t& OUT value) = 0;
-			virtual void Bind(char* OUT value, uint32_t& OUT length) = 0;
+			virtual void Bind(double& OUT value) = 0;
+			virtual void Bind(char* OUT value, uint32_t& OUT length, uint32_t maxLength) = 0;
 
 			virtual void GetResult(int16_t& OUT result) = 0;
 			virtual uint64_t GetNumberOfRows() const = 0;

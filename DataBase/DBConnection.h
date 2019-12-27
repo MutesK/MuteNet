@@ -10,6 +10,7 @@ namespace Util
 		class DBCommandPool;
 		class DBConnection abstract
 		{
+		protected:
 			DBConnectionService* _pService;
 			std::shared_ptr<DBCommandPool> _pDBCommandPool;
 		public:
@@ -20,6 +21,10 @@ namespace Util
 			bool Connect();
 			bool KeepAlive();
 			void Close();
+
+			void BeginTransaction();
+			void CommitTransaction();
+			void RollbackTransaction();
 
 			virtual std::shared_ptr<DBCommand> FindOutDBCommand(const DBTask* const pDBTask);
 
@@ -33,6 +38,10 @@ namespace Util
 			virtual void CloseImpl() = 0;
 			virtual bool KeepAliveImpl() = 0;
 			virtual void RefreshImpl () = 0;
+
+			virtual void BeginTransactionImpl() = 0;
+			virtual void CommitTransactionImpl() = 0;
+			virtual void RollbackTransactionImpl() = 0;
 		};
 	}
 }

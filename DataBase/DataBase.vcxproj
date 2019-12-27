@@ -87,6 +87,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>.\MariaDB;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,6 +152,11 @@
     <ClCompile Include="DBTask.cpp" />
     <ClCompile Include="DBTaskProcessor.cpp" />
     <ClCompile Include="DBTaskQueue.cpp" />
+    <ClCompile Include="MariaDBCommand.cpp" />
+    <ClCompile Include="MariaDBConnection.cpp" />
+    <ClCompile Include="MariaDBConnectionService.cpp" />
+    <ClCompile Include="MariaDBParameterCollection.cpp" />
+    <ClCompile Include="MariaDBResultSet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DBCommand.h" />
@@ -162,6 +168,11 @@
     <ClInclude Include="DBTask.h" />
     <ClInclude Include="DBTaskProcessor.h" />
     <ClInclude Include="DBTaskQueue.h" />
+    <ClInclude Include="MariaDBCommand.h" />
+    <ClInclude Include="MariaDBConnection.h" />
+    <ClInclude Include="MariaDBConnectionService.h" />
+    <ClInclude Include="MariaDBParameterCollection.h" />
+    <ClInclude Include="MariaDBResultSet.h" />
     <ClInclude Include="MuteNetDB.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

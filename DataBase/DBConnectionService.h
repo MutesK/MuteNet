@@ -7,11 +7,11 @@ namespace Util
 	namespace DB
 	{
 		class DBConnection;
-		class DBConnectionService final
+		class DBConnectionService abstract
 		{
+		protected:
 			uint32_t _NumOfCommands;
 			DBConnectionSetting* _pConnectionSetting;
-
 		public:
 			DBConnectionService(const uint32_t NumOfCommand,
 				DBConnectionSetting* const pConnectionSetting);
@@ -19,6 +19,7 @@ namespace Util
 			uint32_t GetNumOfCommand() const;
 			std::string GetDBName() const;
 			uint32_t GetDBNameIndex() const;
+			DBConnectionSetting* GetSetting() const;
 
 			std::shared_ptr<DBConnection> AcquireConnection();
 
@@ -41,6 +42,10 @@ namespace Util
 		inline uint32_t DBConnectionService::GetDBNameIndex() const
 		{
 			return _pConnectionSetting->_DBNameIndex;
+		}
+		inline DBConnectionSetting* DBConnectionService::GetSetting() const
+		{
+			return _pConnectionSetting;
 		}
 	}
 }

@@ -71,10 +71,8 @@ namespace Util
 
 		void DBTaskProcessor::ProcessImpl(const uint32_t WorkerIndex, const std::shared_ptr<DBConnection>& pConnection, DBTask* const pTask)
 		{
-			DBCommand* pCommand = nullptr;
-
 			// Exception Start P
-			pCommand = pConnection->FindOutDBCommand(pTask);
+			auto pCommand = pConnection->FindOutDBCommand(pTask);
 
 			do 
 			{

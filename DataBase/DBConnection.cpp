@@ -2,6 +2,7 @@
 #include "DBConnection.h"
 #include "DBConnectionService.h"
 #include "DBCommandPool.h"
+#include "DBCommand.h"
 
 namespace Util
 {
@@ -52,6 +53,21 @@ namespace Util
 		void DBConnection::Close()
 		{
 			CloseImpl();
+		}
+
+		void DBConnection::BeginTransaction()
+		{
+			BeginTransactionImpl();
+		}
+
+		void DBConnection::CommitTransaction()
+		{
+			CommitTransactionImpl();
+		}
+
+		void DBConnection::RollbackTransaction()
+		{
+			RollbackTransactionImpl();
 		}
 
 		std::shared_ptr<DBCommand> DBConnection::FindOutDBCommand(const DBTask* const pDBTask)

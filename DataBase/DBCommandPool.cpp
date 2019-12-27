@@ -2,7 +2,7 @@
 #include "DBCommandPool.h"
 #include "DBTask.h"
 #include "DBConnection.h"
-
+#include "DBCommand.h"
 namespace Util
 {
 	namespace DB

@@ -11,7 +11,7 @@ namespace Util
 			uint32_t _id;
 			uint32_t _dbNameIndex;
 			std::string _name;
-			std::string _dbCommandName;
+			std::string _dbCommandName;  // Query
 			std::string _keyPrefix;
 
 		public:
@@ -20,19 +20,26 @@ namespace Util
 				const std::string& keyPrefix);
 			virtual ~DBTask() = default;
 
-			virtual void BindInput(DBCommand* const pCommand) = 0;
-			virtual void BindOutput(DBResultSet* const pResultSet) = 0;
+			virtual void BindInput(std::shared_ptr<DBCommand> pCommand) = 0;
+			virtual void BindOutput(std::shared_ptr<DBResultSet> pResultSet) = 0;
 			virtual bool Next() = 0;
 			virtual bool IsLast() const = 0;
+
+			std::string GetDBCommandName() const;
 
 			GET_CONST_ATTRIBUTE(uint32_t, id);
 			GET_CONST_ATTRIBUTE(uint32_t, dbNameIndex);
 		protected:
 			virtual void ProcessResult(const uint32_t Result,
-				DBResultSet* const pResultSet) = 0;
+				const std::shared_ptr<DBResultSet> pResultSet) = 0;
 			virtual void HandleError(const uint32_t Result) = 0;
 
 			friend class DBTaskProcessor;
 		};
+
+		inline std::string DBTask::GetDBCommandName() const
+		{
+			return _dbCommandName;
+		}
 	}
 }

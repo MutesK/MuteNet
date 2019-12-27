@@ -7,17 +7,22 @@ namespace Util
 		class DBResultSet;
 		class DBCommand abstract
 		{
-			std::shared_ptr<DBConnection> _pConnection;
+		protected:
+			DBConnection* _pConnection;
 			std::string		_Query;
 			std::shared_ptr<DBResultSet> _pResultSet;
 		public:
-			DBCommand(const std::shared_ptr<DBConnection>& pConnection, const std::string& Query);
+			DBCommand(DBConnection* const pConnection, const std::string& Query);
 			virtual ~DBCommand();
 
 			void Prepare();
 			void Reset();
 
-			virtual DBResultSet* Execute() = 0;
+			void BeginTransaction();
+			void CommitTransaction();
+			void RollbackTransaction();
+
+			virtual std::shared_ptr<DBResultSet> Execute() = 0;
 			virtual void Close() = 0;
 
 			virtual void Bind(const uint8_t& value) = 0;
@@ -28,6 +33,7 @@ namespace Util
 			virtual void Bind(const int16_t& value) = 0;
 			virtual void Bind(const int32_t& value) = 0;
 			virtual void Bind(const int64_t& value) = 0;
+			virtual void Bind(const double& value) = 0;
 			virtual void Bind(char* value, const uint32_t length) = 0;
 
 		protected:

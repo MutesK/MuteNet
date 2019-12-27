@@ -16,6 +16,9 @@
     <Filter Include="CommonDB">
       <UniqueIdentifier>{2b572afe-23db-443c-8579-11431f2da81d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MariaDB">
+      <UniqueIdentifier>{289dcca1-e79d-475f-ba7d-20199ca183f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MuteNetDB.h">
@@ -48,6 +51,21 @@
     <ClInclude Include="DBResultSet.h">
       <Filter>CommonDB</Filter>
     </ClInclude>
+    <ClInclude Include="MariaDBConnection.h">
+      <Filter>MariaDB</Filter>
+    </ClInclude>
+    <ClInclude Include="MariaDBCommand.h">
+      <Filter>MariaDB</Filter>
+    </ClInclude>
+    <ClInclude Include="MariaDBParameterCollection.h">
+      <Filter>MariaDB</Filter>
+    </ClInclude>
+    <ClInclude Include="MariaDBResultSet.h">
+      <Filter>MariaDB</Filter>
+    </ClInclude>
+    <ClInclude Include="MariaDBConnectionService.h">
+      <Filter>MariaDB</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DBTask.cpp">
@@ -73,6 +91,21 @@
     </ClCompile>
     <ClCompile Include="DBResultSet.cpp">
       <Filter>CommonDB</Filter>
+    </ClCompile>
+    <ClCompile Include="MariaDBConnection.cpp">
+      <Filter>MariaDB</Filter>
+    </ClCompile>
+    <ClCompile Include="MariaDBCommand.cpp">
+      <Filter>MariaDB</Filter>
+    </ClCompile>
+    <ClCompile Include="MariaDBParameterCollection.cpp">
+      <Filter>MariaDB</Filter>
+    </ClCompile>
+    <ClCompile Include="MariaDBResultSet.cpp">
+      <Filter>MariaDB</Filter>
+    </ClCompile>
+    <ClCompile Include="MariaDBConnectionService.cpp">
+      <Filter>MariaDB</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

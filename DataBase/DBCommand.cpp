@@ -1,12 +1,13 @@
 #include "MuteNetDB.h"
 #include "DBCommand.h"
 #include "DBResultSet.h"
+#include "DBConnection.h"
 
 namespace Util
 {
 	namespace DB
 	{
-		DBCommand::DBCommand(const std::shared_ptr<DBConnection>& pConnection, const std::string& Query)
+		DBCommand::DBCommand(DBConnection* const pConnection, const std::string& Query)
 			:_pResultSet(nullptr),
 			_pConnection(pConnection),
 			_Query(Query)
@@ -26,6 +27,21 @@ namespace Util
 		void DBCommand::Reset()
 		{
 			ResetImpl();
+		}
+
+		void DBCommand::BeginTransaction()
+		{
+			_pConnection->BeginTransaction();
+		}
+
+		void DBCommand::CommitTransaction()
+		{
+			_pConnection->CommitTransaction();
+		}
+
+		void DBCommand::RollbackTransaction()
+		{
+			_pConnection->RollbackTransaction();
 		}
 
 
