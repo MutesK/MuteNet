@@ -5,6 +5,8 @@
 #include "ServerHandleImpl.h"
 #include "MiniDump.h"
 #include "LogHelper.h"
+#include "MuteNetDB.h"
+#include "DBTaskQueue.h"
 
 using namespace MuteNet;
 using namespace Util;
@@ -77,6 +79,7 @@ private:
 	ListenCallbackPtr		_ListenCallback;
 	ServerHandlePtr			_ServerHandlePtr;
 
+	DB::DBTaskQueue			_DBASyncQueue;
 	Util::MiniDump			_Dump;
 public:
 	ServerApplication();

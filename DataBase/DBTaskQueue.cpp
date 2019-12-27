@@ -62,7 +62,7 @@ namespace Util
 				
 				const auto dbNameIndex = pTask->get_dbNameIndex();
 
-				if (_DBTaskProcessor.size() <= dbNameIndex)
+				if (_DBTaskProcessor.size() < dbNameIndex)
 				{
 					return;
 				}

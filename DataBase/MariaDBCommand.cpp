@@ -12,7 +12,7 @@ namespace Util
 		MariaDBCommand::MariaDBCommand(DBConnection* const pConnection,
 			const std::shared_ptr<MYSQL_STMT>& pMySQLStatement, const std::string& Query)
 			:super(pConnection, Query),
-			_pMySQLStatement(nullptr)
+			_pMySQLStatement(pMySQLStatement)
 		{
 			_pParameters = std::make_shared<MariaDBInputParameterCollection>();
 		}
@@ -43,7 +43,7 @@ namespace Util
 
 		std::shared_ptr<DBResultSet> MariaDBCommand::Execute()
 		{
-			if (nullptr != _pResultSet || nullptr != _pParameters)
+			if (nullptr == _pResultSet || nullptr == _pParameters)
 			{
 				throw;
 			}
@@ -123,7 +123,7 @@ namespace Util
 				const_cast<double *>(&value), nullptr, sizeof(value), sizeof(value), true);
 		}
 
-		void MariaDBCommand::Bind(char* value, const uint32_t maxLength)
+		void MariaDBCommand::Bind(const char* value, const uint32_t maxLength)
 		{
 			const uint32_t length = static_cast<uint32_t>(::strlen(value));
 
@@ -133,17 +133,20 @@ namespace Util
 
 		void MariaDBCommand::PrepareImpl()
 		{
-			if (nullptr != _pMySQLStatement)
+			if (nullptr == _pMySQLStatement)
 			{
 				throw;
 			}
 
 			const uint32_t length = static_cast<uint32_t>(_Query.length());
 			const int32_t result = ::mysql_stmt_prepare(GetStatement(),
-				_Query.c_str(), length);
+				_Query.c_str(), length * 2);
 
 			if (0 != result)
 			{
+				auto errorCode = ::mysql_stmt_errno(GetStatement());
+				auto errorStr = ::mysql_stmt_error(GetStatement());
+
 				throw; // API Error
 			}
 

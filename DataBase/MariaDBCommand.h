@@ -44,7 +44,7 @@ namespace Util
 
 			virtual void Bind(const double& value) override;
 
-			virtual void Bind(char* value, const uint32_t length) override;
+			virtual void Bind(const char* value, const uint32_t length) override;
 
 			virtual void PrepareImpl() override;
 

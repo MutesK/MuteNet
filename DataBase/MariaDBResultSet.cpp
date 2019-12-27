@@ -72,11 +72,6 @@ namespace Util
 
 			if (0 != result)
 			{
-				if (MYSQL_NO_DATA != result)
-				{
-					throw;
-				}
-
 				return false;
 			}
 
@@ -148,23 +143,12 @@ namespace Util
 			const auto pStatement = _pDBCommand->GetStatement();
 			const uint32_t numberOfParameters = ::mysql_stmt_field_count(pStatement);
 
-			if (0 == numberOfParameters)
-			{
-				throw; // No Result Set
-			}
-
 			_pParameters->SetNumberOfParameter(numberOfParameters);
 
 			Bind(result);
 			BindImpl();
-
-			if (!NextImpl())
-			{
-				throw; // No Result Set
-			}
-
-			while (NextImpl ());
-
+			
+			while (NextImpl());
 		}
 
 		uint64_t MariaDBResultSet::GetNumberOfRows() const

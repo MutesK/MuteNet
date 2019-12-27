@@ -47,6 +47,7 @@ namespace Util
 
 			++_paramterPosition;
 
+			_numberOfParameters = _paramterPosition;
 		}
 		void MariaDBInputParameterCollection::Bind(MYSQL_STMT* const pStmt)
 		{
@@ -57,8 +58,11 @@ namespace Util
 
 			const my_bool result = ::mysql_stmt_bind_param(pStmt, &_pArrParameters[0]);
 
-			if (false != result)
+			if (0 != result)
 			{
+				auto errorCode = ::mysql_stmt_errno(pStmt);
+				auto errorStr = ::mysql_stmt_error(pStmt);
+
 				throw;
 			}
 		}

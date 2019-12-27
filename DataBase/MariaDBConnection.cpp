@@ -68,7 +68,7 @@ namespace Util
 
 		bool MariaDBConnection::ConnectImpl()
 		{
-			if (nullptr != ::mysql_init(&_mySQL))
+			if (nullptr == ::mysql_init(&_mySQL))
 			{
 				return false;
 			}

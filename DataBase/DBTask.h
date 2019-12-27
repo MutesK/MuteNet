@@ -8,9 +8,9 @@ namespace Util
 		class DBResultSet;
 		class DBTask abstract
 		{
-			uint32_t _id;
-			uint32_t _dbNameIndex;
-			std::string _name;
+			uint32_t _id;   // Task ID
+			uint32_t _dbNameIndex;  //  연동할 데이터베이스 인덱스
+			std::string _name;   // Task 이름
 			std::string _dbCommandName;  // Query
 			std::string _keyPrefix;
 

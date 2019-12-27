@@ -34,7 +34,7 @@ namespace Util
 			virtual void Bind(const int32_t& value) = 0;
 			virtual void Bind(const int64_t& value) = 0;
 			virtual void Bind(const double& value) = 0;
-			virtual void Bind(char* value, const uint32_t length) = 0;
+			virtual void Bind(const char* value, const uint32_t length) = 0;
 
 		protected:
 			virtual void PrepareImpl() = 0;
