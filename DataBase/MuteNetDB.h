@@ -6,6 +6,7 @@
 
 #include "../Foundation/ASyncIOTask.h"
 #include "../Foundation/ASyncQueue.h"
+#include "../Foundation/Exception.h"
 
 
 #pragma comment(lib,"libmariadb.lib")

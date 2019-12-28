@@ -12,11 +12,15 @@ namespace Util
 		{
 			_BindingInformations.resize(MaxParameter);
 			_pArrParameters = new MYSQL_BIND[MaxParameter];
+			_pIndicator = new char[MaxParameter];
+
+			memset(_pIndicator, STMT_INDICATOR_IGNORE, MaxParameter);
 		}
 
 		MariaDBParameterCollection::~MariaDBParameterCollection()
 		{
 			delete[] _pArrParameters;
+			delete[] _pIndicator;
 		}
 
 		void MariaDBParameterCollection::AddParameter(const enum_field_types type,
@@ -34,16 +38,12 @@ namespace Util
 			info.length = length;
 			info.error = 0;
 
-			auto bind = _pArrParameters[_paramterPosition];
-			memset(&bind, 0, sizeof(MYSQL_BIND));
+			auto bind = &_pArrParameters[_paramterPosition];
+			memset(bind, 0, sizeof(MYSQL_BIND));
 	
-			bind.buffer_type = type;
-			bind.buffer = pBuffer;
-			bind.buffer_length = maxlength;
-			bind.is_null = &info.is_null;
-			bind.length = (nullptr != pOutLength ? reinterpret_cast<unsigned long *>(pOutLength) : &info.length);
-			bind.error = &info.error;
-			bind.is_unsigned = isunsigned;
+			bind->buffer_type = type;
+			bind->buffer = pBuffer;
+			bind->u.indicator = _pIndicator;
 
 			++_paramterPosition;
 

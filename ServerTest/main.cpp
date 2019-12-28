@@ -3,7 +3,7 @@
 
 int main()
 {
-	ServerApplication App;
+	Application App;
 	App.Listen(6000);
 	
 	while(true)

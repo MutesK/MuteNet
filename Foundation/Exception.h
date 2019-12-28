@@ -1,21 +1,35 @@
 #pragma once
 
-#include <exception>
-#include <string>
+#include "StringHelper.h"
 
 namespace Util
 {
-	class Exception : public std::exception
+	/*
+		__FILE__
+		__LINE__
+		__FUNC__
+		ErrorCode,
+		ErrorMessage
+	*/
+	class Exception
 	{
+	private:
+		std::string _file;
+		std::string _function;
+		std::string errorMessage;
+		uint32_t _errorCode;
+		uint64_t _line;
 	public:
-		explicit Exception(char const* const message) noexcept
-			:std::exception(message)
+		Exception(uint32_t errorCode, const char* ErrorMessage, const char* pFile,
+			const uint64_t& line, const char *pFunction) noexcept
+			:_errorCode(errorCode), errorMessage(ErrorMessage), _file(pFile),
+			_line(line), _function(pFunction)
 		{	
 		}
 
-		explicit Exception(const std::string message) noexcept
-			:std::exception(message.c_str())
+		inline virtual std::string what()
 		{
+			return StringHelper::Format("{0}:{1}:{2}({3}):{4}", _file, _line, _function, _errorCode, errorMessage);
 		}
 	};
 

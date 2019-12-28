@@ -7,13 +7,15 @@
 using namespace Util::DB;
 
 TestDBTask::TestDBTask()
-	:super(0, 0, "TestDBTask", "INSERT INTO `test`.`test` VALUES (?);", "")
+	:super(0, 0, "TestDBTask", "INSERT INTO `mutenettest`.`stringtest` (`stringtestcol`) VALUES (?);", "")
 {
 }
 
 void TestDBTask::BindInput(std::shared_ptr<DBCommand> pCommand)
 {
-	pCommand->Bind(4.51210);
+	auto bindString = StringHelper::CA2W(stringdata, CP_UTF8);
+
+	pCommand->Bind(bindString.c_str(), bindString.length());
 }
 
 void TestDBTask::BindOutput(std::shared_ptr<DBResultSet> pResultSet)

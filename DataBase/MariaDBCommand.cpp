@@ -45,7 +45,7 @@ namespace Util
 		{
 			if (nullptr == _pResultSet || nullptr == _pParameters)
 			{
-				throw;
+				throw Util::Exception(0, "ResultSet or Parameters isn't Defined", __FILE__, __LINE__, __FUNCTION__);
 			}
 
 			_pParameters->Bind(GetStatement());
@@ -53,7 +53,10 @@ namespace Util
 
 			if (0 != result)
 			{
-				throw;
+				auto errorCode = ::mysql_stmt_errno(GetStatement());
+				auto errorStr = ::mysql_stmt_error(GetStatement());
+
+				throw Util::Exception(errorCode, errorStr, __FILE__, __LINE__, __FUNCTION__);
 			}
 
 			return _pResultSet;
@@ -123,12 +126,12 @@ namespace Util
 				const_cast<double *>(&value), nullptr, sizeof(value), sizeof(value), true);
 		}
 
-		void MariaDBCommand::Bind(const char* value, const uint32_t maxLength)
+		void MariaDBCommand::Bind(const wchar_t* value, const uint32_t maxLength)
 		{
-			const uint32_t length = static_cast<uint32_t>(::strlen(value));
+			const uint32_t length = static_cast<uint32_t>(::wcslen(value));
 
-			_pParameters->AddParameter(enum_field_types::MYSQL_TYPE_VARCHAR,
-				const_cast<char*>(value), nullptr, length, maxLength, false);
+			_pParameters->AddParameter(enum_field_types::MYSQL_TYPE_STRING,
+				const_cast<wchar_t*>(value), nullptr, length, maxLength, false);
 		}
 
 		void MariaDBCommand::PrepareImpl()

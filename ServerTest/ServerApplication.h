@@ -73,7 +73,7 @@ public:
 
 typedef std::shared_ptr<ListenCallback> ListenCallbackPtr;
 
-class ServerApplication
+class Application
 {
 private:
 	ListenCallbackPtr		_ListenCallback;
@@ -82,7 +82,7 @@ private:
 	DB::DBTaskQueue			_DBASyncQueue;
 	Util::MiniDump			_Dump;
 public:
-	ServerApplication();
+	Application();
 
 	void Listen(const uint16_t Port);
 };

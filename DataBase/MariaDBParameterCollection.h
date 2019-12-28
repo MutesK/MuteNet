@@ -18,6 +18,7 @@ namespace Util
 		protected:
 			std::vector<MariaDBParameterInformation> _BindingInformations;
 			MYSQL_BIND*					 _pArrParameters;
+			char*						 _pIndicator;
 			uint32_t _numberOfParameters;
 			uint32_t _paramterPosition;
 		public:

@@ -55,7 +55,9 @@ namespace Util
 			{
 				if (0 < result)
 				{
-					throw; 
+					auto errorCode = ::mysql_stmt_errno(pStatement);
+					auto errorStr = ::mysql_stmt_error(pStatement);
+					throw;
 				}
 			}
 
@@ -134,7 +136,7 @@ namespace Util
 
 		void MariaDBResultSet::Bind(char* OUT value, uint32_t& OUT length, uint32_t maxLength)
 		{
-			_pParameters->AddParameter(enum_field_types::MYSQL_TYPE_STRING,
+			_pParameters->AddParameter(enum_field_types::MYSQL_TYPE_VAR_STRING,
 				value, &length, 0, maxLength, false);
 		}
 

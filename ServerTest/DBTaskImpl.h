@@ -11,6 +11,8 @@ namespace Util
 		class TestDBTask : public DBTask
 		{
 			typedef DBTask super;
+			const int binddata = 45;
+			const std::string stringdata = "Hello, I'm MuteNet Lib";
 		public:
 			TestDBTask();
 			virtual ~TestDBTask() = default;

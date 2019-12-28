@@ -3,6 +3,7 @@
 #pragma warning(disable: 4717)  // StringFormatter Recursive Unpacking
 
 #include "foundation.h"
+#include <atlstr.h>
 
 namespace Util
 {
@@ -58,6 +59,10 @@ namespace Util
 
 		template <typename Type>
 		static std::string ToString(const Type type);
+
+		static std::wstring CA2W(const std::string& MultiByte, uint32_t CodePage);
+
+		static std::string CW2A(const std::wstring& Unicode, uint32_t CodePage);
 	};
 
 
@@ -105,5 +110,15 @@ namespace Util
 		return std::to_string(type);
 	}
 
+
+	inline std::wstring StringHelper::CA2W(const std::string& MultiByte, uint32_t CodePage)
+	{
+		return std::wstring(ATL::CA2W(MultiByte.c_str(), CodePage));
+	}
+
+	inline std::string StringHelper::CW2A(const std::wstring& Unicode, uint32_t CodePage)
+	{
+		return std::string(ATL::CW2A(Unicode.c_str(), CodePage));
+	}
 
 }
