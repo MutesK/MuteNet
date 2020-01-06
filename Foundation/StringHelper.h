@@ -70,7 +70,6 @@ namespace Util
 	inline std::string StringHelper::Format(const std::string fmt, Args ...args)
 	{
 		StringFormater formatter;
-
 		std::string ret = fmt;
 
 		if (sizeof...(args) > 0)
@@ -78,11 +77,11 @@ namespace Util
 			formatter.Format(std::forward<Args>(args)...);
 			char bracket[100]{ 0 };
 
-			for (std::size_t index = 0; index < formatter._ArgumentList.size(); index++)
+			for (std::size_t index = 0; index < formatter._ArgumentList.size(); ++index)
 			{
 				sprintf_s(bracket, 100, "{%llu}", index);
 
-				const auto findIndex = ret.find(bracket, strlen(bracket));
+				const auto findIndex = ret.find(bracket);
 				if (findIndex == std::string::npos)
 					break;
 

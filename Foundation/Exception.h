@@ -4,13 +4,6 @@
 
 namespace Util
 {
-	/*
-		__FILE__
-		__LINE__
-		__FUNC__
-		ErrorCode,
-		ErrorMessage
-	*/
 	class Exception
 	{
 	private:
@@ -29,7 +22,7 @@ namespace Util
 
 		inline virtual std::string what()
 		{
-			return StringHelper::Format("{0}:{1}:{2}({3}):{4}", _file, _line, _function, _errorCode, errorMessage);
+			return StringHelper::Format("{0}:{1}:{2}({3}):{4}", _function, _errorCode, errorMessage, _file, _line);
 		}
 	};
 
