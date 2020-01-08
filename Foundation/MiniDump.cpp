@@ -11,12 +11,12 @@ namespace Util
 	
 		_set_abort_behavior(0, _WRITE_ABORT_MSG | _CALL_REPORTFAULT);
 
-		signal(SIGABRT, SignalHandler);
-		signal(SIGINT, SignalHandler);
-		signal(SIGILL, SignalHandler);
-		signal(SIGFPE, SignalHandler);
-		signal(SIGSEGV, SignalHandler);
-		signal(SIGTERM, SignalHandler);
+		// signal(SIGABRT, SignalHandler);
+		// signal(SIGINT, SignalHandler);
+		//signal(SIGILL, SignalHandler);
+		//signal(SIGFPE, SignalHandler);
+		//signal(SIGSEGV, SignalHandler);
+		//signal(SIGTERM, SignalHandler);
 
 		::SetUnhandledExceptionFilter(exceptionFilter);
 	}

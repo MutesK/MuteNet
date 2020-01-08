@@ -1,9 +1,5 @@
+#include "Precompile.h"
 #include "ServerApplication.h"
-#include "Logger.h"
-#include "TaskManager.h"
-#include "MariaDBConnectionService.h"
-#include "DBConnectionSetting.h"
-#include "DBTaskImpl.h"
 
 using namespace Util::DB;
 
@@ -24,26 +20,9 @@ Application::Application()
 	Util::Logger::Get().StartRun();
 	Util::TaskManager::Get(); // Just Called Constructor
 
-	DBConnectionSetting Setting;
-
-	Setting._Host = "127.0.0.1";
-	Setting._Port = 5000;
-	Setting._User = "root";
-	Setting._Passwd = "!@#wnsals640803";
-	Setting._DBNameIndex = 0;
-	Setting._DBName = "mutenettest";
-
-	DB::MariaDBConnectionService Service(10, &Setting);
-
-	_DBASyncQueue.Initialize(10, INFINITE);
-	_DBASyncQueue.AddDBProcessor(&Service);
-
-
-	TestDBTask* Task = new TestDBTask;
-	DBTaskWorkSerializedQueue* Queue = new DBTaskWorkSerializedQueue;
-
-	Queue->push(Task);
-	_DBASyncQueue.EnqueueDBTask(Queue);
+	///	_testInterface.CreateTemperClass();
+	// _testInterface.InsertTemperClass("Hello, I'm MuteNet Lib");
+	_testInterface.GetTemperClass();
 }
 
 void Application::Listen(const uint16_t Port)

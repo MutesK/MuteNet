@@ -4,7 +4,7 @@
 
 namespace Util
 {
-	class Exception
+	class Exception : public std::exception
 	{
 	private:
 		std::string _file;
@@ -22,7 +22,8 @@ namespace Util
 
 		inline virtual std::string what()
 		{
-			return StringHelper::Format("{0}:{1}:{2}({3}):{4}", _function, _errorCode, errorMessage, _file, _line);
+			return StringHelper::Format("Function:[{0}] Error:[{1}:{2}] File:[{3}:{4}]",
+				_function, _errorCode, errorMessage, _file, _line);
 		}
 	};
 

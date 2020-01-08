@@ -166,13 +166,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DBTaskImpl.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ServerApplication.cpp" />
+    <ClCompile Include="TestDBInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DBTaskImpl.h" />
+    <ClInclude Include="DBInterface.h" />
+    <ClInclude Include="Precompile.h" />
     <ClInclude Include="ServerApplication.h" />
+    <ClInclude Include="TestDBInterface.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

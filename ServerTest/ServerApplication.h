@@ -1,12 +1,6 @@
 #pragma once
 
-#include "Network.h"
-#include "NetworkManager.h"
-#include "ServerHandleImpl.h"
-#include "MiniDump.h"
-#include "LogHelper.h"
-#include "MuteNetDB.h"
-#include "DBTaskQueue.h"
+#include "TestDBInterface.h"
 
 using namespace MuteNet;
 using namespace Util;
@@ -79,8 +73,9 @@ private:
 	ListenCallbackPtr		_ListenCallback;
 	ServerHandlePtr			_ServerHandlePtr;
 
-	DB::DBTaskQueue			_DBASyncQueue;
-	Util::MiniDump			_Dump;
+	// Util::MiniDump			_Dump;
+
+	App::TestDBInterface    _testInterface;
 public:
 	Application();
 
