@@ -4,70 +4,71 @@
 
 namespace Util
 {
-	class OutputMemoryStream : public MemoryStream
-	{
-	public:
-		OutputMemoryStream() = delete;
-		virtual ~OutputMemoryStream() = default;
+    class OutputMemoryStream : public MemoryStream
+    {
+    public:
+        OutputMemoryStream() = delete;
 
-		virtual __int64 GetLength() const;
+        virtual ~OutputMemoryStream() = default;
 
-		virtual void Write(const void* inData, const uint32_t inByteCount);
+        virtual int64_t GetLength() const;
 
-		template <typename Type>
-		void Write(const Type& inData);
+        virtual void Write(const void *inData, const uint32_t inByteCount);
 
-		template <typename Type>
-		void Write(const std::vector<Type>& vector);
+        template<typename Type>
+        void Write(const Type &inData);
 
-		template <>
-		void Write(const std::string& inData);
+        template<typename Type>
+        void Write(const std::vector<Type> &vector);
 
-		virtual void Serialize(void* inData, uint32_t inByteCount) override;
+        template<>
+        void Write(const std::string &inData);
 
-		void MoveWritePosition(__int64 size);
-	};
+        virtual void Serialize(void *inData, uint32_t inByteCount) override;
 
-	inline __int64 OutputMemoryStream::GetLength() const
-	{
-		return _Tail;
-	}
+        void MoveWritePosition(int64_t size);
+    };
 
-	template <typename Type>
-	void OutputMemoryStream::Write(const Type& inData)
-	{
-		unsigned short length = sizeof(unsigned short);
+    inline int64_t OutputMemoryStream::GetLength() const
+    {
+        return _Tail;
+    }
 
-		Write(&length, sizeof(unsigned short));
-		Write(&inData, length);
-	}
+    template<typename Type>
+    void OutputMemoryStream::Write(const Type &inData)
+    {
+        unsigned short length = sizeof(unsigned short);
 
-	template <>
-	void OutputMemoryStream::Write(const std::string& inData)
-	{
-		unsigned short length = static_cast<unsigned short>(inData.length());
+        Write(&length, sizeof(unsigned short));
+        Write(&inData, length);
+    }
 
-		Write(&length, sizeof(unsigned short));
-		Write(inData.c_str(), length);
-	}
+    template<>
+    void OutputMemoryStream::Write(const std::string &inData)
+    {
+        unsigned short length = static_cast<unsigned short>(inData.length());
 
-	template <typename Type>
-	void OutputMemoryStream::Write(const std::vector<Type>& vector)
-	{
-		unsigned short length = static_cast<unsigned short>(vector.size());
+        Write(&length, sizeof(unsigned short));
+        Write(inData.c_str(), length);
+    }
 
-		Write(&length, sizeof(unsigned short));
+    template<typename Type>
+    void OutputMemoryStream::Write(const std::vector<Type> &vector)
+    {
+        unsigned short length = static_cast<unsigned short>(vector.size());
 
-		for (const auto& elem : vector)
-		{
-			Write(elem);
-		}
+        Write(&length, sizeof(unsigned short));
 
-	}
+        for (const auto &elem : vector)
+        {
+            Write(elem);
+        }
 
-	inline void OutputMemoryStream::MoveWritePosition(__int64 size)
-	{
-		_Tail += size;
-	}
+    }
+
+    inline void OutputMemoryStream::MoveWritePosition(int64_t size)
+    {
+        _Tail += size;
+    }
 
 }

@@ -6,40 +6,37 @@
 
 namespace MuteNet
 {
-	class Link;
-	typedef std::shared_ptr<Link> LinkPtr;
-	typedef std::vector<LinkPtr>  LinkPtrs;
+    class Link;
 
-	class ServerHandle;
-	typedef std::shared_ptr<ServerHandle> ServerHandlePtr;
-	typedef std::vector<ServerHandlePtr>  ServerHandlePtrs;
+    typedef std::shared_ptr<Link> LinkPtr;
+    typedef std::vector<LinkPtr> LinkPtrs;
 
-	typedef std::unique_ptr<ServiceListener> ServiceListenerPtr;
+    class ServerHandle;
 
-	class NetworkManager : public Util::TL::Singleton<NetworkManager>
-	{
-	private:
-		SafeSharedLock				_Lock;
-		ServerHandlePtrs			_Servers;
-		LinkPtrs					_Links;
-		ServiceListenerPtr			_IOEvent;
-	public:
-		NetworkManager();
-		~NetworkManager();
+    typedef std::shared_ptr<ServerHandle> ServerHandlePtr;
+    typedef std::vector<ServerHandlePtr> ServerHandlePtrs;
 
-		void Initialize(void);
+    class NetworkManager : public Util::TL::Singleton<NetworkManager>
+    {
+    private:
+        ServerHandlePtrs _Servers;
+        LinkPtrs _Links;
+    public:
+        NetworkManager();
 
-		void Terminate(void);
+        ~NetworkManager();
 
-		void AddLink(LinkPtr link);
+        void Initialize(void);
 
-		void RemoveLink(const Link* link);
+        void Terminate(void);
 
-		void AddServer(ServerHandlePtr Server);
+        void AddLink(LinkPtr link);
 
-		void RemoveServer(const ServerHandle* Server);
+        void RemoveLink(const Link *link);
 
-		ServiceListener* GetIOEvent() const;
-	};
+        void AddServer(ServerHandlePtr Server);
+
+        void RemoveServer(const ServerHandle *Server);
+    };
 
 }

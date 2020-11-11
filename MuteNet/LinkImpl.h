@@ -5,90 +5,106 @@
 
 namespace MuteNet
 {
-	class IOContext;
+    class IOContext;
 
-	class LinkImpl;
-	typedef std::shared_ptr<LinkImpl> LinkImplPtr;
+    class LinkImpl;
 
-	class ServerHandleImpl;
-	typedef std::shared_ptr<ServerHandleImpl> ServerHandleImplPtr;
+    typedef std::shared_ptr<LinkImpl> LinkImplPtr;
 
-	class SessionInfo;
+    class ServerHandleImpl;
+
+    typedef std::shared_ptr<ServerHandleImpl> ServerHandleImplPtr;
+
+    class SessionInfo;
 
 
-	class LinkImpl final : public Link
-	{
-		typedef Link super;
+    class LinkImpl final : public Link
+    {
+        typedef Link super;
 
-		Network::ConnectCallbacksPtr _ConnectCallbacks;
+        Network::ConnectCallbacksPtr _ConnectCallbacks;
 
-		LinkImplPtr					 _Self;
-		ServerHandleImplPtr			 _Server;
-		bool						 _isShutdown = false;
+        LinkImplPtr _Self;
+        ServerHandleImplPtr _Server;
+        bool _isShutdown = false;
 
-		SOCKET						_Socket;
+        SOCKET _Socket;
 
-		std::string					 _LocalIP;
-		uint16_t					 _LocalPort;
-		std::string					 _RemoteIP;
-		uint16_t					 _RemotePort;
+        std::string _LocalIP;
+        uint16_t _LocalPort;
+        std::string _RemoteIP;
+        uint16_t _RemotePort;
 
-		std::atomic_int64_t			 _ASyncIORequestCounter;
-	public:
-		LinkImpl(const CallbacksPtr LinkCallback);
-		LinkImpl(intptr_t socket, const CallbacksPtr LinkCallback,
-			const ServerHandleImplPtr ServerHandlePtr, const sockaddr* Addr, size_t socketLen);
-		~LinkImpl() override;
+        std::atomic_int64_t _ASyncIORequestCounter;
+    public:
+        LinkImpl(const CallbacksPtr LinkCallback);
 
-		static LinkImplPtr Connect(std::string& Host, uint16_t Port,
-			Link::CallbacksPtr LinkCallbacks, Network::ConnectCallbacksPtr ConnectCallbacks);
+        LinkImpl(intptr_t socket, const CallbacksPtr LinkCallback,
+                 const ServerHandleImplPtr ServerHandlePtr, const sockaddr *Addr, size_t socketLen);
 
-		void Enable(LinkImplPtr Self);
-		bool Send(const void* Data, size_t Length) override;
+        ~LinkImpl() override;
 
-		std::string GetLocalIP() const override;
-		uint16_t GetLocalPort() const override;
-		std::string GetRemoteIP() const override;
-		uint16_t GetRemotePort() const override;
+        static LinkImplPtr Connect(std::string &Host, uint16_t Port,
+                                   Link::CallbacksPtr LinkCallbacks, Network::ConnectCallbacksPtr ConnectCallbacks);
 
-		CallbacksPtr GetCallbacks() const;
+        void Enable(LinkImplPtr Self);
 
-		void Shutdown() override;
-		void Close() override;
+        bool Send(const void *Data, size_t Length) override;
 
-		bool AcquireLink();
-		void FreeLink();
-	private:  // Temp
-		void RecvPost() const;
-	private:
-		friend class Network;
-		friend class SocketUtil;
-		friend class ASyncSendRequest;
-		friend class ASyncRecvRequest;
+        std::string GetLocalIP() const override;
 
-	};
+        uint16_t GetLocalPort() const override;
 
-	inline std::string LinkImpl::GetLocalIP() const
-	{
-		return _LocalIP;
-	}
+        std::string GetRemoteIP() const override;
 
-	inline uint16_t LinkImpl::GetLocalPort() const
-	{
-		return _LocalPort;
-	}
+        uint16_t GetRemotePort() const override;
 
-	inline std::string LinkImpl::GetRemoteIP() const
-	{
-		return _RemoteIP;
-	}
+        CallbacksPtr GetCallbacks() const;
 
-	inline uint16_t LinkImpl::GetRemotePort() const
-	{
-		return _RemotePort;
-	}
-	inline Link::CallbacksPtr LinkImpl::GetCallbacks() const
-	{
-		return _Callback;
-	}
+        void Shutdown() override;
+
+        void Close() override;
+
+        bool AcquireLink();
+
+        void FreeLink();
+
+    private:  // Temp
+        void RecvPost() const;
+
+    private:
+        friend class Network;
+
+        friend class SocketUtil;
+
+        friend class ASyncSendRequest;
+
+        friend class ASyncRecvRequest;
+
+    };
+
+    inline std::string LinkImpl::GetLocalIP() const
+    {
+        return _LocalIP;
+    }
+
+    inline uint16_t LinkImpl::GetLocalPort() const
+    {
+        return _LocalPort;
+    }
+
+    inline std::string LinkImpl::GetRemoteIP() const
+    {
+        return _RemoteIP;
+    }
+
+    inline uint16_t LinkImpl::GetRemotePort() const
+    {
+        return _RemotePort;
+    }
+
+    inline Link::CallbacksPtr LinkImpl::GetCallbacks() const
+    {
+        return _Callback;
+    }
 }

@@ -1,81 +1,81 @@
-#include "pch.h"
+#include "FoundationCommon.h"
 #include "Logger.h"
-#include "TaskManager.h"
 
 namespace Util
 {
-	Logger::Logger()
-		:super("LoggerThread")
-	{
-	}
+    Logger::Logger()
+    {
+    }
 
-	Logger::~Logger()
-	{
-		EndRun();
-	}
+    Logger::~Logger()
+    {
+        EndRun();
+    }
 
-	void Logger::AttachListener(const Listener* listener)
-	{
-		assert(listener != nullptr);
+    void Logger::AttachListener(const Listener *listener)
+    {
+        assert(listener != nullptr);
 
-		_Listeners.emplace_back(std::unique_ptr<Listener>(const_cast<Listener *>(listener), 
-			std::default_delete<Listener>()));
-	}
+        _Listeners.emplace_back(std::unique_ptr<Listener>(const_cast<Listener *>(listener),
+                                                          std::default_delete<Listener>()));
+    }
 
-	void Logger::EnqueueLog(const std::string Fmt, ELogLevel Level)
-	{
-		SetEvent();
+    void Logger::EnqueueLog(const std::string Fmt, ELogLevel Level)
+    {
+        // SetEvent();
 
-		SAFE_UNIQUELOCK(_SwapQueueMutex);
+        SAFE_UNIQUELOCK(_SwapQueueMutex);
 
-		_InputQueue.emplace(std::tuple<const std::string, ELogLevel>(Fmt, Level));
+        _InputQueue.emplace(std::tuple<const std::string, ELogLevel>(Fmt, Level));
 
-		SetEvent();
-	}
+        // SetEvent();
+    }
 
-	void Logger::StartRun()
-	{
-		assert(_Listeners.size() >= 0);
+    void Logger::StartRun()
+    {
+        assert(_Listeners.size() >= 0);
 
-		SetEvent();
-	}
+        // SetEvent();
+    }
 
-	void Logger::EndRun()
-	{
-		Finalize();
-	}
+    void Logger::EndRun()
+    {
+        // Finalize();
+    }
 
-	void Logger::SwapQueue()
-	{
-		SAFE_UNIQUELOCK(_SwapQueueMutex);
+    void Logger::SwapQueue()
+    {
+        SAFE_UNIQUELOCK(_SwapQueueMutex);
 
-		if (_InputQueue.empty())
-			std::this_thread::yield();
+        if (_InputQueue.empty())
+        {
+            std::this_thread::yield();
+        }
 
-		_InputQueue.swap(_WriterQueue);
-	}
+        _InputQueue.swap(_WriterQueue);
+    }
 
-	void Logger::DoWork()
-	{
-		if (_WriterQueue.empty())
-		{
-			SwapQueue();
-		}
+    void Logger::DoWork()
+    {
+        if (_WriterQueue.empty())
+        {
+            SwapQueue();
+        }
 
-		while (!_WriterQueue.empty())
-		{
-			const auto& tuple = _WriterQueue.front();
-			for (const auto& listener : _Listeners)
-			{
-				listener->Log(std::get<0>(tuple), std::get<1>(tuple));
-			}
+        while (!_WriterQueue.empty())
+        {
+            const auto &tuple = _WriterQueue.front();
+            for (const auto &listener : _Listeners)
+            {
+                listener->Log(std::get<0>(tuple), std::get<1>(tuple));
+            }
 
-			_WriterQueue.pop();
+            _WriterQueue.pop();
 
-			if (_WriterQueue.empty())
-			{
-				SwapQueue();
-			}
-		}
-	}
+            if (_WriterQueue.empty())
+            {
+                SwapQueue();
+            }
+        }
+    }
 }

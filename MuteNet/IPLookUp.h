@@ -2,23 +2,23 @@
 
 #include "Network.h"
 
-// Ip¸¦ ÅëÇØ hostname(domain)À» Ã£´Â´Ù.
+// Ipï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ hostname(domain)ï¿½ï¿½ Ã£ï¿½Â´ï¿½.
 
 namespace MuteNet
 {
-	class IPLookUp
-	{
-	protected:
-		Network::ResolveDomainNameCallbacksPtr _Callback;
-		
-		std::string _IP;
-	public:
-		static void Lookup(const std::string& IP, Network::ResolveDomainNameCallbacksPtr Callback);
+    class IPLookUp
+    {
+    protected:
+        Network::ResolveDomainNameCallbacksPtr _Callback;
 
-	private:
-		IPLookUp(const std::string& IP, Network::ResolveDomainNameCallbacksPtr Callback);
+        std::string _IP;
+    public:
+        static void Lookup(const std::string &IP, Network::ResolveDomainNameCallbacksPtr Callback);
 
-		void Callback(int Result, const std::string Address);
-	};
+    private:
+        IPLookUp(const std::string &IP, Network::ResolveDomainNameCallbacksPtr Callback);
+
+        void Callback(int Result, const std::string Address);
+    };
 }
 

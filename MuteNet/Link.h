@@ -1,54 +1,57 @@
 #pragma once
 
-#include "framework.h"
+#include "Common.h"
 
 namespace MuteNet
 {
-	class Link
-	{
-		friend class Network;
-	public:
-		class Callbacks
-		{
-		public:
-			virtual ~Callbacks() {}
+    class Link
+    {
+        friend class Network;
 
-			virtual void OnCreated(Link* Link) = 0;
+    public:
+        class Callbacks
+        {
+        public:
+            virtual ~Callbacks()
+            {}
 
-			virtual void OnReceivedData(const char* data, size_t Length) = 0;
+            virtual void OnCreated(Link *Link) = 0;
 
-			virtual void OnRemoteClosed(void) = 0;
+            virtual void OnReceivedData(const char *data, size_t Length) = 0;
 
-			virtual void OnTLSHandShakeCompleted() = 0;
+            virtual void OnRemoteClosed(void) = 0;
 
-			virtual void OnError(int ErrorCode, const std::string& ErrorMsg) = 0;
-		};
+            virtual void OnTLSHandShakeCompleted() = 0;
 
-		typedef std::shared_ptr<Callbacks> CallbacksPtr;
-	protected:
-		CallbacksPtr _Callback;
+            virtual void OnError(int ErrorCode, const std::string &ErrorMsg) = 0;
+        };
 
-		Link(CallbacksPtr callbacks)
-			:_Callback(callbacks)
-		{
-		}
+        typedef std::shared_ptr<Callbacks> CallbacksPtr;
+    protected:
+        CallbacksPtr _Callback;
 
-	public:
-		virtual ~Link()
-		{
-		}
+        Link(CallbacksPtr callbacks)
+                : _Callback(callbacks)
+        {
+        }
 
-		virtual bool Send(const void* Data, size_t Length) = 0;
+    public:
+        virtual ~Link()
+        {
+        }
 
-		virtual std::string GetLocalIP(void) const = 0;
+        virtual bool Send(const void *Data, size_t Length) = 0;
 
-		virtual uint16_t GetLocalPort() const = 0;
+        virtual std::string GetLocalIP(void) const = 0;
 
-		virtual std::string GetRemoteIP() const = 0;
+        virtual uint16_t GetLocalPort() const = 0;
 
-		virtual uint16_t GetRemotePort() const = 0;
+        virtual std::string GetRemoteIP() const = 0;
 
-		virtual void Shutdown() = 0;
-		virtual void Close() = 0;
-	};
+        virtual uint16_t GetRemotePort() const = 0;
+
+        virtual void Shutdown() = 0;
+
+        virtual void Close() = 0;
+    };
 }

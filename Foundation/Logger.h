@@ -2,54 +2,61 @@
 
 #include "Singleton.h"
 #include "SafeSharedLock.h"
-#include "ThreadHolder.h"
+#include "Runnable.hpp"
 
 namespace Util
 {
-	enum class ELogLevel
-	{
-		Debug,
-		Warning,
-		Error,
-		Fatal,
-		Info,
-	};
+    enum class ELogLevel
+    {
+        Debug,
+        Warning,
+        Error,
+        Fatal,
+        Info,
+    };
 
-	class Logger : public TL::Singleton<Logger>, ThreadHolder
-	{
-		typedef ThreadHolder super;
-	public:
-		class Listener abstract
-		{
-		public:
-			virtual void Log(const std::string logFmt, ELogLevel level) = 0;
-		};
+    class Logger : public TL::Singleton<Logger>, Runnable
+    {
+        typedef Runnable super;
+    public:
+        class Listener abstract
+        {
+        public:
+            virtual ~Listener() = default;
 
-		friend class LogHelper;
-		friend class TL::Singleton<Logger>;
-	private:
-		SafeSharedLock	_SwapQueueMutex;
-			
-		std::queue<std::tuple<const std::string, ELogLevel>> _InputQueue;
-		std::queue<std::tuple<const std::string, ELogLevel>> _WriterQueue;
+            virtual void Log(const std::string logFmt, ELogLevel level) = 0;
+        };
 
-		std::list<std::unique_ptr<Listener>>    _Listeners;
+        friend class LogHelper;
 
-	protected:
-		Logger();
+        friend class TL::Singleton<Logger>;
 
-	public:
-		virtual ~Logger();
+    private:
+        SafeSharedLock _SwapQueueMutex;
 
-		void AttachListener(const Listener* listener);
+        std::queue<std::tuple<const std::string, ELogLevel>> _InputQueue;
+        std::queue<std::tuple<const std::string, ELogLevel>> _WriterQueue;
 
-		void EnqueueLog(const std::string Fmt, ELogLevel level);
-		void StartRun();
-		void EndRun();
-	private:
-		void SwapQueue();
+        std::list<std::unique_ptr<Listener>> _Listeners;
 
-		virtual void DoWork() override;
-	};
+    protected:
+        Logger();
+
+    public:
+        virtual ~Logger();
+
+        void AttachListener(const Listener *listener);
+
+        void EnqueueLog(const std::string Fmt, ELogLevel level);
+
+        void StartRun();
+
+        void EndRun();
+
+    private:
+        void SwapQueue();
+
+        virtual void DoWork() override;
+    };
 }
 

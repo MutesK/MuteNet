@@ -2,15 +2,17 @@
 
 namespace MuteNet
 {
-	class ServerHandle
-	{
-		friend class Network;
-	public:
-		virtual ~ServerHandle() {}
+    class ServerHandle
+    {
+        friend class Network;
 
-		virtual void Close() = 0;
+    public:
+        virtual ~ServerHandle()
+        {}
 
-		virtual bool IsListening() const = 0;
-	};
+        virtual void Close() = 0;
+
+        virtual bool IsListening() const = 0;
+    };
 }
 

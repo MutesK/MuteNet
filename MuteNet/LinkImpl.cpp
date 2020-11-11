@@ -8,217 +8,213 @@
 
 namespace MuteNet
 {
-	Util::TL::ObjectPool<ASyncSendRequest, true, true> ASyncSendRequest::OverlappedPool(20000);
-	Util::TL::ObjectPool<ASyncRecvRequest, true, true> ASyncRecvRequest::OverlappedPool(20000);
+    Util::TL::ObjectPool<ASyncSendRequest, true, true> ASyncSendRequest::OverlappedPool(20000);
+    Util::TL::ObjectPool<ASyncRecvRequest, true, true> ASyncRecvRequest::OverlappedPool(20000);
 
 
-	LinkImpl::LinkImpl(const CallbacksPtr LinkCallback)
-		:super(LinkCallback)
-		, _LocalPort(0)
-		, _RemotePort(0)
-		, _ASyncIORequestCounter(0)
-		, _isShutdown(false)
-		, _Socket(INVALID_SOCKET)
+    LinkImpl::LinkImpl(const CallbacksPtr LinkCallback)
+            : super(LinkCallback), _LocalPort(0), _RemotePort(0), _ASyncIORequestCounter(0), _isShutdown(false),
+              _Socket(INVALID_SOCKET)
+    {
+    }
 
-	{
-	}
+    LinkImpl::LinkImpl(intptr_t socket, const CallbacksPtr LinkCallback, const ServerHandleImplPtr ServerHandlePtr,
+                       const sockaddr *Addr, size_t socketLen)
+            : super(LinkCallback), _Server(ServerHandlePtr), _LocalPort(0), _RemotePort(0), _isShutdown(false),
+              _Socket(socket), _ASyncIORequestCounter(0)
+    {
+    }
 
-	LinkImpl::LinkImpl(intptr_t socket, const CallbacksPtr LinkCallback, const ServerHandleImplPtr ServerHandlePtr, const sockaddr* Addr, size_t socketLen)
-		:super(LinkCallback)
-		, _Server(ServerHandlePtr)
-		, _LocalPort(0)
-		, _RemotePort(0)
-		, _isShutdown(false)
-		, _Socket(socket)
-		, _ASyncIORequestCounter(0)
-	{
-	}
+    LinkImpl::~LinkImpl()
+    {
+    }
 
-	LinkImpl::~LinkImpl()
-	{
-	}
+    LinkImplPtr LinkImpl::Connect(std::string &Host, uint16_t Port, Link::CallbacksPtr LinkCallbacks,
+                                  Network::ConnectCallbacksPtr ConnectCallbacks)
+    {
+        LinkImplPtr link{new LinkImpl(LinkCallbacks)};
+        link->_ConnectCallbacks = ConnectCallbacks;
 
-	LinkImplPtr LinkImpl::Connect(std::string& Host, uint16_t Port, Link::CallbacksPtr LinkCallbacks,
-		Network::ConnectCallbacksPtr ConnectCallbacks)
-	{
-		LinkImplPtr link { new LinkImpl(LinkCallbacks) };
-		link->_ConnectCallbacks = ConnectCallbacks;
+        // ï¿½Ó½ï¿½ Callback class ï¿½ï¿½ï¿½ï¿½
+        class DomainCallbacks :
+                public Network::ResolveDomainNameCallbacks
+        {
+            LinkImplPtr _link;
+            uint16_t _port;
+            bool _isConnecting;
+        public:
+            DomainCallbacks(LinkImplPtr Link, uint16_t Port)
+                    : _link(std::move(Link)), _port(Port), _isConnecting(false)
+            {
+            }
 
-		// ÀÓ½Ã Callback class Á¤ÀÇ
-		class DomainCallbacks :
-			public Network::ResolveDomainNameCallbacks
-		{
-			LinkImplPtr _link;
-			uint16_t	_port;
-			bool		_isConnecting;
-		public:
-			DomainCallbacks(LinkImplPtr Link, uint16_t Port)
-				:_link(std::move(Link)), _port(Port), _isConnecting(false)
-			{
-			}
+            bool OnNameResolvedIPv4(const std::string &Name, const sockaddr_in *Ip) override
+            {
+                sockaddr_in addr = *Ip;
+                addr.sin_port = htons(_port);
 
-			bool OnNameResolvedIPv4(const std::string& Name, const sockaddr_in* Ip) override
-			{
-				sockaddr_in addr = *Ip;
-				addr.sin_port = htons(_port);
-				
-				Connect(reinterpret_cast<const sockaddr*>(&addr), sizeof(addr));
-				return false;
-			}
+                Connect(reinterpret_cast<const sockaddr *>(&addr), sizeof(addr));
+                return false;
+            }
 
-			bool OnNameResolvedIPv6(const std::string& Name, const sockaddr_in6* Ip) override
-			{
-				sockaddr_in6 addr = *Ip;
-				addr.sin6_port = htons(_port);
+            bool OnNameResolvedIPv6(const std::string &Name, const sockaddr_in6 *Ip) override
+            {
+                sockaddr_in6 addr = *Ip;
+                addr.sin6_port = htons(_port);
 
-				Connect(reinterpret_cast<const sockaddr*>(&addr), sizeof(addr));
-				return false;
-			}
+                Connect(reinterpret_cast<const sockaddr *>(&addr), sizeof(addr));
+                return false;
+            }
 
-			void Connect(const sockaddr* Ip, int size)
-			{
-				if (!_isConnecting)
-				{
-					int ErrCode = SocketUtil::Connect(_link, Ip, size);
-					if (ErrCode == 0)
-					{
-						_isConnecting = true;
-					}
-					else
-					{
-						_link->GetCallbacks()->OnError(ErrCode, SocketUtil::ErrorString(ErrCode));
-					}
-				}
-			}
+            void Connect(const sockaddr *Ip, int size)
+            {
+                if (!_isConnecting)
+                {
+                    int ErrCode = SocketUtil::Connect(_link, Ip, size);
+                    if (ErrCode == 0)
+                    {
+                        _isConnecting = true;
+                    }
+                    else
+                    {
+                        _link->GetCallbacks()->OnError(ErrCode, SocketUtil::ErrorString(ErrCode));
+                    }
+                }
+            }
 
-			void OnError(int ErrorCode, const std::string& ErrorMsg) override
-			{
-				_link->GetCallbacks()->OnError(ErrorCode, ErrorMsg);
-				NetworkManager::Get().RemoveLink(_link.get());
-			}
+            void OnError(int ErrorCode, const std::string &ErrorMsg) override
+            {
+                _link->GetCallbacks()->OnError(ErrorCode, ErrorMsg);
+                NetworkManager::Get().RemoveLink(_link.get());
+            }
 
-			void OnNameResolved(const std::string& Name, const std::string& IP) override
-			{
-			}
+            void OnNameResolved(const std::string &Name, const std::string &IP) override
+            {
+            }
 
-			void OnFinished(void)
-			{
-			}
-		};
+            void OnFinished(void)
+            {
+            }
+        };
 
-		Network::HostnameToIP(Host, 
-			std::make_shared<DomainCallbacks>(link, Port));
+        Network::HostnameToIP(Host,
+                              std::make_shared<DomainCallbacks>(link, Port));
 
-		return link;
-	}
+        return link;
+    }
 
-	// Iocp Recv, Send, Event Callback
-	void LinkImpl::Enable(LinkImplPtr Self)
-	{
-		assert(Self != nullptr);
+    // Iocp Recv, Send, Event Callback
+    void LinkImpl::Enable(LinkImplPtr Self)
+    {
+        assert(Self != nullptr);
 
-		_Self = Self;
+        _Self = Self;
 
-		const auto Event = NetworkManager::Get().GetIOEvent();
-		Event->RegisterHandle(reinterpret_cast<void *>(_Socket), nullptr);
+        const auto Event = NetworkManager::Get().GetIOEvent();
+        Event->RegisterHandle(reinterpret_cast<void *>(_Socket), nullptr);
 
-		++_ASyncIORequestCounter;
+        ++_ASyncIORequestCounter;
 
-		RecvPost();
+        RecvPost();
 
-		if (--_ASyncIORequestCounter == 0)
-		{
-			Close();
-		}
-	}
+        if (--_ASyncIORequestCounter == 0)
+        {
+            Close();
+        }
+    }
 
-	// SendASyncRequest Idea Àû¿ë
-	bool LinkImpl::Send(const void* Data, size_t Length)
-	{
-		if (_isShutdown)
-		{
-			return false;
-		}
+    // SendASyncRequest Idea ï¿½ï¿½ï¿½ï¿½
+    bool LinkImpl::Send(const void *Data, size_t Length)
+    {
+        if (_isShutdown)
+        {
+            return false;
+        }
 
-		auto Request = ASyncSendRequest::GetSendRequest(_Self, reinterpret_cast<char*>(const_cast<void*>(Data)), Length);
-		Request->Overlapped.SelfPtr = Request;
+        auto Request = ASyncSendRequest::GetSendRequest(_Self, reinterpret_cast<char *>(const_cast<void *>(Data)),
+                                                        Length);
+        Request->Overlapped.SelfPtr = Request;
 
-		if (!Request->Process())
-			ASyncSendRequest::FreeSendRequest(Request);
+        if (!Request->Process())
+        {
+            ASyncSendRequest::FreeSendRequest(Request);
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	void LinkImpl::RecvPost() const
-	{
-		assert(_Self != nullptr);
+    void LinkImpl::RecvPost() const
+    {
+        assert(_Self != nullptr);
 
-		if (_isShutdown || _Socket == INVALID_SOCKET)
-		{
-			return;
-		}
+        if (_isShutdown || _Socket == INVALID_SOCKET)
+        {
+            return;
+        }
 
-		auto Request = ASyncRecvRequest::GetRecvRequest(_Self);
-		assert(Request != nullptr);
+        auto Request = ASyncRecvRequest::GetRecvRequest(_Self);
+        assert(Request != nullptr);
 
-		Request->Overlapped.SelfPtr = Request;
+        Request->Overlapped.SelfPtr = Request;
 
-		if (!Request->Process())
-			ASyncRecvRequest::FreeRecvRequest(Request);
-	}
+        if (!Request->Process())
+        {
+            ASyncRecvRequest::FreeRecvRequest(Request);
+        }
+    }
 
-	void LinkImpl::Shutdown()
-	{
-		::shutdown(_Socket, SD_BOTH);
+    void LinkImpl::Shutdown()
+    {
+        ::shutdown(_Socket, SD_BOTH);
 
-		_isShutdown = true;
-	}
-	
-	void LinkImpl::Close()
-	{
-		_isShutdown = true;
+        _isShutdown = true;
+    }
 
-		GetCallbacks()->OnRemoteClosed();
+    void LinkImpl::Close()
+    {
+        _isShutdown = true;
 
-		::closesocket(_Socket);
-		_Socket = INVALID_SOCKET;
+        GetCallbacks()->OnRemoteClosed();
 
-		if (_Server == nullptr)
-		{
-			NetworkManager::Get().RemoveLink(this);
-		}
-		else
-		{
-			_Server->RemoveLink(this);
-		}
+        ::closesocket(_Socket);
+        _Socket = INVALID_SOCKET;
 
-		_Self.reset();
-	}
+        if (_Server == nullptr)
+        {
+            NetworkManager::Get().RemoveLink(this);
+        }
+        else
+        {
+            _Server->RemoveLink(this);
+        }
 
-	bool LinkImpl::AcquireLink()
-	{
-		++_ASyncIORequestCounter;
+        _Self.reset();
+    }
 
-		if (_ASyncIORequestCounter == 1)
-		{
-			if (--_ASyncIORequestCounter == 0)
-			{
-				Close();
+    bool LinkImpl::AcquireLink()
+    {
+        ++_ASyncIORequestCounter;
 
-				return false;
-			}
-		}
+        if (_ASyncIORequestCounter == 1)
+        {
+            if (--_ASyncIORequestCounter == 0)
+            {
+                Close();
 
-		return true;
+                return false;
+            }
+        }
 
-	}
+        return true;
 
-	void LinkImpl::FreeLink()
-	{
-		if (--_ASyncIORequestCounter == 0)
-		{
-			Close();
-		}
-	}
+    }
+
+    void LinkImpl::FreeLink()
+    {
+        if (--_ASyncIORequestCounter == 0)
+        {
+            Close();
+        }
+    }
 
 }

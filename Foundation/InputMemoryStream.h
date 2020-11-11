@@ -4,47 +4,48 @@
 
 namespace Util
 {
-	class InputMemoryStream : public MemoryStream
-	{
-	public:
-		InputMemoryStream() = delete;
-		virtual ~InputMemoryStream() = default;
+    class InputMemoryStream : public MemoryStream
+    {
+    public:
+        InputMemoryStream() = delete;
 
-		virtual __int64 GetRemainingDataSize() const;
+        virtual ~InputMemoryStream() = default;
 
-		virtual void Read(void* outData, uint32_t inByteCount);
+        virtual int64_t GetRemainingDataSize() const;
 
-		template <typename Type>
-		void Read(Type& outData);
+        virtual void Read(void *outData, uint32_t inByteCount);
 
-		template <typename Type>
-		void Read(std::vector<Type>& vector);
+        template<typename Type>
+        void Read(Type &outData);
 
-		virtual void Serialize(void* outData, uint32_t inByteCount) override;
-	};
+        template<typename Type>
+        void Read(std::vector<Type> &vector);
 
-	inline __int64 InputMemoryStream::GetRemainingDataSize() const
-	{
-		return _Tail - _Head;
-	}
+        virtual void Serialize(void *outData, uint32_t inByteCount) override;
+    };
 
-	template <typename Type>
-	void InputMemoryStream::Read(Type& outData)
-	{
-		Read(&outData, sizeof(Type));
-	}
+    inline int64_t InputMemoryStream::GetRemainingDataSize() const
+    {
+        return _Tail - _Head;
+    }
 
-	template <typename Type>
-	void InputMemoryStream::Read(std::vector<Type>& vector)
-	{
-		size_t elemCount = 0;
-		Read(elemCount);
-		vector.resize(elemCount);
+    template<typename Type>
+    void InputMemoryStream::Read(Type &outData)
+    {
+        Read(&outData, sizeof(Type));
+    }
 
-		for (Type& elem : vector)
-		{
-			Read(elem);
-		}
-	}
+    template<typename Type>
+    void InputMemoryStream::Read(std::vector<Type> &vector)
+    {
+        size_t elemCount = 0;
+        Read(elemCount);
+        vector.resize(elemCount);
+
+        for (Type &elem : vector)
+        {
+            Read(elem);
+        }
+    }
 
 }

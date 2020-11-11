@@ -3,27 +3,30 @@
 
 namespace Util
 {
-	using Byte = char;
+    using Byte = char;
 
-	class MemoryStream
-	{
-	protected:
-		Byte* _Buffer;
+    class MemoryStream
+    {
+        static const int64_t BUFFER_LENGTH = 20000;
+    protected:
+        Byte *_Buffer;
 
-		__int64 _Head = 0;
-		__int64 _Tail = 0;
-		__int64 _Capacity = BUFFER_LENGTH;
-	public:
-		MemoryStream();
-		virtual ~MemoryStream();
+        int64_t _Head = 0;
+        int64_t _Tail = 0;
+        int64_t _Capacity = BUFFER_LENGTH;
+    public:
+        MemoryStream();
 
-		virtual void Serialize(void* Data, uint32_t ByteCount) = 0;
-		const char* GetBufferPtr() const;
-	};
+        virtual ~MemoryStream();
+
+        virtual void Serialize(void *Data, uint32_t ByteCount) = 0;
+
+        const char *GetBufferPtr() const;
+    };
 
 
-	inline const char* MemoryStream::GetBufferPtr() const
-	{
-		return _Buffer;
-	}
+    inline const char *MemoryStream::GetBufferPtr() const
+    {
+        return _Buffer;
+    }
 }
