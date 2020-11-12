@@ -9,14 +9,14 @@ namespace EventLoop
 {
     class IOContextImpl;
 
-    using IOContextImplPtr = std::shared_ptr<IOContextImpl>;
+    using RawIOContextImplPtr = IOContextImpl*;
 
     class IEventBaseComponent
     {
     protected:
-        IOContextImplPtr _ContextPtr;
+        RawIOContextImplPtr _ContextPtr;
 
-        IEventBaseComponent(const IOContextImplPtr &Ptr);
+        IEventBaseComponent(const RawIOContextImplPtr &Ptr);
     };
 
 }

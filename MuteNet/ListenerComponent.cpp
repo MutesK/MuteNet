@@ -9,16 +9,7 @@
 
 namespace EventLoop
 {
-    std::shared_ptr<ListenerComponent>
-    ListenerComponent::New(const IOContextImplPtr &ContextEvent, ListenerComponent::CallbackDelegate &&Callback,
-                           void *Self, uint32_t Flag,
-                           int backlog, socket_t listenSocket)
-    {
-        return std::shared_ptr<ListenerComponent>(
-                new ListenerComponent(ContextEvent, std::move(Callback), Self, Flag, backlog, listenSocket));
-    }
-
-    ListenerComponent::ListenerComponent(const IOContextImplPtr &ContextEvent,
+    ListenerComponent::ListenerComponent(const RawIOContextImplPtr &ContextEvent,
                                          ListenerComponent::CallbackDelegate &&Callback, void *Self,
                                          uint32_t Flag, int backlog, socket_t listenSocket)
             : IEventBaseComponent(ContextEvent),
@@ -26,6 +17,11 @@ namespace EventLoop
               _ListenCallbackDelegate(Callback),
               _Self(Self),
               _Backlog(backlog)
+    {
+
+    }
+
+    ListenerComponent::~ListenerComponent()
     {
 
     }

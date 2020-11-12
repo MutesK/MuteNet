@@ -6,29 +6,29 @@
 #define MUTENET_LISTENERCOMPONENT_HPP
 
 #include "EventBaseComponent.hpp"
+#include <Runnable.hpp>
 
 namespace EventLoop
 {
+    class IOContextImpl;
     class ListenerComponent : public IEventBaseComponent
     {
     public:
-        using CallbackDelegate = std::function<void(ListenerComponent *pRawListener, socket_t listenSocket,
+        using CallbackDelegate = std::function<void(ListenerComponent *pRawListener, socket_t clientsocket,
                                                     sockaddr *address, int length, void *Self)>;
-    private:
+    protected:
         socket_t _ListenSocket;
         CallbackDelegate _ListenCallbackDelegate;
         void *_Self;
         uint32_t _Flag;
         int _Backlog;
-    public:
-        static std::shared_ptr<ListenerComponent> New(const IOContextImplPtr &ContextEvent,
-                                                      CallbackDelegate &&Callback,
-                                                      void *Self, uint32_t Flag, int backlog, socket_t listenSocket);
 
+        friend class IOContextImpl;
+    public:
         virtual ~ListenerComponent();
 
-    private:
-        ListenerComponent(const IOContextImplPtr &ContextEvent,
+    protected:
+        ListenerComponent(const RawIOContextImplPtr &ContextEvent,
                           CallbackDelegate &&Callback,
                           void *Self, uint32_t Flag, int backlog, socket_t listenSocket);
     };

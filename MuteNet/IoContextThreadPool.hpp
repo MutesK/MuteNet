@@ -11,18 +11,10 @@
 
 namespace EventLoop
 {
+    using WorkFunctor = std::function<void()>;
+    using WorkPendingQueue = concurrency::concurrent_queue<WorkFunctor>;
 
-    class IWorkItem
-    {
-    public:
-        virtual void Do() = 0;
-    };
-
-    using WorkItemPtr = std::shared_ptr<IWorkItem>;
-
-    using WorkPendingQueue = concurrency::concurrent_queue<WorkItemPtr>;
-
-    class IOContextThreadPool final
+    class IOContextThreadPool
     {
         Util::Event _TriggerEvent;
         bool _ClearFlag = false;
@@ -32,12 +24,10 @@ namespace EventLoop
         WorkPendingQueue _Queue;
     public:
         IOContextThreadPool() = default;
-
         IOContextThreadPool(const int32_t WorkerCount, const uint32_t Timeout);
-
         ~IOContextThreadPool();
 
-        void EnqueueJob(const WorkItemPtr &Ptr);
+        void EnqueueJob(const WorkFunctor&& Functor);
 
     private:
         void InnerWork();
