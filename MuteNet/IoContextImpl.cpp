@@ -4,7 +4,6 @@
 
 #include "Common.h"
 #include "TypeDefine.hpp"
-#include "ListenerComponent.hpp"
 #include "IoContextImpl.hpp"
 
 namespace EventLoop
@@ -12,9 +11,9 @@ namespace EventLoop
     IOContextImpl::IOContextImpl(IOContextEvent &Event,
                                  const uint32_t NumOfWorkerThread,
                                  const uint32_t Timeout)
-            : _Event(Event)
+            : _Event(Event), _Timeout(Timeout)
     {
-        _ThreadPool = std::make_shared<IOContextThreadPool>(NumOfWorkerThread, Timeout);
+        _ThreadPool = std::make_shared<IOContextThreadPool>(NumOfWorkerThread);
     }
 
     ListenerPtr IOContextImpl::CreateListener(ListenerComponent::CallbackDelegate &&Callback, void *Self, uint32_t Flag, int backlog,

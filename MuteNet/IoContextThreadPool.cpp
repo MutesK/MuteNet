@@ -12,14 +12,14 @@ namespace EventLoop
     {
         while (!_ClearFlag)
         {
-            _TriggerEvent.Wait(_Timeout);
+           //  _TriggerEvent.Wait(_Timeout);
 
             if (_Queue.empty())
             {
                 continue;
             }
 
-            WorkItemPtr Ptr = nullptr;
+         //   WorkItemPtr Ptr = nullptr;
             if (false == _Queue.try_pop(Ptr))
             {
                 continue;
@@ -34,8 +34,7 @@ namespace EventLoop
         }
     }
 
-    IOContextThreadPool::IOContextThreadPool(const int32_t WorkerCount, const uint32_t Timeout)
-            : _Timeout(Timeout)
+    IOContextThreadPool::IOContextThreadPool(const int32_t WorkerCount)
     {
         _ThreadPool.resize(WorkerCount);
 
@@ -60,9 +59,9 @@ namespace EventLoop
         });
     }
 
-    void IOContextThreadPool::EnqueueJob(const WorkItemPtr &Ptr)
+    void IOContextThreadPool::EnqueueJob(const WorkFunctor&& Functor)
     {
-        _Queue.push(Ptr);
+        _Queue.push(Functor);
 
         _TriggerEvent.Set();
     }

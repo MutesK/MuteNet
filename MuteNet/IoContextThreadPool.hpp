@@ -18,13 +18,12 @@ namespace EventLoop
     {
         Util::Event _TriggerEvent;
         bool _ClearFlag = false;
-        uint32_t _Timeout;
 
         std::vector<std::thread> _ThreadPool;
         WorkPendingQueue _Queue;
     public:
         IOContextThreadPool() = default;
-        IOContextThreadPool(const int32_t WorkerCount, const uint32_t Timeout);
+        IOContextThreadPool(const int32_t WorkerCount);
         ~IOContextThreadPool();
 
         void EnqueueJob(const WorkFunctor&& Functor);

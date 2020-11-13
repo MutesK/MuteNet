@@ -6,6 +6,7 @@
 #include <stdint.h>
 
 #include <map>
+#include <set>
 #include <list>
 
 #include <thread>
@@ -37,6 +38,7 @@
 
 #include <tbb/concurrent_queue.h>
 #include <tbb/concurrent_unordered_map.h>
+#include <tbb/concurrent_set.h>
 
 namespace concurrency = tbb;
 namespace Concurrency = tbb;

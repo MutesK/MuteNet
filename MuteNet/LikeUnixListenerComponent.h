@@ -16,8 +16,10 @@ namespace EventLoop
         LikeUnixListenerComponent(const RawIOContextImplPtr &ContextEvent,
                                   ListenerComponent::CallbackDelegate &&Callback,
                                   void *Self, uint32_t Flag, int backlog, socket_t listenSocket);
-
         virtual void DoWork ( ) override;
+
+    public:
+        virtual ~LikeUnixListenerComponent();
 
     };
 }

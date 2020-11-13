@@ -4,8 +4,8 @@
 
 #include "Common.h"
 #include "TypeDefine.hpp"
+#include "IoContextImpl.hpp"
 #include "LikeUnixListenerComponent.h"
-#include "IoContextThreadPool.hpp"
 
 namespace EventLoop
 {
@@ -43,9 +43,11 @@ namespace EventLoop
                 break;
         }
 
+        const auto& Pool = _ContextPtr->GetThreadPool();
+        socket_t clientsocket = -1;
         while(!IsStop())
         {
-            socket_t clientsocket = accept ( _ListenSocket,
+            clientsocket = accept ( _ListenSocket,
                                              reinterpret_cast<struct sockaddr *>(&clientAddress),
                                              &clientAddressLength );
             if ( -1 == clientsocket )
@@ -53,9 +55,18 @@ namespace EventLoop
                 continue;
             }
 
-            _ListenCallbackDelegate(this, clientsocket, clientAddress, clientAddressLength, _Self);
+            Pool->EnqueueJob([&]()
+                             {
+                                 _ListenCallbackDelegate(this, _ContextPtr->CreateSocket(clientsocket),
+                                                         clientAddress, clientAddressLength, _Self);
+                             });
         }
 
         delete clientAddress;
+    }
+
+    LikeUnixListenerComponent::~LikeUnixListenerComponent ( )
+    {
+        Stop();
     }
 }
