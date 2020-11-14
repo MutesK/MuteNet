@@ -27,6 +27,8 @@ namespace Util
 		virtual void Serialize ( void *inData, uint32_t inByteCount ) override;
 		
 		void MoveWritePosition ( int64_t size );
+		
+		void Clear();
 	};
 	
 	inline int64_t OutputMemoryStream::GetLength ( ) const
@@ -69,6 +71,11 @@ namespace Util
 	inline void OutputMemoryStream::MoveWritePosition ( int64_t size )
 	{
 		_Tail += size;
+	}
+	
+	void OutputMemoryStream::Clear ( )
+	{
+		_Tail = 0;
 	}
 	
 }

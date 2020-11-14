@@ -6,8 +6,17 @@
 #include "TypeDefine.hpp"
 #include "SocketDescriptor.h"
 
+#include <OutputMemoryStream.h>
+#include <InputMemoryStream.h>
+
 namespace EventLoop
 {
+	struct Buffer
+	{
+		char* BufferPtr;
+		size_t length;
+	};
+	
 	ISocketDescriptor::ISocketDescriptor ( RawIOContextImplPtr const &Ptr, socket_t Socket )
 			: IEventBaseComponent ( Ptr ), _socket ( Socket )
 	{
@@ -28,5 +37,67 @@ namespace EventLoop
 	socket_t ISocketDescriptor::GetFD ( ) const
 	{
 		return _socket;
+	}
+	
+	void ISocketDescriptor::_Read ( )
+	{
+		Util::OutputMemoryStream StreamBuffer;
+		auto& InputMemoryStream = reinterpret_cast<Util::InputMemoryStream &>(StreamBuffer);
+		
+		int ret = recv(_socket, const_cast<char *>(InputMemoryStream.GetBufferPtr()),
+		               InputMemoryStream.GetRemainingDataSize(), 0);
+		
+		if(ret == SOCKET_ERROR)
+		{
+		
+		}
+		
+		if(ret == 0)
+		{
+			// Disconnected
+		}
+		
+		StreamBuffer.MoveWritePosition(ret);
+		_ReadBuffer.PutData(const_cast<char *>(StreamBuffer.GetBufferPtr()), StreamBuffer.GetLength());
+	}
+	
+	void ISocketDescriptor::_Send ( )
+	{
+		Util::OutputMemoryStream StreamBuffer;
+		auto& InputMemoryStream = reinterpret_cast<Util::InputMemoryStream &>(StreamBuffer);
+		
+		Buffer Buffer[2];
+		
+		{
+			std::unique_lock<std::shared_mutex> lock ( _WriteBuffer._mutex );
+			
+			auto SendSize = _WriteBuffer.GetUseSize ( );
+			
+			if ( SendSize <= 0 )
+				return;
+			
+			_WriteBuffer.GetReadBufferAndLengths ( &Buffer[ 0 ].BufferPtr, Buffer[ 0 ].length,
+			                                       &Buffer[ 1 ].BufferPtr, Buffer[ 1 ].length );
+			
+			StreamBuffer.Serialize ( Buffer[ 0 ].BufferPtr, Buffer[ 0 ].length );
+			if ( Buffer[ 0 ].length > SendSize )
+			{
+				StreamBuffer.Serialize ( Buffer[ 1 ].BufferPtr, Buffer[ 1 ].length );
+			}
+		}
+		
+		int ret = send(_socket, InputMemoryStream.GetBufferPtr(), InputMemoryStream.GetRemainingDataSize(), 0);
+		
+		if(ret == SOCKET_ERROR)
+		{
+		
+		}
+		
+		{
+			std::unique_lock<std::shared_mutex> lock ( _WriteBuffer._mutex );
+			
+			_WriteBuffer.MoveReadPostion(ret);
+		}
+		
 	}
 }

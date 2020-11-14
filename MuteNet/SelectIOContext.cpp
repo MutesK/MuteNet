@@ -6,6 +6,7 @@
 #include "TypeDefine.hpp"
 #include "SelectIOContext.hpp"
 #include "SocketDescriptor.h"
+#include "LikeUnixListenerComponent.h"
 
 namespace EventLoop
 {
@@ -60,6 +61,13 @@ namespace EventLoop
 		_RegisteredSockets.insert ( Ptr );
 	}
 	
+	void SelectIOContext::ContextContainer::Erase ( const SocketPtr &Ptr )
+	{
+		std::lock_guard<std::mutex> lock ( _SwapMutex );
+		
+		_RegisteredSockets.erase(Ptr);
+	}
+	
 	void SelectIOContext::FDSet ( ContextContainer &Container )
 	{
 		std::for_each ( Container._RegisteredSockets.begin ( ), Container._RegisteredSockets.end ( ),
@@ -80,10 +88,14 @@ namespace EventLoop
 			                {
 				                if ( FD_ISSET( Ptr->_socket, &_ReadSet ))
 				                {
+				                	Ptr->_Read();
+				                	
 					                Ptr->_ReadCallback ( Ptr.get ( ), Ptr->_Key );
 				                }
 				                if ( FD_ISSET( Ptr->_socket, &_WriteSet ))
 				                {
+				                	Ptr->_Send();
+				                	
 					                Ptr->_WriteCallback ( Ptr.get ( ), Ptr->_Key );
 				                }
 			                };
@@ -104,6 +116,6 @@ namespace EventLoop
 	SelectIOContext::CreateListener ( ListenerComponent::CallbackDelegate &&Callback, void *Self, uint32_t Flag,
 	                                  int backlog, socket_t listenSocket )
 	{
-		return EventLoop::ListenerPtr ( );
+		return ListenerPtr ((ListenerComponent *) new LikeUnixListenerComponent(this, std::move(Callback), Self, Flag, backlog, listenSocket));
 	}
 }

@@ -5,6 +5,8 @@
 #ifndef MUTENET_EVENTBASECOMPONENT_HPP
 #define MUTENET_EVENTBASECOMPONENT_HPP
 
+#include "IocpContextImpl.hpp"
+
 namespace EventLoop
 {
 	class IOContextImpl;
@@ -14,7 +16,7 @@ namespace EventLoop
 	class IEventBaseComponent
 	{
 	protected:
-		RawIOContextImplPtr _ContextPtr;
+		EventLoop::IocpContextImpl _ContextPtr;
 		
 		IEventBaseComponent ( const RawIOContextImplPtr &Ptr );
 	};

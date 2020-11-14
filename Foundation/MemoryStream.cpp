@@ -12,4 +12,5 @@ namespace Util
 	{
 		delete[] _Buffer;
 	}
+	
 }

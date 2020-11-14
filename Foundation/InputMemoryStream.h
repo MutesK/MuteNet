@@ -7,7 +7,7 @@ namespace Util
 	class InputMemoryStream : public MemoryStream
 	{
 	public:
-		InputMemoryStream ( ) = delete;
+		InputMemoryStream ( ) = default;
 		
 		virtual ~InputMemoryStream ( ) = default;
 		

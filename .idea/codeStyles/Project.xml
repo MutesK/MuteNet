@@ -16,7 +16,7 @@
     </Objective-C>
     <Objective-C-extensions>
       <extensions>
-        <pair source="cpp" header="hpp" fileNamingConvention="NONE" />
+        <pair source="cpp" header="hpp" fileNamingConvention="PASCAL_CASE" />
         <pair source="c" header="h" fileNamingConvention="NONE" />
         <pair source="cu" header="cuh" fileNamingConvention="NONE" />
       </extensions>

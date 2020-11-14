@@ -13,7 +13,17 @@
 
 namespace EventLoop
 {
-	class WinSocketDescriptor : public ISocketDescriptor
+	class IWinSocketDescriptor
+	{
+	public:
+		virtual void IOCompletion ( OVERLAPPED *pRawOverlapped, uint32_t TransfferedBytes ) = 0;
+		
+		virtual void IOError ( OVERLAPPED *pRawOverlapped, uint32_t LastError )= 0;
+		
+		virtual void IOTimeout ( OVERLAPPED *pRawOverlapped )= 0;
+	};
+	
+	class WinSocketDescriptor : public ISocketDescriptor, public IWinSocketDescriptor
 	{
 		OVERLAPPED _RecvOverlapped;
 		OVERLAPPED _SendOverlapped;
@@ -32,11 +42,11 @@ namespace EventLoop
 		virtual void Disable ( uint16_t Flag ) override;
 	
 	private:
-		void IOCompletion ( OVERLAPPED *pRawOverlapped, uint32_t TransfferedBytes );
+		virtual void IOCompletion ( OVERLAPPED *pRawOverlapped, uint32_t TransfferedBytes ) override;
 		
-		void IOError ( OVERLAPPED *pRawOverlapped, uint32_t LastError );
+		virtual void IOError ( OVERLAPPED *pRawOverlapped, uint32_t LastError ) override;
 		
-		void IOTimeout ( OVERLAPPED *pRawOverlapped );
+		virtual void IOTimeout ( OVERLAPPED *pRawOverlapped ) override;
 	};
 }
 

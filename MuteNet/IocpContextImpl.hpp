@@ -10,6 +10,21 @@
 
 namespace EventLoop
 {
+	typedef LPFN_ACCEPTEX AcceptExPtr;
+	typedef LPFN_CONNECTEX ConnectExPtr;
+	typedef LPFN_GETACCEPTEXSOCKADDRS GetAcceptExSockAddrsPtr;
+	
+	struct Extension
+	{
+		AcceptExPtr _AcceptEx;
+		ConnectExPtr _ConnectEx;
+		GetAcceptExSockAddrsPtr _GetAcceptExSockaddrs;
+		
+		Extension ( );
+		
+		void *GetExtension ( socket_t socket, const GUID *FunctorPtr );
+	};
+	
 	class IocpContextImpl : public IOContextImpl, public Util::IRunnable
 	{
 		class RaIIWSA final
@@ -21,26 +36,12 @@ namespace EventLoop
 			~RaIIWSA ( );
 		};
 		
-		struct Extension
-		{
-			typedef LPFN_ACCEPTEX AcceptExPtr;
-			typedef LPFN_CONNECTEX ConnectExPtr;
-			typedef LPFN_GETACCEPTEXSOCKADDRS GetAcceptExSockAddrsPtr;
-			
-			AcceptExPtr _AcceptEx;
-			ConnectExPtr _ConnectEx;
-			GetAcceptExSockAddrsPtr _GetAcceptExSockaddrs;
-			
-			Extension ( );
-			
-			void *GetExtension ( socket_t socket, const GUID *FunctorPtr );
-		};
-		
 		RaIIWSA _WsaData;
 		Extension _Extensions;
 		HANDLE _IocpHandle;
 		std::atomic_bool _Stop;
 	
+		friend class Win32ListenerComponent;
 	public:
 		IocpContextImpl ( IOContextEvent &Event,
 		                  const uint32_t NumOfWorkerThread, const uint32_t Timeout );
@@ -53,7 +54,7 @@ namespace EventLoop
 		CreateListener ( ListenerComponent::CallbackDelegate &&Callback, void *Self, uint32_t Flag, int backlog,
 		                 socket_t listenSocket ) override;
 		
-		void PostQueue ( void *Pointer );
+		bool PostQueue ( void *Pointer );
 		
 		virtual void Start ( ) override;
 		

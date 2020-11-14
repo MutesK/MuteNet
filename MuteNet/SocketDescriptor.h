@@ -49,6 +49,11 @@ namespace EventLoop
 		                   ExceptCallackPtr ExceptionCallback, void *Key );
 		
 		socket_t GetFD ( ) const;
+		
+	protected:
+		void _Read();
+
+		void _Send();
 	};
 }
 

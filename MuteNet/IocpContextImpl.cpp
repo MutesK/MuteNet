@@ -12,7 +12,7 @@ namespace EventLoop
 {
 	SocketPtr IocpContextImpl::CreateSocket ( socket_t Socket )
 	{
-		const auto &Ptr = SocketPtr ( new WinSocketDescriptor ( this, Socket ));
+		const auto &Ptr = SocketPtr ( (ISocketDescriptor *)new WinSocketDescriptor ( this, Socket ));
 		
 		CreateIoCompletionPort ( reinterpret_cast<HANDLE>(Socket), _IocpHandle,
 		                         reinterpret_cast<ULONG_PTR>(Ptr.get ( )), 0 );
@@ -58,7 +58,7 @@ namespace EventLoop
 		{
 			DWORD byteTransferred = 0;
 			LPOVERLAPPED lpOverlapped = nullptr;
-			WinSocketDescriptor *WinSocketDescriptor = nullptr;
+			IWinSocketDescriptor *WinSocketDescriptor = nullptr;
 			
 			while ( !IsStop ( ))
 			{
@@ -88,7 +88,7 @@ namespace EventLoop
 				} else
 				{
 					if ( byteTransferred == 0 && WinSocketDescriptor == 0 && lpOverlapped == nullptr )
-						return;
+						continue;
 					
 					const auto lastError = WSAGetLastError ( );
 					
@@ -119,9 +119,14 @@ namespace EventLoop
 		return _Stop;
 	}
 	
-	void IocpContextImpl::PostQueue ( void *Pointer )
+	bool IocpContextImpl::PostQueue ( void *Pointer )
 	{
-	
+		if (PostQueuedCompletionStatus(_IocpHandle, 0, (ULONG_PTR)Pointer, nullptr) == false)
+		{
+			return false;
+		}
+		
+		return true;
 	}
 	
 	IocpContextImpl::RaIIWSA::RaIIWSA ( )
@@ -142,7 +147,7 @@ namespace EventLoop
 		WSACleanup ( );
 	}
 	
-	IocpContextImpl::Extension::Extension ( )
+	Extension::Extension ( )
 	{
 		const GUID acceptex = WSAID_ACCEPTEX;
 		const GUID connectex = WSAID_CONNECTEX;
@@ -161,7 +166,7 @@ namespace EventLoop
 				reinterpret_cast<GetAcceptExSockAddrsPtr>(GetExtension ( serviceProvider, &getaccpetexsockaddrs ));
 	}
 	
-	void *IocpContextImpl::Extension::GetExtension ( socket_t socket, const GUID *FunctorPtr )
+	void *Extension::GetExtension ( socket_t socket, const GUID *FunctorPtr )
 	{
 		void *ptr = nullptr;
 		DWORD bytes = 0;

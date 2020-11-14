@@ -8,7 +8,6 @@
 #include "ListenerComponent.hpp"
 #include <Runnable.hpp>
 
-#if defined(UNIX)
 namespace EventLoop
 {
 	class LikeUnixListenerComponent : public ListenerComponent, public Util::Runnable
@@ -24,7 +23,7 @@ namespace EventLoop
 		virtual void DoWork ( ) override;
 	};
 }
-#endif
+
 
 
 #endif //MUTENET_LIKEUNIXLISTENERCOMPONENT_H

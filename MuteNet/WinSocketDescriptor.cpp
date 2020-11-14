@@ -83,4 +83,40 @@ namespace EventLoop
 	
 	}
 	
+	void WinSocketDescriptor::IOCompletion ( OVERLAPPED *pRawOverlapped, uint32_t TransfferedBytes )
+	{
+		if( nullptr == pRawOverlapped )
+		{
+			return;
+		}
+		
+		if(&_RecvOverlapped == pRawOverlapped)
+		{
+			_Read();
+			
+			_ReadCallback(this, _Key);
+		}
+		else if(&_SendOverlapped == pRawOverlapped)
+		{
+			{
+				std::shared_lock<std::shared_mutex> lock ( _WriteBuffer._mutex );
+				
+				_WriteBuffer.MoveReadPostion ( TransfferedBytes );
+			}
+			
+			_WriteCallback(this, _Key);
+		}
+	}
+	
+	void WinSocketDescriptor::IOError ( OVERLAPPED *pRawOverlapped, uint32_t LastError )
+	{
+	
+	}
+	
+	void WinSocketDescriptor::IOTimeout ( OVERLAPPED *pRawOverlapped )
+	{
+	
+	}
+	
+	
 }

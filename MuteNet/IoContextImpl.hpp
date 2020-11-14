@@ -7,6 +7,8 @@
 
 #include "IoContextThreadPool.hpp"
 #include "ListenerComponent.hpp"
+#include "SocketDescriptor.h"
+
 #include <Runnable.hpp>
 
 namespace EventLoop
@@ -38,6 +40,7 @@ namespace EventLoop
 		
 		std::shared_ptr<IOContextThreadPool> &GetThreadPool ( );
 	};
+	
 }
 
 
