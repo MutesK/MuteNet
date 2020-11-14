@@ -13,7 +13,7 @@ using socket_t = int;
 #endif
 
 
-template <class Type>
+template<class Type>
 struct LockObject : public Type
 {
 	std::shared_mutex _mutex;

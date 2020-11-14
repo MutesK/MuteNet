@@ -10,42 +10,46 @@
 
 namespace EventLoop
 {
-    class ISocketDescriptor;
-    using CallbackPtr = void (*)(ISocketDescriptor*, void* Self);
-    using ExceptCallackPtr = void (*)(ISocketDescriptor*, uint16_t What, void* Self);
-    
-    using CircularBufferWithLock = LockObject<Util::CircularBuffer>;
-    
-    class ISocketDescriptor : public IEventBaseComponent
-    {
-    protected:
-        socket_t  _socket;
-
-        CallbackPtr _ReadCallback;
-        CallbackPtr _WriteCallback;
-        ExceptCallackPtr _ExceptCallback;
-        void*            _Key;
-
-        Util::CircularBuffer _ReadBuffer;
-	    CircularBufferWithLock _WriteBuffer;
-        
-        friend class IOContextImpl;
-        friend class SelectIOContext;
-
-        ISocketDescriptor(const RawIOContextImplPtr &Ptr, socket_t Socket);
-
-    public:
-        virtual void Read() = 0;
-        virtual void Write(void* data, size_t length) = 0;
-
-        virtual void Enable(uint16_t Flag) = 0;
-        virtual void Disable(uint16_t Flag) = 0;
-
-        void SetCallback(CallbackPtr ReadCallback, CallbackPtr WriteCallback,
-                         ExceptCallackPtr ExceptionCallback, void* Key);
-
-        socket_t GetFD() const;
-    };
+	class ISocketDescriptor;
+	
+	using CallbackPtr = void ( * ) ( ISocketDescriptor *, void *Self );
+	using ExceptCallackPtr = void ( * ) ( ISocketDescriptor *, uint16_t What, void *Self );
+	
+	using CircularBufferWithLock = LockObject<Util::CircularBuffer>;
+	
+	class ISocketDescriptor : public IEventBaseComponent
+	{
+	protected:
+		socket_t _socket;
+		
+		CallbackPtr _ReadCallback;
+		CallbackPtr _WriteCallback;
+		ExceptCallackPtr _ExceptCallback;
+		void *_Key;
+		
+		Util::CircularBuffer _ReadBuffer;
+		CircularBufferWithLock _WriteBuffer;
+		
+		friend class IOContextImpl;
+		
+		friend class SelectIOContext;
+		
+		ISocketDescriptor ( const RawIOContextImplPtr &Ptr, socket_t Socket );
+	
+	public:
+		virtual void Read ( ) = 0;
+		
+		virtual void Write ( void *data, size_t length ) = 0;
+		
+		virtual void Enable ( uint16_t Flag ) = 0;
+		
+		virtual void Disable ( uint16_t Flag ) = 0;
+		
+		void SetCallback ( CallbackPtr ReadCallback, CallbackPtr WriteCallback,
+		                   ExceptCallackPtr ExceptionCallback, void *Key );
+		
+		socket_t GetFD ( ) const;
+	};
 }
 
 

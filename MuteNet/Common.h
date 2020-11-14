@@ -3,8 +3,10 @@
 #include <FoundationCommon.h>
 
 #if defined(WIN32)
+
 #include <winsock2.h>
 #include <mswsock.h>
+
 #else
 
 #include <sys/socket.h>

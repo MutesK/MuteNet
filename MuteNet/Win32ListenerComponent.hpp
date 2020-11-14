@@ -11,9 +11,9 @@
 
 namespace EventLoop
 {
-    class Win32ListenerComponent : public ListenerComponent
-    {
-    };
+	class Win32ListenerComponent : public ListenerComponent
+	{
+	};
 }
 
 #endif
