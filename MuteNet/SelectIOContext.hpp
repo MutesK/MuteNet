@@ -12,6 +12,7 @@
 
 namespace EventLoop
 {
+	
 	class SelectIOContext : public IOContextImpl,
 	                        public Util::Runnable
 	{
@@ -33,6 +34,8 @@ namespace EventLoop
 		fd_set _ReadSet, _WriteSet;
 		ContextContainer _Container;
 	
+		friend class UnixLikeSocketDescriptor;
+		friend class LikeUnixListenerComponent;
 	public:
 		SelectIOContext ( IOContextEvent &Event,
 		                  const uint32_t NumOfWorkerThread, const uint32_t Timeout );

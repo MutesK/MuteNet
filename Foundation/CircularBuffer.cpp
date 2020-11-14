@@ -31,12 +31,12 @@ namespace Util
 		return *this;
 	}
 	
-	int CircularBuffer::GetBufferSize ( void )
+	int CircularBuffer::GetBufferSize ( void ) const
 	{
 		return _BufferSize - BLANK_BUFFER;
 	}
 	
-	int CircularBuffer::GetUseSize ( void )
+	int CircularBuffer::GetUseSize ( void ) const
 	{
 		if ( _Rear >= _Front )
 		{
@@ -47,13 +47,13 @@ namespace Util
 		}
 	}
 	
-	int CircularBuffer::GetFreeSize ( void )
+	int CircularBuffer::GetFreeSize ( void ) const
 	{
 		return _BufferSize - GetUseSize ( );
 	}
 	
 	int CircularBuffer::GetWriteBufferAndLengths ( char **firstbuf, uint32_t &firstlength, char **secondbuf,
-	                                               uint32_t &secondlength )
+	                                               uint32_t &secondlength ) const
 	{
 		int bufcount = 1;
 		*firstbuf = GetWriteBufferPtr ( );
@@ -70,7 +70,7 @@ namespace Util
 	}
 	
 	int CircularBuffer::GetReadBufferAndLengths ( char **firstbuf, uint32_t &firstlength, char **secondbuf,
-	                                              uint32_t &secondlength )
+	                                              uint32_t &secondlength ) const
 	{
 		int bufcount = 1;
 		*firstbuf = GetReadBufferPtr ( );
@@ -87,7 +87,7 @@ namespace Util
 		
 	}
 	
-	int CircularBuffer::GetNotBrokenGetSize ( void )
+	int CircularBuffer::GetNotBrokenGetSize ( void ) const
 	{
 		if ( _Front <= _Rear )
 		{
@@ -98,7 +98,7 @@ namespace Util
 		}
 	}
 	
-	int CircularBuffer::GetNotBrokenPutSize ( void )
+	int CircularBuffer::GetNotBrokenPutSize ( void ) const
 	{
 		if ( _Rear < _Front )
 		{

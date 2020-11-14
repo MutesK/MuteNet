@@ -11,7 +11,7 @@ SET(SRC_FILES
         TaskAgent.cpp TaskAgent.h
         TaskManager.cpp TaskManager.h
         MacroFunction.h Singleton.h
-        CircularBuffer.cpp CircularBuffer.h SharedPool.hpp Runnable.cpp Runnable.hpp Event.hpp Event.cpp)
+        CircularBuffer.cpp CircularBuffer.h SharedPool.hpp Runnable.cpp Runnable.hpp Event.hpp Event.cpp AtomicCounter.hpp)
 
 
 SET(CMAKE_VERBOSE_MAKEFILE TRUE)

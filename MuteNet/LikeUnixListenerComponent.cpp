@@ -6,6 +6,7 @@
 #include "TypeDefine.hpp"
 #include "IoContextImpl.hpp"
 #include "LikeUnixListenerComponent.h"
+#include "SelectIOContext.hpp"
 
 namespace EventLoop
 {
@@ -43,8 +44,8 @@ namespace EventLoop
 				break;
 		}
 
-		const auto& Pool = _ContextPtr->GetThreadPool();
-		socket_t clientsocket = -1;
+		const auto& Pool = reinterpret_cast<IOContextImpl *>(_ContextPtr)->GetThreadPool();
+		socket_t clientsocket = INVALID_SOCKET;
 		while(!IsStop())
 		{
 			clientsocket = accept ( _ListenSocket,

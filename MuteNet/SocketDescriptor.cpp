@@ -23,6 +23,10 @@ namespace EventLoop
 	
 	}
 	
+	ISocketDescriptor::~ISocketDescriptor ( )
+	{
+		_ExceptCallback(this, 0, _Key);
+	}
 	
 	void ISocketDescriptor::SetCallback ( CallbackPtr ReadCallback, CallbackPtr WriteCallback,
 	                                      ExceptCallackPtr ExceptionCallback,
@@ -39,29 +43,37 @@ namespace EventLoop
 		return _socket;
 	}
 	
-	void ISocketDescriptor::_Read ( )
+	bool ISocketDescriptor::_Read ( )
 	{
 		Util::OutputMemoryStream StreamBuffer;
 		auto& InputMemoryStream = reinterpret_cast<Util::InputMemoryStream &>(StreamBuffer);
+		
 		
 		int ret = recv(_socket, const_cast<char *>(InputMemoryStream.GetBufferPtr()),
 		               InputMemoryStream.GetRemainingDataSize(), 0);
 		
 		if(ret == SOCKET_ERROR)
 		{
-		
+			delete this;
+			return false;
 		}
 		
 		if(ret == 0)
 		{
-			// Disconnected
+			return true;
 		}
 		
 		StreamBuffer.MoveWritePosition(ret);
-		_ReadBuffer.PutData(const_cast<char *>(StreamBuffer.GetBufferPtr()), StreamBuffer.GetLength());
+		
+		{
+			std::unique_lock<std::shared_mutex> lock ( _ReadBuffer._mutex );
+			_ReadBuffer.PutData ( const_cast<char *>(StreamBuffer.GetBufferPtr ( )), StreamBuffer.GetLength ( ));
+		}
+		
+		return true;
 	}
 	
-	void ISocketDescriptor::_Send ( )
+	bool ISocketDescriptor::_Send ( )
 	{
 		Util::OutputMemoryStream StreamBuffer;
 		auto& InputMemoryStream = reinterpret_cast<Util::InputMemoryStream &>(StreamBuffer);
@@ -74,7 +86,7 @@ namespace EventLoop
 			auto SendSize = _WriteBuffer.GetUseSize ( );
 			
 			if ( SendSize <= 0 )
-				return;
+				return true;
 			
 			_WriteBuffer.GetReadBufferAndLengths ( &Buffer[ 0 ].BufferPtr, Buffer[ 0 ].length,
 			                                       &Buffer[ 1 ].BufferPtr, Buffer[ 1 ].length );
@@ -90,7 +102,8 @@ namespace EventLoop
 		
 		if(ret == SOCKET_ERROR)
 		{
-		
+			delete this;
+			return false;
 		}
 		
 		{
@@ -99,5 +112,29 @@ namespace EventLoop
 			_WriteBuffer.MoveReadPostion(ret);
 		}
 		
+		return true;
+		
 	}
+	
+	Util::InputMemoryStream ISocketDescriptor::GetReadBuffer ( ) const
+	{
+		Util::InputMemoryStream Stream;
+		
+		Buffer Buffer[2];
+		
+		_ReadBuffer.GetReadBufferAndLengths ( &Buffer[ 0 ].BufferPtr, Buffer[ 0 ].length,
+		                                       &Buffer[ 1 ].BufferPtr, Buffer[ 1 ].length );
+		
+		
+		reinterpret_cast<Util::OutputMemoryStream &>(Stream).Serialize(Buffer[ 0 ].BufferPtr, Buffer[ 0 ].length);
+		
+		if(Buffer[0].length < _ReadBuffer.GetUseSize())
+		{
+			reinterpret_cast<Util::OutputMemoryStream &>(Stream).Serialize(Buffer[ 1 ].BufferPtr, Buffer[ 1 ].length);
+		}
+		
+		return Stream;
+	}
+	
+	
 }

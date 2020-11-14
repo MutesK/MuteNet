@@ -17,7 +17,7 @@ namespace EventLoop
 	                                                 uint32_t Flag, int backlog, socket_t listenSocket )
 			: ListenerComponent ( ContextEvent, std::move(Callback), Self, Flag, backlog, listenSocket )
 	{
-		auto Iocp = static_cast<IocpContextImpl>(_ContextPtr)->_IocpHandle;
+		auto Iocp = reinterpret_cast<IocpContextImpl *>(_ContextPtr)->_IocpHandle;
 		
 		CreateIoCompletionPort ( reinterpret_cast<HANDLE>(listenSocket), Iocp,
 		                         reinterpret_cast<ULONG_PTR>(this), 0 );
@@ -30,22 +30,22 @@ namespace EventLoop
 	
 	void Win32ListenerComponent::AcceptRequest ( )
 	{
-		static auto& Extension = static_cast<IocpContextImpl>(_ContextPtr)->_Extensions;
+		static auto& Extension = reinterpret_cast<IocpContextImpl *>(_ContextPtr)->_Extensions;
 		static AcceptExPtr& _AcceptExFunctionPtr = Extension._AcceptEx;
 		static DWORD Pending = 0;
 		
 		_ClientSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 		
-		if(!_AcceptExFunctionPtr(_ListenSocket, _AddressBuffer.GetBufferPtr(), 0,
+		if(!_AcceptExFunctionPtr(_ListenSocket, _ClientSocket, const_cast<char *>(_AddressBuffer.GetBufferPtr()), 0,
 		                         sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, &Pending, &_Overlapped))
 		{
-		
+			return;
 		}
 	}
 	
 	void Win32ListenerComponent::IOCompletion ( OVERLAPPED *pRawOverlapped, uint32_t TransfferedBytes )
 	{
-		static auto& Extension = static_cast<IocpContextImpl>(_ContextPtr)->_Extensions;
+		static auto& Extension = reinterpret_cast<IocpContextImpl *>(_ContextPtr)->_Extensions;
 		static GetAcceptExSockAddrsPtr& _GetAcceptExSockAddrPtr = Extension._GetAcceptExSockaddrs;
 		
 		const static auto Process = [&]()
@@ -57,7 +57,7 @@ namespace EventLoop
 			if ( setsockopt ( _ClientSocket, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT,
 			                  reinterpret_cast<char *>(&_ListenSocket), sizeof ( _ListenSocket )) == SOCKET_ERROR)
 			{
-			
+				return;
 			}
 			
 			SOCKADDR *RemoteSockAddr = nullptr, *LocalSockAddr = nullptr;
@@ -70,7 +70,7 @@ namespace EventLoop
 			const auto &Pool = _ContextPtr->GetThreadPool ( );
 			static const auto ListenDispatch = [ & ] ( )
 			{
-				_ListenCallbackDelegate ( this, _ContextPtr->CreateSocket ( _ClientSocket ), RemoteSockAddr,
+				_ListenCallbackDelegate ( this, reinterpret_cast<IocpContextImpl *>(_ContextPtr)->CreateSocket ( _ClientSocket ), RemoteSockAddr,
 				                          RemoteAddrLength, _Self );
 			};
 			
@@ -85,12 +85,14 @@ namespace EventLoop
 	
 	void Win32ListenerComponent::IOError ( OVERLAPPED *pRawOverlapped, uint32_t LastError )
 	{
-	
+		if(!IsStop())
+			AcceptRequest();
 	}
 	
 	void Win32ListenerComponent::IOTimeout ( OVERLAPPED *pRawOverlapped )
 	{
-	
+		if(!IsStop())
+			AcceptRequest();
 	}
 	
 	void Win32ListenerComponent::Start ( )

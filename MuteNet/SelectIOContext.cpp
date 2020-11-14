@@ -88,15 +88,17 @@ namespace EventLoop
 			                {
 				                if ( FD_ISSET( Ptr->_socket, &_ReadSet ))
 				                {
-				                	Ptr->_Read();
+				                	if(!Ptr->_Read())
+				                		return;
 				                	
-					                Ptr->_ReadCallback ( Ptr.get ( ), Ptr->_Key );
+					                Ptr->_ReadCallback ( Ptr, Ptr->_Key );
 				                }
 				                if ( FD_ISSET( Ptr->_socket, &_WriteSet ))
 				                {
-				                	Ptr->_Send();
+				                	if(!Ptr->_Send())
+				                		return;
 				                	
-					                Ptr->_WriteCallback ( Ptr.get ( ), Ptr->_Key );
+					                Ptr->_WriteCallback ( Ptr, Ptr->_Key );
 				                }
 			                };
 			
@@ -108,7 +110,7 @@ namespace EventLoop
 	{
 		const auto &Ptr = IOContextImpl::CreateSocket ( Socket );
 		
-		_Container.EnqueueSocket ( Ptr );
+		// _Container.EnqueueSocket ( Ptr );
 		return Ptr;
 	}
 	

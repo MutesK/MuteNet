@@ -11,6 +11,7 @@
 #include <cstdint>
 #include "SocketDescriptor.h"
 
+
 namespace EventLoop
 {
 	class IWinSocketDescriptor
@@ -29,19 +30,19 @@ namespace EventLoop
 		OVERLAPPED _SendOverlapped;
 	protected:
 		WinSocketDescriptor ( const RawIOContextImplPtr &Ptr, socket_t Socket );
-		
+		~WinSocketDescriptor();
 		friend class IocpContextImpl;
 	
 	public:
-		virtual void Read ( ) override;
-		
-		virtual void Write ( void *data, size_t length ) override;
-		
-		virtual void Enable ( uint16_t Flag ) override;
+		virtual void Enable ( ) override;
 		
 		virtual void Disable ( uint16_t Flag ) override;
+		
+		virtual void Write ( void *data, size_t length ) override;
 	
 	private:
+		virtual void Read ( ) override;
+		
 		virtual void IOCompletion ( OVERLAPPED *pRawOverlapped, uint32_t TransfferedBytes ) override;
 		
 		virtual void IOError ( OVERLAPPED *pRawOverlapped, uint32_t LastError ) override;

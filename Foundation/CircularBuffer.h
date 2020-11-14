@@ -23,17 +23,17 @@ namespace Util
 		
 		CircularBuffer &operator= ( const CircularBuffer &RightBuffer );
 		
-		int GetBufferSize ( void );
+		int GetBufferSize ( void ) const;
 		
-		int GetUseSize ( void );
+		int GetUseSize ( void ) const;
 		
-		int GetFreeSize ( void );
+		int GetFreeSize ( void ) const;
 		
 		int GetWriteBufferAndLengths ( char **firstbuf, uint32_t &firstlength,
-		                               char **secondbuf, uint32_t &secondlength );
+		                               char **secondbuf, uint32_t &secondlength ) const;
 		
 		int GetReadBufferAndLengths ( char **firstbuf, uint32_t &firstlength,
-		                              char **secondbuf, uint32_t &secondlength );
+		                              char **secondbuf, uint32_t &secondlength ) const;
 		
 		int PutData ( void *chpData, int iSize );
 		
@@ -45,29 +45,29 @@ namespace Util
 		
 		void MoveWritePos ( int iSize );
 		
-		char *GetBufferPtr ( void );
+		char *GetBufferPtr ( void ) const;
 		
-		char *GetReadBufferPtr ( void );
+		char *GetReadBufferPtr ( void ) const;
 		
-		char *GetWriteBufferPtr ( void );
+		char *GetWriteBufferPtr ( void ) const;
 	
 	private:
-		int GetNotBrokenGetSize ( void );
+		int GetNotBrokenGetSize ( void ) const;
 		
-		int GetNotBrokenPutSize ( void );
+		int GetNotBrokenPutSize ( void ) const;
 	};
 	
-	inline char *CircularBuffer::GetBufferPtr ( void )
+	inline char *CircularBuffer::GetBufferPtr ( void ) const
 	{
 		return _Buffer;
 	}
 	
-	inline char *CircularBuffer::GetReadBufferPtr ( void )
+	inline char *CircularBuffer::GetReadBufferPtr ( void ) const
 	{
 		return _Buffer + _Front;
 	}
 	
-	inline char *CircularBuffer::GetWriteBufferPtr ( void )
+	inline char *CircularBuffer::GetWriteBufferPtr ( void ) const
 	{
 		return _Buffer + _Rear;
 	}

@@ -11,7 +11,9 @@ using socket_t = SOCKET;
 using socklen_t = int;
 #else
 using socket_t = int;
-using SOCKET_EEROR = -1;
+using SOCKET_ERROR = -1;
+
+#define INVALID_SOCKET  (socket_t)(~0)
 #endif
 
 

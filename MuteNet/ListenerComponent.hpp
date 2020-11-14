@@ -10,8 +10,7 @@
 namespace EventLoop
 {
 	class ISocketDescriptor;
-	
-	using SocketPtr = std::shared_ptr<ISocketDescriptor>;
+	using SocketPtr = *ISocketDescriptor;
 	
 	class IOContextImpl;
 	

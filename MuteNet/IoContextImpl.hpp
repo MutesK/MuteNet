@@ -16,12 +16,10 @@ namespace EventLoop
 	class IOContextEvent;
 	
 	class ListenerComponent;
-	
 	using ListenerPtr = std::shared_ptr<ListenerComponent>;
 	
 	class ISocketDescriptor;
-	
-	using SocketPtr = std::shared_ptr<ISocketDescriptor>;
+	using SocketPtr = ISocketDescriptor*;
 	
 	class IOContextImpl
 	{

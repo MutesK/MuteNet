@@ -15,6 +15,11 @@ namespace EventLoop
 	
 	}
 	
+	WinSocketDescriptor::~WinSocketDescriptor ( )
+	{
+		closesocket(_socket);
+	}
+	
 	
 	void WinSocketDescriptor::Read ( )
 	{
@@ -27,7 +32,7 @@ namespace EventLoop
 		
 		if ( _socket == INVALID_SOCKET)
 		{
-		
+			return;
 		}
 		
 		_RecvOverlapped = OVERLAPPED {};
@@ -36,8 +41,10 @@ namespace EventLoop
 		
 		if ( ret == SOCKET_ERROR)
 		{
-		
+			return;
 		}
+		
+		IncreaseCounter();
 	}
 	
 	void WinSocketDescriptor::Write ( void *data, size_t length )
@@ -46,7 +53,7 @@ namespace EventLoop
 		
 		if ( _socket == INVALID_SOCKET)
 		{
-		
+			return;
 		}
 		
 		{
@@ -69,42 +76,71 @@ namespace EventLoop
 		int ret = WSASend ( _socket, buf, 2, &SendBytes, 0, &_SendOverlapped, nullptr );
 		if ( ret == SOCKET_ERROR)
 		{
-		
+			return;
 		}
+		
+		IncreaseCounter();
 	}
 	
-	void WinSocketDescriptor::Enable ( uint16_t Flag )
+	void WinSocketDescriptor::Enable ( )
 	{
-	
+		IncreaseCounter();
+		
+		Read();
+		
+		DecreaseCounter();
+		
+		if(GetCounter() == 0)
+		{
+			delete this;
+		}
 	}
 	
 	void WinSocketDescriptor::Disable ( uint16_t Flag )
 	{
-	
+		shutdown(_socket, Flag);
 	}
 	
 	void WinSocketDescriptor::IOCompletion ( OVERLAPPED *pRawOverlapped, uint32_t TransfferedBytes )
 	{
-		if( nullptr == pRawOverlapped )
+		const static auto CompletionProcess = [&]()
 		{
-			return;
-		}
-		
-		if(&_RecvOverlapped == pRawOverlapped)
-		{
-			_Read();
-			
-			_ReadCallback(this, _Key);
-		}
-		else if(&_SendOverlapped == pRawOverlapped)
-		{
+			if ( nullptr == pRawOverlapped )
 			{
-				std::shared_lock<std::shared_mutex> lock ( _WriteBuffer._mutex );
-				
-				_WriteBuffer.MoveReadPostion ( TransfferedBytes );
+				return;
 			}
 			
-			_WriteCallback(this, _Key);
+			if ( 0 == TransfferedBytes )
+			{
+				Disable ( SD_BOTH );
+				return;
+			}
+			
+			if ( &_RecvOverlapped == pRawOverlapped )
+			{
+				_Read ( );
+				
+				_ReadCallback ( this, _Key );
+				
+				Read ( );
+			}
+			else if ( &_SendOverlapped == pRawOverlapped )
+			{
+				{
+					std::shared_lock<std::shared_mutex> lock ( _WriteBuffer._mutex );
+					
+					_WriteBuffer.MoveReadPostion ( TransfferedBytes );
+				}
+				
+				_WriteCallback ( this, _Key );
+			}
+		};
+		
+		DecreaseCounter();
+		
+		if(GetCounter() == 0)
+		{
+			delete this;
 		}
 	}
 	

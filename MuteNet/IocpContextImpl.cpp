@@ -15,7 +15,7 @@ namespace EventLoop
 		const auto &Ptr = SocketPtr ( (ISocketDescriptor *)new WinSocketDescriptor ( this, Socket ));
 		
 		CreateIoCompletionPort ( reinterpret_cast<HANDLE>(Socket), _IocpHandle,
-		                         reinterpret_cast<ULONG_PTR>(Ptr.get ( )), 0 );
+		                         reinterpret_cast<ULONG_PTR>(Ptr), 0 );
 		return Ptr;
 	}
 	
@@ -23,7 +23,7 @@ namespace EventLoop
 	IocpContextImpl::CreateListener ( ListenerComponent::CallbackDelegate &&Callback, void *Self, uint32_t Flag,
 	                                  int backlog, socket_t listenSocket )
 	{
-		return ListenerPtr ( new Win32ListenerComponent ( ))
+		return ListenerPtr ((ListenerComponent *) new Win32ListenerComponent (this, std::move(Callback), Self, Flag, backlog, listenSocket ));
 	}
 	
 	IocpContextImpl::IocpContextImpl ( IOContextEvent &Event, uint32_t NumOfWorkerThread, uint32_t Timeout )
@@ -121,7 +121,7 @@ namespace EventLoop
 	
 	bool IocpContextImpl::PostQueue ( void *Pointer )
 	{
-		if (PostQueuedCompletionStatus(_IocpHandle, 0, (ULONG_PTR)Pointer, nullptr) == false)
+		if (!PostQueuedCompletionStatus(_IocpHandle, 0, (ULONG_PTR)Pointer, nullptr))
 		{
 			return false;
 		}

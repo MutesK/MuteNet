@@ -86,7 +86,7 @@ namespace Util
 			ResumeThread ( _Thread.native_handle ( ));
 		}
 		
-		bool IsStop ( )
+		bool IsStop ( ) const
 		{
 			return _Stop;
 		}

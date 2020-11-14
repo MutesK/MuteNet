@@ -26,6 +26,8 @@ namespace EventLoop
 		                          void *Self, uint32_t Flag, int backlog, socket_t listenSocket);
 		
 		void AcceptRequest();
+		
+		friend class IocpContextImpl;
 	public:
 		virtual ~Win32ListenerComponent();
 		

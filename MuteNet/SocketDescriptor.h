@@ -7,6 +7,8 @@
 
 #include "EventBaseComponent.hpp"
 #include <CircularBuffer.h>
+#include <AtomicCounter.hpp>
+#include <InputMemoryStream.h>
 
 namespace EventLoop
 {
@@ -17,7 +19,7 @@ namespace EventLoop
 	
 	using CircularBufferWithLock = LockObject<Util::CircularBuffer>;
 	
-	class ISocketDescriptor : public IEventBaseComponent
+	class ISocketDescriptor : public IEventBaseComponent, public Util::AtomicCounter
 	{
 	protected:
 		socket_t _socket;
@@ -27,7 +29,7 @@ namespace EventLoop
 		ExceptCallackPtr _ExceptCallback;
 		void *_Key;
 		
-		Util::CircularBuffer _ReadBuffer;
+		CircularBufferWithLock _ReadBuffer;
 		CircularBufferWithLock _WriteBuffer;
 		
 		friend class IOContextImpl;
@@ -37,11 +39,13 @@ namespace EventLoop
 		ISocketDescriptor ( const RawIOContextImplPtr &Ptr, socket_t Socket );
 	
 	public:
+		virtual ~ISocketDescriptor();
+		
 		virtual void Read ( ) = 0;
 		
 		virtual void Write ( void *data, size_t length ) = 0;
 		
-		virtual void Enable ( uint16_t Flag ) = 0;
+		virtual void Enable ( ) = 0;
 		
 		virtual void Disable ( uint16_t Flag ) = 0;
 		
@@ -50,10 +54,12 @@ namespace EventLoop
 		
 		socket_t GetFD ( ) const;
 		
+		Util::InputMemoryStream GetReadBuffer() const;
+		
 	protected:
-		void _Read();
-
-		void _Send();
+		bool _Read();
+		
+		bool _Send();
 	};
 }
 
