@@ -6,19 +6,18 @@
 #define MUTENET_LISTENERCOMPONENT_HPP
 
 #include "EventBaseComponent.hpp"
-#include <Runnable.hpp>
 
 namespace EventLoop
 {
-    class SocketDescriptor;
-    using SocketPtr = std::shared_ptr<SocketDescriptor>;
-    
-    class IOContextImpl;
+    class ISocketDescriptor;
+    using SocketPtr = std::shared_ptr<ISocketDescriptor>;
+	
+	class IOContextImpl;
     class ListenerComponent : public IEventBaseComponent
     {
     public:
-        using CallbackDelegate = std::function<void(ListenerComponent *pRawListener, SocketPtr clientsocket,
-                                                    sockaddr *address, int length, void *Self)>;
+	    using CallbackDelegate = std::function<void(ListenerComponent *pRawListener, SocketPtr clientsocket,
+	                                                sockaddr *address, int length, void *Self)>;
     protected:
         socket_t _ListenSocket;
         CallbackDelegate _ListenCallbackDelegate;

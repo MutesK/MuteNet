@@ -6,15 +6,19 @@
 #define MUTENET_SOCKETDESCRIPTOR_H
 
 #include "EventBaseComponent.hpp"
+#include <CircularBuffer.h>
 
 namespace EventLoop
 {
-    class SocketDescriptor;
-    using CallbackPtr = void (*)(SocketDescriptor*, void* Self);
-    using ExceptCallackPtr = void (*)(SocketDescriptor*, uint16_t What, void* Self);
-
-    class SocketDescriptor : public IEventBaseComponent
+    class ISocketDescriptor;
+    using CallbackPtr = void (*)(ISocketDescriptor*, void* Self);
+    using ExceptCallackPtr = void (*)(ISocketDescriptor*, uint16_t What, void* Self);
+    
+    using CircularBufferWithLock = LockObject<Util::CircularBuffer>;
+    
+    class ISocketDescriptor : public IEventBaseComponent
     {
+    protected:
         socket_t  _socket;
 
         CallbackPtr _ReadCallback;
@@ -22,19 +26,20 @@ namespace EventLoop
         ExceptCallackPtr _ExceptCallback;
         void*            _Key;
 
+        Util::CircularBuffer _ReadBuffer;
+	    CircularBufferWithLock _WriteBuffer;
+        
         friend class IOContextImpl;
         friend class SelectIOContext;
 
-        SocketDescriptor(const RawIOContextImplPtr &Ptr, socket_t Socket);
+        ISocketDescriptor(const RawIOContextImplPtr &Ptr, socket_t Socket);
 
     public:
-        void Read(void* data, size_t length);
-        void Write(void* data, size_t length);
+        virtual void Read() = 0;
+        virtual void Write(void* data, size_t length) = 0;
 
-        void Enable(uint16_t Flag);
-        void Disable(uint16_t Flag);
-
-        void Shutdown();
+        virtual void Enable(uint16_t Flag) = 0;
+        virtual void Disable(uint16_t Flag) = 0;
 
         void SetCallback(CallbackPtr ReadCallback, CallbackPtr WriteCallback,
                          ExceptCallackPtr ExceptionCallback, void* Key);

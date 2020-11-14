@@ -20,7 +20,7 @@ namespace Util
         _Buffer = new char[iSize];
         memset(_Buffer, 0, iSize);
     }
-
+    
     CircularBuffer::~CircularBuffer()
     {
         delete[] _Buffer;
@@ -298,5 +298,7 @@ namespace Util
             _Rear += iSize;
         }
     }
+	
 
+	
 }

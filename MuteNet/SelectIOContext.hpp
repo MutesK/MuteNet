@@ -34,6 +34,10 @@ namespace EventLoop
     public:
         SelectIOContext(IOContextEvent &Event,
                         const uint32_t NumOfWorkerThread, const uint32_t Timeout);
+	
+	    virtual ListenerPtr
+	    CreateListener ( ListenerComponent::CallbackDelegate &&Callback, void *Self, uint32_t Flag, int backlog,
+	                     socket_t listenSocket ) override;
 
 
     protected:

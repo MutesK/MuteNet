@@ -15,10 +15,9 @@ namespace EventLoop
     {
         _ThreadPool = std::make_shared<IOContextThreadPool>(NumOfWorkerThread);
     }
-
-    ListenerPtr IOContextImpl::CreateListener(ListenerComponent::CallbackDelegate &&Callback, void *Self, uint32_t Flag, int backlog,
-                       socket_t listenSocket) {
-        return std::shared_ptr<ListenerComponent>(
-                new ListenerComponent(this, std::move(Callback), Self, Flag, backlog, listenSocket));
+    
+    std::shared_ptr<IOContextThreadPool> &IOContextImpl::GetThreadPool ( )
+    {
+        return _ThreadPool;
     }
 }

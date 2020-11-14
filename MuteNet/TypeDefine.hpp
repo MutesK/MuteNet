@@ -13,4 +13,10 @@ using socket_t = int;
 #endif
 
 
+template <class Type>
+struct LockObject : public Type
+{
+	std::shared_mutex _mutex;
+};
+
 #endif //MUTENET_TYPEDEFINE_HPP

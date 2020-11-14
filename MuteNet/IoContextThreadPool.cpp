@@ -10,27 +10,21 @@ namespace EventLoop
 
     void IOContextThreadPool::InnerWork()
     {
+        WorkFunctor Functor;
+
         while (!_ClearFlag)
         {
-           //  _TriggerEvent.Wait(_Timeout);
-
             if (_Queue.empty())
             {
                 continue;
             }
-
-         //   WorkItemPtr Ptr = nullptr;
-            if (false == _Queue.try_pop(Ptr))
+            
+            if (!_Queue.try_pop(Functor))
             {
                 continue;
             }
 
-            if (nullptr == Ptr)
-            {
-                continue;
-            }
-
-            Ptr->Do();
+            Functor();
         }
     }
 
@@ -50,7 +44,6 @@ namespace EventLoop
     IOContextThreadPool::~IOContextThreadPool()
     {
         _ClearFlag = true;
-
         _TriggerEvent.SetAll();
 
         std::for_each(_ThreadPool.begin(), _ThreadPool.end(), [](std::thread &thread)

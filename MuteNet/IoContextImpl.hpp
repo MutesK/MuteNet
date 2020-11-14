@@ -16,8 +16,8 @@ namespace EventLoop
     class ListenerComponent;
     using ListenerPtr = std::shared_ptr<ListenerComponent>;
 
-    class SocketDescriptor;
-    using SocketPtr = std::shared_ptr<SocketDescriptor>;
+    class ISocketDescriptor;
+    using SocketPtr = std::shared_ptr<ISocketDescriptor>;
 
     class IOContextImpl
     {
@@ -29,10 +29,10 @@ namespace EventLoop
         IOContextImpl(IOContextEvent &Event,
                       const uint32_t NumOfWorkerThread, const uint32_t Timeout);
 
-        ListenerPtr CreateListener(ListenerComponent::CallbackDelegate &&Callback,
-                                                      void *Self, uint32_t Flag, int backlog, socket_t listenSocket);
+        virtual ListenerPtr CreateListener(ListenerComponent::CallbackDelegate &&Callback,
+                                                      void *Self, uint32_t Flag, int backlog, socket_t listenSocket) = 0;
 
-        virtual SocketPtr CreateSocket(socket_t Socket);
+        virtual SocketPtr CreateSocket(socket_t Socket) = 0;
 
         std::shared_ptr<IOContextThreadPool>& GetThreadPool();
     };

@@ -32,13 +32,18 @@
 
 #if defined(WIN32)
 
-#pragma warning(disable: 4717)  // StringFormatter Recursive Unpacking
+#define WIN32_LEAN_AND_MEAN
+
+#include <Windows.h>
+
+#include <concurrent_queue.h>
+#include <concurrent_unordered_map.h>
 
 #elif defined(__APPLE__) || defined(__linux__)
 
 #include <tbb/concurrent_queue.h>
 #include <tbb/concurrent_unordered_map.h>
-#include <tbb/concurrent_set.h>
+
 
 namespace concurrency = tbb;
 namespace Concurrency = tbb;

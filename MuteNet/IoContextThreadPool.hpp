@@ -27,6 +27,7 @@ namespace EventLoop
         ~IOContextThreadPool();
 
         void EnqueueJob(const WorkFunctor&& Functor);
+        size_t GetWorkerThreadCount() const;
 
     private:
         void InnerWork();

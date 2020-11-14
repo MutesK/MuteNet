@@ -97,5 +97,13 @@ namespace EventLoop
         const auto& Ptr = IOContextImpl::CreateSocket ( Socket );
 
         _Container.EnqueueSocket(Ptr);
+        return Ptr;
     }
+	
+	ListenerPtr
+	SelectIOContext::CreateListener ( ListenerComponent::CallbackDelegate &&Callback, void *Self, uint32_t Flag,
+	                                  int backlog, socket_t listenSocket )
+	{
+		return EventLoop::ListenerPtr ( );
+	}
 }

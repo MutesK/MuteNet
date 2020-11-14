@@ -32,7 +32,15 @@ void ResumeThread(native_handle_type native_handle)
 #endif
 namespace Util
 {
-    class Runnable
+	class IRunnable
+	{
+	public:
+		virtual void Start() = 0;
+		virtual void Stop() = 0;
+		virtual bool IsStop() const = 0;
+	};
+	
+    class Runnable : public IRunnable
     {
         std::atomic_bool _Stop;
         std::thread _Thread;

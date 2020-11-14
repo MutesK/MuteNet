@@ -7,6 +7,8 @@
 #include "IoContextImpl.hpp"
 #include "LikeUnixListenerComponent.h"
 
+#if defined(UNIX)
+
 namespace EventLoop
 {
     LikeUnixListenerComponent::LikeUnixListenerComponent ( RawIOContextImplPtr const &ContextEvent,
@@ -70,3 +72,5 @@ namespace EventLoop
         Stop();
     }
 }
+
+#endif

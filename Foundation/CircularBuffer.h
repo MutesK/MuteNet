@@ -2,7 +2,7 @@
 
 namespace Util
 {
-    class CircularBuffer final
+    class CircularBuffer
     {
     private:
         static const size_t BUFFER_LENGTH = 20000;

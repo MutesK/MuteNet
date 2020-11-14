@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 SET(PROJECT_NAME MuteNet)
 SET(CMAKE_CXX_STANDARD 17)
 
-SET(SRC_FILES Acceptor.cpp Acceptor.h
+SET(SRC_FILES
         HostNameLookup.cpp HostNameLookup.h
         IPLookUp.cpp IPLookUp.h
         Link.h LinkImpl.cpp LinkImpl.h
@@ -11,7 +11,7 @@ SET(SRC_FILES Acceptor.cpp Acceptor.h
         NetworkManager.cpp NetworkManager.h
         ServerHandle.h
         ServerHandleImpl.h ServerHandleImpl.cpp
-        IoContextEvent.cpp IoContextEvent.hpp IoContextThreadPool.cpp IoContextThreadPool.hpp EventBaseComponent.cpp EventBaseComponent.hpp TypeDefine.hpp IoContextImpl.cpp IoContextImpl.hpp ListenerComponent.cpp ListenerComponent.hpp Win32ListenerComponent.cpp Win32ListenerComponent.h LikeUnixListenerComponent.cpp LikeUnixListenerComponent.h SocketDescriptor.cpp SocketDescriptor.h SelectIOContext.cpp SelectIOContext.hpp)
+        IoContextEvent.cpp IoContextEvent.hpp IoContextThreadPool.cpp IoContextThreadPool.hpp EventBaseComponent.cpp EventBaseComponent.hpp TypeDefine.hpp IoContextImpl.cpp IoContextImpl.hpp ListenerComponent.cpp ListenerComponent.hpp Win32ListenerComponent.cpp Win32ListenerComponent.hpp LikeUnixListenerComponent.cpp LikeUnixListenerComponent.h SocketDescriptor.cpp SocketDescriptor.h SelectIOContext.cpp SelectIOContext.hpp WinSocketDescriptor.cpp WinSocketDescriptor.hpp IocpContextImpl.cpp IocpContextImpl.hpp)
 
 
 SET(CMAKE_VERBOSE_MAKEFILE TRUE)
