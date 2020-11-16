@@ -18,11 +18,6 @@ namespace EventLoop
     {
     }
 
-    IUnixLikeIOContextImpl::ContextContainer &IUnixLikeIOContextImpl::GetContextContainer()
-    {
-        return _Container;
-    }
-
     ListenerPtr
     IUnixLikeIOContextImpl::CreateListener(ListenerComponent::CallbackDelegate &&Callback, void *Self, uint32_t Flag,
                                            int backlog, socket_t listenSocket)

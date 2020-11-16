@@ -2,6 +2,8 @@
 // Created by Mute on 2020-11-14.
 //
 
+#if defined(WIN32)
+
 #include "Common.h"
 #include "TypeDefine.hpp"
 #include "IocpContextImpl.hpp"
@@ -181,3 +183,5 @@ namespace EventLoop
 	}
 	
 }
+
+#endif

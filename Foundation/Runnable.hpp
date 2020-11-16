@@ -44,7 +44,7 @@ namespace Util
 		virtual bool IsStop ( ) const = 0;
 	};
 	
-	class Runnable : public IRunnable
+	class Runnable
 	{
 		std::atomic_bool _Stop;
 		std::thread _Thread;
@@ -65,12 +65,12 @@ namespace Util
 		Runnable &operator= ( Runnable const & ) = delete;
 		
 		
-		void Start ( )
+		virtual void Start ( ) override
 		{
 			_Thread = std::thread ( &Runnable::DoWork, this );
 		}
 		
-		void Stop ( )
+		virtual void Stop ( ) override
 		{
 			_Stop = true;
 			_Thread.join ( );
@@ -86,7 +86,7 @@ namespace Util
 			ResumeThread ( _Thread.native_handle ( ));
 		}
 		
-		bool IsStop ( ) const
+		virtual bool IsStop ( ) const override
 		{
 			return _Stop;
 		}

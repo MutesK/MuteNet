@@ -12,9 +12,12 @@ using socklen_t = int;
 #else
 using socket_t = int;
 
-#define SOCKET_ERROR     -1;
-#define INVALID_SOCKET  (socket_t)(~0)
+const int8_t SOCKET_ERROR  = -1;
+const int8_t INVALID_SOCKET =  (socket_t)(~0);
+
 #endif
+
+using descriptor_t = socket_t;
 
 
 template<class Type>

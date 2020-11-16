@@ -5,12 +5,18 @@
 #if defined(APPLE) || defined(LINUX) || defined(UNIXLIKE)
 
 #include "Common.h"
+#include "TypeDefine.hpp"
 #include "UnixLikeSocketDescriptor.hpp"
 #include "UnixLikeIOContextImpl.hpp"
 
 namespace EventLoop
 {
-	
+    UnixLikeSocketDescriptor::UnixLikeSocketDescriptor(RawIOContextImplPtr const &Ptr, socket_t Socket) :
+            ISocketDescriptor(Ptr, Socket)
+    {
+
+    }
+
 	UnixLikeSocketDescriptor::~UnixLikeSocketDescriptor ( )
 	{
 		static_cast<IUnixLikeIOContextImpl *>(_ContextPtr)->_Container.Erase(reinterpret_cast<ISocketDescriptor *>(this));
@@ -35,12 +41,23 @@ namespace EventLoop
 	
 	void UnixLikeSocketDescriptor::Enable ( )
 	{
-		static_cast<IUnixLikeIOContextImpl *>(_ContextPtr)->_Container.EnqueueSocket(reinterpret_cast<ISocketDescriptor *>(this));
+        if(IsVaildSocket())
+        {
+            std::logic_error("");
+        }
+
+		static_cast<IUnixLikeIOContextImpl *>(_ContextPtr)->Enable(_socket);
 	}
 	
 	void UnixLikeSocketDescriptor::Disable ( uint16_t Flag )
 	{
-		static_cast<IUnixLikeIOContextImpl *>(_ContextPtr)->_Container.Dequeue(reinterpret_cast<ISocketDescriptor *>(this));
+        if(IsVaildSocket())
+        {
+            std::logic_error("");
+        }
+
+
+        static_cast<IUnixLikeIOContextImpl *>(_ContextPtr)->Disable(_socket);
 	}
 }
 #endif

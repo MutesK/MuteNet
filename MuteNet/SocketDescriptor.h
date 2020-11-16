@@ -24,10 +24,10 @@ namespace EventLoop
 	protected:
 		socket_t _socket;
 		
-		CallbackPtr _ReadCallback;
-		CallbackPtr _WriteCallback;
-		ExceptCallackPtr _ExceptCallback;
-		void *_Key;
+		CallbackPtr _ReadCallback = nullptr;
+		CallbackPtr _WriteCallback = nullptr;
+		ExceptCallackPtr _ExceptCallback = nullptr;
+		void *_Key = nullptr;
 		
 		CircularBufferWithLock _ReadBuffer;
 		CircularBufferWithLock _WriteBuffer;
@@ -60,6 +60,8 @@ namespace EventLoop
 		bool _Read();
 		
 		bool _Send();
+
+		bool IsVaildSocket();
 	};
 }
 

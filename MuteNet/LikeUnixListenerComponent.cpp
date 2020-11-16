@@ -17,7 +17,6 @@ namespace EventLoop
 														   uint32_t Flag, int backlog, socket_t listenSocket )
 			: ListenerComponent ( ContextEvent, std::move(Callback), Self, Flag, backlog, listenSocket )
 	{
-
 	}
 
 	void LikeUnixListenerComponent::DoWork ( )
@@ -32,7 +31,6 @@ namespace EventLoop
 
 		struct sockaddr* clientAddress;
 		socklen_t clientAddressLength = 0;
-
 
 		switch(address.sa_family)
 		{
@@ -72,6 +70,7 @@ namespace EventLoop
 	{
 		Stop();
 	}
+
 }
 
 #endif

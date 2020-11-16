@@ -28,7 +28,6 @@ namespace EventLoop {
     public:
         IUnixLikeIOContextImpl(IOContextEvent &Event,
                                const uint32_t NumOfWorkerThread, const uint32_t Timeout);
-        ContextContainerImplPtr &GetContextContainer();
 
         virtual ListenerPtr
         CreateListener(ListenerComponent::CallbackDelegate &&Callback, void *Self, uint32_t Flag, int backlog,
@@ -36,6 +35,8 @@ namespace EventLoop {
 
         virtual SocketPtr CreateSocket(socket_t Socket) override;
 
+        virtual void Enable(const descriptor_t Descriptor) = 0;
+        virtual void Disable(const descriptor_t Descriptor) = 0;
     protected:
         virtual void DoWork() = 0;
     };

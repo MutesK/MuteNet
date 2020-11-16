@@ -14,11 +14,11 @@ namespace EventLoop
 	struct Buffer
 	{
 		char* BufferPtr;
-		size_t length;
+		uint32_t length;
 	};
 	
 	ISocketDescriptor::ISocketDescriptor ( RawIOContextImplPtr const &Ptr, socket_t Socket )
-			: IEventBaseComponent ( Ptr ), _socket ( Socket )
+			: IEventBaseComponent ( Ptr ), _socket ( Socket ), Util::AtomicCounter()
 	{
 	
 	}
@@ -135,6 +135,11 @@ namespace EventLoop
 		
 		return Stream;
 	}
-	
-	
+
+    bool ISocketDescriptor::IsVaildSocket()
+    {
+        return false;
+    }
+
+
 }

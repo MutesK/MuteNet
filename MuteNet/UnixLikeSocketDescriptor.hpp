@@ -15,7 +15,7 @@ namespace EventLoop
 	{
 	public:
         UnixLikeSocketDescriptor ( const RawIOContextImplPtr &Ptr, socket_t Socket );;
-		virtual ~UnixLikeSocketDescriptor ( ) override;
+		virtual ~UnixLikeSocketDescriptor ( );
 		
 		virtual void Write ( void *data, size_t length ) override;
 		

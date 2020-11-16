@@ -5,6 +5,8 @@
 #ifndef MUTENET_IOCPCONTEXTIMPL_HPP
 #define MUTENET_IOCPCONTEXTIMPL_HPP
 
+#if defined(WIN32)
+
 #include "IoContextImpl.hpp"
 #include <Runnable.hpp>
 
@@ -64,5 +66,7 @@ namespace EventLoop
 	};
 	
 }
+
+#endif
 
 #endif //MUTENET_IOCPCONTEXTIMPL_HPP

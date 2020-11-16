@@ -6,7 +6,6 @@ SET(SRC_FILES
         HostNameLookup.cpp HostNameLookup.h
         IPLookUp.cpp IPLookUp.h
         Link.h LinkImpl.cpp LinkImpl.h
-        Listener.cpp
         Network.cpp Network.h
         NetworkManager.cpp NetworkManager.h
         ServerHandle.h
