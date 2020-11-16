@@ -50,7 +50,7 @@ namespace EventLoop
 		
 		virtual ~IocpContextImpl ( );
 		
-		virtual SocketPtr CreateSocket ( socket_t Socket );
+		virtual DescriptorPtr CreateSocket ( socket_t Socket );
 		
 		virtual ListenerPtr
 		CreateListener ( ListenerComponent::CallbackDelegate &&Callback, void *Self, uint32_t Flag, int backlog,

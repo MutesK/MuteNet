@@ -2,6 +2,8 @@
 // Created by Mute on 2020-11-14.
 //
 
+#if defined(WIN32)
+
 #include "Common.h"
 #include "TypeDefine.hpp"
 #include "WinSocketDescriptor.hpp"
@@ -10,7 +12,7 @@
 namespace EventLoop
 {
 	WinSocketDescriptor::WinSocketDescriptor ( EventLoop::RawIOContextImplPtr const &Ptr, socket_t Socket )
-			: ISocketDescriptor ( Ptr, Socket )
+			: IDescriptor ( Ptr, Socket )
 	{
 	
 	}
@@ -156,3 +158,5 @@ namespace EventLoop
 	
 	
 }
+
+#endif

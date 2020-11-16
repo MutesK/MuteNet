@@ -65,12 +65,12 @@ namespace Util
 		Runnable &operator= ( Runnable const & ) = delete;
 		
 		
-		virtual void Start ( ) override
+		void Start ( )
 		{
 			_Thread = std::thread ( &Runnable::DoWork, this );
 		}
 		
-		virtual void Stop ( ) override
+		void Stop ( )
 		{
 			_Stop = true;
 			_Thread.join ( );
@@ -86,7 +86,7 @@ namespace Util
 			ResumeThread ( _Thread.native_handle ( ));
 		}
 		
-		virtual bool IsStop ( ) const override
+		bool IsStop ( ) const
 		{
 			return _Stop;
 		}

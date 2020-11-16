@@ -1,7 +1,7 @@
-#include "pch.h"
+#include "Common.h"
+#include "TypeDefine.hpp"
 #include "IPLookUp.h"
-#include "SocketUtil.h"
-#include "../Foundation/TaskManager.h"
+#include <TaskManager.h>
 
 namespace MuteNet
 {

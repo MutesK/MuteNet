@@ -7,7 +7,7 @@
 #include "TypeDefine.hpp"
 #include "UnixLikeIOContextImpl.hpp"
 #include "LikeUnixListenerComponent.h"
-#include "UnixLikeSocketDescriptor.hpp"
+#include "UnixLikeDescriptor.hpp"
 
 namespace EventLoop
 {
@@ -26,8 +26,8 @@ namespace EventLoop
                 Self, Flag, backlog, listenSocket));
     }
 
-    SocketPtr IUnixLikeIOContextImpl::CreateSocket(socket_t Socket)
+    DescriptorPtr IUnixLikeIOContextImpl::CreateSocket(socket_t Socket)
     {
-        return new UnixLikeSocketDescriptor(this, Socket);
+        return new UnixLikeDescriptor(this, Socket);
     }
 }

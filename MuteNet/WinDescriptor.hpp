@@ -2,8 +2,8 @@
 // Created by Mute on 2020-11-14.
 //
 
-#ifndef MUTENET_WINSOCKETDESCRIPTOR_HPP
-#define MUTENET_WINSOCKETDESCRIPTOR_HPP
+#ifndef MUTENET_WINDESCRIPTOR_HPP
+#define MUTENET_WINDESCRIPTOR_HPP
 
 #if defined(WIN32)
 
@@ -24,7 +24,7 @@ namespace EventLoop
 		virtual void IOTimeout ( OVERLAPPED *pRawOverlapped )= 0;
 	};
 	
-	class WinSocketDescriptor : public ISocketDescriptor, public IWinSocketDescriptor
+	class WinSocketDescriptor : public IDescriptor, public IWinSocketDescriptor
 	{
 		OVERLAPPED _RecvOverlapped;
 		OVERLAPPED _SendOverlapped;
@@ -54,4 +54,4 @@ namespace EventLoop
 #endif
 
 
-#endif //MUTENET_WINSOCKETDESCRIPTOR_HPP
+#endif //MUTENET_WINDESCRIPTOR_HPP

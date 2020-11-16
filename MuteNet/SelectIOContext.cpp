@@ -53,7 +53,7 @@ namespace EventLoop
 	void SelectIOContext::FDSet ( ContextContainer &Container )
 	{
 		std::for_each ( Container._RegisteredSockets.begin ( ), Container._RegisteredSockets.end ( ),
-		                [ & ] ( SocketPtr &Ptr )
+		                [ & ] ( DescriptorPtr &Ptr )
 		                {
 			                FD_SET( Ptr->_socket, &_ReadSet );
 			                FD_SET( Ptr->_socket, &_WriteSet );
@@ -63,7 +63,7 @@ namespace EventLoop
 	void SelectIOContext::FDIsSetAndCallback ( SelectIOContext::ContextContainer &Container )
 	{
 		std::for_each ( Container._RegisteredSockets.begin ( ), Container._RegisteredSockets.end ( ),
-		                [ & ] ( SocketPtr &Ptr )
+		                [ & ] ( DescriptorPtr &Ptr )
 		                {
 			                const auto &ThreadPool = GetThreadPool ( );
 			                const static auto DispatchSignal = [ & ] ( )

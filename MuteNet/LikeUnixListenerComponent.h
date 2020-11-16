@@ -12,8 +12,9 @@
 
 namespace EventLoop
 {
-	class LikeUnixListenerComponent : public ListenerComponent, public Util::Runnable
+	class LikeUnixListenerComponent : public ListenerComponent, public Util::IRunnable
 	{
+	public:
 		virtual ~LikeUnixListenerComponent();
 
 		friend class IUnixLikeIOContextImpl;
@@ -21,8 +22,6 @@ namespace EventLoop
 		LikeUnixListenerComponent(const RawIOContextImplPtr &ContextEvent,
 								  ListenerComponent::CallbackDelegate &&Callback,
 								  void *Self, uint32_t Flag, int backlog, socket_t listenSocket);
-				
-		virtual void DoWork ( ) override;
     };
 }
 

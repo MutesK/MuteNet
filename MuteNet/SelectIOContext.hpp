@@ -6,7 +6,7 @@
 #define MUTENET_SELECTIOCONTEXT_HPP
 
 #include "EventBaseComponent.hpp"
-#include "SocketDescriptor.h"
+#include "Descriptor.h"
 #include "UnixLikeIOContextImpl.hpp"
 
 #if defined(IOCONTEXT_SELECT)
@@ -17,18 +17,12 @@ namespace EventLoop
 	{
 		fd_set _ReadSet, _WriteSet;
 	
-		friend class UnixLikeSocketDescriptor;
-		friend class LikeUnixListenerComponent;
 	public:
 		SelectIOContext ( IOContextEvent &Event,
 		                  const uint32_t NumOfWorkerThread, const uint32_t Timeout );
 
 	protected:
 		virtual void DoWork ( ) override;
-
-		void FDSet ( ContextContainer &Container );
-		
-		void FDIsSetAndCallback ( ContextContainer &Container );
 	};
 	
 	

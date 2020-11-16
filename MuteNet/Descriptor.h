@@ -2,8 +2,8 @@
 // Created by junmkim on 2020-11-13.
 //
 
-#ifndef MUTENET_SOCKETDESCRIPTOR_H
-#define MUTENET_SOCKETDESCRIPTOR_H
+#ifndef MUTENET_DESCRIPTOR_H
+#define MUTENET_DESCRIPTOR_H
 
 #include "EventBaseComponent.hpp"
 #include <CircularBuffer.h>
@@ -12,14 +12,14 @@
 
 namespace EventLoop
 {
-	class ISocketDescriptor;
+	class IDescriptor;
 	
-	using CallbackPtr = void ( * ) ( ISocketDescriptor *, void *Self );
-	using ExceptCallackPtr = void ( * ) ( ISocketDescriptor *, uint16_t What, void *Self );
+	using CallbackPtr = void ( * ) (IDescriptor *, void *Self );
+	using ExceptCallackPtr = void ( * ) (IDescriptor *, uint16_t What, void *Self );
 	
 	using CircularBufferWithLock = LockObject<Util::CircularBuffer>;
 	
-	class ISocketDescriptor : public IEventBaseComponent, public Util::AtomicCounter
+	class IDescriptor : public IEventBaseComponent, public Util::AtomicCounter
 	{
 	protected:
 		socket_t _socket;
@@ -33,13 +33,13 @@ namespace EventLoop
 		CircularBufferWithLock _WriteBuffer;
 		
 		friend class IOContextImpl;
-		
 		friend class SelectIOContext;
+        friend class EpollContextImpl;
 		
-		ISocketDescriptor ( const RawIOContextImplPtr &Ptr, socket_t Socket );
+		IDescriptor (const RawIOContextImplPtr &Ptr, socket_t Socket );
 	
 	public:
-		virtual ~ISocketDescriptor();
+		virtual ~IDescriptor();
 		
 		virtual void Read ( ) = 0;
 		
@@ -55,15 +55,17 @@ namespace EventLoop
 		socket_t GetFD ( ) const;
 		
 		Util::InputMemoryStream GetReadBuffer() const;
-		
+
+        bool IsVaildCallback() const;
+
 	protected:
 		bool _Read();
 		
-		bool _Send();
+		bool _Write();
 
-		bool IsVaildSocket();
+
 	};
 }
 
 
-#endif //MUTENET_SOCKETDESCRIPTOR_H
+#endif //MUTENET_DESCRIPTOR_H

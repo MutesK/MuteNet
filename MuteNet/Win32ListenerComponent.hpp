@@ -6,7 +6,7 @@
 #define MUTENET_WIN32LISTENERCOMPONENT_HPP
 
 #include "ListenerComponent.hpp"
-#include "WinSocketDescriptor.hpp"
+#include "WinDescriptor.hpp"
 #include <OutputMemoryStream.h>
 
 #if defined(WIN32)

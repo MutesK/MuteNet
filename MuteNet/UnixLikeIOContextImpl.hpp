@@ -11,20 +11,8 @@
 #include <Runnable.hpp>
 
 namespace EventLoop {
-    class IUnixLikeIOContextImpl : public IOContextImpl, public Util::Runnable
+    class IUnixLikeIOContextImpl : public IOContextImpl
             {
-    protected:
-        struct IContextContainerImpl {
-            std::mutex _SwapMutex;
-
-            ContextContainer() = default;
-
-            virtual void Register(const socket_t Socket) = 0;
-            virtual void UnRegister(const socket_t Socket) = 0;
-        };
-        using ContextContainerImplPtr = std::shared_ptr<IContextContainerImpl>;
-
-        ContextContainerImplPtr _ContextContainerPtr;
     public:
         IUnixLikeIOContextImpl(IOContextEvent &Event,
                                const uint32_t NumOfWorkerThread, const uint32_t Timeout);
@@ -33,12 +21,10 @@ namespace EventLoop {
         CreateListener(ListenerComponent::CallbackDelegate &&Callback, void *Self, uint32_t Flag, int backlog,
                        socket_t listenSocket) override;
 
-        virtual SocketPtr CreateSocket(socket_t Socket) override;
+        virtual DescriptorPtr CreateSocket(socket_t Socket) override;
 
-        virtual void Enable(const descriptor_t Descriptor) = 0;
-        virtual void Disable(const descriptor_t Descriptor) = 0;
-    protected:
-        virtual void DoWork() = 0;
+        virtual bool Enable(const DescriptorPtr descriptor) = 0;
+        virtual void Disable(const DescriptorPtr descriptor) = 0;
     };
 }
 

@@ -1,8 +1,6 @@
 #pragma once
 
-#include "pch.h"
 #include "../Foundation/Singleton.h"
-#include "ServiceListener.h"
 
 namespace MuteNet
 {

@@ -12,9 +12,9 @@
 
 namespace EventLoop
 {
-	SocketPtr IocpContextImpl::CreateSocket ( socket_t Socket )
+	DescriptorPtr IocpContextImpl::CreateSocket ( socket_t Socket )
 	{
-		const auto &Ptr = SocketPtr ( (ISocketDescriptor *)new WinSocketDescriptor ( this, Socket ));
+		const auto &Ptr = DescriptorPtr ( (IDescriptor *)new WinSocketDescriptor ( this, Socket ));
 		
 		CreateIoCompletionPort ( reinterpret_cast<HANDLE>(Socket), _IocpHandle,
 		                         reinterpret_cast<ULONG_PTR>(Ptr), 0 );

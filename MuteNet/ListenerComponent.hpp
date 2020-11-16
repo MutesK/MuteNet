@@ -9,16 +9,16 @@
 
 namespace EventLoop
 {
-	class ISocketDescriptor;
-	using SocketPtr = *ISocketDescriptor;
+	class IDescriptor;
+	using DescriptorPtr = IDescriptor*;
 	
 	class IOContextImpl;
 	
 	class ListenerComponent : public IEventBaseComponent
 	{
 	public:
-		using CallbackDelegate = std::function<void ( ListenerComponent *pRawListener, SocketPtr clientsocket,
-		                                              sockaddr *address, int length, void *Self )>;
+		using CallbackDelegate = std::function<void (ListenerComponent *pRawListener, DescriptorPtr clientsocket,
+                                                     sockaddr *address, int length, void *Self )>;
 	protected:
 		socket_t _ListenSocket;
 		CallbackDelegate _ListenCallbackDelegate;

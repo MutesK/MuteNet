@@ -18,12 +18,12 @@ SET(SRC_FILES
         ListenerComponent.cpp ListenerComponent.hpp
         Win32ListenerComponent.cpp Win32ListenerComponent.hpp
         LikeUnixListenerComponent.cpp LikeUnixListenerComponent.h
-        SocketDescriptor.cpp SocketDescriptor.h
+        Descriptor.cpp Descriptor.h
         SelectIOContext.cpp SelectIOContext.hpp
-        WinSocketDescriptor.cpp WinSocketDescriptor.hpp
+        WinDescriptor.cpp WinDescriptor.hpp
         IocpContextImpl.cpp IocpContextImpl.hpp
-        UnixLikeSocketDescriptor.cpp UnixLikeSocketDescriptor.hpp
-        UnixLikeIOContextImpl.hpp KQueueIOContextImpl.cpp KQueueIOContextImpl.hpp UnixLikeIOContextImpl.cpp)
+        UnixLikeDescriptor.cpp UnixLikeDescriptor.hpp
+        UnixLikeIOContextImpl.hpp KQueueIOContextImpl.cpp KQueueIOContextImpl.hpp UnixLikeIOContextImpl.cpp EpollContextImpl.cpp EpollContextImpl.hpp)
 
 
 SET(CMAKE_VERBOSE_MAKEFILE TRUE)

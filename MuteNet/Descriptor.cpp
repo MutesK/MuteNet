@@ -4,7 +4,7 @@
 
 #include "Common.h"
 #include "TypeDefine.hpp"
-#include "SocketDescriptor.h"
+#include "Descriptor.h"
 
 #include <OutputMemoryStream.h>
 #include <InputMemoryStream.h>
@@ -17,20 +17,20 @@ namespace EventLoop
 		uint32_t length;
 	};
 	
-	ISocketDescriptor::ISocketDescriptor ( RawIOContextImplPtr const &Ptr, socket_t Socket )
+	IDescriptor::IDescriptor (RawIOContextImplPtr const &Ptr, socket_t Socket )
 			: IEventBaseComponent ( Ptr ), _socket ( Socket ), Util::AtomicCounter()
 	{
 	
 	}
 	
-	ISocketDescriptor::~ISocketDescriptor ( )
+	IDescriptor::~IDescriptor ( )
 	{
 		_ExceptCallback(this, 0, _Key);
 	}
 	
-	void ISocketDescriptor::SetCallback ( CallbackPtr ReadCallback, CallbackPtr WriteCallback,
-	                                      ExceptCallackPtr ExceptionCallback,
-	                                      void *Key )
+	void IDescriptor::SetCallback (CallbackPtr ReadCallback, CallbackPtr WriteCallback,
+                                   ExceptCallackPtr ExceptionCallback,
+                                   void *Key )
 	{
 		_ReadCallback = ReadCallback;
 		_WriteCallback = WriteCallback;
@@ -38,19 +38,19 @@ namespace EventLoop
 		_Key = Key;
 	}
 	
-	socket_t ISocketDescriptor::GetFD ( ) const
+	socket_t IDescriptor::GetFD ( ) const
 	{
 		return _socket;
 	}
 	
-	bool ISocketDescriptor::_Read ( )
+	bool IDescriptor::_Read ( )
 	{
 		Util::OutputMemoryStream StreamBuffer;
 		auto& InputMemoryStream = reinterpret_cast<Util::InputMemoryStream &>(StreamBuffer);
 		
 		
-		int ret = recv(_socket, const_cast<char *>(InputMemoryStream.GetBufferPtr()),
-		               InputMemoryStream.GetRemainingDataSize(), 0);
+		int ret = read(_socket, const_cast<char *>(InputMemoryStream.GetBufferPtr()),
+		               InputMemoryStream.GetRemainingDataSize());
 		
 		if(ret == SOCKET_ERROR)
 		{
@@ -73,7 +73,7 @@ namespace EventLoop
 		return true;
 	}
 	
-	bool ISocketDescriptor::_Send ( )
+	bool IDescriptor::_Write ( )
 	{
 		Util::OutputMemoryStream StreamBuffer;
 		auto& InputMemoryStream = reinterpret_cast<Util::InputMemoryStream &>(StreamBuffer);
@@ -98,7 +98,8 @@ namespace EventLoop
 			}
 		}
 		
-		int ret = send(_socket, InputMemoryStream.GetBufferPtr(), InputMemoryStream.GetRemainingDataSize(), 0);
+		int ret = write(_socket, InputMemoryStream.GetBufferPtr(),
+                  InputMemoryStream.GetRemainingDataSize());
 		
 		if(ret == SOCKET_ERROR)
 		{
@@ -116,7 +117,7 @@ namespace EventLoop
 		
 	}
 	
-	Util::InputMemoryStream ISocketDescriptor::GetReadBuffer ( ) const
+	Util::InputMemoryStream IDescriptor::GetReadBuffer ( ) const
 	{
 		Util::InputMemoryStream Stream;
 		
@@ -136,9 +137,12 @@ namespace EventLoop
 		return Stream;
 	}
 
-    bool ISocketDescriptor::IsVaildSocket()
+    bool IDescriptor::IsVaildCallback( ) const
     {
-        return false;
+        return !(_ReadCallback == nullptr ||
+                _WriteCallback != nullptr ||
+                _ExceptCallback != nullptr ||
+                _Key != nullptr);
     }
 
 

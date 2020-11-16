@@ -26,4 +26,5 @@ struct LockObject : public Type
 	std::shared_mutex _mutex;
 };
 
+
 #endif //MUTENET_TYPEDEFINE_HPP

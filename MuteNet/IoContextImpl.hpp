@@ -7,7 +7,7 @@
 
 #include "IoContextThreadPool.hpp"
 #include "ListenerComponent.hpp"
-#include "SocketDescriptor.h"
+#include "Descriptor.h"
 
 #include <Runnable.hpp>
 
@@ -18,8 +18,8 @@ namespace EventLoop
 	class ListenerComponent;
 	using ListenerPtr = std::shared_ptr<ListenerComponent>;
 	
-	class ISocketDescriptor;
-	using SocketPtr = ISocketDescriptor*;
+	class IDescriptor;
+	using DescriptorPtr = IDescriptor*;
 	
 	class IOContextImpl
 	{
@@ -34,7 +34,7 @@ namespace EventLoop
 		virtual ListenerPtr CreateListener ( ListenerComponent::CallbackDelegate &&Callback,
 		                                     void *Self, uint32_t Flag, int backlog, socket_t listenSocket ) = 0;
 		
-		virtual SocketPtr CreateSocket ( socket_t Socket ) = 0;
+		virtual DescriptorPtr CreateSocket (socket_t Socket ) = 0;
 		
 		std::shared_ptr<IOContextThreadPool> &GetThreadPool ( );
 	};
