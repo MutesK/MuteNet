@@ -2,6 +2,8 @@
 // Created by junmkim on 2020-11-12.
 //
 
+#if defined(APPLE) || defined(LINUX) || defined(UNIXLIKE)
+
 #include "Common.h"
 #include "TypeDefine.hpp"
 #include "IoContextImpl.hpp"
@@ -72,3 +74,4 @@ namespace EventLoop
 	}
 }
 
+#endif

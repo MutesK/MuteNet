@@ -2,17 +2,21 @@
 // Created by junmkim on 2020-11-13.
 //
 
+
+#if defined(IOCONTEXT_SELECT)
+
 #include "Common.h"
 #include "TypeDefine.hpp"
 #include "SelectIOContext.hpp"
 #include "SocketDescriptor.h"
 #include "LikeUnixListenerComponent.h"
 
+
 namespace EventLoop
 {
 	
 	SelectIOContext::SelectIOContext ( IOContextEvent &Event, const uint32_t NumOfWorkerThread, const uint32_t Timeout )
-			: IOContextImpl ( Event, NumOfWorkerThread, Timeout )
+			: IUnixLikeIOContextImpl ( Event, NumOfWorkerThread, Timeout )
 	{
 	
 	}
@@ -45,29 +49,7 @@ namespace EventLoop
 			FDIsSetAndCallback ( Container );
 		}
 	}
-	
-	SelectIOContext::ContextContainer
-	SelectIOContext::ContextContainer::operator= ( SelectIOContext::ContextContainer &Container )
-	{
-		std::lock_guard<std::mutex> lock ( Container._SwapMutex );
-		
-		_RegisteredSockets.swap ( Container._RegisteredSockets );
-	}
-	
-	void SelectIOContext::ContextContainer::EnqueueSocket ( const SocketPtr &Ptr )
-	{
-		std::lock_guard<std::mutex> lock ( _SwapMutex );
-		
-		_RegisteredSockets.insert ( Ptr );
-	}
-	
-	void SelectIOContext::ContextContainer::Erase ( const SocketPtr &Ptr )
-	{
-		std::lock_guard<std::mutex> lock ( _SwapMutex );
-		
-		_RegisteredSockets.erase(Ptr);
-	}
-	
+
 	void SelectIOContext::FDSet ( ContextContainer &Container )
 	{
 		std::for_each ( Container._RegisteredSockets.begin ( ), Container._RegisteredSockets.end ( ),
@@ -105,19 +87,7 @@ namespace EventLoop
 			                ThreadPool->EnqueueJob ( DispatchSignal );
 		                } );
 	}
-	
-	SocketPtr SelectIOContext::CreateSocket ( socket_t Socket )
-	{
-		const auto &Ptr = IOContextImpl::CreateSocket ( Socket );
-		
-		// _Container.EnqueueSocket ( Ptr );
-		return Ptr;
-	}
-	
-	ListenerPtr
-	SelectIOContext::CreateListener ( ListenerComponent::CallbackDelegate &&Callback, void *Self, uint32_t Flag,
-	                                  int backlog, socket_t listenSocket )
-	{
-		return ListenerPtr ((ListenerComponent *) new LikeUnixListenerComponent(this, std::move(Callback), Self, Flag, backlog, listenSocket));
-	}
+
 }
+
+#endif

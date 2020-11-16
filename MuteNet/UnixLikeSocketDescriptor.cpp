@@ -2,16 +2,18 @@
 // Created by Mute on 2020-11-15.
 //
 
+#if defined(APPLE) || defined(LINUX) || defined(UNIXLIKE)
+
 #include "Common.h"
 #include "UnixLikeSocketDescriptor.hpp"
-#include "SelectIOContext.hpp"
+#include "UnixLikeIOContextImpl.hpp"
 
 namespace EventLoop
 {
 	
 	UnixLikeSocketDescriptor::~UnixLikeSocketDescriptor ( )
 	{
-		static_cast<SelectIOContext *>(_ContextPtr)->_Container.Erase( reinterpret_cast<ISocketDescriptor *>(this));
+		static_cast<IUnixLikeIOContextImpl *>(_ContextPtr)->_Container.Erase(reinterpret_cast<ISocketDescriptor *>(this));
 	}
 	
 	void UnixLikeSocketDescriptor::Read ( )
@@ -33,11 +35,12 @@ namespace EventLoop
 	
 	void UnixLikeSocketDescriptor::Enable ( )
 	{
-		static_cast<SelectIOContext *>(_ContextPtr)->_Container.EnqueueSocket(reinterpret_cast<ISocketDescriptor *>(this));
+		static_cast<IUnixLikeIOContextImpl *>(_ContextPtr)->_Container.EnqueueSocket(reinterpret_cast<ISocketDescriptor *>(this));
 	}
 	
 	void UnixLikeSocketDescriptor::Disable ( uint16_t Flag )
 	{
-		shutdown(_socket, Flag);
+		static_cast<IUnixLikeIOContextImpl *>(_ContextPtr)->_Container.Dequeue(reinterpret_cast<ISocketDescriptor *>(this));
 	}
 }
+#endif

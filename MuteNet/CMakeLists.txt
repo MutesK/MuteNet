@@ -11,7 +11,20 @@ SET(SRC_FILES
         NetworkManager.cpp NetworkManager.h
         ServerHandle.h
         ServerHandleImpl.h ServerHandleImpl.cpp
-        IoContextEvent.cpp IoContextEvent.hpp IoContextThreadPool.cpp IoContextThreadPool.hpp EventBaseComponent.cpp EventBaseComponent.hpp TypeDefine.hpp IoContextImpl.cpp IoContextImpl.hpp ListenerComponent.cpp ListenerComponent.hpp Win32ListenerComponent.cpp Win32ListenerComponent.hpp LikeUnixListenerComponent.cpp LikeUnixListenerComponent.h SocketDescriptor.cpp SocketDescriptor.h SelectIOContext.cpp SelectIOContext.hpp WinSocketDescriptor.cpp WinSocketDescriptor.hpp IocpContextImpl.cpp IocpContextImpl.hpp UnixLikeSocketDescriptor.cpp UnixLikeSocketDescriptor.hpp)
+        IoContextEvent.cpp IoContextEvent.hpp
+        IoContextThreadPool.cpp IoContextThreadPool.hpp
+        EventBaseComponent.cpp EventBaseComponent.hpp
+        TypeDefine.hpp
+        IoContextImpl.cpp IoContextImpl.hpp
+        ListenerComponent.cpp ListenerComponent.hpp
+        Win32ListenerComponent.cpp Win32ListenerComponent.hpp
+        LikeUnixListenerComponent.cpp LikeUnixListenerComponent.h
+        SocketDescriptor.cpp SocketDescriptor.h
+        SelectIOContext.cpp SelectIOContext.hpp
+        WinSocketDescriptor.cpp WinSocketDescriptor.hpp
+        IocpContextImpl.cpp IocpContextImpl.hpp
+        UnixLikeSocketDescriptor.cpp UnixLikeSocketDescriptor.hpp
+        UnixLikeIOContextImpl.hpp KQueueIOContextImpl.cpp KQueueIOContextImpl.hpp UnixLikeIOContextImpl.cpp)
 
 
 SET(CMAKE_VERBOSE_MAKEFILE TRUE)
@@ -21,9 +34,20 @@ PROJECT(${PROJECT_NAME})
 SET(PROJECT_VERSION_MAJOR 1)
 SET(PROJECT_VERSION_MINOR 0)
 
-IF (UNIX)
+
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    ADD_DEFINITIONS(-DIOCONTEXT_KQUEUE)
+    ADD_DEFINITIONS(-DAPPLE)
     INCLUDE_DIRECTORIES(/usr/local/include)
-ENDIF ()
+ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+    ADD_DEFINITIONS(-DIOCONTEXT_EPOLL)
+    ADD_DEFINITIONS(-DLINUX)
+ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Win32")
+    ADD_DEFINITIONS(-DIOCONTEXT_IOCP)
+ELSE()
+    ADD_DEFINITIONS(-DIOCONTEXT_SELECT)
+    ADD_DEFINITIONS(-DUNIXLIKE)
+ENDIF()
 
 
 ADD_SUBDIRECTORY(${MUTENET_FOUNDATION_LOCATION} ../Build)

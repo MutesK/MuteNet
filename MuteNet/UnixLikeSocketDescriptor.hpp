@@ -5,6 +5,8 @@
 #ifndef MUTENET_UNIXLIKESOCKETDESCRIPTOR_HPP
 #define MUTENET_UNIXLIKESOCKETDESCRIPTOR_HPP
 
+#if defined(APPLE) || defined(LINUX) || defined(UNIXLIKE)
+
 #include "SocketDescriptor.h"
 
 namespace EventLoop
@@ -12,6 +14,7 @@ namespace EventLoop
 	class UnixLikeSocketDescriptor : public ISocketDescriptor
 	{
 	public:
+        UnixLikeSocketDescriptor ( const RawIOContextImplPtr &Ptr, socket_t Socket );;
 		virtual ~UnixLikeSocketDescriptor ( ) override;
 		
 		virtual void Write ( void *data, size_t length ) override;
@@ -25,5 +28,6 @@ namespace EventLoop
 	};
 }
 
+#endif
 
 #endif //MUTENET_UNIXLIKESOCKETDESCRIPTOR_HPP

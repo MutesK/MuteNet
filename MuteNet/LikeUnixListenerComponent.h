@@ -5,6 +5,8 @@
 #ifndef MUTENET_LIKEUNIXLISTENERCOMPONENT_H
 #define MUTENET_LIKEUNIXLISTENERCOMPONENT_H
 
+#if defined(APPLE) || defined(LINUX) || defined(UNIXLIKE)
+
 #include "ListenerComponent.hpp"
 #include <Runnable.hpp>
 
@@ -13,8 +15,8 @@ namespace EventLoop
 	class LikeUnixListenerComponent : public ListenerComponent, public Util::Runnable
 	{
 		virtual ~LikeUnixListenerComponent();
-		
-		friend class SelectIOContext;
+
+		friend class IUnixLikeIOContextImpl;
 	private:
 		LikeUnixListenerComponent(const RawIOContextImplPtr &ContextEvent,
 								  ListenerComponent::CallbackDelegate &&Callback,
@@ -25,5 +27,5 @@ namespace EventLoop
 }
 
 
-
+#endif
 #endif //MUTENET_LIKEUNIXLISTENERCOMPONENT_H
