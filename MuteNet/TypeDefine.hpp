@@ -26,5 +26,41 @@ struct LockObject : public Type
 	std::shared_mutex _mutex;
 };
 
+template <class Type>
+class SharedScopedLockObject
+{
+	Type& _Value;
+	
+	static_assert(std::is_base_of_v<Type, LockObject<Type>>, "");
+public:
+	SharedScopedLockObject(Type& Value)
+		:_Value(Value)
+	{
+		_Value._mutex.lock_shared();
+	}
+	~SharedScopedLockObject()
+	{
+		_Value._mutex.unlock_shared();
+	}
+	
+}
 
+template <class Type>
+class UniqueScopedLockObject
+{
+	Type& _Value;
+	
+	static_assert(std::is_base_of_v<Type, LockObject<Type>>, "");
+public:
+	UniqueScopedLockObject(Type& Value)
+		:_Value(Value)
+	{
+		_Value._mutex.lock();
+	}
+	~UniqueScopedLockObject()
+	{
+		_Value._mutex.unlock();
+	}
+	
+}
 #endif //MUTENET_TYPEDEFINE_HPP
