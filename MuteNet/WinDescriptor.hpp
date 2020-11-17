@@ -9,7 +9,7 @@
 
 #include <cstddef>
 #include <cstdint>
-#include "SocketDescriptor.h"
+#include "Descriptor.h"
 
 
 namespace EventLoop
@@ -24,7 +24,7 @@ namespace EventLoop
 		virtual void IOTimeout ( OVERLAPPED *pRawOverlapped )= 0;
 	};
 	
-	class WinSocketDescriptor : public IDescriptor, public IWinSocketDescriptor
+	class WinSocketDescriptor : public IDescriptor, public IWinSocketDescriptor, public Util::AtomicCounter
 	{
 		OVERLAPPED _RecvOverlapped;
 		OVERLAPPED _SendOverlapped;

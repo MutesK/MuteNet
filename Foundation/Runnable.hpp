@@ -36,12 +36,17 @@ namespace Util
 {
 	class IRunnable
 	{
+	protected:
+        std::atomic_bool _Stop;
 	public:
 		virtual void Start ( ) = 0;
 		
 		virtual void Stop ( ) = 0;
 		
-		virtual bool IsStop ( ) const = 0;
+		virtual bool IsStop ( ) const
+        {
+		    return _Stop;
+        }
 	};
 	
 	class Runnable

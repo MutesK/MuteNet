@@ -19,7 +19,7 @@ namespace EventLoop
 
 	UnixLikeDescriptor::~UnixLikeDescriptor ( )
 	{
-        close(_socket);
+        close(_descriptor);
 	}
 	
 	void UnixLikeDescriptor::Read ( )
@@ -46,7 +46,7 @@ namespace EventLoop
             std::logic_error("");
         }
 
-        static_cast<IUnixLikeIOContextImpl *>(_ContextPtr)->Enable(_socket);
+        static_cast<IUnixLikeIOContextImpl *>(_ContextPtr)->Enable(_descriptor);
 
 	}
 	
@@ -57,7 +57,7 @@ namespace EventLoop
             std::logic_error("");
         }
 
-        static_cast<IUnixLikeIOContextImpl *>(_ContextPtr)->Disable(_socket);
+        static_cast<IUnixLikeIOContextImpl *>(_ContextPtr)->Disable(_descriptor);
 
 	}
 }

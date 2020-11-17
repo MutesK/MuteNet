@@ -19,15 +19,15 @@ namespace EventLoop
     }
 
     ListenerPtr
-    IUnixLikeIOContextImpl::CreateListener(ListenerComponent::CallbackDelegate &&Callback, void *Self, uint32_t Flag,
-                                           int backlog, socket_t listenSocket)
+    IUnixLikeIOContextImpl::CreateListener(ListenerComponent::CallbackDelegate &&Callback, void *Self, 
+        descriptor_t listenSocket)
     {
         return ListenerPtr ((ListenerComponent *)new LikeUnixListenerComponent(this, std::move(Callback),
-                Self, Flag, backlog, listenSocket));
+                Self, listenSocket));
     }
 
-    DescriptorPtr IUnixLikeIOContextImpl::CreateSocket(socket_t Socket)
+    DescriptorPtr IUnixLikeIOContextImpl::CreateDescriptor(descriptor_t descriptor)
     {
-        return new UnixLikeDescriptor(this, Socket);
+        return new UnixLikeDescriptor(this, descriptor);
     }
 }

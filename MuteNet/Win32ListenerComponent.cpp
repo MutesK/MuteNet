@@ -14,8 +14,8 @@ namespace EventLoop
 	
 	Win32ListenerComponent::Win32ListenerComponent ( RawIOContextImplPtr const &ContextEvent,
 	                                                 ListenerComponent::CallbackDelegate &&Callback, void *Self,
-	                                                 uint32_t Flag, int backlog, socket_t listenSocket )
-			: ListenerComponent ( ContextEvent, std::move(Callback), Self, Flag, backlog, listenSocket )
+	                                                 descriptor_t listenSocket )
+			: ListenerComponent ( ContextEvent, std::move(Callback), Self, listenSocket )
 	{
 		auto Iocp = reinterpret_cast<IocpContextImpl *>(_ContextPtr)->_IocpHandle;
 		
@@ -34,9 +34,9 @@ namespace EventLoop
 		static AcceptExPtr& _AcceptExFunctionPtr = Extension._AcceptEx;
 		static DWORD Pending = 0;
 		
-		_ClientSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+		_Client = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 		
-		if(!_AcceptExFunctionPtr(_ListenSocket, _ClientSocket, const_cast<char *>(_AddressBuffer.GetBufferPtr()), 0,
+		if(!_AcceptExFunctionPtr(GetDescriptor(), _Client, const_cast<char *>(_AddressBuffer.GetBufferPtr()), 0,
 		                         sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, &Pending, &_Overlapped))
 		{
 			return;
@@ -53,9 +53,9 @@ namespace EventLoop
 			if ( nullptr == pRawOverlapped )
 				return;
 			
-			
-			if ( setsockopt ( _ClientSocket, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT,
-			                  reinterpret_cast<char *>(&_ListenSocket), sizeof ( _ListenSocket )) == SOCKET_ERROR)
+			auto Listen = GetDescriptor();
+			if ( setsockopt (_Client, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT,
+			                  reinterpret_cast<char *>(&Listen), sizeof (descriptor_t)) == SOCKET_ERROR)
 			{
 				return;
 			}
@@ -68,9 +68,9 @@ namespace EventLoop
 			                          &LocalSockAddr, &RemoteAddrLength, &RemoteSockAddr, &RemoteAddrLength );
 			
 			const auto &Pool = _ContextPtr->GetThreadPool ( );
-			static const auto ListenDispatch = [ & ] ( )
+			const auto ListenDispatch = [ & ] ( )
 			{
-				_ListenCallbackDelegate ( this, reinterpret_cast<IocpContextImpl *>(_ContextPtr)->CreateSocket ( _ClientSocket ), RemoteSockAddr,
+				_ListenCallbackDelegate ( this, reinterpret_cast<IocpContextImpl *>(_ContextPtr)->CreateDescriptor ( _Client ), RemoteSockAddr,
 				                          RemoteAddrLength, _Self );
 			};
 			

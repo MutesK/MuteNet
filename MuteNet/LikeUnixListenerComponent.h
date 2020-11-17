@@ -17,12 +17,29 @@ namespace EventLoop
 	public:
 		virtual ~LikeUnixListenerComponent();
 
-		friend class IUnixLikeIOContextImpl;
+        virtual void Start() override;
+
+        virtual void Stop() override;
+
+        friend class EpollContextImpl;
 	private:
 		LikeUnixListenerComponent(const RawIOContextImplPtr &ContextEvent,
 								  ListenerComponent::CallbackDelegate &&Callback,
-								  void *Self, uint32_t Flag, int backlog, socket_t listenSocket);
-    };
+								  void *Self, socket_t listenSocket);
+
+		// ListenerComponent을(를) 통해 상속됨
+		virtual void Read() override;
+
+		virtual void Write(void* data, size_t length) override;
+
+		virtual void Enable() override;
+
+		virtual void Disable(uint16_t Flag) override;
+
+		virtual bool _Read() override;
+
+		virtual bool _Write() override;
+	};
 }
 
 

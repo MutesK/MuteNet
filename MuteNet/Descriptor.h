@@ -19,10 +19,10 @@ namespace EventLoop
 	
 	using CircularBufferWithLock = LockObject<Util::CircularBuffer>;
 	
-	class IDescriptor : public IEventBaseComponent, public Util::AtomicCounter
+	class IDescriptor : public IEventBaseComponent
 	{
 	protected:
-		socket_t _socket;
+		descriptor_t _descriptor;
 		
 		CallbackPtr _ReadCallback = nullptr;
 		CallbackPtr _WriteCallback = nullptr;
@@ -36,7 +36,7 @@ namespace EventLoop
 		friend class SelectIOContext;
         friend class EpollContextImpl;
 		
-		IDescriptor (const RawIOContextImplPtr &Ptr, socket_t Socket );
+		IDescriptor (const RawIOContextImplPtr &Ptr, descriptor_t descriptor );
 	
 	public:
 		virtual ~IDescriptor();
@@ -52,16 +52,16 @@ namespace EventLoop
 		void SetCallback ( CallbackPtr ReadCallback, CallbackPtr WriteCallback,
 		                   ExceptCallackPtr ExceptionCallback, void *Key );
 		
-		socket_t GetFD ( ) const;
+		descriptor_t GetDescriptor ( ) const;
 		
 		Util::InputMemoryStream GetReadBuffer() const;
 
         bool IsVaildCallback() const;
 
 	protected:
-		bool _Read();
+		virtual bool _Read();
 		
-		bool _Write();
+		virtual bool _Write();
 
 
 	};

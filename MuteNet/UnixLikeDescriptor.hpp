@@ -13,6 +13,7 @@ namespace EventLoop
 {
 	class UnixLikeDescriptor : public IDescriptor
 	{
+		friend class IUnixLikeIOContextImpl;
 	public:
         UnixLikeDescriptor (const RawIOContextImplPtr &Ptr, socket_t Socket );;
 		virtual ~UnixLikeDescriptor ( );

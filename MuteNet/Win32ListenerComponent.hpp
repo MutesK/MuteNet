@@ -17,13 +17,12 @@ namespace EventLoop
 	{
 		bool                     _IsStop = false;
 		Util::OutputMemoryStream _AddressBuffer;
-		socket_t                 _ClientSocket;
 		OVERLAPPED               _Overlapped;
-		
+		descriptor_t			 _Client;
 		
 		Win32ListenerComponent(const RawIOContextImplPtr &ContextEvent,
 		                          ListenerComponent::CallbackDelegate &&Callback,
-		                          void *Self, uint32_t Flag, int backlog, socket_t listenSocket);
+		                          void *Self, descriptor_t listenSocket);
 		
 		void AcceptRequest();
 		

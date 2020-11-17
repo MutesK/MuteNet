@@ -5,18 +5,15 @@
 #include "Common.h"
 #include "TypeDefine.hpp"
 #include "ListenerComponent.hpp"
-#include "IoContextImpl.hpp"
 
 namespace EventLoop
 {
 	ListenerComponent::ListenerComponent ( const RawIOContextImplPtr &ContextEvent,
 	                                       ListenerComponent::CallbackDelegate &&Callback, void *Self,
-	                                       uint32_t Flag, int backlog, socket_t listenSocket )
-			: IEventBaseComponent ( ContextEvent ),
-			  _ListenSocket ( listenSocket ),
+	                                       descriptor_t listenSocket )
+			: IDescriptor ( ContextEvent, listenSocket  ),
 			  _ListenCallbackDelegate ( Callback ),
-			  _Self ( Self ),
-			  _Backlog ( backlog )
+			  _Self ( Self )
 	{
 	
 	}
@@ -25,4 +22,35 @@ namespace EventLoop
 	{
 	
 	}
+
+    void ListenerComponent::Read()
+    {
+
+    }
+
+    void ListenerComponent::Write(void *data, size_t length)
+    {
+
+    }
+
+    void ListenerComponent::Enable()
+    {
+
+    }
+
+    void ListenerComponent::Disable(uint16_t Flag)
+    {
+
+    }
+
+    bool ListenerComponent::_Read()
+    {
+        return true;
+    }
+
+    bool ListenerComponent::_Write()
+    {
+        return true;
+    }
+
 }

@@ -9,6 +9,8 @@
 
 #include "UnixLikeIOContextImpl.hpp"
 #include "TypeDefine.hpp"
+#include "LikeUnixListenerComponent.h"
+
 #include <Runnable.hpp>
 
 namespace EventLoop
@@ -26,10 +28,9 @@ namespace EventLoop
         virtual ~EpollContextImpl();
 
         virtual ListenerPtr
-        CreateListener(ListenerComponent::CallbackDelegate &&Callback, void *Self, uint32_t Flag, int backlog,
-                       socket_t listenSocket) override;
+        CreateListener(ListenerComponent::CallbackDelegate &&Callback, void *Self, descriptor_t listenSocket) override;
 
-        virtual DescriptorPtr CreateSocket(socket_t Socket) override;
+        virtual DescriptorPtr CreateDescriptor(socket_t Socket) override;
 
         virtual bool Enable(const DescriptorPtr descriptor) override;
 

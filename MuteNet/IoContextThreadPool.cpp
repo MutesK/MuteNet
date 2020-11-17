@@ -58,6 +58,11 @@ namespace EventLoop
 		
 		_TriggerEvent.Set ( );
 	}
+
+	size_t IOContextThreadPool::GetWorkerThreadCount() const
+	{
+		return _ThreadPool.size();
+	}
 	
 	
 }

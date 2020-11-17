@@ -5,7 +5,8 @@
 #ifndef MUTENET_LISTENERCOMPONENT_HPP
 #define MUTENET_LISTENERCOMPONENT_HPP
 
-#include "EventBaseComponent.hpp"
+#include "Descriptor.h"
+#include <Runnable.hpp>
 
 namespace EventLoop
 {
@@ -14,27 +15,36 @@ namespace EventLoop
 	
 	class IOContextImpl;
 	
-	class ListenerComponent : public IEventBaseComponent
+    class ListenerComponent : public IDescriptor
 	{
 	public:
 		using CallbackDelegate = std::function<void (ListenerComponent *pRawListener, DescriptorPtr clientsocket,
-                                                     sockaddr *address, int length, void *Self )>;
+                                                     sockaddr* address, int length, void *Self )>;
 	protected:
-		socket_t _ListenSocket;
 		CallbackDelegate _ListenCallbackDelegate;
 		void *_Self;
-		uint32_t _Flag;
-		int _Backlog;
 		
 		friend class IOContextImpl;
 	
 	public:
 		virtual ~ListenerComponent ( );
-	
-	protected:
+
+        virtual void Read() override;
+
+        virtual void Write(void *data, size_t length) override;
+
+        virtual void Enable() override;
+
+        virtual void Disable(uint16_t Flag) override;
+    protected:
+        virtual bool _Read() override;
+
+        virtual bool _Write() override;
+
+    protected:
 		ListenerComponent ( const RawIOContextImplPtr &ContextEvent,
 		                    CallbackDelegate &&Callback,
-		                    void *Self, uint32_t Flag, int backlog, socket_t listenSocket );
+		                    void *Self, descriptor_t listenSocket );
 	};
 }
 

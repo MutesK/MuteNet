@@ -28,19 +28,20 @@ namespace EventLoop
 
     EpollContextImpl::~EpollContextImpl()
     {
+        close(_EpollHandle);
+        _EpollHandle = -1;
     }
-
 
     ListenerPtr
     EpollContextImpl::CreateListener(EventLoop::ListenerComponent::CallbackDelegate &&Callback, void *Self,
-                                                uint32_t Flag, int backlog, socket_t listenSocket)
+                                     descriptor_t listenSocket)
     {
-       return IUnixLikeIOContextImpl::CreateListener(std::move(Callback), Self, Flag, backlog, listenSocket);
+       return IUnixLikeIOContextImpl::CreateListener(std::move(Callback), Self,  listenSocket);
     }
 
-    DescriptorPtr EventLoop::EpollContextImpl::CreateSocket(socket_t Socket)
+    DescriptorPtr EventLoop::EpollContextImpl::CreateDescriptor(socket_t Socket)
     {
-        return IUnixLikeIOContextImpl::CreateSocket(Socket);
+        return IUnixLikeIOContextImpl::CreateDescriptor(Socket);
     }
 
     bool EpollContextImpl::Enable(const DescriptorPtr descriptor)
@@ -53,9 +54,9 @@ namespace EventLoop
 
         struct epoll_event    events;
         events.events    = EPOLLIN | EPOLLET;
-        events.data.fd    = descriptor->GetFD();
+        events.data.fd    = descriptor->GetDescriptor();
 
-        if (epoll_ctl(_EpollHandle, EPOLL_CTL_ADD, descriptor->GetFD(), &events) == SOCKET_ERROR)
+        if (epoll_ctl(_EpollHandle, EPOLL_CTL_ADD, descriptor->GetDescriptor(), &events) == SOCKET_ERROR)
         {
             std::error_code ec ( errno, std::system_category ( ));
             std::system_error(ec, "client epoll_ctl() error\n");
@@ -65,7 +66,7 @@ namespace EventLoop
         {
             std::unique_lock<std::shared_mutex> lock(_SocketMap._mutex);
 
-            _SocketMap[descriptor->GetFD()] = descriptor;
+            _SocketMap[descriptor->GetDescriptor()] = descriptor;
         }
 
         return true;
@@ -81,7 +82,7 @@ namespace EventLoop
         {
             std::unique_lock<std::shared_mutex> lock(_SocketMap._mutex);
 
-            const auto Iter = _SocketMap.find(descriptor->GetFD());
+            const auto Iter = _SocketMap.find(descriptor->GetDescriptor());
             if(_SocketMap.end() == Iter)
             {
                 return;
@@ -90,9 +91,7 @@ namespace EventLoop
             _SocketMap.erase(Iter);
         }
 
-        epoll_ctl(_EpollHandle, EPOLL_CTL_DEL, descriptor->GetFD(), nullptr);
-
-        delete descriptor;
+        epoll_ctl(_EpollHandle, EPOLL_CTL_DEL, descriptor->GetDescriptor(), nullptr);
     }
 
     void EpollContextImpl::DoWork()
@@ -134,7 +133,7 @@ namespace EventLoop
                     continue;
                 }
 
-                static const auto DispatchEvent = [&]()
+                const auto DispatchEvent = [&]()
                 {
                     auto& event = epoll_events[counter];
 
@@ -152,6 +151,14 @@ namespace EventLoop
 
                     if(event.events & EPOLLERR)
                     {
+                        if(DescriptorPtr->_ExceptCallback == nullptr)
+                        {
+
+                        }
+                        else
+                        {
+                            DescriptorPtr->_ExceptCallback(DescriptorPtr, errno, DescriptorPtr->_Key);
+                        }
 
                     }
                 };

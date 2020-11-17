@@ -6,7 +6,7 @@
 
 #include "Common.h"
 #include "TypeDefine.hpp"
-#include "WinSocketDescriptor.hpp"
+#include "WinDescriptor.hpp"
 #include "IocpContextImpl.hpp"
 
 namespace EventLoop
@@ -19,7 +19,7 @@ namespace EventLoop
 	
 	WinSocketDescriptor::~WinSocketDescriptor ( )
 	{
-		closesocket(_socket);
+		closesocket(_descriptor);
 	}
 	
 	
@@ -32,13 +32,13 @@ namespace EventLoop
 		DWORD RecvBytes = 0;
 		DWORD Flag = 0;
 		
-		if ( _socket == INVALID_SOCKET)
+		if ( _descriptor == INVALID_SOCKET)
 		{
 			return;
 		}
 		
 		_RecvOverlapped = OVERLAPPED {};
-		int ret = WSARecv ( _socket, &buf, 1, &RecvBytes, &Flag,
+		int ret = WSARecv ( _descriptor, &buf, 1, &RecvBytes, &Flag,
 		                    reinterpret_cast<LPOVERLAPPED>(&_RecvOverlapped), nullptr );
 		
 		if ( ret == SOCKET_ERROR)
@@ -53,7 +53,7 @@ namespace EventLoop
 	{
 		WSABUF buf[2];
 		
-		if ( _socket == INVALID_SOCKET)
+		if ( _descriptor == INVALID_SOCKET)
 		{
 			return;
 		}
@@ -75,7 +75,7 @@ namespace EventLoop
 		DWORD Flag = 0;
 		
 		_SendOverlapped = OVERLAPPED {};
-		int ret = WSASend ( _socket, buf, 2, &SendBytes, 0, &_SendOverlapped, nullptr );
+		int ret = WSASend ( _descriptor, buf, 2, &SendBytes, 0, &_SendOverlapped, nullptr );
 		if ( ret == SOCKET_ERROR)
 		{
 			return;
@@ -100,7 +100,7 @@ namespace EventLoop
 	
 	void WinSocketDescriptor::Disable ( uint16_t Flag )
 	{
-		shutdown(_socket, Flag);
+		shutdown(_descriptor, Flag);
 	}
 	
 	void WinSocketDescriptor::IOCompletion ( OVERLAPPED *pRawOverlapped, uint32_t TransfferedBytes )

@@ -32,13 +32,12 @@ namespace EventLoop
 		                const uint32_t NumOfWorkerThread, const uint32_t Timeout );
 		
 		virtual ListenerPtr CreateListener ( ListenerComponent::CallbackDelegate &&Callback,
-		                                     void *Self, uint32_t Flag, int backlog, socket_t listenSocket ) = 0;
+		                                     void *Self, descriptor_t listenSocket ) = 0;
 		
-		virtual DescriptorPtr CreateSocket (socket_t Socket ) = 0;
+		virtual DescriptorPtr CreateDescriptor (descriptor_t descriptor) = 0;
 		
 		std::shared_ptr<IOContextThreadPool> &GetThreadPool ( );
 	};
-	
 }
 
 

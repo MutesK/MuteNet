@@ -55,8 +55,8 @@ namespace EventLoop
 		std::for_each ( Container._RegisteredSockets.begin ( ), Container._RegisteredSockets.end ( ),
 		                [ & ] ( DescriptorPtr &Ptr )
 		                {
-			                FD_SET( Ptr->_socket, &_ReadSet );
-			                FD_SET( Ptr->_socket, &_WriteSet );
+			                FD_SET( Ptr->_descriptor, &_ReadSet );
+			                FD_SET( Ptr->_descriptor, &_WriteSet );
 		                } );
 	}
 	
@@ -68,14 +68,14 @@ namespace EventLoop
 			                const auto &ThreadPool = GetThreadPool ( );
 			                const static auto DispatchSignal = [ & ] ( )
 			                {
-				                if ( FD_ISSET( Ptr->_socket, &_ReadSet ))
+				                if ( FD_ISSET( Ptr->_descriptor, &_ReadSet ))
 				                {
 				                	if(!Ptr->_Read())
 				                		return;
 				                	
 					                Ptr->_ReadCallback ( Ptr, Ptr->_Key );
 				                }
-				                if ( FD_ISSET( Ptr->_socket, &_WriteSet ))
+				                if ( FD_ISSET( Ptr->_descriptor, &_WriteSet ))
 				                {
 				                	if(!Ptr->_Send())
 				                		return;

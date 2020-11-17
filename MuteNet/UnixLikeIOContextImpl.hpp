@@ -18,10 +18,10 @@ namespace EventLoop {
                                const uint32_t NumOfWorkerThread, const uint32_t Timeout);
 
         virtual ListenerPtr
-        CreateListener(ListenerComponent::CallbackDelegate &&Callback, void *Self, uint32_t Flag, int backlog,
-                       socket_t listenSocket) override;
+        CreateListener(ListenerComponent::CallbackDelegate &&Callback, void *Self,
+                       descriptor_t listenSocket) override;
 
-        virtual DescriptorPtr CreateSocket(socket_t Socket) override;
+        virtual DescriptorPtr CreateDescriptor(descriptor_t descriptor) override;
 
         virtual bool Enable(const DescriptorPtr descriptor) = 0;
         virtual void Disable(const DescriptorPtr descriptor) = 0;

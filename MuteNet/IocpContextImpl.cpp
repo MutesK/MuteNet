@@ -7,25 +7,25 @@
 #include "Common.h"
 #include "TypeDefine.hpp"
 #include "IocpContextImpl.hpp"
-#include "WinSocketDescriptor.hpp"
+#include "WinDescriptor.hpp"
 #include "Win32ListenerComponent.hpp"
 
 namespace EventLoop
 {
-	DescriptorPtr IocpContextImpl::CreateSocket ( socket_t Socket )
+	DescriptorPtr IocpContextImpl::CreateDescriptor ( descriptor_t descriptor )
 	{
-		const auto &Ptr = DescriptorPtr ( (IDescriptor *)new WinSocketDescriptor ( this, Socket ));
+		const auto &Ptr = DescriptorPtr ( (IDescriptor *)new WinSocketDescriptor ( this, descriptor));
 		
-		CreateIoCompletionPort ( reinterpret_cast<HANDLE>(Socket), _IocpHandle,
+		CreateIoCompletionPort ( reinterpret_cast<HANDLE>(descriptor), _IocpHandle,
 		                         reinterpret_cast<ULONG_PTR>(Ptr), 0 );
 		return Ptr;
 	}
 	
 	ListenerPtr
-	IocpContextImpl::CreateListener ( ListenerComponent::CallbackDelegate &&Callback, void *Self, uint32_t Flag,
-	                                  int backlog, socket_t listenSocket )
+	IocpContextImpl::CreateListener ( ListenerComponent::CallbackDelegate &&Callback, void *Self,
+	                                  descriptor_t listenSocket )
 	{
-		return ListenerPtr ((ListenerComponent *) new Win32ListenerComponent (this, std::move(Callback), Self, Flag, backlog, listenSocket ));
+		return ListenerPtr ((ListenerComponent *) new Win32ListenerComponent (this, std::move(Callback), Self, listenSocket ));
 	}
 	
 	IocpContextImpl::IocpContextImpl ( IOContextEvent &Event, uint32_t NumOfWorkerThread, uint32_t Timeout )
