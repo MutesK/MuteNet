@@ -5,9 +5,11 @@
 #ifndef MUTENET_IOCPCONTEXTIMPL_HPP
 #define MUTENET_IOCPCONTEXTIMPL_HPP
 
-#if defined(WIN32)
+#if defined(IOCONTEXT_IOCP)
 
 #include "IoContextImpl.hpp"
+#include "Common.h"
+#include "TypeDefine.hpp"
 #include <Runnable.hpp>
 
 namespace EventLoop
@@ -24,7 +26,7 @@ namespace EventLoop
 		
 		Extension ( );
 		
-		void *GetExtension ( socket_t socket, const GUID *FunctorPtr );
+		void *GetExtension ( descriptor_t socket, const GUID *FunctorPtr );
 	};
 	
 	class IocpContextImpl : public IOContextImpl, public Util::IRunnable
@@ -54,7 +56,7 @@ namespace EventLoop
 		
 		virtual ListenerPtr
 		CreateListener ( ListenerComponent::CallbackDelegate &&Callback, void *Self,
-		                 socket_t listenSocket ) override;
+                         descriptor_t listenSocket ) override;
 		
 		bool PostQueue ( void *Pointer );
 		

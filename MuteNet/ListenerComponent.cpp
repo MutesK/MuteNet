@@ -23,34 +23,4 @@ namespace EventLoop
 	
 	}
 
-    void ListenerComponent::Read()
-    {
-
-    }
-
-    void ListenerComponent::Write(void *data, size_t length)
-    {
-
-    }
-
-    void ListenerComponent::Enable()
-    {
-
-    }
-
-    void ListenerComponent::Disable(uint16_t Flag)
-    {
-
-    }
-
-    bool ListenerComponent::_Read()
-    {
-        return true;
-    }
-
-    bool ListenerComponent::_Write()
-    {
-        return true;
-    }
-
 }

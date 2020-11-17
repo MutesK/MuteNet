@@ -29,18 +29,6 @@ namespace EventLoop
 	public:
 		virtual ~ListenerComponent ( );
 
-        virtual void Read() override;
-
-        virtual void Write(void *data, size_t length) override;
-
-        virtual void Enable() override;
-
-        virtual void Disable(uint16_t Flag) override;
-    protected:
-        virtual bool _Read() override;
-
-        virtual bool _Write() override;
-
     protected:
 		ListenerComponent ( const RawIOContextImplPtr &ContextEvent,
 		                    CallbackDelegate &&Callback,

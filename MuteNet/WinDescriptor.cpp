@@ -45,8 +45,8 @@ namespace EventLoop
 		{
 			return;
 		}
-		
-		IncreaseCounter();
+
+        IncreaseCounter();
 	}
 	
 	void WinSocketDescriptor::Write ( void *data, size_t length )
@@ -136,6 +136,10 @@ namespace EventLoop
 				
 				_WriteCallback ( this, _Key );
 			}
+			else
+            {
+
+            }
 		};
 		
 		DecreaseCounter();
@@ -155,8 +159,22 @@ namespace EventLoop
 	{
 	
 	}
-	
-	
+
+    int WinSocketDescriptor::write(descriptor_t descriptor, const char *ptr, size_t length)
+    {
+        return send(descriptor, ptr, length, 0);
+    }
+
+    int WinSocketDescriptor::read(descriptor_t descriptor, char *ptr, size_t length)
+    {
+        return recv(descriptor, ptr, length, 0);
+    }
+
+    bool WinSocketDescriptor::_Write()
+    {
+        return false;
+    }
+
 }
 
 #endif

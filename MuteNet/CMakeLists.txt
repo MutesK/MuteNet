@@ -3,13 +3,6 @@ SET(PROJECT_NAME MuteNet)
 SET(CMAKE_CXX_STANDARD 17)
 
 SET(SRC_FILES
-        HostNameLookup.cpp HostNameLookup.h
-        IPLookUp.cpp IPLookUp.h
-        Link.h LinkImpl.cpp LinkImpl.h
-        Network.cpp Network.h
-        NetworkManager.cpp NetworkManager.h
-        ServerHandle.h
-        ServerHandleImpl.h ServerHandleImpl.cpp
         IoContextEvent.cpp IoContextEvent.hpp
         IoContextThreadPool.cpp IoContextThreadPool.hpp
         EventBaseComponent.cpp EventBaseComponent.hpp
@@ -41,11 +34,8 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     ADD_DEFINITIONS(-DIOCONTEXT_EPOLL)
     ADD_DEFINITIONS(-DLINUX)
-ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Win32")
+ELSEIF(WIN32)
     ADD_DEFINITIONS(-DIOCONTEXT_IOCP)
-ELSEIF(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Win32")
-    ADD_DEFINITIONS(-DIOCONTEXT_SELECT)
-    ADD_DEFINITIONS(-DUNIXLIKE)
 ENDIF()
 
 

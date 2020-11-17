@@ -5,9 +5,9 @@
 #ifndef MUTENET_DESCRIPTOR_H
 #define MUTENET_DESCRIPTOR_H
 
+#include "TypeDefine.hpp"
 #include "EventBaseComponent.hpp"
 #include <CircularBuffer.h>
-#include <AtomicCounter.hpp>
 #include <InputMemoryStream.h>
 
 namespace EventLoop
@@ -37,7 +37,6 @@ namespace EventLoop
         friend class EpollContextImpl;
 		
 		IDescriptor (const RawIOContextImplPtr &Ptr, descriptor_t descriptor );
-	
 	public:
 		virtual ~IDescriptor();
 		
@@ -59,11 +58,16 @@ namespace EventLoop
         bool IsVaildCallback() const;
 
 	protected:
-		virtual bool _Read();
+		virtual bool _Read() = 0;
 		
-		virtual bool _Write();
+		virtual bool _Write() = 0;
 
+#ifdef WIN32
+		// Windows doesn't support the POSIX Descriptor Common IO function.
+		virtual int write(descriptor_t descriptor, const char* ptr, size_t length) = 0;
 
+		virtual int read(descriptor_t descriptor, char* ptr, size_t length) = 0;
+#endif
 	};
 }
 

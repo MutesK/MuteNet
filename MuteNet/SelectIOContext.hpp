@@ -9,7 +9,7 @@
 #include "Descriptor.h"
 #include "UnixLikeIOContextImpl.hpp"
 
-#if defined(IOCONTEXT_SELECT)
+#ifdef POSIX_LIKE
 
 namespace EventLoop
 {
@@ -29,6 +29,4 @@ namespace EventLoop
 }
 
 #endif
-
-
 #endif //MUTENET_SELECTIOCONTEXT_HPP

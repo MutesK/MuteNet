@@ -5,7 +5,7 @@
 #ifndef MUTENET_LIKEUNIXLISTENERCOMPONENT_H
 #define MUTENET_LIKEUNIXLISTENERCOMPONENT_H
 
-#if defined(APPLE) || defined(LINUX) || defined(UNIXLIKE)
+#ifdef POSIX_PLATFORM
 
 #include "ListenerComponent.hpp"
 #include <Runnable.hpp>

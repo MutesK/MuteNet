@@ -2,7 +2,7 @@
 // Created by junmkim on 2020-11-12.
 //
 
-#if defined(APPLE) || defined(LINUX) || defined(UNIXLIKE)
+#ifdef POSIX_PLATFORM
 
 #include "Common.h"
 #include "TypeDefine.hpp"

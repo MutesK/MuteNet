@@ -43,7 +43,7 @@ public:
 		_Value._mutex.unlock_shared();
 	}
 	
-}
+};
 
 template <class Type>
 class UniqueScopedLockObject
@@ -61,6 +61,6 @@ public:
 	{
 		_Value._mutex.unlock();
 	}
-	
-}
+};
+
 #endif //MUTENET_TYPEDEFINE_HPP

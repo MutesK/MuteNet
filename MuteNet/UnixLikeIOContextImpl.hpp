@@ -5,7 +5,7 @@
 #ifndef MUTENET_UNIXLIKEIOCONTEXTIMPL_HPP
 #define MUTENET_UNIXLIKEIOCONTEXTIMPL_HPP
 
-#if defined(APPLE) || defined(LINUX) || defined(UNIXLIKE)
+#ifdef POSIX_PLATFORM
 
 #include "IoContextImpl.hpp"
 #include <Runnable.hpp>

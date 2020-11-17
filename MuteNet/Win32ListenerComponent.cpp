@@ -67,7 +67,7 @@ namespace EventLoop
 			                          sizeof ( SOCKADDR_IN ) + 16, sizeof ( SOCKADDR_IN ) + 16,
 			                          &LocalSockAddr, &RemoteAddrLength, &RemoteSockAddr, &RemoteAddrLength );
 			
-			const auto &Pool = _ContextPtr->GetThreadPool ( );
+			const auto &Pool = reinterpret_cast<IocpContextImpl *>(_ContextPtr)->GetThreadPool ( );
 			const auto ListenDispatch = [ & ] ( )
 			{
 				_ListenCallbackDelegate ( this, reinterpret_cast<IocpContextImpl *>(_ContextPtr)->CreateDescriptor ( _Client ), RemoteSockAddr,
@@ -109,7 +109,47 @@ namespace EventLoop
 	{
 		return _IsStop;
 	}
-	
+
+    bool Win32ListenerComponent::_Read()
+    {
+        return false;
+    }
+
+    bool Win32ListenerComponent::_Write()
+    {
+        return false;
+    }
+
+    int Win32ListenerComponent::write(descriptor_t descriptor, const char *ptr, size_t length)
+    {
+        return 0;
+    }
+
+    int Win32ListenerComponent::read(descriptor_t descriptor, char *ptr, size_t length)
+    {
+        return 0;
+    }
+
+    void Win32ListenerComponent::Read()
+    {
+
+    }
+
+    void Win32ListenerComponent::Write(void *data, size_t length)
+    {
+
+    }
+
+    void Win32ListenerComponent::Enable()
+    {
+
+    }
+
+    void Win32ListenerComponent::Disable(uint16_t Flag)
+    {
+
+    }
+
 }
 
 #endif

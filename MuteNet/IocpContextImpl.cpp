@@ -2,7 +2,7 @@
 // Created by Mute on 2020-11-14.
 //
 
-#if defined(WIN32)
+#if defined(IOCONTEXT_IOCP)
 
 #include "Common.h"
 #include "TypeDefine.hpp"
@@ -60,7 +60,7 @@ namespace EventLoop
 		{
 			DWORD byteTransferred = 0;
 			LPOVERLAPPED lpOverlapped = nullptr;
-			IWinSocketDescriptor *WinSocketDescriptor = nullptr;
+            IWinDescriptor *WinSocketDescriptor = nullptr;
 			
 			while ( !IsStop ( ))
 			{

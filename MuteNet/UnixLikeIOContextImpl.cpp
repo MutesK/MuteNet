@@ -2,6 +2,7 @@
 // Created by JunMin Kim on 20. 11. 15..
 //
 
+#ifdef POSIX_PLATFORM
 
 #include "Common.h"
 #include "TypeDefine.hpp"
@@ -31,3 +32,5 @@ namespace EventLoop
         return new UnixLikeDescriptor(this, descriptor);
     }
 }
+
+#endif

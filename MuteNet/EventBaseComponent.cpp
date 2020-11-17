@@ -3,13 +3,13 @@
 //
 
 #include "Common.h"
+#include "IocpContextImpl.hpp"
 #include "EventBaseComponent.hpp"
-#include "IoContextEvent.hpp"
 
 namespace EventLoop
 {
 	IEventBaseComponent::IEventBaseComponent ( const RawIOContextImplPtr &Ptr )
-			: _ContextPtr ( Ptr )
+			: _ContextPtr (reinterpret_cast<RawIOContextImplPtr *>(const_cast<RawIOContextImplPtr>(Ptr)))
 	{
 	}
 	

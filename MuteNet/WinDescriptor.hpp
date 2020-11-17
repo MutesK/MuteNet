@@ -10,28 +10,37 @@
 #include <cstddef>
 #include <cstdint>
 #include "Descriptor.h"
-
+#include <AtomicCounter.hpp>
 
 namespace EventLoop
 {
-	class IWinSocketDescriptor
+	class IWinDescriptor
 	{
 	public:
 		virtual void IOCompletion ( OVERLAPPED *pRawOverlapped, uint32_t TransfferedBytes ) = 0;
-		
+
 		virtual void IOError ( OVERLAPPED *pRawOverlapped, uint32_t LastError )= 0;
-		
+
 		virtual void IOTimeout ( OVERLAPPED *pRawOverlapped )= 0;
 	};
-	
-	class WinSocketDescriptor : public IDescriptor, public IWinSocketDescriptor, public Util::AtomicCounter
+
+	class WinSocketDescriptor : public IDescriptor, public IWinDescriptor, public Util::AtomicCounter
 	{
 		OVERLAPPED _RecvOverlapped;
 		OVERLAPPED _SendOverlapped;
 	protected:
-		WinSocketDescriptor ( const RawIOContextImplPtr &Ptr, socket_t Socket );
+		WinSocketDescriptor ( const RawIOContextImplPtr &Ptr, descriptor_t Socket );
 		~WinSocketDescriptor();
-		friend class IocpContextImpl;
+
+        virtual bool _Read() override;
+
+        virtual int write(descriptor_t descriptor, const char *ptr, size_t length) override;
+
+        virtual int read(descriptor_t descriptor, char *ptr, size_t length) override;
+
+        virtual bool _Write() override;
+
+        friend class IocpContextImpl;
 	
 	public:
 		virtual void Enable ( ) override;

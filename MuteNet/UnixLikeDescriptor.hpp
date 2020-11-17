@@ -5,7 +5,7 @@
 #ifndef MUTENET_UNIXLIKEDESCRIPTOR_HPP
 #define MUTENET_UNIXLIKEDESCRIPTOR_HPP
 
-#if defined(APPLE) || defined(LINUX) || defined(UNIXLIKE)
+#ifdef POSIX_PLATFORM
 
 #include "Descriptor.h"
 

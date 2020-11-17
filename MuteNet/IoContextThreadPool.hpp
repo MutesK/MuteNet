@@ -5,8 +5,6 @@
 #ifndef MUTENET_IOCONTEXTTHREADPOOL_HPP
 #define MUTENET_IOCONTEXTTHREADPOOL_HPP
 
-#include <SharedPool.hpp>
-#include <Runnable.hpp>
 #include <Event.hpp>
 
 namespace EventLoop
