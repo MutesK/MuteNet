@@ -17,10 +17,7 @@ namespace EventLoop
 {
     class EpollContextImpl : public IUnixLikeIOContextImpl, public Util::Runnable
     {
-        using DescriptorPerSocketPtrMapWithLock = LockObject<std::unordered_map<descriptor_t, DescriptorPtr>>;
-
         descriptor_t        _EpollHandle;
-        DescriptorPerSocketPtrMapWithLock _SocketMap;
 
     public:
         EpollContextImpl(IOContextEvent &Event,

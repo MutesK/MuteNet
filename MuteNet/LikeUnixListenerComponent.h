@@ -13,22 +13,25 @@
 namespace EventLoop
 {
 	class LikeUnixListenerComponent : public ListenerComponent, public Util::IRunnable
-	{
-	public:
-		virtual ~LikeUnixListenerComponent();
+    {
+    public:
+        virtual ~LikeUnixListenerComponent();
 
         virtual void Start() override;
 
         virtual void Stop() override;
 
-        friend class EpollContextImpl;
-	private:
-		LikeUnixListenerComponent(const RawIOContextImplPtr &ContextEvent,
-								  ListenerComponent::CallbackDelegate &&Callback,
-								  void *Self, socket_t listenSocket);
+        friend class IUnixLikeIOContextImpl;
 
-		// ListenerComponent을(를) 통해 상속됨
-		virtual void Read() override;
+        friend class EpollContextImpl;
+
+    private:
+        LikeUnixListenerComponent(const RawIOContextImplPtr &ContextEvent,
+                                  ListenerComponent::CallbackDelegate &&Callback,
+                                  void *Self, socket_t listenSocket);
+
+        // ListenerComponent을(를) 통해 상속됨
+        virtual void Read() override;
 
 		virtual void Write(void* data, size_t length) override;
 

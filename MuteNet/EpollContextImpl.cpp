@@ -2,13 +2,15 @@
 // Created by junmkim on 2020-11-16.
 //
 
-#if defined(IOCONTEXT_EPOLL)
 
 #include "Common.h"
 #include "TypeDefine.hpp"
 
+#if defined(IOCONTEXT_EPOLL)
+
 #include <sys/epoll.h>
 #include "EpollContextImpl.hpp"
+
 
 /*
     // EPOLLET => Edge Trigger 사용
@@ -64,7 +66,7 @@ namespace EventLoop
         }
 
         {
-            std::unique_lock<std::shared_mutex> lock(_SocketMap._mutex);
+            UniqueScopedLockObject<DescriptorPerSocketPtrMapWithLock> Lock(_SocketMap);
 
             _SocketMap[descriptor->GetDescriptor()] = descriptor;
         }
@@ -80,7 +82,8 @@ namespace EventLoop
         }
 
         {
-            std::unique_lock<std::shared_mutex> lock(_SocketMap._mutex);
+            åUniqueScopedLockObject<DescriptorPerSocketPtrMapWithLock> Lock(_SocketMap);
+
 
             const auto Iter = _SocketMap.find(descriptor->GetDescriptor());
             if(_SocketMap.end() == Iter)
@@ -114,7 +117,7 @@ namespace EventLoop
 
                 static const auto GetDescriptorPtr = [&]() -> DescriptorPtr
                 {
-                    std::shared_lock<std::shared_mutex> lock(_SocketMap._mutex);
+                    SharedScopedLockObject<DescriptorPerSocketPtrMapWithLock> Lock(_SocketMap);
 
                     const auto &Iter = _SocketMap.find(descriptor);
                     if(_SocketMap.end() == Iter)

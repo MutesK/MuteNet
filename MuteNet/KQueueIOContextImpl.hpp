@@ -8,34 +8,30 @@
 #if defined(IOCONTEXT_KQUEUE)
 
 #include "UnixLikeIOContextImpl.hpp"
+#include <Runnable.hpp>
 
 namespace EventLoop
 {
-    class KQueueIOContextImpl : public IUnixLikeIOContextImpl
+    class KQueueIOContextImpl : public IUnixLikeIOContextImpl, public Util::Runnable
     {
-        using KQueueHandle = int32_t;
-
-        struct KQueueContainer : public IContextContainerImpl
-        {
-            virtual void Register(const socket_t socket) override;
-
-            virtual void UnRegister(const socket_t socket) override;
-
-        };
-
-        KQueueHandle _kQueue;
+        descriptor_t _kqueue;
     public:
-        KQueueIOContextImpl ( IOContextEvent &Event,
-        const uint32_t NumOfWorkerThread, const uint32_t Timeout );
+        KQueueIOContextImpl(IOContextEvent &Event,
+                            const uint32_t NumOfWorkerThread, const uint32_t Timeout);
+
+        virtual ListenerPtr
+        CreateListener(ListenerComponent::CallbackDelegate &&Callback, void *Self, descriptor_t listenSocket) override;
+
+        virtual DescriptorPtr CreateDescriptor(descriptor_t descriptor) override;
+
+        virtual bool Enable(const DescriptorPtr descriptor) override;
+
+        virtual void Disable(const DescriptorPtr descriptor) override;
 
     protected:
         virtual void DoWork() override;
 
-        void RegisterHandle(int fd, uint8_t filter, uint16_t flag);
-        void RemoveEvent(int fd, uint8_t filter);
-        void EnableEvent(int fd, uint8_t filter);
-        void DisableEvent(int fd, uint8_t filter);
-        void EventHandle(int fd, uint8_t filter, uint16_t flag);
+        bool UpdateEvent(descriptor_t descriptor, int events, bool modify);
     };
 }
 

@@ -2,12 +2,12 @@
 // Created by Mute on 2020-11-15.
 //
 
-#ifdef POSIX_PLATFORM
-
 #include "Common.h"
 #include "TypeDefine.hpp"
 #include "UnixLikeDescriptor.hpp"
 #include "UnixLikeIOContextImpl.hpp"
+
+#ifdef POSIX_PLATFORM
 
 namespace EventLoop
 {
@@ -17,7 +17,7 @@ namespace EventLoop
 
     }
 
-	UnixLikeDescriptor::~UnixLikeDescriptor ( )
+    UnixLikeDescriptor::~UnixLikeDescriptor()
 	{
         close(_descriptor);
 	}
@@ -38,27 +38,37 @@ namespace EventLoop
 			}
 		}
 	}
-	
-	void UnixLikeDescriptor::Enable ( )
-	{
-        if(IsVaildCallback())
+
+    void UnixLikeDescriptor::Enable()
+    {
+        if (IsVaildCallback())
         {
             std::logic_error("");
         }
 
         static_cast<IUnixLikeIOContextImpl *>(_ContextPtr)->Enable(_descriptor);
 
-	}
-	
-	void UnixLikeDescriptor::Disable (uint16_t Flag )
-	{
-        if(IsVaildCallback())
+    }
+
+    void UnixLikeDescriptor::Disable(uint16_t Flag)
+    {
+        if (IsVaildCallback())
         {
             std::logic_error("");
         }
 
         static_cast<IUnixLikeIOContextImpl *>(_ContextPtr)->Disable(_descriptor);
 
-	}
+    }
+
+    bool EventLoop::UnixLikeDescriptor::_Read()
+    {
+        return false;
+    }
+
+    bool EventLoop::UnixLikeDescriptor::_Write()
+    {
+        return false;
+    }
 }
 #endif

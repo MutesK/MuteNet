@@ -25,26 +25,31 @@ namespace EventLoop
 		descriptor_t _descriptor;
 		
 		CallbackPtr _ReadCallback = nullptr;
-		CallbackPtr _WriteCallback = nullptr;
-		ExceptCallackPtr _ExceptCallback = nullptr;
-		void *_Key = nullptr;
-		
-		CircularBufferWithLock _ReadBuffer;
-		CircularBufferWithLock _WriteBuffer;
-		
-		friend class IOContextImpl;
-		friend class SelectIOContext;
+        CallbackPtr _WriteCallback = nullptr;
+        ExceptCallackPtr _ExceptCallback = nullptr;
+        void *_Key = nullptr;
+
+        CircularBufferWithLock _ReadBuffer;
+        CircularBufferWithLock _WriteBuffer;
+
+        friend class IOContextImpl;
+
+        friend class SelectIOContext;
+
         friend class EpollContextImpl;
-		
-		IDescriptor (const RawIOContextImplPtr &Ptr, descriptor_t descriptor );
-	public:
-		virtual ~IDescriptor();
-		
-		virtual void Read ( ) = 0;
-		
-		virtual void Write ( void *data, size_t length ) = 0;
-		
-		virtual void Enable ( ) = 0;
+
+        friend class KQueueIOContextImpl;
+
+        IDescriptor(const RawIOContextImplPtr &Ptr, descriptor_t descriptor);
+
+    public:
+        virtual ~IDescriptor();
+
+        virtual void Read() = 0;
+
+        virtual void Write(void *data, size_t length) = 0;
+
+        virtual void Enable() = 0;
 		
 		virtual void Disable ( uint16_t Flag ) = 0;
 		

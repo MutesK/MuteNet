@@ -14,6 +14,9 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
+#include <fcntl.h>
+#include <zconf.h>
+
 #define abstact
 #endif
 

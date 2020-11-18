@@ -2,15 +2,14 @@
 // Created by junmkim on 2020-11-12.
 //
 
-#ifdef POSIX_PLATFORM
+
 
 #include "Common.h"
 #include "TypeDefine.hpp"
-#include "IoContextImpl.hpp"
+#include "UnixLikeIOContextImpl.hpp"
 #include "LikeUnixListenerComponent.h"
-#include "IoContextThreadPool.hpp"
 
-#include <fcntl.h>
+#ifdef POSIX_PLATFORM
 
 namespace EventLoop
 {
@@ -46,39 +45,39 @@ namespace EventLoop
 	}
 
 	bool LikeUnixListenerComponent::_Read()
-	{
+    {
         if (_descriptor == INVALID_SOCKET || IsStop())
         {
             return false;
         }
 
-		struct sockaddr_in client_addr;
-		socklen_t client_addr_len = sizeof client_addr;
+        struct sockaddr_in client_addr;
+        socklen_t client_addr_len = sizeof client_addr;
 
-		descriptor_t client = accept(_descriptor,
-			(struct sockaddr*)&client_addr, &client_addr_len);
+        descriptor_t client = accept(_descriptor,
+                                     (struct sockaddr *) &client_addr, &client_addr_len);
 
-		if (client == INVALID_SOCKET)
-		{
+        if (client == INVALID_SOCKET)
+        {
 
-		}
+        }
 
-		// Non Block
+        // Non Block
 
-		auto& ThreadPool = _ContextPtr->GetThreadPool();
-		static const auto Dispatch = [&, client_addr=client_addr, client_addr_len= client_addr_len]()
-		{
-			_ListenCallbackDelegate((ListenerComponent *)this,
-				static_cast<IUnixLikeIOContextImpl*>(_ContextPtr)->CreateDescriptor(client),
-				(sockaddr *)&client_addr,
-				client_addr_len,
-				_Self);
-		};
-		ThreadPool->EnqueueJob(Dispatch);
+        auto &ThreadPool = reinterpret_cast<IUnixLikeIOContextImpl *>(_ContextPtr)->GetThreadPool();
+        static const auto Dispatch = [&, client_addr = client_addr, client_addr_len = client_addr_len]()
+        {
+            _ListenCallbackDelegate((ListenerComponent *) this,
+                                    reinterpret_cast<IUnixLikeIOContextImpl *>(_ContextPtr)->CreateDescriptor(client),
+                                    (sockaddr *) &client_addr,
+                                    client_addr_len,
+                                    _Self);
+        };
+        ThreadPool->EnqueueJob(Dispatch);
 
 
-		return true;
-	}
+        return true;
+    }
 
 	bool LikeUnixListenerComponent::_Write()
 	{
@@ -89,12 +88,12 @@ namespace EventLoop
     {
         _Stop = false;
 
-        static_cast<IUnixLikeIOContextImpl*>(_ContextPtr)->Enable(this);
+        reinterpret_cast<IUnixLikeIOContextImpl *>(_ContextPtr)->Enable(this);
     }
 
     void LikeUnixListenerComponent::Stop()
     {
-        static_cast<IUnixLikeIOContextImpl*>(_ContextPtr)->Disable(this);
+        reinterpret_cast<IUnixLikeIOContextImpl *>(_ContextPtr)->Disable(this);
 
         _Stop = true;
     }

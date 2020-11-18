@@ -2,13 +2,15 @@
 // Created by JunMin Kim on 20. 11. 15..
 //
 
-#ifdef POSIX_PLATFORM
+
 
 #include "Common.h"
 #include "TypeDefine.hpp"
 #include "UnixLikeIOContextImpl.hpp"
 #include "LikeUnixListenerComponent.h"
 #include "UnixLikeDescriptor.hpp"
+
+#ifdef POSIX_PLATFORM
 
 namespace EventLoop
 {

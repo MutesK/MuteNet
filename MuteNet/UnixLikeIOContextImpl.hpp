@@ -8,11 +8,15 @@
 #ifdef POSIX_PLATFORM
 
 #include "IoContextImpl.hpp"
-#include <Runnable.hpp>
 
-namespace EventLoop {
+namespace EventLoop
+{
+    using DescriptorPerSocketPtrMapWithLock = LockObject<std::unordered_map<descriptor_t, DescriptorPtr>>;
+
     class IUnixLikeIOContextImpl : public IOContextImpl
-            {
+    {
+    protected:
+        DescriptorPerSocketPtrMapWithLock _SocketMap;
     public:
         IUnixLikeIOContextImpl(IOContextEvent &Event,
                                const uint32_t NumOfWorkerThread, const uint32_t Timeout);
