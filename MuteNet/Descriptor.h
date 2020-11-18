@@ -51,14 +51,16 @@ namespace EventLoop
 
         virtual void Enable() = 0;
 		
-		virtual void Disable ( uint16_t Flag ) = 0;
+		virtual void Shutdown (uint16_t Flag ) = 0;
 		
 		void SetCallback ( CallbackPtr ReadCallback, CallbackPtr WriteCallback,
 		                   ExceptCallackPtr ExceptionCallback, void *Key );
 		
 		descriptor_t GetDescriptor ( ) const;
-		
-		Util::InputMemoryStream GetReadBuffer() const;
+
+        Util::InputMemoryStream GetReadBuffer() const;
+        Util::CircularBuffer GetWriteBuffer() const;
+
 
         bool IsVaildCallback() const;
 

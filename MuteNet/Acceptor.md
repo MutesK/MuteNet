@@ -1,7 +1,7 @@
 # AcceptEx 고민
 
 1. 소켓 재사용성이 들어가면서 소켓의 TIME_WAIT을 대비해야 됨.
-2. 지속적으로 AcceptEx 호출해줌으로써 Server Handle 에게 Accept IO Complete Callback을 주게 할것인지. 아니면, Server Handle에서 Enable, Disable 함수를 두어서 수동적으로 On, Off 를 주게 할것인지. 등에 대한 동작 고민.
+2. 지속적으로 AcceptEx 호출해줌으로써 Server Handle 에게 Accept IO Complete Callback을 주게 할것인지. 아니면, Server Handle에서 Enable, Shutdown 함수를 두어서 수동적으로 On, Off 를 주게 할것인지. 등에 대한 동작 고민.
 3. 소켓 풀의 고민. 단순히 reactor -> proactor로 전환하여 사용할것인지. 일정 수 Socket Pool 생성후, 그 Socket Pool Size 만큼만 사용하게 할것인지?
 
 > 2,3 번은 Flag Option 처리로 빼게 한다.

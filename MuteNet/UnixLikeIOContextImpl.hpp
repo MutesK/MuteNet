@@ -26,9 +26,6 @@ namespace EventLoop
                        descriptor_t listenSocket) override;
 
         virtual DescriptorPtr CreateDescriptor(descriptor_t descriptor) override;
-
-        virtual bool Enable(const DescriptorPtr descriptor) = 0;
-        virtual void Disable(const DescriptorPtr descriptor) = 0;
     };
 }
 

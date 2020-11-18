@@ -3,6 +3,7 @@
 //
 
 #include "Common.h"
+#include "TypeDefine.hpp"
 #include "IoContextEvent.hpp"
 
 #include "IocpContextImpl.hpp"
@@ -23,16 +24,39 @@ namespace EventLoop
 #elif defined(IOCONTEXT_EPOLL)
         return std::make_shared<KQueueIOContextImpl>(Event, NumOfWorkerThread, Timeout);
 #endif
-        return nullptr;
+        std::runtime_error("Can't find IOContext Type!");
     }
 
     IOContextEvent::IOContextEvent(const uint32_t NumOfWorkerThread, const uint32_t Timeout)
+        :_ContextImpl(CreateIOContext(*this, NumOfWorkerThread, Timeout))
     {
 
     }
 
-    IOContextEvent::~IOContextEvent() {
+    IOContextEvent::~IOContextEvent()
+    {
 
+    }
+
+    ListenerPtr IOContextEvent::CreateListener(ListenerComponent::CallbackDelegate &&Callback, void *Self,
+                                               descriptor_t listenSocket)
+    {
+        return _ContextImpl->CreateListener(std::move(Callback), Self, listenSocket);
+    }
+
+    DescriptorPtr IOContextEvent::CreateDescriptor(descriptor_t descriptor)
+    {
+        return _ContextImpl->CreateDescriptor(descriptor);
+    }
+
+    bool IOContextEvent::Enable(DescriptorPtr descriptor)
+    {
+        return _ContextImpl->Enable(descriptor);
+    }
+
+    void IOContextEvent::Disable(DescriptorPtr descriptor)
+    {
+        _ContextImpl->Disable(descriptor);
     }
 }
 

@@ -7,6 +7,7 @@
 
 #include "ListenerComponent.hpp"
 #include "WinDescriptor.hpp"
+#include "IoContextImpl.hpp"
 #include <OutputMemoryStream.h>
 
 #if defined(WIN32)
@@ -53,7 +54,7 @@ namespace EventLoop
 
         virtual void Enable() override;
 
-        virtual void Disable(uint16_t Flag) override;
+        virtual void Shutdown(uint16_t Flag) override;
     private:
 
         friend class IocpContextImpl;
@@ -61,6 +62,7 @@ namespace EventLoop
 		virtual ~Win32ListenerComponent();
 
     };
+
 }
 
 #endif

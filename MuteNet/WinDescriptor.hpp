@@ -45,7 +45,7 @@ namespace EventLoop
 	public:
 		virtual void Enable ( ) override;
 		
-		virtual void Disable ( uint16_t Flag ) override;
+		virtual void Shutdown (uint16_t Flag ) override;
 		
 		virtual void Write ( void *data, size_t length ) override;
 	

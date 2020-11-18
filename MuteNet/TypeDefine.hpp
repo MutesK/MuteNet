@@ -7,18 +7,22 @@
 
 
 #if defined(WIN32)
+
 using socket_t = SOCKET;
 using socklen_t = int;
+
+
 #else
 using socket_t = int;
 
 const int8_t SOCKET_ERROR  = -1;
 const int8_t INVALID_SOCKET =  (socket_t)(~0);
 
+using descriptor_t = socket_t;
 #endif
 
-using descriptor_t = socket_t;
 
+using descriptor_t = socket_t;
 
 template<class Type>
 struct LockObject : public Type

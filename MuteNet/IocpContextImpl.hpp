@@ -48,8 +48,7 @@ namespace EventLoop
 
         friend class Win32ListenerComponent;
     public:
-        IocpContextImpl ( IOContextEvent &Event,
-                          const uint32_t NumOfWorkerThread, const uint32_t Timeout );
+        IocpContextImpl ( const uint32_t NumOfWorkerThread, const uint32_t Timeout );
 
         virtual ~IocpContextImpl ( );
 
@@ -66,6 +65,10 @@ namespace EventLoop
         virtual void Stop ( ) override;
 
         virtual bool IsStop ( ) const override;
+
+        virtual bool Enable(DescriptorPtr descriptor) override;
+
+        virtual void Disable(DescriptorPtr descriptor) override;
     };
 
 }

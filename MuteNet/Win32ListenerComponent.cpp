@@ -145,7 +145,7 @@ namespace EventLoop
 
     }
 
-    void Win32ListenerComponent::Disable(uint16_t Flag)
+    void Win32ListenerComponent::Shutdown(uint16_t Flag)
     {
 
     }

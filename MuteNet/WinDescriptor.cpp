@@ -25,6 +25,8 @@ namespace EventLoop
 	
 	void WinSocketDescriptor::Read ( )
 	{
+        IncreaseCounter();
+
 		WSABUF buf;
 		buf.buf = nullptr;
 		buf.len = 0;
@@ -34,6 +36,11 @@ namespace EventLoop
 		
 		if ( _descriptor == INVALID_SOCKET)
 		{
+		    DecreaseCounter();
+            if(GetCounter() == 0)
+            {
+                delete this;
+            }
 			return;
 		}
 		
@@ -41,20 +48,30 @@ namespace EventLoop
 		int ret = WSARecv ( _descriptor, &buf, 1, &RecvBytes, &Flag,
 		                    reinterpret_cast<LPOVERLAPPED>(&_RecvOverlapped), nullptr );
 		
-		if ( ret == SOCKET_ERROR)
+		if ( ret == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
 		{
+            DecreaseCounter();
+            if(GetCounter() == 0)
+            {
+                delete this;
+            }
 			return;
 		}
-
-        IncreaseCounter();
 	}
 	
 	void WinSocketDescriptor::Write ( void *data, size_t length )
 	{
+        IncreaseCounter();
+
 		WSABUF buf[2];
 		
 		if ( _descriptor == INVALID_SOCKET)
 		{
+            DecreaseCounter();
+            if(GetCounter() == 0)
+            {
+                delete this;
+            }
 			return;
 		}
 		
@@ -64,7 +81,8 @@ namespace EventLoop
 			const auto InputedData = _WriteBuffer.PutData ( data, length );
 			if ( InputedData != length )
 			{
-				// Buffer isn't Enough
+                DecreaseCounter();
+				std::overflow_error("Writebuffer is not enough Buffer");
 			}
 			
 			_WriteBuffer.GetWriteBufferAndLengths ( &buf[ 0 ].buf, ( uint32_t & ) buf[ 0 ].len,
@@ -78,10 +96,13 @@ namespace EventLoop
 		int ret = WSASend ( _descriptor, buf, 2, &SendBytes, 0, &_SendOverlapped, nullptr );
 		if ( ret == SOCKET_ERROR)
 		{
+            DecreaseCounter();
+            if(GetCounter() == 0)
+            {
+                delete this;
+            }
 			return;
 		}
-		
-		IncreaseCounter();
 	}
 	
 	void WinSocketDescriptor::Enable ( )
@@ -94,19 +115,17 @@ namespace EventLoop
 		
 		if(GetCounter() == 0)
 		{
-			delete this;
+            delete this;
 		}
 	}
 	
-	void WinSocketDescriptor::Disable ( uint16_t Flag )
+	void WinSocketDescriptor::Shutdown (uint16_t Flag )
 	{
 		shutdown(_descriptor, Flag);
 	}
 	
 	void WinSocketDescriptor::IOCompletion ( OVERLAPPED *pRawOverlapped, uint32_t TransfferedBytes )
 	{
-		const static auto CompletionProcess = [&]()
-		{
 			if ( nullptr == pRawOverlapped )
 			{
 				return;
@@ -114,17 +133,21 @@ namespace EventLoop
 			
 			if ( 0 == TransfferedBytes )
 			{
-				Disable ( SD_BOTH );
+                Shutdown(SD_BOTH);
 				return;
 			}
 			
 			if ( &_RecvOverlapped == pRawOverlapped )
 			{
-				_Read ( );
-				
-				_ReadCallback ( this, _Key );
-				
-				Read ( );
+				if(!_Read ( ))
+                {
+				    _ExceptCallback(this, WSAGetLastError(), _Key);
+                }
+				else
+                {
+                    _ReadCallback(this, _Key);
+                    Read();
+                }
 			}
 			else if ( &_SendOverlapped == pRawOverlapped )
 			{
@@ -138,26 +161,25 @@ namespace EventLoop
 			}
 			else
             {
-
+                _ExceptCallback(this, 0, _Key);
             }
-		};
-		
-		DecreaseCounter();
-		
-		if(GetCounter() == 0)
-		{
-			delete this;
-		}
+
+            DecreaseCounter();
+
+            if(GetCounter() == 0)
+            {
+                Shutdown(0);;
+            }
 	}
 	
 	void WinSocketDescriptor::IOError ( OVERLAPPED *pRawOverlapped, uint32_t LastError )
 	{
-	
+        _ExceptCallback(this, LastError, _Key);
 	}
 	
 	void WinSocketDescriptor::IOTimeout ( OVERLAPPED *pRawOverlapped )
 	{
-	
+        _ExceptCallback(this, 0, _Key);
 	}
 
     int WinSocketDescriptor::write(descriptor_t descriptor, const char *ptr, size_t length)

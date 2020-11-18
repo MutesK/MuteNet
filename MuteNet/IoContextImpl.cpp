@@ -8,10 +8,9 @@
 
 namespace EventLoop
 {
-	IOContextImpl::IOContextImpl ( IOContextEvent &Event,
-	                               const uint32_t NumOfWorkerThread,
+	IOContextImpl::IOContextImpl ( const uint32_t NumOfWorkerThread,
 	                               const uint32_t Timeout )
-			: _Event ( Event ), _Timeout ( Timeout )
+			: _Timeout ( Timeout )
 	{
 		_ThreadPool = std::make_shared<IOContextThreadPool> ( NumOfWorkerThread );
 	}

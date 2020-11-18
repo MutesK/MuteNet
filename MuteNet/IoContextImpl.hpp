@@ -24,19 +24,20 @@ namespace EventLoop
 	class IOContextImpl
 	{
 	protected:
-		IOContextEvent &_Event;
 		std::shared_ptr<IOContextThreadPool> _ThreadPool;  // Using For Notify Completion
 		uint32_t _Timeout;
 	public:
-		IOContextImpl ( IOContextEvent &Event,
-		                const uint32_t NumOfWorkerThread, const uint32_t Timeout );
+		IOContextImpl ( const uint32_t NumOfWorkerThread, const uint32_t Timeout );
 		
 		virtual ListenerPtr CreateListener ( ListenerComponent::CallbackDelegate &&Callback,
 		                                     void *Self, descriptor_t listenSocket ) = 0;
-		
+
 		virtual DescriptorPtr CreateDescriptor (descriptor_t descriptor) = 0;
 		
 		std::shared_ptr<IOContextThreadPool> &GetThreadPool ( );
+
+        virtual bool Enable(const DescriptorPtr descriptor) = 0;
+        virtual void Disable(const DescriptorPtr descriptor) = 0;
 	};
 }
 

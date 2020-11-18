@@ -57,7 +57,6 @@ namespace EventLoop
 		
 		if(ret == SOCKET_ERROR)
 		{
-			delete this;
 			return false;
 		}
 		
@@ -146,6 +145,11 @@ namespace EventLoop
                 _WriteCallback != nullptr ||
                 _ExceptCallback != nullptr ||
                 _Key != nullptr);
+    }
+
+    Util::CircularBuffer IDescriptor::GetWriteBuffer() const
+    {
+        return _WriteBuffer;
     }
 
 

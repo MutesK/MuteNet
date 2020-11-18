@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <FoundationCommon.h>
+#include <cassert>
 
 #if defined(WIN32)
 
