@@ -50,8 +50,6 @@ namespace EventLoop
         virtual void Write(void *data, size_t length) = 0;
 
 		virtual void Shutdown (uint16_t Flag ) = 0;
-
-		virtual void SetNonBlock() = 0;
 		
 		void SetCallback ( CallbackPtr ReadCallback, CallbackPtr WriteCallback,
 		                   ExceptCallackPtr ExceptionCallback, void *Key );

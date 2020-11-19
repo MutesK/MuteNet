@@ -28,6 +28,8 @@ namespace EventLoop
 	{
 		OVERLAPPED _RecvOverlapped;
 		OVERLAPPED _SendOverlapped;
+
+		friend class Win32ListenerComponent;
 	protected:
 		WinSocketDescriptor ( const RawIOContextImplPtr &Ptr, descriptor_t Socket );
 		~WinSocketDescriptor();
@@ -48,8 +50,8 @@ namespace EventLoop
 		virtual void Shutdown (uint16_t Flag ) override;
 		
 		virtual void Write ( void *data, size_t length ) override;
-	
-	private:
+
+    private:
 		virtual void Read ( ) override;
 		
 		virtual void IOCompletion ( OVERLAPPED *pRawOverlapped, uint32_t TransfferedBytes ) override;

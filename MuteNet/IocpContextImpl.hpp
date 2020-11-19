@@ -56,7 +56,7 @@ namespace EventLoop
 
         virtual ListenerPtr
         CreateListener ( ListenerComponent::CallbackDelegate &&Callback, void *Self,
-                         descriptor_t listenSocket ) override;
+                         descriptor_t listenSocket );
 
         bool PostQueue ( void *Pointer );
 

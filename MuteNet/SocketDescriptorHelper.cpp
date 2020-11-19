@@ -11,11 +11,56 @@
 namespace MuteNet
 {
 
-    int SocketDescriptorHelper::InetPton(int af, const void *dest, size_t len)
+    void SocketDescriptorHelper::InetPton(int af, const void *source, char* dest, size_t len)
     {
-#ifdef _WIN32
-#else
-#endif
+        if (af == AF_INET)
+        {
+            const auto* in = reinterpret_cast<const struct in_addr*>(source);
+            const uint32_t addr = ntohl(in->S_un.S_addr);
+            auto result = _snprintf_s(dest, len, len, "%d.%d.%d.%d",
+                                      static_cast<int>(static_cast<uint8_t>((addr >> 24) & 0xff)),
+                                      static_cast<int>(static_cast<uint8_t>((addr >> 16) & 0xff)),
+                                      static_cast<int>(static_cast<uint8_t>((addr >> 8) & 0xff)),
+                                      static_cast<int>(static_cast<uint8_t>((addr) & 0xff)));
+
+        }
+        else if (af == AF_INET6)
+        {
+            const auto* addr = reinterpret_cast<const struct in6_addr*>(source);
+            char buf[64];
+
+            int longestGapLen = 0, longestGapPos = -1, curGapPos = -1, curGapLen = 0;
+
+            uint16_t words[8];
+            for (int i = 0; i < 8; ++i)
+            {
+                words[i] =
+                        (static_cast<uint16_t>(addr->s6_addr[2 * i]) << 8) + addr->s6_addr[2 * i + 1];
+            }
+
+            if (words[0] == 0 && words[1] == 0 && words[2] == 0 && words[3] == 0 &&
+                words[4] == 0 && (words[5] == 0 && words[6] && words[7]) ||
+                (words[5] == 0xffff))
+            {
+                if (words[5] == 0)
+                {
+                    _snprintf_s(buf, sizeof(buf), "::%x.%d.%d.%d", addr->s6_addr[12], addr->s6_addr[13],
+                                                    addr->s6_addr[14], addr->s6_addr[15]);
+                }
+                else
+                {
+                    _snprintf_s(buf, sizeof(buf), "::%x:%d.%d.%d.%d", words[5],
+                                addr->s6_addr[12], addr->s6_addr[13],
+                                addr->s6_addr[14], addr->s6_addr[15]);
+                }
+
+                if (strlen(buf) > len)
+                    return;
+
+                strncpy_s(dest, len, buf, len);
+            }
+        }
+
 
     }
 
@@ -24,9 +69,9 @@ namespace MuteNet
 #ifdef _WIN32
         {
 		unsigned long nonblocking = 1;
-		if (ioctlsocket(fd, FIONBIO, &nonblocking) == SOCKET_ERROR) {
-			event_sock_warn(fd, "ioctlsocket(%d, FIONBIO, &%lu)", (int)fd, (unsigned long)nonblocking);
-			return -1;
+		if (ioctlsocket(fd, FIONBIO, &nonblocking) == SOCKET_ERROR)
+		{
+			return SOCKET_ERROR;
 		}
 	}
 #else

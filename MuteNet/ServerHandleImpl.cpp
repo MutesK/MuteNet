@@ -23,6 +23,8 @@ namespace MuteNet
         if(_Listener != nullptr)
         {
             _Listener->Disable();
+
+            _Listener->Free();
         }
     }
 
@@ -33,7 +35,7 @@ namespace MuteNet
 
     ServerHandleImpl::~ServerHandleImpl()
     {
-
+        Close();
     }
 
     ServerHandleImplPtr ServerHandleImpl::Listen(EventLoop::IOContextEvent& EventBase, uint16_t Port, NetworkHelpers::ListenCallbacksPtr ListenCallbacks)
@@ -63,11 +65,13 @@ namespace MuteNet
            listenfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
            if (listenfd == INVALID_SOCKET)
            {
+               _ErrorCode = SocketDescriptorHelper::GetLastError();
                return false;
            }
 
-           if (0 != SocketDescriptorHelper::SetListenSocketReuseable(listenfd))
+           if (SOCKET_ERROR == SocketDescriptorHelper::SetListenSocketReuseable(listenfd))
            {
+               _ErrorCode = SocketDescriptorHelper::GetLastError();
                 return false;
            }
 
@@ -76,8 +80,9 @@ namespace MuteNet
            name.sin_family = AF_INET;
            name.sin_port = ntohs(a_Port);
 
-           if (bind(listenfd, reinterpret_cast<const sockaddr *>(&name), sizeof(name)) != 0)
+           if (SOCKET_ERROR == bind(listenfd, reinterpret_cast<const sockaddr *>(&name), sizeof(name)))
            {
+               _ErrorCode = SocketDescriptorHelper::GetLastError();
                return false;
            }
 
@@ -87,13 +92,18 @@ namespace MuteNet
            uint32_t Zero = 0;
 #ifdef _WIN32
 			int res = setsockopt(listenfd, IPPROTO_IPV6, IPV6_V6ONLY, reinterpret_cast<const char *>(&Zero), sizeof(Zero));
-			err = EVUTIL_SOCKET_ERROR();
-			NeedsTwoSockets = ((res == SOCKET_ERROR) && (err == WSAENOPROTOOPT));
+			auto err = SocketDescriptorHelper::GetLastError();
+			if((res == SOCKET_ERROR) && (err == WSAENOPROTOOPT))
+            {
+                _ErrorCode = err;
+			    return false;
+            }
 #else
            setsockopt(listenfd, IPPROTO_IPV6, IPV6_V6ONLY, reinterpret_cast<const char *>(&Zero), sizeof(Zero));
 #endif
-           if (0 != SocketDescriptorHelper::SetListenSocketReuseable(listenfd))
+           if (SOCKET_ERROR ==  SocketDescriptorHelper::SetListenSocketReuseable(listenfd))
            {
+               _ErrorCode = SocketDescriptorHelper::GetLastError();
                return false;
            }
 
@@ -103,17 +113,20 @@ namespace MuteNet
            name.sin6_port = ntohs(a_Port);
            if (bind(listenfd, reinterpret_cast<const sockaddr *>(&name), sizeof(name)) != 0)
            {
+               _ErrorCode = SocketDescriptorHelper::GetLastError();
                return false;
            }
        }
 
-        if (0 != SocketDescriptorHelper::SetSocketNonblock(listenfd))
+        if (SOCKET_ERROR == SocketDescriptorHelper::SetSocketNonblock(listenfd))
         {
+            _ErrorCode = SocketDescriptorHelper::GetLastError();
             return false;
         }
 
-        if(0 != listen(listenfd, SOMAXCONN))
+        if(SOCKET_ERROR ==  listen(listenfd, SOMAXCONN))
         {
+            _ErrorCode = SocketDescriptorHelper::GetLastError();
             return false;
         }
 
@@ -127,27 +140,27 @@ namespace MuteNet
         assert(Self != nullptr);
         assert(Self->_Self != nullptr);
 
-        char IPAddress[128];
+        char address[128];
         uint16_t Port = 0;
         switch (Addr->sa_family)
         {
             case AF_INET:
             {
                 sockaddr_in * sin = reinterpret_cast<sockaddr_in *>(Addr);
-
+                SocketDescriptorHelper::InetPton(AF_INET, &sin->sin_addr, address, 128);
                 Port = ntohs(sin->sin_port);
                 break;
             }
             case AF_INET6:
             {
                 sockaddr_in6 * sin6 = reinterpret_cast<sockaddr_in6 *>(Addr);
-
+                SocketDescriptorHelper::InetPton(AF_INET6, &sin6->sin6_addr, address, 128);
                 Port = ntohs(sin6->sin6_port);
                 break;
             }
         }
 
-        auto LinkCallbacks = Self->_ListenCallbacks->OnInComingConnection(IPAddress, Port);
+        auto LinkCallbacks = Self->_ListenCallbacks->OnInComingConnection(address, Port);
         if (LinkCallbacks == nullptr)
         {
             // Drop the connection:
@@ -166,7 +179,7 @@ namespace MuteNet
         Self->_ListenCallbacks->OnAccepted(*Link);
     }
 
-    void ServerHandleImpl::RemoveLink(const TCPLinkImpl *a_Link)
+    void ServerHandleImpl::RemoveLink(const TCPLinkImpl *Link)
     {
 
     }

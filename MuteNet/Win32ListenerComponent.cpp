@@ -8,6 +8,7 @@
 #include "TypeDefine.hpp"
 #include "Win32ListenerComponent.hpp"
 #include "IocpContextImpl.hpp"
+#include "IoContextThreadPool.hpp"
 
 namespace EventLoop
 {
@@ -25,7 +26,7 @@ namespace EventLoop
 	
 	Win32ListenerComponent::~Win32ListenerComponent ( )
 	{
-	
+
 	}
 	
 	void Win32ListenerComponent::AcceptRequest ( )
@@ -36,7 +37,7 @@ namespace EventLoop
 		
 		_Client = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 		
-		if(!_AcceptExFunctionPtr(GetDescriptor(), _Client, const_cast<char *>(_AddressBuffer.GetBufferPtr()), 0,
+		if(!_AcceptExFunctionPtr(_Listener->GetDescriptor(), _Client, const_cast<char *>(_AddressBuffer.GetBufferPtr()), 0,
 		                         sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, &Pending, &_Overlapped))
 		{
 			return;
@@ -47,13 +48,15 @@ namespace EventLoop
 	{
 		static auto& Extension = reinterpret_cast<IocpContextImpl *>(_ContextPtr)->_Extensions;
 		static GetAcceptExSockAddrsPtr& _GetAcceptExSockAddrPtr = Extension._GetAcceptExSockaddrs;
-		
-		const static auto Process = [&]()
+
+		const auto &Pool = reinterpret_cast<IocpContextImpl *>(_ContextPtr)->GetThreadPool ( );
+
+		const auto Process = [&]()
 		{
 			if ( nullptr == pRawOverlapped )
 				return;
 			
-			auto Listen = GetDescriptor();
+			auto Listen = _Listener->GetDescriptor();
 			if ( setsockopt (_Client, SOL_SOCKET, SO_UPDATE_ACCEPT_CONTEXT,
 			                  reinterpret_cast<char *>(&Listen), sizeof (descriptor_t)) == SOCKET_ERROR)
 			{
@@ -66,89 +69,40 @@ namespace EventLoop
 			_GetAcceptExSockAddrPtr ( const_cast<char *>(_AddressBuffer.GetBufferPtr ( )), TransfferedBytes,
 			                          sizeof ( SOCKADDR_IN ) + 16, sizeof ( SOCKADDR_IN ) + 16,
 			                          &LocalSockAddr, &RemoteAddrLength, &RemoteSockAddr, &RemoteAddrLength );
-			
-			const auto &Pool = reinterpret_cast<IocpContextImpl *>(_ContextPtr)->GetThreadPool ( );
+
 			const auto ListenDispatch = [ & ] ( )
 			{
 				_ListenCallbackDelegate ( this, reinterpret_cast<IocpContextImpl *>(_ContextPtr)->CreateDescriptor ( _Client ), RemoteSockAddr,
 				                          RemoteAddrLength, _Self );
 			};
-			
+
 			Pool->EnqueueJob ( ListenDispatch );
 		};
 		
 		Process();
-		
-		if(!IsStop())
-			AcceptRequest();
+
+		AcceptRequest();
 	}
 	
 	void Win32ListenerComponent::IOError ( OVERLAPPED *pRawOverlapped, uint32_t LastError )
 	{
-		if(!IsStop())
 			AcceptRequest();
 	}
 	
 	void Win32ListenerComponent::IOTimeout ( OVERLAPPED *pRawOverlapped )
 	{
-		if(!IsStop())
 			AcceptRequest();
 	}
-	
-	void Win32ListenerComponent::Start ( )
+
+	void Win32ListenerComponent::Disable()
 	{
-		AcceptRequest();
-	}
-	
-	void Win32ListenerComponent::Stop ( )
-	{
-		_IsStop = true;
-	}
-	
-	bool Win32ListenerComponent::IsStop ( ) const
-	{
-		return _IsStop;
+		closesocket(_Listener->GetDescriptor());
 	}
 
-    bool Win32ListenerComponent::_Read()
-    {
-        return false;
-    }
-
-    bool Win32ListenerComponent::_Write()
-    {
-        return false;
-    }
-
-    int Win32ListenerComponent::write(descriptor_t descriptor, const char *ptr, size_t length)
-    {
-        return 0;
-    }
-
-    int Win32ListenerComponent::read(descriptor_t descriptor, char *ptr, size_t length)
-    {
-        return 0;
-    }
-
-    void Win32ListenerComponent::Read()
-    {
-
-    }
-
-    void Win32ListenerComponent::Write(void *data, size_t length)
-    {
-
-    }
-
-    void Win32ListenerComponent::Enable()
-    {
-
-    }
-
-    void Win32ListenerComponent::Shutdown(uint16_t Flag)
-    {
-
-    }
+	void Win32ListenerComponent::Free()
+	{
+		delete this;
+	}
 
 }
 

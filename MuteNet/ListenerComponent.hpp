@@ -34,7 +34,8 @@ namespace EventLoop
 		ListenerComponent ( const RawIOContextImplPtr &ContextEvent,
 		                    CallbackDelegate &&Callback,
 		                    void *Self, descriptor_t listenSocket );
-	};
+
+    };
 }
 
 #endif //MUTENET_LISTENERCOMPONENT_HPP

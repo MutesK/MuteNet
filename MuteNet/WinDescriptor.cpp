@@ -118,6 +118,11 @@ namespace EventLoop
 	
 	void WinSocketDescriptor::Enable ( )
 	{
+		if(!IsVaildCallback())
+		{
+			std::logic_error("WinSocket isn't Set Callback");
+		}
+
 		IncreaseCounter();
 		
 		Read();

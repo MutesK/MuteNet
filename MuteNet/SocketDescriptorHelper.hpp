@@ -15,7 +15,7 @@ namespace MuteNet
     class SocketDescriptorHelper
     {
     public:
-        static int InetPton(int af, const void *dest, size_t len);
+        static void InetPton(int af, const void *source, char* dest, size_t len);
 
         static int SetSocketNonblock(descriptor_t fd);
 
@@ -26,6 +26,8 @@ namespace MuteNet
                            socklen_t size);
 
         static std::string ErrorString(int64_t ErrorCode);
+
+        static int64_t GetLastError();
     };
 }
 

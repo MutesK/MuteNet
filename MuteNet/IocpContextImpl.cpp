@@ -9,6 +9,7 @@
 #include "IocpContextImpl.hpp"
 #include "WinDescriptor.hpp"
 #include "Win32ListenerComponent.hpp"
+#include "IoContextThreadPool.hpp"
 
 namespace EventLoop
 {
