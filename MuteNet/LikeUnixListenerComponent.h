@@ -8,18 +8,19 @@
 #ifdef POSIX_PLATFORM
 
 #include "ListenerComponent.hpp"
-#include <Runnable.hpp>
 
 namespace EventLoop
 {
-	class LikeUnixListenerComponent : public ListenerComponent, public Util::IRunnable
+	class LikeUnixListenerComponent : public ListenerComponent
     {
+        struct sockaddr* client_addr = nullptr;
+        socklen_t clientAddresLength = 0;
     public:
         virtual ~LikeUnixListenerComponent();
 
-        virtual void Start() override;
+        virtual void Disable() override;
 
-        virtual void Stop() override;
+        virtual void Free() override;
 
         friend class IUnixLikeIOContextImpl;
 
@@ -30,18 +31,11 @@ namespace EventLoop
                                   ListenerComponent::CallbackDelegate &&Callback,
                                   void *Self, socket_t listenSocket);
 
-        // ListenerComponent을(를) 통해 상속됨
-        virtual void Read() override;
+        static void ReadCallback(DescriptorPtr Ptr, void *Self);
+        static void WriteCallback(DescriptorPtr Ptr, void *Self);
+        static void ExceptCallback(DescriptorPtr Ptr, uint16_t What ,void *Self);
 
-		virtual void Write(void* data, size_t length) override;
-
-		virtual void Enable() override;
-
-		virtual void Disable(uint16_t Flag) override;
-
-		virtual bool _Read() override;
-
-		virtual bool _Write() override;
+        void Accept();
 	};
 }
 

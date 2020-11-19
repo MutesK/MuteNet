@@ -24,15 +24,10 @@ namespace EventLoop
 
         virtual void Enable() override;
 
-        virtual void Disable(uint16_t Flag) override;
+        virtual void Shutdown(uint16_t Flag) override;
 
     private:
         virtual void Read() override;
-
-    protected:
-        virtual bool _Read() override;
-
-        virtual bool _Write() override;
     };
 }
 

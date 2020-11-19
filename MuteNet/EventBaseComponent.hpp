@@ -5,17 +5,22 @@
 #ifndef MUTENET_EVENTBASECOMPONENT_HPP
 #define MUTENET_EVENTBASECOMPONENT_HPP
 
+#include "IoContextImpl.hpp"
+
 namespace EventLoop
 {
     class IOContextImpl;
-	using RawIOContextImplPtr = IOContextImpl *;
+	using RawIOContextImplPtr = IOContextImpl*;
 	
 	class IEventBaseComponent
 	{
 	protected:
         RawIOContextImplPtr *_ContextPtr;
 		
-		IEventBaseComponent ( const RawIOContextImplPtr &Ptr );
+		IEventBaseComponent ( const RawIOContextImplPtr &Ptr )
+                : _ContextPtr (reinterpret_cast<RawIOContextImplPtr *>(const_cast<RawIOContextImplPtr>(Ptr)))
+        {
+        }
 	};
 	
 }

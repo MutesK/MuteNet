@@ -34,41 +34,19 @@ namespace EventLoop
 			const auto InputedData = _WriteBuffer.PutData ( data, length );
 			if ( InputedData != length )
 			{
-				// Buffer isn't Enough
+                std::overflow_error("Writebuffer is not enough Buffer");
 			}
 		}
 	}
 
     void UnixLikeDescriptor::Enable()
     {
-        if (IsVaildCallback())
-        {
-            std::logic_error("");
-        }
-
-        static_cast<IUnixLikeIOContextImpl *>(_ContextPtr)->Enable(_descriptor);
 
     }
 
-    void UnixLikeDescriptor::Disable(uint16_t Flag)
+    void UnixLikeDescriptor::Shutdown(uint16_t Flag)
     {
-        if (IsVaildCallback())
-        {
-            std::logic_error("");
-        }
-
-        static_cast<IUnixLikeIOContextImpl *>(_ContextPtr)->Disable(_descriptor);
-
-    }
-
-    bool EventLoop::UnixLikeDescriptor::_Read()
-    {
-        return false;
-    }
-
-    bool EventLoop::UnixLikeDescriptor::_Write()
-    {
-        return false;
+        shutdown(_descriptor, Flag);
     }
 }
 #endif

@@ -49,9 +49,9 @@ namespace EventLoop
 
         virtual void Write(void *data, size_t length) = 0;
 
-        virtual void Enable() = 0;
-		
 		virtual void Shutdown (uint16_t Flag ) = 0;
+
+		virtual void SetNonBlock() = 0;
 		
 		void SetCallback ( CallbackPtr ReadCallback, CallbackPtr WriteCallback,
 		                   ExceptCallackPtr ExceptionCallback, void *Key );
@@ -61,13 +61,14 @@ namespace EventLoop
         Util::InputMemoryStream GetReadBuffer() const;
         Util::CircularBuffer GetWriteBuffer() const;
 
-
         bool IsVaildCallback() const;
 
 	protected:
-		virtual bool _Read() = 0;
+        virtual void Enable() = 0;
+
+		virtual bool _Read();
 		
-		virtual bool _Write() = 0;
+		virtual bool _Write();
 
 #ifdef WIN32
 		// Windows doesn't support the POSIX Descriptor Common IO function.

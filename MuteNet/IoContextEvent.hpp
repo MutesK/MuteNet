@@ -26,7 +26,7 @@ namespace EventLoop
 		
 		~IOContextEvent ( );
 
-        ListenerPtr CreateListener ( ListenerComponent::CallbackDelegate &&Callback,
+        ListenerPtr CreateListener ( ListenerComponent::CallbackDelegate Callback,
                                              void *Self, descriptor_t listenSocket );
 
         DescriptorPtr CreateDescriptor (descriptor_t descriptor);

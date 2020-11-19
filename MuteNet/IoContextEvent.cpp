@@ -38,10 +38,10 @@ namespace EventLoop
 
     }
 
-    ListenerPtr IOContextEvent::CreateListener(ListenerComponent::CallbackDelegate &&Callback, void *Self,
+    ListenerPtr IOContextEvent::CreateListener(ListenerComponent::CallbackDelegate Callback, void *Self,
                                                descriptor_t listenSocket)
     {
-        return _ContextImpl->CreateListener(std::move(Callback), Self, listenSocket);
+        return _ContextImpl->CreateListener(Callback, Self, listenSocket);
     }
 
     DescriptorPtr IOContextEvent::CreateDescriptor(descriptor_t descriptor)

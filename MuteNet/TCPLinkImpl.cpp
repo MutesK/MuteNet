@@ -8,6 +8,7 @@
 #include "TCPLinkImpl.hpp"
 #include "IoContextEvent.hpp"
 #include "Descriptor.h"
+#include "SocketDescriptorHelper.hpp"
 
 namespace MuteNet
 {
@@ -58,7 +59,7 @@ namespace MuteNet
 
     }
 
-    TCPLinkImpl::TCPLinkImpl(EventLoop::IOContextEvent& EventBase, descriptor_t socket, const TCPLink::CallbacksPtr LinkCallback,
+    TCPLinkImpl::TCPLinkImpl(EventLoop::IOContextEvent& EventBase, DescriptorPtr socket, const TCPLink::CallbacksPtr LinkCallback,
                             const ServerHandleImplPtr ServerHandlePtr, const sockaddr *Addr, size_t socketLen)
                              : TCPLink(LinkCallback), _EventBase(EventBase)
     {
@@ -109,14 +110,14 @@ namespace MuteNet
                 {
                     if (!_isConnecting)
                     {
-                        int ErrCode = SocketUtil::Connect(_link, Ip, size);
+                        int ErrCode = SocketDescriptorHelper::Connect(_link->_DescriptorPtr, Ip, size);
                         if (ErrCode == 0)
                         {
                             _isConnecting = true;
                         }
                         else
                         {
-                            _link->GetCallbacks()->OnError(ErrCode, SocketUtil::ErrorString(ErrCode));
+                            _link->GetCallbacks()->OnError(ErrCode, SocketDescriptorHelper::ErrorString(ErrCode));
                         }
                     }
                 }
@@ -124,7 +125,7 @@ namespace MuteNet
                 void OnError(int ErrorCode, const std::string& ErrorMsg) override
                 {
                     _link->GetCallbacks()->OnError(ErrorCode, ErrorMsg);
-                    NetworkManager::Get().RemoveLink(_link.get());
+
                 }
 
                 void OnNameResolved(const std::string& Name, const std::string& IP) override
@@ -146,8 +147,6 @@ namespace MuteNet
         _EventBase.Enable(_DescriptorPtr);
 
         _DescriptorPtr->SetCallback(RecvCallback, SendCallback, ExceptCallback, this);
-
-        _DescriptorPtr->Enable();
     }
 
 
@@ -155,7 +154,7 @@ namespace MuteNet
     {
         assert(Self != nullptr);
         TCPLinkImpl * SelfPtr = static_cast<TCPLinkImpl *>(Self);
-        assert(SelfPtr->_DescriptorPtr == Ptr);
+        assert(SelfPtr->_DescriptorPtr != Ptr);
         assert(SelfPtr->_Callback != nullptr);
 
         Util::InputMemoryStream Buffer = Ptr->GetReadBuffer();

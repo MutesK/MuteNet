@@ -5,7 +5,7 @@ SET(CMAKE_CXX_STANDARD 17)
 SET(SRC_FILES
         IoContextEvent.cpp IoContextEvent.hpp
         IoContextThreadPool.cpp IoContextThreadPool.hpp
-        EventBaseComponent.cpp EventBaseComponent.hpp
+        EventBaseComponent.hpp
         TypeDefine.hpp
         IoContextImpl.cpp IoContextImpl.hpp
         ListenerComponent.cpp ListenerComponent.hpp
@@ -16,7 +16,7 @@ SET(SRC_FILES
         WinDescriptor.cpp WinDescriptor.hpp
         IocpContextImpl.cpp IocpContextImpl.hpp
         UnixLikeDescriptor.cpp UnixLikeDescriptor.hpp
-        UnixLikeIOContextImpl.hpp KQueueIOContextImpl.cpp KQueueIOContextImpl.hpp UnixLikeIOContextImpl.cpp EpollContextImpl.cpp EpollContextImpl.hpp ServerHandle.hpp ServerHandleImpl.cpp ServerHandleImpl.hpp NetworkHelpers.hpp NetworkHelpers.cpp TCPLink.hpp TCPLink.cpp TCPLinkImpl.cpp TCPLinkImpl.hpp)
+        UnixLikeIOContextImpl.hpp KQueueIOContextImpl.cpp KQueueIOContextImpl.hpp UnixLikeIOContextImpl.cpp EpollContextImpl.cpp EpollContextImpl.hpp ServerHandle.hpp ServerHandleImpl.cpp ServerHandleImpl.hpp NetworkHelpers.hpp NetworkHelpers.cpp TCPLink.hpp TCPLink.cpp TCPLinkImpl.cpp TCPLinkImpl.hpp SocketDescriptorHelper.cpp SocketDescriptorHelper.hpp)
 
 
 SET(CMAKE_VERBOSE_MAKEFILE TRUE)

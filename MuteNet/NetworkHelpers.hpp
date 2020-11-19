@@ -5,15 +5,15 @@
 #ifndef MUTENET_NETWORKHELPERS_HPP
 #define MUTENET_NETWORKHELPERS_HPP
 
+#include "TCPLink.hpp"
 
 namespace MuteNet
 {
-    class Link;
-    typedef std::shared_ptr<Link> LinkPtr;
+    typedef std::shared_ptr<TCPLink> LinkPtr;
 
-    class LinkImpl;
-    typedef std::shared_ptr<LinkImpl> LinkImplPtr;
-    typedef std::vector<LinkImplPtr> LinkImplPtrs;
+    class TCPLinkImpl;
+    typedef std::shared_ptr<TCPLinkImpl> TCPLinkImplPtr;
+    typedef std::vector<TCPLinkImplPtr> TCPLinkImplPtrs;
 
     class ServerHandle;
     typedef std::shared_ptr<ServerHandle> ServerHandlePtr;
@@ -26,7 +26,7 @@ namespace MuteNet
         public:
             virtual ~ConnectCallbacks() {}
 
-            virtual void OnConnected(Link& link) = 0;
+            virtual void OnConnected(TCPLink& link) = 0;
             virtual void OnError(int ErrorCode, const std::string ErrorMsg) = 0;
         };
         typedef std::shared_ptr<ConnectCallbacks> ConnectCallbacksPtr;
@@ -36,10 +36,10 @@ namespace MuteNet
         public:
             virtual ~ListenCallbacks() {}
 
-            virtual Link::CallbacksPtr OnInComingConnection(const std::string& RemoteIPAddress,
+            virtual TCPLink::CallbacksPtr OnInComingConnection(const std::string& RemoteIPAddress,
                                                             uint16_t RemotePort) = 0;
 
-            virtual void OnAccepted(Link& link) = 0;
+            virtual void OnAccepted(TCPLink& link) = 0;
 
             virtual void OnError(int ErrorCode, const std::string ErrorMsg) = 0;
         };
@@ -62,10 +62,10 @@ namespace MuteNet
         };
         typedef std::shared_ptr<ResolveDomainNameCallbacks> ResolveDomainNameCallbacksPtr;
 
-        static LinkImplPtr Connect(const std::string& host,
+        static TCPLinkImplPtr Connect(const std::string& host,
                                    uint16_t port,
                                    ConnectCallbacksPtr connectCallbacks,
-                                   Link::CallbacksPtr LinkCallbacks);
+                                   TCPLink::CallbacksPtr LinkCallbacks);
 
         static ServerHandlePtr Listen(uint16_t Port,
                                       ListenCallbacksPtr listenCallbacks);

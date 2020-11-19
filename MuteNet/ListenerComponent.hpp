@@ -5,22 +5,20 @@
 #ifndef MUTENET_LISTENERCOMPONENT_HPP
 #define MUTENET_LISTENERCOMPONENT_HPP
 
-#include "Descriptor.h"
-#include <Runnable.hpp>
+#include "EventBaseComponent.hpp"
 
 namespace EventLoop
 {
 	class IDescriptor;
 	using DescriptorPtr = IDescriptor*;
 	
-	class IOContextImpl;
-	
-    class ListenerComponent : public IDescriptor
+    class ListenerComponent : public IEventBaseComponent
 	{
 	public:
-		using CallbackDelegate = std::function<void (ListenerComponent *pRawListener, DescriptorPtr clientsocket,
-                                                     sockaddr* address, int length, void *Self )>;
+		using CallbackDelegate =  void (*)(ListenerComponent *pRawListener, DescriptorPtr clientsocket,
+                                                     sockaddr* address, int length, void *Self );
 	protected:
+	    DescriptorPtr   _Listener;
 		CallbackDelegate _ListenCallbackDelegate;
 		void *_Self;
 		
@@ -28,6 +26,9 @@ namespace EventLoop
 	
 	public:
 		virtual ~ListenerComponent ( );
+
+		virtual void Disable() = 0;
+		virtual void Free() = 0;
 
     protected:
 		ListenerComponent ( const RawIOContextImplPtr &ContextEvent,

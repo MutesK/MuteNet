@@ -5,7 +5,6 @@
 #ifndef MUTENET_IOCONTEXTIMPL_HPP
 #define MUTENET_IOCONTEXTIMPL_HPP
 
-#include "IoContextThreadPool.hpp"
 #include "ListenerComponent.hpp"
 #include "Descriptor.h"
 
@@ -20,6 +19,8 @@ namespace EventLoop
 	
 	class IDescriptor;
 	using DescriptorPtr = IDescriptor*;
+
+	class IOContextThreadPool;
 	
 	class IOContextImpl
 	{
@@ -29,7 +30,7 @@ namespace EventLoop
 	public:
 		IOContextImpl ( const uint32_t NumOfWorkerThread, const uint32_t Timeout );
 		
-		virtual ListenerPtr CreateListener ( ListenerComponent::CallbackDelegate &&Callback,
+		virtual ListenerPtr CreateListener ( ListenerComponent::CallbackDelegate Callback,
 		                                     void *Self, descriptor_t listenSocket ) = 0;
 
 		virtual DescriptorPtr CreateDescriptor (descriptor_t descriptor) = 0;

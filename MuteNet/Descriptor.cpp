@@ -25,10 +25,6 @@ namespace EventLoop
 	
 	IDescriptor::~IDescriptor ( )
 	{
-	    if(_ExceptCallback != nullptr)
-        {
-            _ExceptCallback(this, 0, _Key);
-        }
 	}
 	
 	void IDescriptor::SetCallback (CallbackPtr ReadCallback, CallbackPtr WriteCallback,

@@ -123,7 +123,7 @@ namespace EventLoop
 
     void KQueueIOContextImpl::Disable(const DescriptorPtr descriptor)
     {
-        UpdateEvent(descriptor->GetDescriptor(), kReadEvent & kWriteEvent, true);
+        UpdateEvent(descriptor->GetDescriptor(), 0, true);
 
         {
             UniqueScopedLockObject<DescriptorPerSocketPtrMapWithLock> Lock(_SocketMap);

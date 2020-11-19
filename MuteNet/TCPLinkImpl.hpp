@@ -5,7 +5,7 @@
 #ifndef MUTENET_TCPLINKIMPL_HPP
 #define MUTENET_TCPLINKIMPL_HPP
 
-#include "TCPLink.hpp"
+#include "NetworkHelpers.hpp"
 
 namespace EventLoop
 {
@@ -35,7 +35,7 @@ namespace MuteNet
 
     public:
         TCPLinkImpl(EventLoop::IOContextEvent& EventBase, const CallbacksPtr LinkCallback);
-        TCPLinkImpl(EventLoop::IOContextEvent& EventBase, descriptor_t socket, const CallbacksPtr LinkCallback,
+        TCPLinkImpl(EventLoop::IOContextEvent& EventBase, DescriptorPtr socket, const CallbacksPtr LinkCallback,
         const ServerHandleImplPtr ServerHandlePtr, const sockaddr* Addr, size_t socketLen);
         virtual ~TCPLinkImpl();
 

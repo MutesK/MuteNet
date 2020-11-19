@@ -25,7 +25,7 @@ namespace EventLoop
         virtual ~EpollContextImpl();
 
         virtual ListenerPtr
-        CreateListener(ListenerComponent::CallbackDelegate &&Callback, void *Self, descriptor_t listenSocket) override;
+        CreateListener(ListenerComponent::CallbackDelegate Callback, void *Self, descriptor_t listenSocket) override;
 
         virtual DescriptorPtr CreateDescriptor(socket_t Socket) override;
 

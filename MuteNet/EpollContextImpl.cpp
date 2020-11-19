@@ -10,6 +10,7 @@
 
 #include <sys/epoll.h>
 #include "EpollContextImpl.hpp"
+#include "IoContextThreadPool.hpp"
 
 
 /*
@@ -35,7 +36,7 @@ namespace EventLoop
     }
 
     ListenerPtr
-    EpollContextImpl::CreateListener(EventLoop::ListenerComponent::CallbackDelegate &&Callback, void *Self,
+    EpollContextImpl::CreateListener(EventLoop::ListenerComponent::CallbackDelegate Callback, void *Self,
                                      descriptor_t listenSocket)
     {
        return IUnixLikeIOContextImpl::CreateListener(std::move(Callback), Self,  listenSocket);
@@ -82,7 +83,7 @@ namespace EventLoop
         }
 
         {
-            åUniqueScopedLockObject<DescriptorPerSocketPtrMapWithLock> Lock(_SocketMap);
+            UniqueScopedLockObject<DescriptorPerSocketPtrMapWithLock> Lock(_SocketMap);
 
 
             const auto Iter = _SocketMap.find(descriptor->GetDescriptor());
@@ -154,11 +155,7 @@ namespace EventLoop
 
                     if(event.events & EPOLLERR)
                     {
-                        if(DescriptorPtr->_ExceptCallback == nullptr)
-                        {
-
-                        }
-                        else
+                        if(DescriptorPtr->_ExceptCallback != nullptr)
                         {
                             DescriptorPtr->_ExceptCallback(DescriptorPtr, errno, DescriptorPtr->_Key);
                         }

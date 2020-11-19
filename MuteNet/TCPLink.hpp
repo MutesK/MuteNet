@@ -41,6 +41,8 @@ namespace MuteNet
         {
         }
 
+        CallbacksPtr GetCallbacks();
+
         virtual bool Send(const void* Data, size_t Length) = 0;
 
         virtual std::string GetLocalIP(void) const = 0;
