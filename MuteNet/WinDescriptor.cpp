@@ -39,7 +39,8 @@ namespace EventLoop
 		    DecreaseCounter();
             if(GetCounter() == 0)
             {
-                delete this;
+                _ExceptCallback(this, ECONNREFUSED, _Key);
+                return;
             }
 			return;
 		}
@@ -47,13 +48,14 @@ namespace EventLoop
 		_RecvOverlapped = OVERLAPPED {};
 		int ret = WSARecv ( _descriptor, &buf, 1, &RecvBytes, &Flag,
 		                    reinterpret_cast<LPOVERLAPPED>(&_RecvOverlapped), nullptr );
-		
-		if ( ret == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING)
+
+		auto Error = WSAGetLastError();
+		if ( ret == SOCKET_ERROR && Error != WSA_IO_PENDING && Error != WSAEWOULDBLOCK)
 		{
             DecreaseCounter();
             if(GetCounter() == 0)
             {
-                delete this;
+                _ExceptCallback(this, Error, _Key);
             }
 			return;
 		}
@@ -70,7 +72,8 @@ namespace EventLoop
             DecreaseCounter();
             if(GetCounter() == 0)
             {
-                delete this;
+                _ExceptCallback(this, ECONNREFUSED, _Key);
+                return;
             }
 			return;
 		}
@@ -83,6 +86,12 @@ namespace EventLoop
 			{
                 DecreaseCounter();
 				std::overflow_error("Writebuffer is not enough Buffer");
+
+                if(GetCounter() == 0)
+                {
+                    _ExceptCallback(this, ECONNREFUSED, _Key);
+                    return;
+                }
 			}
 			
 			_WriteBuffer.GetWriteBufferAndLengths ( &buf[ 0 ].buf, ( uint32_t & ) buf[ 0 ].len,
@@ -94,12 +103,14 @@ namespace EventLoop
 		
 		_SendOverlapped = OVERLAPPED {};
 		int ret = WSASend ( _descriptor, buf, 2, &SendBytes, 0, &_SendOverlapped, nullptr );
-		if ( ret == SOCKET_ERROR)
+
+        auto Error = WSAGetLastError();
+        if ( ret == SOCKET_ERROR && Error != WSA_IO_PENDING && Error != WSAEWOULDBLOCK)
 		{
             DecreaseCounter();
             if(GetCounter() == 0)
             {
-                delete this;
+                _ExceptCallback(this, Error, _Key);
             }
 			return;
 		}
@@ -115,7 +126,7 @@ namespace EventLoop
 		
 		if(GetCounter() == 0)
 		{
-            delete this;
+            _ExceptCallback(this, ECONNREFUSED, _Key);
 		}
 	}
 	
@@ -134,7 +145,6 @@ namespace EventLoop
 			if ( 0 == TransfferedBytes )
 			{
                 Shutdown(SD_BOTH);
-				return;
 			}
 			
 			if ( &_RecvOverlapped == pRawOverlapped )
@@ -168,18 +178,32 @@ namespace EventLoop
 
             if(GetCounter() == 0)
             {
-                Shutdown(0);;
+                _ExceptCallback(this, ECONNREFUSED, _Key);
             }
 	}
 	
 	void WinSocketDescriptor::IOError ( OVERLAPPED *pRawOverlapped, uint32_t LastError )
 	{
         _ExceptCallback(this, LastError, _Key);
+
+        DecreaseCounter();
+
+        if(GetCounter() == 0)
+        {
+            _ExceptCallback(this, ECONNREFUSED, _Key);
+        }
 	}
 	
 	void WinSocketDescriptor::IOTimeout ( OVERLAPPED *pRawOverlapped )
 	{
         _ExceptCallback(this, 0, _Key);
+
+        DecreaseCounter();
+
+        if(GetCounter() == 0)
+        {
+            _ExceptCallback(this, ECONNREFUSED, _Key);
+        }
 	}
 
     int WinSocketDescriptor::write(descriptor_t descriptor, const char *ptr, size_t length)

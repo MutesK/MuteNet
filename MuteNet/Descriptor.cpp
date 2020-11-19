@@ -46,19 +46,23 @@ namespace EventLoop
 	{
 		Util::OutputMemoryStream StreamBuffer;
 		auto& InputMemoryStream = reinterpret_cast<Util::InputMemoryStream &>(StreamBuffer);
-		
-		
+
 		int ret = read(_descriptor, const_cast<char *>(InputMemoryStream.GetBufferPtr()),
                        InputMemoryStream.GetRemainingDataSize());
 		
 		if(ret == SOCKET_ERROR)
 		{
-			return false;
+		    if(errno != EWOULDBLOCK)
+            {
+		        _ExceptCallback(this, errno, _Key);
+		        return false;
+            }
 		}
 		
 		if(ret == 0)
 		{
-			return true;
+            _ExceptCallback(this, ECONNREFUSED, _Key);
+			return false;
 		}
 		
 		StreamBuffer.MoveWritePosition(ret);
@@ -101,8 +105,11 @@ namespace EventLoop
 		
 		if(ret == SOCKET_ERROR)
 		{
-			delete this;
-			return false;
+            if(errno != EWOULDBLOCK)
+            {
+			    _ExceptCallback(this, errno, _Key);
+			    return false;
+            }
 		}
 		
 		{

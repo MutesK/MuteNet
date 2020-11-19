@@ -67,4 +67,5 @@ public:
 	}
 };
 
+
 #endif //MUTENET_TYPEDEFINE_HPP
