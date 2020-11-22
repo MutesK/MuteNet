@@ -7,9 +7,10 @@
 #include "NetworkHelpers.hpp"
 #include "ServerHandleImpl.hpp"
 #include "ListenerComponent.hpp"
-#include "SocketDescriptorHelper.hpp"
 #include "IoContextEvent.hpp"
 #include "TCPLinkImpl.hpp"
+
+
 namespace MuteNet
 {
     ServerHandleImpl::ServerHandleImpl(EventLoop::IOContextEvent& EventBase, NetworkHelpers::ListenCallbacksPtr _ListenCallbacks)
@@ -20,17 +21,19 @@ namespace MuteNet
 
     void ServerHandleImpl::Close()
     {
-        if(_Listener != nullptr)
+        if (_Listener != nullptr)
         {
             _Listener->Disable();
 
             _Listener->Free();
         }
+
+        _IsListening = false;
     }
 
     bool ServerHandleImpl::IsListening() const
     {
-        return false;
+        return _IsListening;
     }
 
     ServerHandleImpl::~ServerHandleImpl()
@@ -44,7 +47,7 @@ namespace MuteNet
         Ptr->_Self = Ptr;
         if (Ptr->Listen(Port))
         {
-
+            Ptr->_IsListening = true;
         }
         else
         {
@@ -131,6 +134,7 @@ namespace MuteNet
         }
 
         _Listener = _EventBase.CreateListener(Callback, this, listenfd);
+        return true;
     }
 
     void
@@ -147,14 +151,14 @@ namespace MuteNet
             case AF_INET:
             {
                 sockaddr_in * sin = reinterpret_cast<sockaddr_in *>(Addr);
-                SocketDescriptorHelper::InetPton(AF_INET, &sin->sin_addr, address, 128);
+                SocketDescriptorHelper::InetNtop(AF_INET, &sin->sin_addr, address, 128);
                 Port = ntohs(sin->sin_port);
                 break;
             }
             case AF_INET6:
             {
                 sockaddr_in6 * sin6 = reinterpret_cast<sockaddr_in6 *>(Addr);
-                SocketDescriptorHelper::InetPton(AF_INET6, &sin6->sin6_addr, address, 128);
+                SocketDescriptorHelper::InetNtop(AF_INET6, &sin6->sin6_addr, address, 128);
                 Port = ntohs(sin6->sin6_port);
                 break;
             }
@@ -179,8 +183,4 @@ namespace MuteNet
         Self->_ListenCallbacks->OnAccepted(*Link);
     }
 
-    void ServerHandleImpl::RemoveLink(const TCPLinkImpl *Link)
-    {
-
-    }
 }

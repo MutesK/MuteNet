@@ -6,8 +6,16 @@
 #if defined(WIN32)
 
 #include <winsock2.h>
-#include <mswsock.h>
 #include <ws2ipdef.h>
+#include <ws2tcpip.h>
+
+#include <wlanapi.h>
+#include <iphlpapi.h>
+#include <netioapi.h>
+
+#pragma comment(lib, "ws2_32")
+#pragma comment(lib, "Winmm.lib")
+#pragma comment(lib, "Iphlpapi.lib")
 
 #else
 

@@ -27,6 +27,7 @@
 #include <fstream>
 #include <queue>
 
+#include <future>
 #include <unordered_map>
 
 #include "MacroFunction.h"

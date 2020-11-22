@@ -13,6 +13,8 @@
 
 #if defined(IOCONTEXT_IOCP)
 
+#include <MSWSock.h>
+
 namespace EventLoop
 {
     typedef LPFN_ACCEPTEX AcceptExPtr;
@@ -48,15 +50,14 @@ namespace EventLoop
 
         friend class Win32ListenerComponent;
     public:
-        IocpContextImpl ( const uint32_t NumOfWorkerThread, const uint32_t Timeout );
+        IocpContextImpl ( uint32_t NumOfWorkerThread, uint32_t Timeout );
 
         virtual ~IocpContextImpl ( );
 
         virtual DescriptorPtr CreateDescriptor ( descriptor_t Socket );
 
         virtual ListenerPtr
-        CreateListener ( ListenerComponent::CallbackDelegate &&Callback, void *Self,
-                         descriptor_t listenSocket );
+        CreateListener(ListenerComponent::CallbackDelegate Callback, void *Self, descriptor_t listenSocket) override;
 
         bool PostQueue ( void *Pointer );
 
@@ -69,6 +70,7 @@ namespace EventLoop
         virtual bool Enable(DescriptorPtr descriptor) override;
 
         virtual void Disable(DescriptorPtr descriptor) override;
+
     };
 
 }

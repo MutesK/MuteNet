@@ -19,10 +19,9 @@ namespace EventLoop
 
 		return Ptr;
 	}
-	
-	ListenerPtr
-	IocpContextImpl::CreateListener ( ListenerComponent::CallbackDelegate &&Callback, void *Self,
-	                                  descriptor_t listenSocket )
+
+    ListenerPtr
+    IocpContextImpl::CreateListener(ListenerComponent::CallbackDelegate Callback, void *Self, descriptor_t listenSocket)
 	{
 		return ListenerPtr ((ListenerComponent *) new Win32ListenerComponent (this, std::move(Callback), Self, listenSocket ));
 	}

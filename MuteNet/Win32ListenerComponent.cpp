@@ -18,15 +18,12 @@ namespace EventLoop
 	                                                 descriptor_t listenSocket )
 			: ListenerComponent ( ContextEvent, std::move(Callback), Self, listenSocket )
 	{
-		auto Iocp = reinterpret_cast<IocpContextImpl *>(_ContextPtr)->_IocpHandle;
-		
-		CreateIoCompletionPort ( reinterpret_cast<HANDLE>(listenSocket), Iocp,
-		                         reinterpret_cast<ULONG_PTR>(this), 0 );
+        reinterpret_cast<IocpContextImpl *>(_ContextPtr)->Enable(_Listener);
 	}
 	
 	Win32ListenerComponent::~Win32ListenerComponent ( )
 	{
-
+        Disable();
 	}
 	
 	void Win32ListenerComponent::AcceptRequest ( )

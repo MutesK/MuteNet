@@ -5,6 +5,7 @@
 #include "Common.h"
 #include "TypeDefine.hpp"
 #include "IoContextImpl.hpp"
+#include "IoContextThreadPool.hpp"
 
 namespace EventLoop
 {

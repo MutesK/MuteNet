@@ -5,6 +5,7 @@
 #include "Common.h"
 #include "TypeDefine.hpp"
 #include "IoContextEvent.hpp"
+#include "Descriptor.h"
 
 #include "IocpContextImpl.hpp"
 #include "KQueueIOContextImpl.hpp"

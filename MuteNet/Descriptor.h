@@ -5,7 +5,6 @@
 #ifndef MUTENET_DESCRIPTOR_H
 #define MUTENET_DESCRIPTOR_H
 
-#include "TypeDefine.hpp"
 #include "EventBaseComponent.hpp"
 #include <CircularBuffer.h>
 #include <InputMemoryStream.h>

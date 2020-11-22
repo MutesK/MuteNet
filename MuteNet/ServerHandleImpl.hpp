@@ -58,9 +58,6 @@ namespace MuteNet
 
         static void Callback(EventLoop::ListenerComponent *pRawListener, DescriptorPtr a_Socket, sockaddr * a_Addr, int a_Len, void * a_Self);
 
-        void RemoveLink(const TCPLinkImpl * a_Link);
-
-
 
     };
 }
