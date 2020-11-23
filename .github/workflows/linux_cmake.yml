@@ -23,6 +23,7 @@ jobs:
         mkdir build
         cd build
         cmake ../hello-tbb-cmake
+        make
         make install
 
     - name: Create Build Environment
