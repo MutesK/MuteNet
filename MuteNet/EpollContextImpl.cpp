@@ -24,8 +24,9 @@
  */
 namespace EventLoop
 {
-    EpollContextImpl::EpollContextImpl(IOContextEvent &Event, const uint32_t NumOfWorkerThread, const uint32_t Timeout)
-            : IUnixLikeIOContextImpl(Event, NumOfWorkerThread, Timeout), _EpollHandle(epoll_create(1024))
+    EpollContextImpl::EpollContextImpl(const uint32_t NumOfWorkerThread, const uint32_t Timeout)
+            : IUnixLikeIOContextImpl(NumOfWorkerThread, Timeout),
+              _EpollHandle(epoll_create(1024))
     {
     }
 

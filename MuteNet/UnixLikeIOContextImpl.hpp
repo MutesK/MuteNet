@@ -18,12 +18,10 @@ namespace EventLoop
     protected:
         DescriptorPerSocketPtrMapWithLock _SocketMap;
     public:
-        IUnixLikeIOContextImpl(IOContextEvent &Event,
-                               const uint32_t NumOfWorkerThread, const uint32_t Timeout);
+        IUnixLikeIOContextImpl(const uint32_t NumOfWorkerThread, const uint32_t Timeout);
 
-        virtual ListenerPtr
-        CreateListener(ListenerComponent::CallbackDelegate &&Callback, void *Self,
-                       descriptor_t listenSocket) override;
+        virtual ListenerPtr CreateListener ( ListenerComponent::CallbackDelegate Callback,
+                                             void *Self, descriptor_t listenSocket ) override;
 
         virtual DescriptorPtr CreateDescriptor(descriptor_t descriptor) override;
     };

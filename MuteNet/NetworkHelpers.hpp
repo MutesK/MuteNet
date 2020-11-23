@@ -97,9 +97,8 @@ namespace MuteNet
 
         static int32_t InetPtonScope(int af, const char* soruce, void *dest, uint32_t* index);
 
-#ifdef WIN32
         static char *mm_strdup(const char *s);
-#endif
+
     };
 
     class HostnameLookup

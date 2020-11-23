@@ -28,7 +28,7 @@ namespace EventLoop
 		std::shared_ptr<IOContextThreadPool> _ThreadPool;  // Using For Notify Completion
 		uint32_t _Timeout;
 	public:
-		IOContextImpl ( const uint32_t NumOfWorkerThread, const uint32_t Timeout );
+		IOContextImpl(const uint32_t NumOfWorkerThread, const uint32_t Timeout);
 		
 		virtual ListenerPtr CreateListener ( ListenerComponent::CallbackDelegate Callback,
 		                                     void *Self, descriptor_t listenSocket ) = 0;

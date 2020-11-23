@@ -23,7 +23,7 @@ namespace EventLoop
 #elif defined(IOCONTEXT_SELECT)
         return std::make_shared<KQueueIOContextImpl>( NumOfWorkerThread, Timeout);
 #elif defined(IOCONTEXT_EPOLL)
-        return std::make_shared<KQueueIOContextImpl>( NumOfWorkerThread, Timeout);
+        return std::make_shared<EpollContextImpl>( NumOfWorkerThread, Timeout);
 #endif
         std::runtime_error("Can't find IOContext Type!");
     }

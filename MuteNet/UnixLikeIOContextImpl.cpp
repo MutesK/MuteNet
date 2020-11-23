@@ -15,15 +15,13 @@
 namespace EventLoop
 {
 
-    IUnixLikeIOContextImpl::IUnixLikeIOContextImpl(IOContextEvent &Event, const uint32_t NumOfWorkerThread,
-                                                   const uint32_t Timeout) :
-            IOContextImpl(Event, NumOfWorkerThread, Timeout)
+    IUnixLikeIOContextImpl::IUnixLikeIOContextImpl(const uint32_t NumOfWorkerThread, const uint32_t Timeout) :
+            IOContextImpl(NumOfWorkerThread, Timeout)
     {
     }
 
-    ListenerPtr
-    IUnixLikeIOContextImpl::CreateListener(ListenerComponent::CallbackDelegate &&Callback, void *Self, 
-        descriptor_t listenSocket)
+    ListenerPtr IUnixLikeIOContextImpl::CreateListener ( ListenerComponent::CallbackDelegate Callback,
+                                 void *Self, descriptor_t listenSocket )
     {
         return ListenerPtr ((ListenerComponent *)new LikeUnixListenerComponent(this, std::move(Callback),
                 Self, listenSocket));

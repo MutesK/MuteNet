@@ -26,6 +26,9 @@
 #include <fcntl.h>
 #include <zconf.h>
 
+#include <netdb.h>
+#include <net/if.h>
+
 #define abstact
 #endif
 

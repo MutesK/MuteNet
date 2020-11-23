@@ -20,8 +20,7 @@ namespace Util
 		
 		template<typename Type>
 		void Write ( const std::vector<Type> &vector );
-		
-		template<>
+
 		void Write ( const std::string &inData );
 		
 		virtual void Serialize ( void *inData, uint32_t inByteCount ) override;

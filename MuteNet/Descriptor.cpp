@@ -6,9 +6,6 @@
 #include "TypeDefine.hpp"
 #include "Descriptor.h"
 
-#include <OutputMemoryStream.h>
-#include <InputMemoryStream.h>
-
 namespace EventLoop
 {
 	struct Buffer

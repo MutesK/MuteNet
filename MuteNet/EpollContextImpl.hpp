@@ -20,8 +20,7 @@ namespace EventLoop
         descriptor_t        _EpollHandle;
 
     public:
-        EpollContextImpl(IOContextEvent &Event,
-                         const uint32_t NumOfWorkerThread, const uint32_t Timeout);
+        EpollContextImpl(const uint32_t NumOfWorkerThread, const uint32_t Timeout);
         virtual ~EpollContextImpl();
 
         virtual ListenerPtr

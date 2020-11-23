@@ -159,7 +159,7 @@ namespace MuteNet
             }
         }
         *index = if_index;
-        tmp_src = mm_strdup(soruce);
+        tmp_src = SocketDescriptorHelper::mm_strdup(soruce);
         cp = strchr(tmp_src, '%');
         *cp = '\0';
         r = SocketDescriptorHelper::InetPton(af, tmp_src, static_cast<char *>(dest));
@@ -246,7 +246,7 @@ namespace MuteNet
 
         return std::string(ErrorStr);
 #else
-        return gai_strerror(ErrorCode);
+        return strerror(ErrorCode);
 #endif
     }
 

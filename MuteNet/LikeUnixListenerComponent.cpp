@@ -9,6 +9,7 @@
 #include "UnixLikeIOContextImpl.hpp"
 #include "LikeUnixListenerComponent.h"
 #include "IoContextThreadPool.hpp"
+#include "NetworkHelpers.hpp"
 
 #ifdef POSIX_PLATFORM
 
@@ -19,15 +20,16 @@ namespace EventLoop
 														   descriptor_t listenSocket )
 			: ListenerComponent ( ContextEvent, std::move(Callback), Self, listenSocket )
 	{
-        _Listener->SetNonBlock();
+        ::MuteNet::SocketDescriptorHelper::SetSocketNonblock(_Listener->GetDescriptor());
         _Listener->SetCallback(ReadCallback, WriteCallback, ExceptCallback, this);
-
 
         int domain = 0;
         socklen_t size = sizeof(domain);
         if(SOCKET_ERROR == getsockopt(_Listener->GetDescriptor(), SOL_SOCKET, SO_DOMAIN, &domain, &size))
         {
-            return;
+            int dwErrVal = errno;
+            std::error_code ec ( dwErrVal, std::system_category ( ));
+            throw std::system_error ( ec, "LikeUnixListenerComponent : Can't Get Socket Option Address Family" );
         }
 
         switch(domain)
@@ -41,6 +43,7 @@ namespace EventLoop
                 clientAddresLength = sizeof(struct sockaddr_in);
                 break;
             default:
+                throw std::logic_error ( "LikeUnixListenerComponent : Isn't compatible Address Family" );
                 break;
         }
 
@@ -63,17 +66,17 @@ namespace EventLoop
 
     void LikeUnixListenerComponent::WriteCallback(DescriptorPtr Ptr, void *Self)
     {
-
+        throw std::logic_error ( "LikeUnixListenerComponent : WriteCallback Called" );
     }
 
     void LikeUnixListenerComponent::ExceptCallback(DescriptorPtr Ptr, uint16_t What, void *Self)
     {
-
+        throw std::logic_error ( "LikeUnixListenerComponent : Except Called" );
     }
 
     void LikeUnixListenerComponent::Accept()
     {
-        if (_Listener->GetDescriptor() == INVALID_SOCKET)
+        if(_Listener->GetDescriptor() == INVALID_SOCKET)
         {
             return;
         }
@@ -83,11 +86,13 @@ namespace EventLoop
 
         if (client == SOCKET_ERROR)
         {
+            Accept();
             return;
         }
 
-        if(MuteNet::SocketDescriptorHelper::SetSocketNonblock(client) == SOCKET_ERROR)
+        if(::MuteNet::SocketDescriptorHelper::SetSocketNonblock(client) == SOCKET_ERROR)
         {
+            Accept();
             return;
         }
 

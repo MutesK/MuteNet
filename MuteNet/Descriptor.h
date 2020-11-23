@@ -7,6 +7,8 @@
 
 #include "EventBaseComponent.hpp"
 #include <CircularBuffer.h>
+
+#include <OutputMemoryStream.h>
 #include <InputMemoryStream.h>
 
 namespace EventLoop
