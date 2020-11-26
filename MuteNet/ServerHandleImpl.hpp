@@ -5,7 +5,9 @@
 #ifndef MUTENET_SERVERHANDLEIMPL_HPP
 #define MUTENET_SERVERHANDLEIMPL_HPP
 
+#include <memory>
 #include "ServerHandle.hpp"
+#include "NetworkHelpers.hpp"
 
 namespace EventLoop
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FoundationCommon.h"
+#include "Common.h"
 
 namespace Util
 {

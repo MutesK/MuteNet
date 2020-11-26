@@ -5,7 +5,14 @@
 #ifndef MUTENET_NETWORKHELPERS_HPP
 #define MUTENET_NETWORKHELPERS_HPP
 
+#include "Common.h"
+#include "TypeDefine.hpp"
 #include "TCPLink.hpp"
+#include <vector>
+
+struct sockaddr;
+struct sockaddr_in;
+struct sockaddr_in6;
 
 namespace EventLoop
 {

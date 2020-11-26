@@ -16,11 +16,25 @@ SET(SRC_FILES
         WinDescriptor.cpp WinDescriptor.hpp
         IocpContextImpl.cpp IocpContextImpl.hpp
         UnixLikeDescriptor.cpp UnixLikeDescriptor.hpp
-        UnixLikeIOContextImpl.hpp KQueueIOContextImpl.cpp KQueueIOContextImpl.hpp UnixLikeIOContextImpl.cpp EpollContextImpl.cpp EpollContextImpl.hpp ServerHandle.hpp ServerHandleImpl.cpp ServerHandleImpl.hpp NetworkHelpers.hpp NetworkHelpers.cpp TCPLink.hpp TCPLink.cpp TCPLinkImpl.cpp TCPLinkImpl.hpp EventBaseComponent.cpp)
+        UnixLikeIOContextImpl.hpp KQueueIOContextImpl.cpp
+        KQueueIOContextImpl.hpp UnixLikeIOContextImpl.cpp
+        EpollContextImpl.cpp EpollContextImpl.hpp
+        ServerHandle.hpp ServerHandleImpl.cpp
+        ServerHandleImpl.hpp NetworkHelpers.hpp
+        NetworkHelpers.cpp TCPLink.hpp TCPLink.cpp
+        TCPLinkImpl.cpp TCPLinkImpl.hpp
+        EventBaseComponent.cpp
+        InputMemoryStream.cpp InputMemoryStream.h
+        MemoryStream.cpp MemoryStream.h
+        OutputMemoryStream.cpp OutputMemoryStream.h
+        Task.cpp Task.h
+        TaskAgent.cpp TaskAgent.h
+        TaskManager.cpp TaskManager.h
+        MacroFunction.h Singleton.h
+        CircularBuffer.cpp CircularBuffer.h SharedPool.hpp Runnable.cpp Runnable.hpp Event.hpp Event.cpp AtomicCounter.hpp)
 
 
 SET(CMAKE_VERBOSE_MAKEFILE TRUE)
-SET(MUTENET_FOUNDATION_LOCATION ../Foundation)
 
 PROJECT(${PROJECT_NAME})
 SET(PROJECT_VERSION_MAJOR 1)
@@ -39,15 +53,12 @@ ELSEIF(WIN32)
 ENDIF()
 
 
-ADD_SUBDIRECTORY(${MUTENET_FOUNDATION_LOCATION} ../Build)
-
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR} ${TBB_INCLUDE_DIRS} ${MUTENET_FOUNDATION_LOCATION})
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR} ${MUTENET_FOUNDATION_LOCATION})
 
 # 출력 디렉토리
-SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../Build)
-SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ../Build)
-SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ../Build)
+SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../../Build)
+SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ../../Build)
+SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ../../Build)
 
 ADD_LIBRARY(${PROJECT_NAME} ${SRC_FILES})
 
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} ${TBB_LIBRARIES} ${MUTENET_FOUNDATION_LOCATION}/Build)

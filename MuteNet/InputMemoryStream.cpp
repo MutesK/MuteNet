@@ -1,4 +1,4 @@
-#include "FoundationCommon.h"
+#include "Common.h"
 #include "InputMemoryStream.h"
 
 using namespace Util;
