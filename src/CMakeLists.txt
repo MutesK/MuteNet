@@ -11,7 +11,7 @@ ELSEIF(WIN32)
 ENDIF()
 
 IF(NOT WIN32)
-    ADD_SUBDIRECTORY(../lib/tbb)
+ADD_SUBDIRECTORY(../lib/tbb ../lib/tbb/build)
 ENDIF()
 
 ADD_LIBRARY(
@@ -45,9 +45,3 @@ ADD_LIBRARY(
         TaskManager.cpp TaskManager.h
         MacroFunction.h Singleton.h
         CircularBuffer.cpp CircularBuffer.h SharedPool.hpp Runnable.hpp Event.hpp Event.cpp AtomicCounter.hpp)
-
-IF(NOT WIN32)
-    target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ../lib/tbb/include)
-
-    target_link_libraries(${PROJECT_NAME} PRIVATE tbb)
-ENDIF()
