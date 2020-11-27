@@ -1,8 +1,23 @@
-cmake_minimum_required(VERSION 3.15)
-SET(PROJECT_NAME MuteNet)
-SET(CMAKE_CXX_STANDARD 17)
 
-SET(SRC_FILES
+IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    ADD_DEFINITIONS(-DIOCONTEXT_KQUEUE)
+    ADD_DEFINITIONS(-DAPPLE)
+    INCLUDE_DIRECTORIES(/usr/local/include)
+ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+    ADD_DEFINITIONS(-DIOCONTEXT_EPOLL)
+    ADD_DEFINITIONS(-DLINUX)
+ELSEIF(WIN32)
+    ADD_DEFINITIONS(-DIOCONTEXT_IOCP)
+ENDIF()
+
+IF(NOT WIN32)
+    target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ../lib/tbb/include)
+
+    target_link_libraries(${PROJECT_NAME} PRIVATE tbb)
+ENDIF()
+
+ADD_LIBRARY(
+        ${CMAKE_PROJECT_NAME}
         IoContextEvent.cpp IoContextEvent.hpp
         IoContextThreadPool.cpp IoContextThreadPool.hpp
         EventBaseComponent.hpp
@@ -31,34 +46,4 @@ SET(SRC_FILES
         TaskAgent.cpp TaskAgent.h
         TaskManager.cpp TaskManager.h
         MacroFunction.h Singleton.h
-        CircularBuffer.cpp CircularBuffer.h SharedPool.hpp Runnable.cpp Runnable.hpp Event.hpp Event.cpp AtomicCounter.hpp)
-
-
-SET(CMAKE_VERBOSE_MAKEFILE TRUE)
-
-PROJECT(${PROJECT_NAME})
-SET(PROJECT_VERSION_MAJOR 1)
-SET(PROJECT_VERSION_MINOR 0)
-
-
-IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    ADD_DEFINITIONS(-DIOCONTEXT_KQUEUE)
-    ADD_DEFINITIONS(-DAPPLE)
-    INCLUDE_DIRECTORIES(/usr/local/include)
-ELSEIF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    ADD_DEFINITIONS(-DIOCONTEXT_EPOLL)
-    ADD_DEFINITIONS(-DLINUX)
-ELSEIF(WIN32)
-    ADD_DEFINITIONS(-DIOCONTEXT_IOCP)
-ENDIF()
-
-
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR} ${MUTENET_FOUNDATION_LOCATION})
-
-# 출력 디렉토리
-SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../../Build)
-SET(CMAKE_LIBRARY_OUTPUT_DIRECTORY ../../Build)
-SET(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ../../Build)
-
-ADD_LIBRARY(${PROJECT_NAME} ${SRC_FILES})
-
+        CircularBuffer.cpp CircularBuffer.h SharedPool.hpp Runnable.hpp Event.hpp Event.cpp AtomicCounter.hpp)
