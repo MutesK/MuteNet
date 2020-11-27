@@ -46,5 +46,5 @@
 
 x64/
 .vs/
-**/[bB]uild
-cmake-build-debug/
+[bB]uild*/
+cmake-build-debug*/
