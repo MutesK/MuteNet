@@ -6,5 +6,5 @@ CXX_FLAGS = /DWIN32 /D_WINDOWS /GR /EHsc /Zi /Ob0 /Od /RTC1 -MDd   -std:c++17
 
 CXX_DEFINES = -DIOCONTEXT_IOCP
 
-CXX_INCLUDES = 
+CXX_INCLUDES = -IC:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\..\lib\tbb\include 
 

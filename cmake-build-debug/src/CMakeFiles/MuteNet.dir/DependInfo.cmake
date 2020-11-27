@@ -41,6 +41,7 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  "../src/../lib/tbb/include"
   )
 
 # Targets to which this target links.

@@ -46,6 +46,5 @@
 
 x64/
 .vs/
-/cmake-build-debug/*
-/MuteNet/cmake-build-debug/*
-/Build/*
+**/[bB]uild
+cmake-build-debug/

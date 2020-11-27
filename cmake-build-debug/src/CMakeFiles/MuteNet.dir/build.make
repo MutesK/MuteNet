@@ -15,9 +15,6 @@
 .SUFFIXES: .hpux_make_needs_suffix_list
 
 
-# Produce verbose output by default.
-VERBOSE = 1
-
 # Suppress display of executed commands.
 $(VERBOSE).SILENT:
 
@@ -66,7 +63,7 @@ src\CMakeFiles\MuteNet.dir\IoContextEvent.cpp.obj: ..\src\IoContextEvent.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object src/CMakeFiles/MuteNet.dir/IoContextEvent.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\IoContextEvent.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IoContextEvent.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\IoContextEvent.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IoContextEvent.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -74,7 +71,7 @@ src\CMakeFiles\MuteNet.dir\IoContextEvent.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/IoContextEvent.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\IoContextEvent.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IoContextEvent.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IoContextEvent.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -82,7 +79,7 @@ src\CMakeFiles\MuteNet.dir\IoContextEvent.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/IoContextEvent.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\IoContextEvent.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IoContextEvent.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\IoContextEvent.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IoContextEvent.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -91,7 +88,7 @@ src\CMakeFiles\MuteNet.dir\IoContextThreadPool.cpp.obj: ..\src\IoContextThreadPo
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object src/CMakeFiles/MuteNet.dir/IoContextThreadPool.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\IoContextThreadPool.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IoContextThreadPool.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\IoContextThreadPool.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IoContextThreadPool.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -99,7 +96,7 @@ src\CMakeFiles\MuteNet.dir\IoContextThreadPool.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/IoContextThreadPool.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\IoContextThreadPool.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IoContextThreadPool.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IoContextThreadPool.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -107,7 +104,7 @@ src\CMakeFiles\MuteNet.dir\IoContextThreadPool.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/IoContextThreadPool.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\IoContextThreadPool.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IoContextThreadPool.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\IoContextThreadPool.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IoContextThreadPool.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -116,7 +113,7 @@ src\CMakeFiles\MuteNet.dir\IoContextImpl.cpp.obj: ..\src\IoContextImpl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object src/CMakeFiles/MuteNet.dir/IoContextImpl.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\IoContextImpl.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IoContextImpl.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\IoContextImpl.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IoContextImpl.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -124,7 +121,7 @@ src\CMakeFiles\MuteNet.dir\IoContextImpl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/IoContextImpl.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\IoContextImpl.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IoContextImpl.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IoContextImpl.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -132,7 +129,7 @@ src\CMakeFiles\MuteNet.dir\IoContextImpl.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/IoContextImpl.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\IoContextImpl.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IoContextImpl.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\IoContextImpl.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IoContextImpl.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -141,7 +138,7 @@ src\CMakeFiles\MuteNet.dir\ListenerComponent.cpp.obj: ..\src\ListenerComponent.c
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object src/CMakeFiles/MuteNet.dir/ListenerComponent.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\ListenerComponent.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\ListenerComponent.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\ListenerComponent.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\ListenerComponent.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -149,7 +146,7 @@ src\CMakeFiles\MuteNet.dir\ListenerComponent.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/ListenerComponent.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\ListenerComponent.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\ListenerComponent.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\ListenerComponent.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -157,7 +154,7 @@ src\CMakeFiles\MuteNet.dir\ListenerComponent.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/ListenerComponent.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\ListenerComponent.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\ListenerComponent.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\ListenerComponent.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\ListenerComponent.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -166,7 +163,7 @@ src\CMakeFiles\MuteNet.dir\Win32ListenerComponent.cpp.obj: ..\src\Win32ListenerC
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object src/CMakeFiles/MuteNet.dir/Win32ListenerComponent.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\Win32ListenerComponent.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Win32ListenerComponent.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\Win32ListenerComponent.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Win32ListenerComponent.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -174,7 +171,7 @@ src\CMakeFiles\MuteNet.dir\Win32ListenerComponent.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/Win32ListenerComponent.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\Win32ListenerComponent.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Win32ListenerComponent.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Win32ListenerComponent.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -182,7 +179,7 @@ src\CMakeFiles\MuteNet.dir\Win32ListenerComponent.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/Win32ListenerComponent.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\Win32ListenerComponent.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Win32ListenerComponent.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\Win32ListenerComponent.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Win32ListenerComponent.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -191,7 +188,7 @@ src\CMakeFiles\MuteNet.dir\LikeUnixListenerComponent.cpp.obj: ..\src\LikeUnixLis
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object src/CMakeFiles/MuteNet.dir/LikeUnixListenerComponent.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\LikeUnixListenerComponent.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\LikeUnixListenerComponent.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\LikeUnixListenerComponent.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\LikeUnixListenerComponent.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -199,7 +196,7 @@ src\CMakeFiles\MuteNet.dir\LikeUnixListenerComponent.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/LikeUnixListenerComponent.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\LikeUnixListenerComponent.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\LikeUnixListenerComponent.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\LikeUnixListenerComponent.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -207,7 +204,7 @@ src\CMakeFiles\MuteNet.dir\LikeUnixListenerComponent.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/LikeUnixListenerComponent.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\LikeUnixListenerComponent.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\LikeUnixListenerComponent.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\LikeUnixListenerComponent.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\LikeUnixListenerComponent.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -216,7 +213,7 @@ src\CMakeFiles\MuteNet.dir\Descriptor.cpp.obj: ..\src\Descriptor.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object src/CMakeFiles/MuteNet.dir/Descriptor.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\Descriptor.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Descriptor.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\Descriptor.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Descriptor.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -224,7 +221,7 @@ src\CMakeFiles\MuteNet.dir\Descriptor.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/Descriptor.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\Descriptor.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Descriptor.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Descriptor.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -232,7 +229,7 @@ src\CMakeFiles\MuteNet.dir\Descriptor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/Descriptor.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\Descriptor.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Descriptor.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\Descriptor.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Descriptor.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -241,7 +238,7 @@ src\CMakeFiles\MuteNet.dir\SelectIOContext.cpp.obj: ..\src\SelectIOContext.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object src/CMakeFiles/MuteNet.dir/SelectIOContext.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\SelectIOContext.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\SelectIOContext.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\SelectIOContext.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\SelectIOContext.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -249,7 +246,7 @@ src\CMakeFiles\MuteNet.dir\SelectIOContext.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/SelectIOContext.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\SelectIOContext.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\SelectIOContext.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\SelectIOContext.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -257,7 +254,7 @@ src\CMakeFiles\MuteNet.dir\SelectIOContext.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/SelectIOContext.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\SelectIOContext.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\SelectIOContext.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\SelectIOContext.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\SelectIOContext.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -266,7 +263,7 @@ src\CMakeFiles\MuteNet.dir\WinDescriptor.cpp.obj: ..\src\WinDescriptor.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object src/CMakeFiles/MuteNet.dir/WinDescriptor.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\WinDescriptor.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\WinDescriptor.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\WinDescriptor.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\WinDescriptor.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -274,7 +271,7 @@ src\CMakeFiles\MuteNet.dir\WinDescriptor.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/WinDescriptor.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\WinDescriptor.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\WinDescriptor.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\WinDescriptor.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -282,7 +279,7 @@ src\CMakeFiles\MuteNet.dir\WinDescriptor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/WinDescriptor.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\WinDescriptor.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\WinDescriptor.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\WinDescriptor.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\WinDescriptor.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -291,7 +288,7 @@ src\CMakeFiles\MuteNet.dir\IocpContextImpl.cpp.obj: ..\src\IocpContextImpl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object src/CMakeFiles/MuteNet.dir/IocpContextImpl.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\IocpContextImpl.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IocpContextImpl.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\IocpContextImpl.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IocpContextImpl.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -299,7 +296,7 @@ src\CMakeFiles\MuteNet.dir\IocpContextImpl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/IocpContextImpl.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\IocpContextImpl.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IocpContextImpl.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IocpContextImpl.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -307,7 +304,7 @@ src\CMakeFiles\MuteNet.dir\IocpContextImpl.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/IocpContextImpl.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\IocpContextImpl.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IocpContextImpl.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\IocpContextImpl.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\IocpContextImpl.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -316,7 +313,7 @@ src\CMakeFiles\MuteNet.dir\UnixLikeDescriptor.cpp.obj: ..\src\UnixLikeDescriptor
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object src/CMakeFiles/MuteNet.dir/UnixLikeDescriptor.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\UnixLikeDescriptor.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\UnixLikeDescriptor.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\UnixLikeDescriptor.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\UnixLikeDescriptor.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -324,7 +321,7 @@ src\CMakeFiles\MuteNet.dir\UnixLikeDescriptor.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/UnixLikeDescriptor.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\UnixLikeDescriptor.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\UnixLikeDescriptor.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\UnixLikeDescriptor.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -332,7 +329,7 @@ src\CMakeFiles\MuteNet.dir\UnixLikeDescriptor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/UnixLikeDescriptor.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\UnixLikeDescriptor.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\UnixLikeDescriptor.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\UnixLikeDescriptor.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\UnixLikeDescriptor.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -341,7 +338,7 @@ src\CMakeFiles\MuteNet.dir\KQueueIOContextImpl.cpp.obj: ..\src\KQueueIOContextIm
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object src/CMakeFiles/MuteNet.dir/KQueueIOContextImpl.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\KQueueIOContextImpl.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\KQueueIOContextImpl.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\KQueueIOContextImpl.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\KQueueIOContextImpl.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -349,7 +346,7 @@ src\CMakeFiles\MuteNet.dir\KQueueIOContextImpl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/KQueueIOContextImpl.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\KQueueIOContextImpl.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\KQueueIOContextImpl.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\KQueueIOContextImpl.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -357,7 +354,7 @@ src\CMakeFiles\MuteNet.dir\KQueueIOContextImpl.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/KQueueIOContextImpl.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\KQueueIOContextImpl.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\KQueueIOContextImpl.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\KQueueIOContextImpl.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\KQueueIOContextImpl.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -366,7 +363,7 @@ src\CMakeFiles\MuteNet.dir\UnixLikeIOContextImpl.cpp.obj: ..\src\UnixLikeIOConte
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object src/CMakeFiles/MuteNet.dir/UnixLikeIOContextImpl.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\UnixLikeIOContextImpl.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\UnixLikeIOContextImpl.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\UnixLikeIOContextImpl.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\UnixLikeIOContextImpl.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -374,7 +371,7 @@ src\CMakeFiles\MuteNet.dir\UnixLikeIOContextImpl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/UnixLikeIOContextImpl.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\UnixLikeIOContextImpl.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\UnixLikeIOContextImpl.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\UnixLikeIOContextImpl.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -382,7 +379,7 @@ src\CMakeFiles\MuteNet.dir\UnixLikeIOContextImpl.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/UnixLikeIOContextImpl.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\UnixLikeIOContextImpl.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\UnixLikeIOContextImpl.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\UnixLikeIOContextImpl.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\UnixLikeIOContextImpl.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -391,7 +388,7 @@ src\CMakeFiles\MuteNet.dir\EpollContextImpl.cpp.obj: ..\src\EpollContextImpl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object src/CMakeFiles/MuteNet.dir/EpollContextImpl.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\EpollContextImpl.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\EpollContextImpl.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\EpollContextImpl.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\EpollContextImpl.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -399,7 +396,7 @@ src\CMakeFiles\MuteNet.dir\EpollContextImpl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/EpollContextImpl.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\EpollContextImpl.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\EpollContextImpl.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\EpollContextImpl.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -407,7 +404,7 @@ src\CMakeFiles\MuteNet.dir\EpollContextImpl.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/EpollContextImpl.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\EpollContextImpl.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\EpollContextImpl.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\EpollContextImpl.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\EpollContextImpl.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -416,7 +413,7 @@ src\CMakeFiles\MuteNet.dir\ServerHandleImpl.cpp.obj: ..\src\ServerHandleImpl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object src/CMakeFiles/MuteNet.dir/ServerHandleImpl.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\ServerHandleImpl.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\ServerHandleImpl.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\ServerHandleImpl.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\ServerHandleImpl.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -424,7 +421,7 @@ src\CMakeFiles\MuteNet.dir\ServerHandleImpl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/ServerHandleImpl.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\ServerHandleImpl.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\ServerHandleImpl.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\ServerHandleImpl.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -432,7 +429,7 @@ src\CMakeFiles\MuteNet.dir\ServerHandleImpl.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/ServerHandleImpl.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\ServerHandleImpl.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\ServerHandleImpl.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\ServerHandleImpl.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\ServerHandleImpl.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -441,7 +438,7 @@ src\CMakeFiles\MuteNet.dir\NetworkHelpers.cpp.obj: ..\src\NetworkHelpers.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object src/CMakeFiles/MuteNet.dir/NetworkHelpers.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\NetworkHelpers.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\NetworkHelpers.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\NetworkHelpers.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\NetworkHelpers.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -449,7 +446,7 @@ src\CMakeFiles\MuteNet.dir\NetworkHelpers.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/NetworkHelpers.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\NetworkHelpers.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\NetworkHelpers.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\NetworkHelpers.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -457,7 +454,7 @@ src\CMakeFiles\MuteNet.dir\NetworkHelpers.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/NetworkHelpers.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\NetworkHelpers.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\NetworkHelpers.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\NetworkHelpers.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\NetworkHelpers.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -466,7 +463,7 @@ src\CMakeFiles\MuteNet.dir\TCPLink.cpp.obj: ..\src\TCPLink.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object src/CMakeFiles/MuteNet.dir/TCPLink.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\TCPLink.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TCPLink.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\TCPLink.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TCPLink.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -474,7 +471,7 @@ src\CMakeFiles\MuteNet.dir\TCPLink.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/TCPLink.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\TCPLink.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TCPLink.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TCPLink.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -482,7 +479,7 @@ src\CMakeFiles\MuteNet.dir\TCPLink.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/TCPLink.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\TCPLink.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TCPLink.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\TCPLink.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TCPLink.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -491,7 +488,7 @@ src\CMakeFiles\MuteNet.dir\TCPLinkImpl.cpp.obj: ..\src\TCPLinkImpl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object src/CMakeFiles/MuteNet.dir/TCPLinkImpl.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\TCPLinkImpl.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TCPLinkImpl.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\TCPLinkImpl.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TCPLinkImpl.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -499,7 +496,7 @@ src\CMakeFiles\MuteNet.dir\TCPLinkImpl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/TCPLinkImpl.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\TCPLinkImpl.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TCPLinkImpl.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TCPLinkImpl.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -507,7 +504,7 @@ src\CMakeFiles\MuteNet.dir\TCPLinkImpl.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/TCPLinkImpl.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\TCPLinkImpl.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TCPLinkImpl.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\TCPLinkImpl.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TCPLinkImpl.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -516,7 +513,7 @@ src\CMakeFiles\MuteNet.dir\EventBaseComponent.cpp.obj: ..\src\EventBaseComponent
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object src/CMakeFiles/MuteNet.dir/EventBaseComponent.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\EventBaseComponent.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\EventBaseComponent.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\EventBaseComponent.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\EventBaseComponent.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -524,7 +521,7 @@ src\CMakeFiles\MuteNet.dir\EventBaseComponent.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/EventBaseComponent.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\EventBaseComponent.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\EventBaseComponent.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\EventBaseComponent.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -532,7 +529,7 @@ src\CMakeFiles\MuteNet.dir\EventBaseComponent.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/EventBaseComponent.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\EventBaseComponent.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\EventBaseComponent.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\EventBaseComponent.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\EventBaseComponent.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -541,7 +538,7 @@ src\CMakeFiles\MuteNet.dir\InputMemoryStream.cpp.obj: ..\src\InputMemoryStream.c
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object src/CMakeFiles/MuteNet.dir/InputMemoryStream.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\InputMemoryStream.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\InputMemoryStream.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\InputMemoryStream.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\InputMemoryStream.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -549,7 +546,7 @@ src\CMakeFiles\MuteNet.dir\InputMemoryStream.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/InputMemoryStream.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\InputMemoryStream.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\InputMemoryStream.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\InputMemoryStream.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -557,7 +554,7 @@ src\CMakeFiles\MuteNet.dir\InputMemoryStream.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/InputMemoryStream.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\InputMemoryStream.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\InputMemoryStream.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\InputMemoryStream.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\InputMemoryStream.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -566,7 +563,7 @@ src\CMakeFiles\MuteNet.dir\MemoryStream.cpp.obj: ..\src\MemoryStream.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object src/CMakeFiles/MuteNet.dir/MemoryStream.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\MemoryStream.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\MemoryStream.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\MemoryStream.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\MemoryStream.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -574,7 +571,7 @@ src\CMakeFiles\MuteNet.dir\MemoryStream.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/MemoryStream.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\MemoryStream.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\MemoryStream.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\MemoryStream.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -582,7 +579,7 @@ src\CMakeFiles\MuteNet.dir\MemoryStream.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/MemoryStream.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\MemoryStream.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\MemoryStream.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\MemoryStream.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\MemoryStream.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -591,7 +588,7 @@ src\CMakeFiles\MuteNet.dir\OutputMemoryStream.cpp.obj: ..\src\OutputMemoryStream
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object src/CMakeFiles/MuteNet.dir/OutputMemoryStream.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\OutputMemoryStream.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\OutputMemoryStream.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\OutputMemoryStream.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\OutputMemoryStream.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -599,7 +596,7 @@ src\CMakeFiles\MuteNet.dir\OutputMemoryStream.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/OutputMemoryStream.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\OutputMemoryStream.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\OutputMemoryStream.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\OutputMemoryStream.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -607,7 +604,7 @@ src\CMakeFiles\MuteNet.dir\OutputMemoryStream.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/OutputMemoryStream.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\OutputMemoryStream.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\OutputMemoryStream.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\OutputMemoryStream.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\OutputMemoryStream.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -616,7 +613,7 @@ src\CMakeFiles\MuteNet.dir\Task.cpp.obj: ..\src\Task.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object src/CMakeFiles/MuteNet.dir/Task.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\Task.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Task.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\Task.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Task.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -624,7 +621,7 @@ src\CMakeFiles\MuteNet.dir\Task.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/Task.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\Task.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Task.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Task.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -632,7 +629,7 @@ src\CMakeFiles\MuteNet.dir\Task.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/Task.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\Task.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Task.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\Task.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Task.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -641,7 +638,7 @@ src\CMakeFiles\MuteNet.dir\TaskAgent.cpp.obj: ..\src\TaskAgent.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object src/CMakeFiles/MuteNet.dir/TaskAgent.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\TaskAgent.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TaskAgent.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\TaskAgent.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TaskAgent.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -649,7 +646,7 @@ src\CMakeFiles\MuteNet.dir\TaskAgent.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/TaskAgent.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\TaskAgent.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TaskAgent.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TaskAgent.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -657,7 +654,7 @@ src\CMakeFiles\MuteNet.dir\TaskAgent.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/TaskAgent.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\TaskAgent.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TaskAgent.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\TaskAgent.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TaskAgent.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -666,7 +663,7 @@ src\CMakeFiles\MuteNet.dir\TaskManager.cpp.obj: ..\src\TaskManager.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object src/CMakeFiles/MuteNet.dir/TaskManager.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\TaskManager.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TaskManager.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\TaskManager.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TaskManager.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -674,7 +671,7 @@ src\CMakeFiles\MuteNet.dir\TaskManager.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/TaskManager.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\TaskManager.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TaskManager.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TaskManager.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -682,7 +679,7 @@ src\CMakeFiles\MuteNet.dir\TaskManager.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/TaskManager.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\TaskManager.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TaskManager.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\TaskManager.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\TaskManager.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -691,7 +688,7 @@ src\CMakeFiles\MuteNet.dir\CircularBuffer.cpp.obj: ..\src\CircularBuffer.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object src/CMakeFiles/MuteNet.dir/CircularBuffer.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\CircularBuffer.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\CircularBuffer.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\CircularBuffer.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\CircularBuffer.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -699,7 +696,7 @@ src\CMakeFiles\MuteNet.dir\CircularBuffer.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/CircularBuffer.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\CircularBuffer.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\CircularBuffer.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\CircularBuffer.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -707,7 +704,7 @@ src\CMakeFiles\MuteNet.dir\CircularBuffer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/CircularBuffer.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\CircularBuffer.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\CircularBuffer.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\CircularBuffer.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\CircularBuffer.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -716,7 +713,7 @@ src\CMakeFiles\MuteNet.dir\Event.cpp.obj: ..\src\Event.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object src/CMakeFiles/MuteNet.dir/Event.cpp.obj"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\Event.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Event.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoCMakeFiles\MuteNet.dir\Event.cpp.obj /FdCMakeFiles\MuteNet.dir\MuteNet.pdb /FS -c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Event.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -724,7 +721,7 @@ src\CMakeFiles\MuteNet.dir\Event.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MuteNet.dir/Event.cpp.i"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe > CMakeFiles\MuteNet.dir\Event.cpp.i @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Event.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Event.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -732,7 +729,7 @@ src\CMakeFiles\MuteNet.dir\Event.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MuteNet.dir/Event.cpp.s"
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
 	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\cl.exe @<<
-  /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\Event.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Event.cpp
+ /nologo /TP $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) /FoNUL /FAs /FaCMakeFiles\MuteNet.dir\Event.cpp.s /c C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\src\Event.cpp
 <<
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
@@ -803,7 +800,7 @@ src\MuteNet.lib: src\CMakeFiles\MuteNet.dir\objects1.rsp
 	$(CMAKE_COMMAND) -P CMakeFiles\MuteNet.dir\cmake_clean_target.cmake
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src
-	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\link.exe /lib  /machine:X86 /out:MuteNet.lib @CMakeFiles\MuteNet.dir\objects1.rsp 
+	C:\PROGRA~2\MICROS~1\2019\COMMUN~1\VC\Tools\MSVC\1428~1.293\bin\Hostx86\x86\link.exe /lib /nologo /machine:X86 /out:MuteNet.lib @CMakeFiles\MuteNet.dir\objects1.rsp 
 	cd C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug
 
 # Rule to build all files generated by this target.
