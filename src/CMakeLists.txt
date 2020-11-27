@@ -12,6 +12,7 @@ ENDIF()
 
 IF(NOT WIN32)
 ADD_SUBDIRECTORY(../lib/tbb ../lib/tbb/build)
+INCLUDE_DIRECTORIES(../lib/tbb/include)
 ENDIF()
 
 ADD_LIBRARY(
