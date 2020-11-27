@@ -46,3 +46,6 @@
 
 x64/
 .vs/
+/cmake-build-debug/*
+/MuteNet/cmake-build-debug/*
+/Build/*
