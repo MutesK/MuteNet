@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="MuteNet"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="msvc8"/>
+		<Option virtualFolders="CMake Files\;CMake Files\src\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\Makefile VERBOSE=1 all"/>
+					<CompileFile command="nmake /NOLOGO /f C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\Makefile VERBOSE=1 edit_cache"/>
+					<CompileFile command="nmake /NOLOGO /f C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\Makefile VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="nmake /NOLOGO /f C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="MuteNet">
+				<Option output="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/cmake-build-debug/src/MuteNet.lib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/cmake-build-debug/src"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="msvc8"/>
+				<Compiler>
+					<Add option="-DIOCONTEXT_IOCP"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\ATLMFC\include"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\ucrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\shared"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\winrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\cppwinrt"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src\Makefile VERBOSE=1 MuteNet"/>
+					<CompileFile command="nmake /NOLOGO /f C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="MuteNet/fast">
+				<Option output="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/cmake-build-debug/src/MuteNet.lib" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/cmake-build-debug/src"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="msvc8"/>
+				<Compiler>
+					<Add option="-DIOCONTEXT_IOCP"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\ATLMFC\include"/>
+					<Add directory="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\include"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\NETFXSDK\4.8\include\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\ucrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\shared"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\um"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\winrt"/>
+					<Add directory="C:\Program Files (x86)\Windows Kits\10\include\10.0.19041.0\cppwinrt"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="nmake /NOLOGO /f C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src\Makefile VERBOSE=1 MuteNet/fast"/>
+					<CompileFile command="nmake /NOLOGO /f C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src\Makefile VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="nmake /NOLOGO /f C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src\Makefile VERBOSE=1 clean"/>
+					<DistClean command="nmake /NOLOGO /f C:\Users\Mute\source\repos\Mutes-Network-Libs\Mutes-Network-Libs\cmake-build-debug\src\Makefile VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/AtomicCounter.hpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/CircularBuffer.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/CircularBuffer.h">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/Descriptor.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/Descriptor.h">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/EpollContextImpl.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/EpollContextImpl.hpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/Event.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/Event.hpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/EventBaseComponent.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/EventBaseComponent.hpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/InputMemoryStream.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/InputMemoryStream.h">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/IoContextEvent.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/IoContextEvent.hpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/IoContextImpl.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/IoContextImpl.hpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/IoContextThreadPool.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/IoContextThreadPool.hpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/IocpContextImpl.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/IocpContextImpl.hpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/KQueueIOContextImpl.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/KQueueIOContextImpl.hpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/LikeUnixListenerComponent.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/LikeUnixListenerComponent.h">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/ListenerComponent.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/ListenerComponent.hpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/MacroFunction.h">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/MemoryStream.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/MemoryStream.h">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/NetworkHelpers.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/NetworkHelpers.hpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/OutputMemoryStream.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/OutputMemoryStream.h">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/Runnable.hpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/SelectIOContext.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/SelectIOContext.hpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/ServerHandle.hpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/ServerHandleImpl.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/ServerHandleImpl.hpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/SharedPool.hpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/Singleton.h">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/TCPLink.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/TCPLink.hpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/TCPLinkImpl.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/TCPLinkImpl.hpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/Task.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/Task.h">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/TaskAgent.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/TaskAgent.h">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/TaskManager.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/TaskManager.h">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/TypeDefine.hpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/UnixLikeDescriptor.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/UnixLikeDescriptor.hpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/UnixLikeIOContextImpl.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/UnixLikeIOContextImpl.hpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/Win32ListenerComponent.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/Win32ListenerComponent.hpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/WinDescriptor.cpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/WinDescriptor.hpp">
+			<Option target="MuteNet"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="C:/Users/Mute/source/repos/Mutes-Network-Libs/Mutes-Network-Libs/src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
