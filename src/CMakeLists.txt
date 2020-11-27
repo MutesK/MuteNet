@@ -11,6 +11,7 @@ ELSEIF(WIN32)
 ENDIF()
 
 IF(NOT WIN32)
+    ADD_SUBDIRECTORY(../lib/tbb)
     target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ../lib/tbb/include)
 
     target_link_libraries(${PROJECT_NAME} PRIVATE tbb)
