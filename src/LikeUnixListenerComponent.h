@@ -12,30 +12,30 @@
 namespace EventLoop
 {
 	class LikeUnixListenerComponent : public ListenerComponent
-    {
-        struct sockaddr* client_addr = nullptr;
-        socklen_t clientAddresLength = 0;
-    public:
-        virtual ~LikeUnixListenerComponent();
+	{
+		struct sockaddr* client_addr = nullptr;
+		socklen_t clientAddresLength = 0;
+	public:
+		virtual ~LikeUnixListenerComponent();
 
-        virtual void Disable() override;
+		virtual void Disable() override;
 
-        virtual void Free() override;
+		virtual void Free() override;
 
-        friend class IUnixLikeIOContextImpl;
+		friend class IUnixLikeIOContextImpl;
 
-        friend class EpollContextImpl;
+		friend class EpollContextImpl;
 
-    private:
-        LikeUnixListenerComponent(const RawIOContextImplPtr &ContextEvent,
-                                  ListenerComponent::CallbackDelegate &&Callback,
-                                  void *Self, socket_t listenSocket);
+	private:
+		LikeUnixListenerComponent(const RawIOContextImplPtr& ContextEvent,
+			ListenerComponent::CallbackDelegate&& Callback,
+			void* Self, socket_t listenSocket);
 
-        static void ReadCallback(DescriptorPtr Ptr, void *Self);
-        static void WriteCallback(DescriptorPtr Ptr, void *Self);
-        static void ExceptCallback(DescriptorPtr Ptr, uint16_t What ,void *Self);
+		static void ReadCallback(DescriptorPtr Ptr, void* Self);
+		static void WriteCallback(DescriptorPtr Ptr, void* Self);
+		static void ExceptCallback(DescriptorPtr Ptr, uint16_t What, void* Self);
 
-        void Accept();
+		void Accept();
 	};
 }
 

@@ -7,18 +7,18 @@
 
 namespace EventLoop
 {
-    class IOContextImpl;
+	class IOContextImpl;
 	using RawIOContextImplPtr = IOContextImpl*;
-	
+
 	class IEventBaseComponent
 	{
 	protected:
-        RawIOContextImplPtr *_ContextPtr;
-		
-		IEventBaseComponent ( const RawIOContextImplPtr &Ptr );
+		RawIOContextImplPtr* _ContextPtr;
+
+		IEventBaseComponent(const RawIOContextImplPtr& Ptr);
 		virtual ~IEventBaseComponent() = default;
 	};
-	
+
 }
 
 

@@ -13,11 +13,11 @@ namespace Util
 	{
 		std::atomic_int64_t _counter;
 	public:
-		void IncreaseCounter ( )
+		void IncreaseCounter()
 		{
 			++_counter;
 		}
-		void DecreaseCounter ( )
+		void DecreaseCounter()
 		{
 			--_counter;
 		}

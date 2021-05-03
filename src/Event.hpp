@@ -13,15 +13,15 @@ namespace Util
 		std::mutex _mutex;
 		std::condition_variable _condVar;
 	public:
-		Event ( );
-		
-		void Wait ( );
-		
-		void Set ( );
-		
-		void SetAll ( );
-		
-		bool Wait ( uint32_t TimeoutMsec );
+		Event();
+
+		void Wait();
+
+		void Set();
+
+		void SetAll();
+
+		bool Wait(uint32_t TimeoutMsec);
 	};
 }
 

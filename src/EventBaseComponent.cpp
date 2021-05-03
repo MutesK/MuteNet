@@ -9,8 +9,8 @@
 
 namespace EventLoop
 {
-    IEventBaseComponent::IEventBaseComponent ( const RawIOContextImplPtr &Ptr )
-            : _ContextPtr (reinterpret_cast<RawIOContextImplPtr *>(const_cast<RawIOContextImplPtr>(Ptr)))
-    {
-    }
+	IEventBaseComponent::IEventBaseComponent(const RawIOContextImplPtr& Ptr)
+		: _ContextPtr(reinterpret_cast<RawIOContextImplPtr*>(const_cast<RawIOContextImplPtr>(Ptr)))
+	{
+	}
 }

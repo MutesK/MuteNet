@@ -7,62 +7,62 @@
 
 namespace EventLoop
 {
-	
-	void IOContextThreadPool::InnerWork ( )
+
+	void IOContextThreadPool::InnerWork()
 	{
 		WorkFunctor Functor;
-		
-		while ( !_ClearFlag )
+
+		while (!_ClearFlag)
 		{
-			if ( _Queue.empty ( ))
+			if (_Queue.empty())
 			{
 				continue;
 			}
-			
-			if ( !_Queue.try_pop ( Functor ))
+
+			if (!_Queue.try_pop(Functor))
 			{
 				continue;
 			}
-			
-			Functor ( );
+
+			Functor();
 		}
 	}
-	
-	IOContextThreadPool::IOContextThreadPool ( const int32_t WorkerCount )
+
+	IOContextThreadPool::IOContextThreadPool(const int32_t WorkerCount)
 	{
-		_ThreadPool.resize ( WorkerCount );
-		
-		for ( int index = 0; index < WorkerCount; ++index )
+		_ThreadPool.resize(WorkerCount);
+
+		for (int index = 0; index < WorkerCount; ++index)
 		{
-			_ThreadPool[ index ] = std::thread ( [ & ] ( )
-			                                     {
-				                                     InnerWork ( );
-			                                     } );
+			_ThreadPool[index] = std::thread([&]()
+				{
+					InnerWork();
+				});
 		}
 	}
-	
-	IOContextThreadPool::~IOContextThreadPool ( )
+
+	IOContextThreadPool::~IOContextThreadPool()
 	{
 		_ClearFlag = true;
-		_TriggerEvent.SetAll ( );
-		
-		std::for_each ( _ThreadPool.begin ( ), _ThreadPool.end ( ), [ ] ( std::thread &thread )
-		{
-			thread.join ( );
-		} );
+		_TriggerEvent.SetAll();
+
+		std::for_each(_ThreadPool.begin(), _ThreadPool.end(), [](std::thread& thread)
+			{
+				thread.join();
+			});
 	}
-	
-	void IOContextThreadPool::EnqueueJob ( const WorkFunctor &&Functor )
+
+	void IOContextThreadPool::EnqueueJob(const WorkFunctor&& Functor)
 	{
-		_Queue.push ( Functor );
-		
-		_TriggerEvent.Set ( );
+		_Queue.push(Functor);
+
+		_TriggerEvent.Set();
 	}
 
 	size_t IOContextThreadPool::GetWorkerThreadCount() const
 	{
 		return _ThreadPool.size();
 	}
-	
-	
+
+
 }

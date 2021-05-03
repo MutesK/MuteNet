@@ -10,7 +10,7 @@ namespace Util
 		class Singleton
 		{
 		public:
-			static Type &Get ( )
+			static Type& Get()
 			{
 				static Type StaticObject;
 				return StaticObject;

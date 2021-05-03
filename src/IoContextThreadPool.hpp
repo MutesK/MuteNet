@@ -9,29 +9,29 @@
 
 namespace EventLoop
 {
-	using WorkFunctor = std::function<void ( )>;
+	using WorkFunctor = std::function<void()>;
 	using WorkPendingQueue = concurrency::concurrent_queue<WorkFunctor>;
-	
+
 	class IOContextThreadPool
 	{
 		Util::Event _TriggerEvent;
 		bool _ClearFlag = false;
-		
+
 		std::vector<std::thread> _ThreadPool;
 		WorkPendingQueue _Queue;
 	public:
-		IOContextThreadPool ( ) = default;
-		
-		IOContextThreadPool ( const int32_t WorkerCount );
-		
-		~IOContextThreadPool ( );
-		
-		void EnqueueJob ( const WorkFunctor &&Functor );
-		
-		size_t GetWorkerThreadCount ( ) const;
-	
+		IOContextThreadPool() = default;
+
+		IOContextThreadPool(const int32_t WorkerCount);
+
+		~IOContextThreadPool();
+
+		void EnqueueJob(const WorkFunctor&& Functor);
+
+		size_t GetWorkerThreadCount() const;
+
 	private:
-		void InnerWork ( );
+		void InnerWork();
 	};
 }
 

@@ -11,20 +11,20 @@
 
 namespace EventLoop
 {
-    using DescriptorPerSocketPtrMapWithLock = LockObject<std::unordered_map<descriptor_t, DescriptorPtr>>;
+	using DescriptorPerSocketPtrMapWithLock = LockObject<std::unordered_map<descriptor_t, DescriptorPtr>>;
 
-    class IUnixLikeIOContextImpl : public IOContextImpl
-    {
-    protected:
-        DescriptorPerSocketPtrMapWithLock _SocketMap;
-    public:
-        IUnixLikeIOContextImpl(const uint32_t NumOfWorkerThread, const uint32_t Timeout);
+	class IUnixLikeIOContextImpl : public IOContextImpl
+	{
+	protected:
+		DescriptorPerSocketPtrMapWithLock _SocketMap;
+	public:
+		IUnixLikeIOContextImpl(const uint32_t NumOfWorkerThread, const uint32_t Timeout);
 
-        virtual ListenerPtr CreateListener ( ListenerComponent::CallbackDelegate Callback,
-                                             void *Self, descriptor_t listenSocket ) override;
+		virtual ListenerPtr CreateListener(ListenerComponent::CallbackDelegate Callback,
+			void* Self, descriptor_t listenSocket) override;
 
-        virtual DescriptorPtr CreateDescriptor(descriptor_t descriptor) override;
-    };
+		virtual DescriptorPtr CreateDescriptor(descriptor_t descriptor) override;
+	};
 }
 
 #endif

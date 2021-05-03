@@ -16,16 +16,16 @@ namespace EventLoop
 	class SelectIOContext : public IUnixLikeIOContextImpl
 	{
 		fd_set _ReadSet, _WriteSet;
-	
+
 	public:
-		SelectIOContext ( IOContextEvent &Event,
-		                  const uint32_t NumOfWorkerThread, const uint32_t Timeout );
+		SelectIOContext(IOContextEvent& Event,
+			const uint32_t NumOfWorkerThread, const uint32_t Timeout);
 
 	protected:
-		virtual void DoWork ( ) override;
+		virtual void DoWork() override;
 	};
-	
-	
+
+
 }
 
 #endif

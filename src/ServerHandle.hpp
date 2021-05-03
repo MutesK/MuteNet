@@ -7,16 +7,16 @@
 
 namespace MuteNet
 {
-    class ServerHandle
-    {
-        friend class Network;
-    public:
-        virtual ~ServerHandle() {}
+	class ServerHandle
+	{
+		friend class Network;
+	public:
+		virtual ~ServerHandle() {}
 
-        virtual void Close() = 0;
+		virtual void Close() = 0;
 
-        virtual bool IsListening() const = 0;
-    };
+		virtual bool IsListening() const = 0;
+	};
 }
 
 #endif //MUTENET_SERVERHANDLE_HPP

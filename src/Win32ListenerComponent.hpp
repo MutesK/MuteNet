@@ -20,30 +20,30 @@ namespace EventLoop
 		Util::OutputMemoryStream _AddressBuffer;
 		OVERLAPPED               _Overlapped;
 		descriptor_t			 _Client;
-		
-		Win32ListenerComponent(const RawIOContextImplPtr &ContextEvent,
-		                          ListenerComponent::CallbackDelegate &&Callback,
-		                          void *Self, descriptor_t listenSocket);
-		
+
+		Win32ListenerComponent(const RawIOContextImplPtr& ContextEvent,
+			ListenerComponent::CallbackDelegate&& Callback,
+			void* Self, descriptor_t listenSocket);
+
 		void AcceptRequest();
 
-    protected:
-        virtual void IOCompletion ( OVERLAPPED *pRawOverlapped, uint32_t TransfferedBytes ) override;
+	protected:
+		virtual void IOCompletion(OVERLAPPED* pRawOverlapped, uint32_t TransfferedBytes) override;
 
-        virtual void IOError ( OVERLAPPED *pRawOverlapped, uint32_t LastError ) override;
+		virtual void IOError(OVERLAPPED* pRawOverlapped, uint32_t LastError) override;
 
-        virtual void IOTimeout ( OVERLAPPED *pRawOverlapped ) override;
-    private:
+		virtual void IOTimeout(OVERLAPPED* pRawOverlapped) override;
+	private:
 
-        friend class IocpContextImpl;
+		friend class IocpContextImpl;
 	public:
 		virtual ~Win32ListenerComponent();
 
-        virtual void Disable() override;
+		virtual void Disable() override;
 
-        virtual void Free() override;
+		virtual void Free() override;
 
-    };
+	};
 
 }
 

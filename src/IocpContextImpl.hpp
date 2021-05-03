@@ -17,61 +17,61 @@
 
 namespace EventLoop
 {
-    typedef LPFN_ACCEPTEX AcceptExPtr;
-    typedef LPFN_CONNECTEX ConnectExPtr;
-    typedef LPFN_GETACCEPTEXSOCKADDRS GetAcceptExSockAddrsPtr;
+	typedef LPFN_ACCEPTEX AcceptExPtr;
+	typedef LPFN_CONNECTEX ConnectExPtr;
+	typedef LPFN_GETACCEPTEXSOCKADDRS GetAcceptExSockAddrsPtr;
 
-    struct Extension
-    {
-        AcceptExPtr _AcceptEx;
-        ConnectExPtr _ConnectEx;
-        GetAcceptExSockAddrsPtr _GetAcceptExSockaddrs;
+	struct Extension
+	{
+		AcceptExPtr _AcceptEx;
+		ConnectExPtr _ConnectEx;
+		GetAcceptExSockAddrsPtr _GetAcceptExSockaddrs;
 
-        Extension ( );
+		Extension();
 
-        void *GetExtension ( descriptor_t socket, const GUID *FunctorPtr );
-    };
+		void* GetExtension(descriptor_t socket, const GUID* FunctorPtr);
+	};
 
-    class IocpContextImpl : public IOContextImpl, public Util::IRunnable
-    {
-        class RaIIWSA final
-        {
-            WSADATA _Data;
-        public:
-            RaIIWSA ( );
+	class IocpContextImpl : public IOContextImpl, public Util::IRunnable
+	{
+		class RaIIWSA final
+		{
+			WSADATA _Data;
+		public:
+			RaIIWSA();
 
-            ~RaIIWSA ( );
-        };
+			~RaIIWSA();
+		};
 
-        RaIIWSA _WsaData;
-        Extension _Extensions;
-        HANDLE _IocpHandle;
-        std::atomic_bool _Stop;
+		RaIIWSA _WsaData;
+		Extension _Extensions;
+		HANDLE _IocpHandle;
+		std::atomic_bool _Stop;
 
-        friend class Win32ListenerComponent;
-    public:
-        IocpContextImpl ( uint32_t NumOfWorkerThread, uint32_t Timeout );
+		friend class Win32ListenerComponent;
+	public:
+		IocpContextImpl(uint32_t NumOfWorkerThread, uint32_t Timeout);
 
-        virtual ~IocpContextImpl ( );
+		virtual ~IocpContextImpl();
 
-        virtual DescriptorPtr CreateDescriptor ( descriptor_t Socket );
+		virtual DescriptorPtr CreateDescriptor(descriptor_t Socket);
 
-        virtual ListenerPtr
-        CreateListener(ListenerComponent::CallbackDelegate Callback, void *Self, descriptor_t listenSocket) override;
+		virtual ListenerPtr
+			CreateListener(ListenerComponent::CallbackDelegate Callback, void* Self, descriptor_t listenSocket) override;
 
-        bool PostQueue ( void *Pointer );
+		bool PostQueue(void* Pointer);
 
-        virtual void Start ( ) override;
+		virtual void Start() override;
 
-        virtual void Stop ( ) override;
+		virtual void Stop() override;
 
-        virtual bool IsStop ( ) const override;
+		virtual bool IsStop() const override;
 
-        virtual bool Enable(DescriptorPtr descriptor) override;
+		virtual bool Enable(DescriptorPtr descriptor) override;
 
-        virtual void Disable(DescriptorPtr descriptor) override;
+		virtual void Disable(DescriptorPtr descriptor) override;
 
-    };
+	};
 
 }
 

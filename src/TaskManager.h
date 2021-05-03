@@ -7,33 +7,33 @@
 namespace Util
 {
 	class TaskAgent;
-	
+
 	class TaskManager final : public TL::Singleton<TaskManager>
 	{
 	private:
 		Concurrency::concurrent_unordered_map<std::string, std::shared_ptr<TaskAgent>> _Tasklist;
-		
+
 		friend class TL::Singleton<TaskManager>;
-	
+
 	public:
-		~TaskManager ( );
-		
-		bool AddTaskAgentid ( Task *t, uint64_t agentNum );
-		
-		bool AddTaskAgentid ( Task *t, std::string agentName );
-		
-		bool AddTask ( Task *t );
-		
-		NON_COPYABLE( TaskManager );
+		~TaskManager();
+
+		bool AddTaskAgentid(Task* t, uint64_t agentNum);
+
+		bool AddTaskAgentid(Task* t, std::string agentName);
+
+		bool AddTask(Task* t);
+
+		NON_COPYABLE(TaskManager);
 	protected:
-		TaskManager ( );
-	
+		TaskManager();
+
 	private:
-		void CreateAgent ( );
-		
-		std::shared_ptr<TaskAgent> CreateAgent ( uint64_t agentNum );
-		
-		std::shared_ptr<TaskAgent> CreateAgent ( std::string agentName );
+		void CreateAgent();
+
+		std::shared_ptr<TaskAgent> CreateAgent(uint64_t agentNum);
+
+		std::shared_ptr<TaskAgent> CreateAgent(std::string agentName);
 	};
 
 

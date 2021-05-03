@@ -10,20 +10,20 @@
 
 namespace EventLoop
 {
-	ListenerComponent::ListenerComponent ( const RawIOContextImplPtr &ContextEvent,
-	                                       ListenerComponent::CallbackDelegate &&Callback, void *Self,
-	                                       descriptor_t listenSocket )
-			: IEventBaseComponent ( ContextEvent ),
-			  _ListenCallbackDelegate ( Callback ),
-			  _Self ( Self ),
-              _Listener(ContextEvent->CreateDescriptor(listenSocket))
+	ListenerComponent::ListenerComponent(const RawIOContextImplPtr& ContextEvent,
+		ListenerComponent::CallbackDelegate&& Callback, void* Self,
+		descriptor_t listenSocket)
+		: IEventBaseComponent(ContextEvent),
+		_ListenCallbackDelegate(Callback),
+		_Self(Self),
+		_Listener(ContextEvent->CreateDescriptor(listenSocket))
 	{
 
 	}
-	
-	ListenerComponent::~ListenerComponent ( )
+
+	ListenerComponent::~ListenerComponent()
 	{
-	
+
 	}
 
 

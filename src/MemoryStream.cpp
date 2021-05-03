@@ -3,14 +3,14 @@
 
 namespace Util
 {
-	MemoryStream::MemoryStream ( )
+	MemoryStream::MemoryStream()
 	{
 		_Buffer = new Byte[_Capacity];
 	}
-	
-	MemoryStream::~MemoryStream ( )
+
+	MemoryStream::~MemoryStream()
 	{
 		delete[] _Buffer;
 	}
-	
+
 }

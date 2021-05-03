@@ -12,27 +12,27 @@
 
 namespace EventLoop
 {
-    class KQueueIOContextImpl : public IUnixLikeIOContextImpl, public Util::Runnable
-    {
-        descriptor_t _kqueue;
-    public:
-        KQueueIOContextImpl(IOContextEvent &Event,
-                            const uint32_t NumOfWorkerThread, const uint32_t Timeout);
+	class KQueueIOContextImpl : public IUnixLikeIOContextImpl, public Util::Runnable
+	{
+		descriptor_t _kqueue;
+	public:
+		KQueueIOContextImpl(IOContextEvent& Event,
+			const uint32_t NumOfWorkerThread, const uint32_t Timeout);
 
-        virtual ListenerPtr
-        CreateListener(ListenerComponent::CallbackDelegate &&Callback, void *Self, descriptor_t listenSocket) override;
+		virtual ListenerPtr
+			CreateListener(ListenerComponent::CallbackDelegate&& Callback, void* Self, descriptor_t listenSocket) override;
 
-        virtual DescriptorPtr CreateDescriptor(descriptor_t descriptor) override;
+		virtual DescriptorPtr CreateDescriptor(descriptor_t descriptor) override;
 
-        virtual bool Enable(const DescriptorPtr descriptor) override;
+		virtual bool Enable(const DescriptorPtr descriptor) override;
 
-        virtual void Disable(const DescriptorPtr descriptor) override;
+		virtual void Disable(const DescriptorPtr descriptor) override;
 
-    protected:
-        virtual void DoWork() override;
+	protected:
+		virtual void DoWork() override;
 
-        bool UpdateEvent(descriptor_t descriptor, int events, bool modify);
-    };
+		bool UpdateEvent(descriptor_t descriptor, int events, bool modify);
+	};
 }
 
 #endif

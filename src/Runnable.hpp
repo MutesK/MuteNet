@@ -37,67 +37,67 @@ namespace Util
 	class IRunnable
 	{
 	protected:
-        std::atomic_bool _Stop;
+		std::atomic_bool _Stop;
 	public:
-		virtual void Start ( ) = 0;
-		
-		virtual void Stop ( ) = 0;
-		
-		virtual bool IsStop ( ) const
-        {
-		    return _Stop;
-        }
+		virtual void Start() = 0;
+
+		virtual void Stop() = 0;
+
+		virtual bool IsStop() const
+		{
+			return _Stop;
+		}
 	};
-	
+
 	class Runnable
 	{
 		std::atomic_bool _Stop;
 		std::thread _Thread;
-	
+
 	public:
-		Runnable ( )
-				: _Stop ( ), _Thread ( )
+		Runnable()
+			: _Stop(), _Thread()
 		{
 		}
-		
-		virtual ~Runnable ( )
+
+		virtual ~Runnable()
 		{
-			Stop ( );
+			Stop();
 		}
-		
-		Runnable ( Runnable const & ) = delete;
-		
-		Runnable &operator= ( Runnable const & ) = delete;
-		
-		
-		void Start ( )
+
+		Runnable(Runnable const&) = delete;
+
+		Runnable& operator= (Runnable const&) = delete;
+
+
+		void Start()
 		{
-			_Thread = std::thread ( &Runnable::DoWork, this );
+			_Thread = std::thread(&Runnable::DoWork, this);
 		}
-		
-		void Stop ( )
+
+		void Stop()
 		{
 			_Stop = true;
-			_Thread.join ( );
+			_Thread.join();
 		}
-		
-		void Suspend ( )
+
+		void Suspend()
 		{
-			SuspendThread ( _Thread.native_handle ( ));
+			SuspendThread(_Thread.native_handle());
 		}
-		
-		void Resume ( )
+
+		void Resume()
 		{
-			ResumeThread ( _Thread.native_handle ( ));
+			ResumeThread(_Thread.native_handle());
 		}
-		
-		bool IsStop ( ) const
+
+		bool IsStop() const
 		{
 			return _Stop;
 		}
-	
+
 	protected:
-		virtual void DoWork ( ) = 0;
+		virtual void DoWork() = 0;
 	};
 }
 

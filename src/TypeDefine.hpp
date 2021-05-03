@@ -15,8 +15,8 @@ using socklen_t = int;
 #else
 using socket_t = int;
 
-const int8_t SOCKET_ERROR  = -1;
-const int8_t INVALID_SOCKET =  (socket_t)(~0);
+const int8_t SOCKET_ERROR = -1;
+const int8_t INVALID_SOCKET = (socket_t)(~0);
 
 using descriptor_t = socket_t;
 #endif
@@ -34,7 +34,7 @@ template <class Type>
 class SharedScopedLockObject
 {
 	Type& _Value;
-	
+
 	static_assert(std::is_base_of_v<Type, LockObject<Type>>, "");
 public:
 	SharedScopedLockObject(Type& Value)
@@ -46,14 +46,14 @@ public:
 	{
 		_Value._mutex.unlock_shared();
 	}
-	
+
 };
 
 template <class Type>
 class UniqueScopedLockObject
 {
 	Type& _Value;
-	
+
 	static_assert(std::is_base_of_v<Type, LockObject<Type>>, "");
 public:
 	UniqueScopedLockObject(Type& Value)

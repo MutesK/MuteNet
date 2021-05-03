@@ -14,27 +14,27 @@
 
 namespace EventLoop
 {
-    class EpollContextImpl : public IUnixLikeIOContextImpl, public Util::Runnable
-    {
-        descriptor_t        _EpollHandle;
+	class EpollContextImpl : public IUnixLikeIOContextImpl, public Util::Runnable
+	{
+		descriptor_t        _EpollHandle;
 
-    public:
-        EpollContextImpl(const uint32_t NumOfWorkerThread, const uint32_t Timeout);
-        virtual ~EpollContextImpl();
+	public:
+		EpollContextImpl(const uint32_t NumOfWorkerThread, const uint32_t Timeout);
+		virtual ~EpollContextImpl();
 
-        virtual ListenerPtr
-        CreateListener(ListenerComponent::CallbackDelegate Callback, void *Self, descriptor_t listenSocket) override;
+		virtual ListenerPtr
+			CreateListener(ListenerComponent::CallbackDelegate Callback, void* Self, descriptor_t listenSocket) override;
 
-        virtual DescriptorPtr CreateDescriptor(socket_t Socket) override;
+		virtual DescriptorPtr CreateDescriptor(socket_t Socket) override;
 
-        virtual bool Enable(const DescriptorPtr descriptor) override;
+		virtual bool Enable(const DescriptorPtr descriptor) override;
 
-        virtual void Disable(const DescriptorPtr descriptor) override;
+		virtual void Disable(const DescriptorPtr descriptor) override;
 
-    protected:
-        virtual void DoWork() override;
+	protected:
+		virtual void DoWork() override;
 
-    };
+	};
 }
 
 

@@ -7,53 +7,53 @@
 
 namespace Util
 {
-	Event::Event ( )
-			: _shouldContinue ( false )
+	Event::Event()
+		: _shouldContinue(false)
 	{
 	}
-	
-	void Event::Wait ( )
+
+	void Event::Wait()
 	{
-		std::unique_lock<std::mutex> lock ( _mutex );
-		
-		_condVar.wait ( lock, [ this ] ( )
-		{
-			return _shouldContinue;
-		} );
+		std::unique_lock<std::mutex> lock(_mutex);
+
+		_condVar.wait(lock, [this]()
+			{
+				return _shouldContinue;
+			});
 		_shouldContinue = false;
 	}
-	
-	void Event::Set ( )
+
+	void Event::Set()
 	{
 		{
-			std::unique_lock<std::mutex> lock ( _mutex );
+			std::unique_lock<std::mutex> lock(_mutex);
 			_shouldContinue = true;
 		}
-		
-		_condVar.notify_one ( );
+
+		_condVar.notify_one();
 	}
-	
-	void Event::SetAll ( )
+
+	void Event::SetAll()
 	{
 		{
-			std::unique_lock<std::mutex> lock ( _mutex );
+			std::unique_lock<std::mutex> lock(_mutex);
 			_shouldContinue = true;
 		}
-		
-		_condVar.notify_all ( );
+
+		_condVar.notify_all();
 	}
-	
-	bool Event::Wait ( uint32_t TimeoutMsec )
+
+	bool Event::Wait(uint32_t TimeoutMsec)
 	{
-		auto dst = std::chrono::system_clock::now ( ) + std::chrono::milliseconds ( TimeoutMsec );
-		
-		std::unique_lock<std::mutex> lock ( _mutex );
-		bool result = _condVar.wait_until ( lock, dst, [ this ] ( )
-		{
-			return _shouldContinue;
-		} );
+		auto dst = std::chrono::system_clock::now() + std::chrono::milliseconds(TimeoutMsec);
+
+		std::unique_lock<std::mutex> lock(_mutex);
+		bool result = _condVar.wait_until(lock, dst, [this]()
+			{
+				return _shouldContinue;
+			});
 		_shouldContinue = false;
-		
+
 		return result;
 	}
 }
