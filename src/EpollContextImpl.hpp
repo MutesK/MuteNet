@@ -14,7 +14,7 @@
 
 namespace EventLoop
 {
-	class EpollContextImpl : public IUnixLikeIOContextImpl, public Util::Runnable
+	class EpollContextImpl : public IUnixLikeIOContextImpl
 	{
 		descriptor_t        _EpollHandle;
 

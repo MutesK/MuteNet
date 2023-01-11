@@ -102,7 +102,7 @@ namespace EventLoop
 				client_addr_len,
 				_Self);
 		};
-		ThreadPool->EnqueueJob(Dispatch);
+		ThreadPool->EnqueuePermanentJob(Dispatch);
 	}
 
 	void LikeUnixListenerComponent::Disable()

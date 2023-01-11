@@ -7,6 +7,7 @@
 
 #include "ListenerComponent.hpp"
 #include "Descriptor.h"
+#include "Runnable.hpp"
 
 namespace EventLoop
 {
@@ -20,7 +21,7 @@ namespace EventLoop
 
 	class IOContextThreadPool;
 
-	class IOContextImpl
+	class IOContextImpl :  public Util::IRunnable
 	{
 	protected:
 		std::shared_ptr<IOContextThreadPool> _ThreadPool;  // Using For Notify Completion
@@ -37,6 +38,10 @@ namespace EventLoop
 
 		virtual bool Enable(const DescriptorPtr descriptor) = 0;
 		virtual void Disable(const DescriptorPtr descriptor) = 0;
+
+		// IRunnable을(를) 통해 상속됨
+		virtual void Start() override;
+		virtual void Stop() override;
 	};
 }
 

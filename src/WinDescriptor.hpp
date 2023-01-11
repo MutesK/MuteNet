@@ -26,21 +26,17 @@ namespace EventLoop
 
 	class WinSocketDescriptor : public IDescriptor, public IWinDescriptor, public Util::AtomicCounter
 	{
-		OVERLAPPED _RecvOverlapped;
-		OVERLAPPED _SendOverlapped;
+		OVERLAPPED _RecvOverlapped{};
+		OVERLAPPED _SendOverlapped{};
 
 		friend class Win32ListenerComponent;
 	protected:
-		WinSocketDescriptor(const RawIOContextImplPtr& Ptr, descriptor_t Socket);
+		WinSocketDescriptor(RawIOContextImplPtr const& Ptr, descriptor_t Socket);
 		~WinSocketDescriptor();
-
-		virtual bool _Read() override;
 
 		virtual int write(descriptor_t descriptor, const char* ptr, size_t length) override;
 
 		virtual int read(descriptor_t descriptor, char* ptr, size_t length) override;
-
-		virtual bool _Write() override;
 
 		friend class IocpContextImpl;
 

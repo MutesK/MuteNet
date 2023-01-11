@@ -85,7 +85,7 @@ namespace EventLoop
 					}
 				};
 
-				ThreadPool->EnqueueJob(DispatchSignal);
+				ThreadPool->EnqueuePermanentJob(DispatchSignal);
 			});
 	}
 

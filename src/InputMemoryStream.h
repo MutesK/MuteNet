@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MUTENET_INPUTMEMORYSTREAM_HPP
+#define MUTENET_INPUTMEMORYSTREAM_HPP
 
 #include "MemoryStream.h"
 
@@ -49,3 +50,5 @@ namespace Util
 	}
 
 }
+
+#endif

@@ -5,3 +5,10 @@
 #include "Common.h"
 #include "TypeDefine.hpp"
 #include "TCPLink.hpp"
+
+using namespace MuteNet;
+
+TCPLink::CallbacksPtr TCPLink::GetCallbacks()
+{
+	return _Callback;
+}

@@ -1,5 +1,5 @@
-#pragma once
-
+#ifndef MUTENET_MEMORYSTREAM_HPP
+#define MUTENET_MEMORYSTREAM_HPP
 
 namespace Util
 {
@@ -29,4 +29,8 @@ namespace Util
 	{
 		return _Buffer;
 	}
+
+	using MemoryStreamPtr = std::shared_ptr<MemoryStream>;
 }
+
+#endif

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef MUTENET_CIRCULARBUFFER_HPP
+#define MUTENET_CIRCULARBUFFER_HPP
+
 
 namespace Util
 {
@@ -72,3 +74,5 @@ namespace Util
 		return _Buffer + _Rear;
 	}
 }
+
+#endif

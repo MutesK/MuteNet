@@ -52,7 +52,7 @@ namespace EventLoop
 	bool IocpContextImpl::Enable(DescriptorPtr descriptor)
 	{
 		CreateIoCompletionPort(reinterpret_cast<HANDLE>(descriptor->GetDescriptor()), _IocpHandle,
-			reinterpret_cast<ULONG_PTR>(nullptr), 0);
+			reinterpret_cast<ULONG_PTR>(descriptor), 0);
 		return true;
 	}
 
@@ -118,7 +118,7 @@ namespace EventLoop
 
 		for (int32_t index = 0; index <= Threads; ++index)
 		{
-			ThreadPool->EnqueueJob(WorkerRun);
+			ThreadPool->EnqueuePermanentJob(WorkerRun);
 		}
 	}
 

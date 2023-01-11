@@ -33,6 +33,10 @@ namespace EventLoop
 
 		bool Enable(const DescriptorPtr descriptor);
 		void Disable(const DescriptorPtr descriptor);
+
+		void Start();
+
+		void Stop();
 	};
 }
 

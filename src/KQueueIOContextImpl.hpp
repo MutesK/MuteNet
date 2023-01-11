@@ -12,7 +12,7 @@
 
 namespace EventLoop
 {
-	class KQueueIOContextImpl : public IUnixLikeIOContextImpl, public Util::Runnable
+	class KQueueIOContextImpl : public IUnixLikeIOContextImpl
 	{
 		descriptor_t _kqueue;
 	public:

@@ -32,7 +32,7 @@ namespace EventLoop
 		void* GetExtension(descriptor_t socket, const GUID* FunctorPtr);
 	};
 
-	class IocpContextImpl : public IOContextImpl, public Util::IRunnable
+	class IocpContextImpl : public IOContextImpl
 	{
 		class RaIIWSA final
 		{

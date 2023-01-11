@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MUTENET_TASK_H_
+#define MUTENET_TASK_H_
 
 namespace Util
 {
@@ -43,3 +44,5 @@ namespace Util
 	};
 
 }
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MUTENET_OUTPUTMEMORYSTREAM_HPP
+#define MUTENET_OUTPUTMEMORYSTREAM_HPP
 
 #include "MemoryStream.h"
 
@@ -16,12 +17,37 @@ namespace Util
 		virtual void Write(const void* inData, const uint32_t inByteCount);
 
 		template<typename Type>
-		void Write(const Type& inData);
+		void Write(const Type& inData)
+		{
+			unsigned short length = sizeof(unsigned short);
+
+			Write(&length, sizeof(unsigned short));
+			Write(&inData, length);
+		}
+
 
 		template<typename Type>
-		void Write(const std::vector<Type>& vector);
+		void Write(const std::vector<Type>& vector)
+		{
+			unsigned short length = static_cast<unsigned short>(vector.size());
 
-		void Write(const std::string& inData);
+			Write(&length, sizeof(unsigned short));
+
+			for (const auto& elem : vector)
+			{
+				Write(elem);
+			}
+
+		}
+
+		template<>
+		void Write(const std::string& inData)
+		{
+			unsigned short length = static_cast<unsigned short>(inData.length());
+
+			Write(&length, sizeof(unsigned short));
+			Write(inData.c_str(), length);
+		}
 
 		virtual void Serialize(void* inData, uint32_t inByteCount) override;
 
@@ -30,51 +56,6 @@ namespace Util
 		void Clear();
 	};
 
-	inline int64_t OutputMemoryStream::GetLength() const
-	{
-		return _Tail;
-	}
-
-	template<typename Type>
-	void OutputMemoryStream::Write(const Type& inData)
-	{
-		unsigned short length = sizeof(unsigned short);
-
-		Write(&length, sizeof(unsigned short));
-		Write(&inData, length);
-	}
-
-	template<>
-	void OutputMemoryStream::Write(const std::string& inData)
-	{
-		unsigned short length = static_cast<unsigned short>(inData.length());
-
-		Write(&length, sizeof(unsigned short));
-		Write(inData.c_str(), length);
-	}
-
-	template<typename Type>
-	void OutputMemoryStream::Write(const std::vector<Type>& vector)
-	{
-		unsigned short length = static_cast<unsigned short>(vector.size());
-
-		Write(&length, sizeof(unsigned short));
-
-		for (const auto& elem : vector)
-		{
-			Write(elem);
-		}
-
-	}
-
-	inline void OutputMemoryStream::MoveWritePosition(int64_t size)
-	{
-		_Tail += size;
-	}
-
-	void OutputMemoryStream::Clear()
-	{
-		_Tail = 0;
-	}
-
 }
+
+#endif

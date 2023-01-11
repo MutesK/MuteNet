@@ -1,6 +1,12 @@
-cmake_minimum_required(VERSION 3.15)
-SET(PROJECT_NAME MuteNet)
-SET(CMAKE_CXX_STANDARD 17)
+cmake_minimum_required(VERSION 3.10)
+project(MuteNet)
+ 
+message("top:	CMAKE_SOURCE_DIR		= ${CMAKE_SOURCE_DIR}")
+message("top:	CMAKE_BINARY_DIR		= ${CMAKE_BINARY_DIR}")
+message("top:	CMAKE_CURRENT_SOURCE_DIR	= ${CMAKE_CURRENT_SOURCE_DIR}")
+message("top:	CMAKE_CURRENT_BINARY_DIR	= ${CMAKE_CURRENT_BINARY_DIR}")
+ 
+add_subdirectory(testserver)
 
-PROJECT(${PROJECT_NAME})
-ADD_SUBDIRECTORY(src)
+message("top:	CMAKE_CURRENT_SOURCE_DIR	= ${CMAKE_CURRENT_SOURCE_DIR}")
+message("top:	CMAKE_CURRENT_BINARY_DIR	= ${CMAKE_CURRENT_BINARY_DIR}")

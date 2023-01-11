@@ -24,8 +24,9 @@ namespace EventLoop
 		return std::make_shared<KQueueIOContextImpl>(NumOfWorkerThread, Timeout);
 #elif defined(IOCONTEXT_EPOLL)
 		return std::make_shared<EpollContextImpl>(NumOfWorkerThread, Timeout);
-#endif
+#else
 		std::runtime_error("Can't find IOContext Type!");
+#endif
 	}
 
 	IOContextEvent::IOContextEvent(const uint32_t NumOfWorkerThread, const uint32_t Timeout)
@@ -58,6 +59,16 @@ namespace EventLoop
 	void IOContextEvent::Disable(DescriptorPtr descriptor)
 	{
 		_ContextImpl->Disable(descriptor);
+	}
+
+	void IOContextEvent::Start()
+	{
+		_ContextImpl->Start();
+	}
+
+	void IOContextEvent::Stop()
+	{
+		_ContextImpl->Stop();
 	}
 }
 

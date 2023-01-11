@@ -213,7 +213,7 @@ namespace MuteNet
 		assert(SelfPtr->_DescriptorPtr != Ptr);
 		assert(SelfPtr->_Callback != nullptr);
 
-		Util::InputMemoryStream Buffer = Ptr->GetReadBuffer();
+		auto Buffer = Ptr->GetReadBuffer();
 	}
 
 	void TCPLinkImpl::SendCallback(DescriptorPtr Ptr, void* Self)

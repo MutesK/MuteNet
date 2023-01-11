@@ -43,6 +43,8 @@ namespace MuteNet
 	ServerHandleImplPtr ServerHandleImpl::Listen(EventLoop::IOContextEvent& EventBase, uint16_t Port, NetworkHelpers::ListenCallbacksPtr ListenCallbacks)
 	{
 		ServerHandleImplPtr Ptr{ new ServerHandleImpl(EventBase, std::move(ListenCallbacks)) };
+		EventBase.Start();
+
 		Ptr->_Self = Ptr;
 		if (Ptr->Listen(Port))
 		{
@@ -53,6 +55,7 @@ namespace MuteNet
 			Ptr->_ListenCallbacks->OnError(Ptr->_ErrorCode, Ptr->_ErrorMsg);
 			Ptr->_Self.reset();
 		}
+
 		return Ptr;
 	}
 
@@ -133,6 +136,7 @@ namespace MuteNet
 		}
 
 		_Listener = _EventBase.CreateListener(Callback, this, listenfd);
+		
 		return true;
 	}
 

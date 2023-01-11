@@ -1,6 +1,4 @@
-﻿#pragma once
-
-#pragma once
+﻿#pragma once 
 
 #include <iostream>
 #include <atomic>
@@ -19,6 +17,7 @@
 #include <ctime>
 #include <chrono>
 
+#include <mutex>
 #include <shared_mutex>
 
 #include <signal.h>
@@ -43,6 +42,7 @@
 
 #include <concurrent_queue.h>
 #include <concurrent_unordered_map.h>
+#include <concurrent_vector.h>
 
 #elif defined(__APPLE__) || defined(__linux__)
 

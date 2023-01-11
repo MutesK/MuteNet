@@ -14,17 +14,10 @@ namespace EventLoop
 
 		while (!_ClearFlag)
 		{
-			if (_Queue.empty())
-			{
-				continue;
-			}
-
-			if (!_Queue.try_pop(Functor))
-			{
-				continue;
-			}
-
-			Functor();
+			std::for_each(_Vector.begin(), _Vector.end(), [](WorkFunctor& functor)
+				{
+					functor();
+				});
 		}
 	}
 
@@ -57,6 +50,12 @@ namespace EventLoop
 		_Queue.push(Functor);
 
 		_TriggerEvent.Set();
+	}
+
+
+	void IOContextThreadPool::EnqueuePermanentJob(const WorkFunctor&& Functor)
+	{
+		_Vector.push_back(Functor);
 	}
 
 	size_t IOContextThreadPool::GetWorkerThreadCount() const

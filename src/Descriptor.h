@@ -8,8 +8,11 @@
 #include "EventBaseComponent.hpp"
 #include "CircularBuffer.h"
 
-#include "OutputMemoryStream.h"
-#include "InputMemoryStream.h"
+namespace Util
+{
+	class MemoryStream;
+	using MemoryStreamPtr = std::shared_ptr<MemoryStream>;
+}
 
 namespace EventLoop
 {
@@ -57,7 +60,7 @@ namespace EventLoop
 
 		descriptor_t GetDescriptor() const;
 
-		Util::InputMemoryStream GetReadBuffer() const;
+		Util::MemoryStreamPtr GetReadBuffer() const;
 		Util::CircularBuffer GetWriteBuffer() const;
 
 		bool IsVaildCallback() const;
@@ -65,9 +68,9 @@ namespace EventLoop
 	protected:
 		virtual void Enable() = 0;
 
-		virtual bool _Read();
+		bool _Read();
 
-		virtual bool _Write();
+		bool _Write();
 
 #ifdef WIN32
 		// Windows doesn't support the POSIX Descriptor Common IO function.

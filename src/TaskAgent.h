@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MUTENET_TASKAGENT_H_
+#define MUTENET_TASKAGENT_H_
 
 #include "Runnable.hpp"
 
@@ -40,3 +41,5 @@ namespace Util
 	};
 
 }
+
+#endif

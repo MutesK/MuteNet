@@ -11,7 +11,7 @@
 
 namespace EventLoop
 {
-	WinSocketDescriptor::WinSocketDescriptor(EventLoop::RawIOContextImplPtr const& Ptr, socket_t Socket)
+	WinSocketDescriptor::WinSocketDescriptor(RawIOContextImplPtr const& Ptr, descriptor_t Socket)
 		: IDescriptor(Ptr, Socket)
 	{
 
@@ -21,7 +21,6 @@ namespace EventLoop
 	{
 		closesocket(_descriptor);
 	}
-
 
 	void WinSocketDescriptor::Read()
 	{
@@ -219,11 +218,6 @@ namespace EventLoop
 	int WinSocketDescriptor::read(descriptor_t descriptor, char* ptr, size_t length)
 	{
 		return recv(descriptor, ptr, length, 0);
-	}
-
-	bool WinSocketDescriptor::_Write()
-	{
-		return false;
 	}
 
 }

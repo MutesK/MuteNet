@@ -24,3 +24,19 @@ void OutputMemoryStream::Serialize(void* inData, uint32_t inByteCount)
 	Write(&inByteCount, sizeof(uint32_t));
 	Write(inData, inByteCount);
 }
+
+int64_t OutputMemoryStream::GetLength() const
+{
+	return _Tail;
+}
+
+
+void OutputMemoryStream::MoveWritePosition(int64_t size)
+{
+	_Tail += size;
+}
+
+void OutputMemoryStream::Clear()
+{
+	_Tail = 0;
+}

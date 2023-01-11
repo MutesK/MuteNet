@@ -164,7 +164,7 @@ namespace EventLoop
 					}
 				};
 
-				ThreadPool->EnqueueJob(DispatchEvent);
+				ThreadPool->EnqueuePermanentJob(DispatchEvent);
 			}
 		}
 	}

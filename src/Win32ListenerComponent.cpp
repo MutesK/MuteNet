@@ -9,6 +9,7 @@
 #include "Win32ListenerComponent.hpp"
 #include "IocpContextImpl.hpp"
 #include "IoContextThreadPool.hpp"
+#include "WinDescriptor.hpp"
 
 namespace EventLoop
 {
@@ -19,6 +20,8 @@ namespace EventLoop
 		: ListenerComponent(ContextEvent, std::move(Callback), Self, listenSocket)
 	{
 		reinterpret_cast<IocpContextImpl*>(_ContextPtr)->Enable(_Listener);
+
+		AcceptRequest();
 	}
 
 	Win32ListenerComponent::~Win32ListenerComponent()
@@ -32,7 +35,8 @@ namespace EventLoop
 		static AcceptExPtr& _AcceptExFunctionPtr = Extension._AcceptEx;
 		static DWORD Pending = 0;
 
-		_Client = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+		_Client = (socket_t)WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, WSA_FLAG_OVERLAPPED);
+		ZeroMemory(&_Overlapped, sizeof(OVERLAPPED));
 
 		if (!_AcceptExFunctionPtr(_Listener->GetDescriptor(), _Client, const_cast<char*>(_AddressBuffer.GetBufferPtr()), 0,
 			sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16, &Pending, &_Overlapped))
@@ -67,13 +71,9 @@ namespace EventLoop
 				sizeof(SOCKADDR_IN) + 16, sizeof(SOCKADDR_IN) + 16,
 				&LocalSockAddr, &RemoteAddrLength, &RemoteSockAddr, &RemoteAddrLength);
 
-			const auto ListenDispatch = [&]()
-			{
-				_ListenCallbackDelegate(this, reinterpret_cast<IocpContextImpl*>(_ContextPtr)->CreateDescriptor(_Client), RemoteSockAddr,
-					RemoteAddrLength, _Self);
-			};
 
-			Pool->EnqueueJob(ListenDispatch);
+			_ListenCallbackDelegate(this, reinterpret_cast<IocpContextImpl*>(_ContextPtr)->CreateDescriptor(_Client), RemoteSockAddr,
+					RemoteAddrLength, _Self);
 		};
 
 		Process();

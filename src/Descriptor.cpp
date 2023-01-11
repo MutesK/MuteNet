@@ -6,6 +6,9 @@
 #include "TypeDefine.hpp"
 #include "Descriptor.h"
 
+#include "OutputMemoryStream.h"
+#include "InputMemoryStream.h"
+
 namespace EventLoop
 {
 	struct Buffer
@@ -119,9 +122,9 @@ namespace EventLoop
 
 	}
 
-	Util::InputMemoryStream IDescriptor::GetReadBuffer() const
+	Util::MemoryStreamPtr IDescriptor::GetReadBuffer() const
 	{
-		Util::InputMemoryStream Stream;
+		Util::MemoryStreamPtr Stream = std::make_shared<Util::InputMemoryStream>();
 
 		Buffer Buffer[2];
 
@@ -129,11 +132,11 @@ namespace EventLoop
 			&Buffer[1].BufferPtr, Buffer[1].length);
 
 
-		reinterpret_cast<Util::OutputMemoryStream&>(Stream).Serialize(Buffer[0].BufferPtr, Buffer[0].length);
+		std::reinterpret_pointer_cast<Util::OutputMemoryStream>(Stream)->Serialize(Buffer[0].BufferPtr, Buffer[0].length);
 
 		if (Buffer[0].length < _ReadBuffer.GetUseSize())
 		{
-			reinterpret_cast<Util::OutputMemoryStream&>(Stream).Serialize(Buffer[1].BufferPtr, Buffer[1].length);
+			std::reinterpret_pointer_cast<Util::OutputMemoryStream>(Stream)->Serialize(Buffer[1].BufferPtr, Buffer[1].length);
 		}
 
 		return Stream;

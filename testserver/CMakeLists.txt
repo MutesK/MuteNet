@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 3.15)
+
+SET(PROJECT_NAME MuteNet-TestServer)
+SET(CMAKE_CXX_STANDARD 17)
+
+PROJECT(${PROJECT_NAME})
+
+add_subdirectory("../src" build)
+LIST(APPEND LIBS MuteNetLibs ../src)
+LIST(APPEND INCLUDES ../src)
+
+# add the executable
+add_executable(${PROJECT_NAME} Server.cpp)
+
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC ${LIBS})
+
+TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} PUBLIC  "${PROJECT_BINARY_DIR}" ${INCLUDES})
