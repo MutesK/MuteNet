@@ -1,3 +1,0 @@
-[submodule "lib/tbb"]
-	path = lib/tbb
-	url = https://github.com/wjakob/tbb.git
