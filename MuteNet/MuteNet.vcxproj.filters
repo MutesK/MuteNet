@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Heap">
+      <UniqueIdentifier>{2928fdc3-90c6-4ac5-9fec-da8b7b3c0b94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Buffer">
+      <UniqueIdentifier>{8f0dd557-9150-4aff-932e-1d46c755427d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Multiplexing">
+      <UniqueIdentifier>{61271516-1778-4168-b4c6-a6228d6f7894}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MiniDump">
+      <UniqueIdentifier>{f1c0f36f-12ae-4a29-8822-bd66418c5d60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ASyncIOTask">
+      <UniqueIdentifier>{b128002d-2baa-4e28-acc9-d24e82d6b670}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{86c049c3-5eb9-4803-b264-e93922a9c6c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\Socket">
+      <UniqueIdentifier>{21ea078f-7e45-4a77-aeff-4003878b204b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\Link">
+      <UniqueIdentifier>{1ada0f5d-a7c2-46a6-9d36-67494d0f09ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\Accept">
+      <UniqueIdentifier>{532ce547-e5ef-47b2-beee-57b8dd558822}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Common.h" />
+    <ClInclude Include="MemoryResource.h">
+      <Filter>Heap</Filter>
+    </ClInclude>
+    <ClInclude Include="Allocator.h">
+      <Filter>Heap</Filter>
+    </ClInclude>
+    <ClInclude Include="StreamBuffer.h">
+      <Filter>Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="ISocket.h">
+      <Filter>Network\Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="WinSocketImpl.h">
+      <Filter>Network\Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="LinuxSocketImpl.h">
+      <Filter>Network\Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="UnixSocketImpl.h">
+      <Filter>Network\Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="Socket.h">
+      <Filter>Network\Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="IIODispatcher.h">
+      <Filter>Multiplexing</Filter>
+    </ClInclude>
+    <ClInclude Include="WinIODispatcherImpl.h">
+      <Filter>Multiplexing</Filter>
+    </ClInclude>
+    <ClInclude Include="EpollIODispatcherImpl.h">
+      <Filter>Multiplexing</Filter>
+    </ClInclude>
+    <ClInclude Include="KQueueIODispatcherImpl.h">
+      <Filter>Multiplexing</Filter>
+    </ClInclude>
+    <ClInclude Include="IODispatcher.h">
+      <Filter>Multiplexing</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniDump.h">
+      <Filter>MiniDump</Filter>
+    </ClInclude>
+    <ClInclude Include="ASyncIORequest.h">
+      <Filter>ASyncIOTask</Filter>
+    </ClInclude>
+    <ClInclude Include="Link.h">
+      <Filter>Network\Link</Filter>
+    </ClInclude>
+    <ClInclude Include="TCPLinkImpl.h">
+      <Filter>Network\Link</Filter>
+    </ClInclude>
+    <ClInclude Include="UDPLinkImpl.h">
+      <Filter>Network\Link</Filter>
+    </ClInclude>
+    <ClInclude Include="Acceptor.h">
+      <Filter>Network\Accept</Filter>
+    </ClInclude>
+    <ClInclude Include="ASyncAcceptRequest.h">
+      <Filter>Network\Accept</Filter>
+    </ClInclude>
+    <ClInclude Include="ASyncSendRequest.h">
+      <Filter>Network\Link</Filter>
+    </ClInclude>
+    <ClInclude Include="ASyncRecvRequest.h">
+      <Filter>Network\Link</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MemoryResource.cpp">
+      <Filter>Heap</Filter>
+    </ClCompile>
+    <ClCompile Include="StreamBuffer.cpp">
+      <Filter>Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="WinSocketImpl.cpp">
+      <Filter>Network\Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="LinuxSocketImpl.cpp">
+      <Filter>Network\Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="UnixSocketImpl.cpp">
+      <Filter>Network\Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="WinIODispatcherImpl.cpp">
+      <Filter>Multiplexing</Filter>
+    </ClCompile>
+    <ClCompile Include="EpollIoDispatcherImpl.cpp">
+      <Filter>Multiplexing</Filter>
+    </ClCompile>
+    <ClCompile Include="KQueueIODispatcherImpl.cpp">
+      <Filter>Multiplexing</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniDump.cpp">
+      <Filter>MiniDump</Filter>
+    </ClCompile>
+    <ClCompile Include="TCPLinkImpl.cpp">
+      <Filter>Network\Link</Filter>
+    </ClCompile>
+    <ClCompile Include="UDPLinkImpl.cpp">
+      <Filter>Network\Link</Filter>
+    </ClCompile>
+    <ClCompile Include="Acceptor.cpp">
+      <Filter>Network\Accept</Filter>
+    </ClCompile>
+    <ClCompile Include="ASyncAcceptRequest.cpp">
+      <Filter>Network\Accept</Filter>
+    </ClCompile>
+    <ClCompile Include="ASyncSendRequest.cpp">
+      <Filter>Network\Link</Filter>
+    </ClCompile>
+    <ClCompile Include="ASyncRecvRequest.cpp">
+      <Filter>Network\Link</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

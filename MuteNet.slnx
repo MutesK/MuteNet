@@ -1,0 +1,8 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="ModuleTest/ModuleTest.vcxproj" Id="02e6da10-e64e-4a92-9d33-33e3322df37e" />
+  <Project Path="MuteNet/MuteNet.vcxproj" Id="f06f6cda-811e-4d86-bebc-6f83fd98d915" />
+</Solution>

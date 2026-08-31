@@ -1,0 +1,38 @@
+# Ignore Visual Studio temporary files, build directories, and user-specific settings
+.vs/
+x64/
+[Dd]ebug/
+[Rr]elease/
+**/x64/
+**/Debug/
+**/Release/
+*.user
+*.suo
+*.db
+*.opendb
+
+# Compiled object/link/binary files
+*.obj
+*.o
+*.pch
+*.pdb
+*.tlog
+*.idb
+*.ilk
+*.recipe
+*.log
+*.exe
+*.dll
+*.lib
+*.a
+*.so
+
+# Packages and dependencies manager folders
+packages/
+vcpkg_installed/
+
+# Compressed archives
+*.zip
+*.tar
+*.gz
+*.rar
